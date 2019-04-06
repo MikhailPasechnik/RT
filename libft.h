@@ -57,6 +57,7 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
+
 typedef struct	s_list
 {
 	void			*content;
@@ -69,5 +70,24 @@ void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+void			ft_lstreverse(t_list **alst);
+
+typedef struct	s_stack
+{
+	t_list		*top;
+}				t_stack;
+t_stack			*ft_stack_init(void);
+t_list			*ft_stack_pop(t_stack *stack);
+void			ft_stack_push(t_stack *stack, t_list *new);
+void			ft_stack_del(t_stack *stack, void (*del)(void *, size_t));
+
+typedef struct	s_queue {
+	t_list		*front;
+	t_list		*rear;
+}				t_queue;
+void			ft_enqueue(t_queue *queue, t_list *item);
+t_list			*ft_dequeue(t_queue *queue);
+t_queue			*ft_queue_init(void);
+void			ft_queue_del(t_queue *queue, void (*del)(void *, size_t));
 
 #endif
