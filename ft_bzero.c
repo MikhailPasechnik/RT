@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:17:29 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/06 15:19:20 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/06 15:27:46 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	uint8_t		*value;
+	char	*value;
 
 	value = s;
 	while (n--)

@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:59:54 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/06 15:08:24 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/06 15:28:02 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	uint8_t		*value;
+	char	*value;
 
 	value = s;
 	while (n--)
