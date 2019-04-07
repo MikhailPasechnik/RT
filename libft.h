@@ -46,7 +46,6 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_iswhitespace(int c);
-
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -65,7 +64,6 @@ char			**ft_strsplit(char const *s, char c);
 char			*ft_itoa(int n);
 size_t			ft_count_till(const char *str, int dir, size_t start,
 								int (*f)(int), int cmp);
-
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -74,7 +72,6 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
-
 typedef struct	s_list
 {
 	void			*content;
@@ -94,12 +91,17 @@ typedef struct	s_stack
 	t_list		*top;
 }				t_stack;
 t_stack			*ft_stack_new(void);
-
+void			ft_stack_del(t_stack *stack, void (*del)(void *, size_t));
+t_list			*ft_stack_pop(t_stack *stack);
+void			ft_stack_push(t_stack *stack, t_list *new);
 typedef struct	s_queue {
 	t_list		*front;
 	t_list		*rear;
 }				t_queue;
 
 t_queue			*ft_queue_new(void);
+t_list			*ft_dequeue(t_queue *queue);
+void			ft_enqueue(t_queue *queue, t_list *item);
+void			ft_queue_del(t_queue *queue, void (*del)(void *, size_t));
 
 #endif
