@@ -13,10 +13,9 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdint.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
 
 void			*ft_memset(void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);
@@ -46,6 +45,8 @@ int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
+int				ft_iswhitespace(int c);
+
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -62,6 +63,9 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
 char			*ft_itoa(int n);
+size_t			ft_count_till(const char *str, int dir, size_t start,
+								int (*f)(int), int cmp);
+
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -89,18 +93,13 @@ typedef struct	s_stack
 {
 	t_list		*top;
 }				t_stack;
-t_stack			*ft_stack_init(void);
-t_list			*ft_stack_pop(t_stack *stack);
-void			ft_stack_push(t_stack *stack, t_list *new);
-void			ft_stack_del(t_stack *stack, void (*del)(void *, size_t));
+t_stack			*ft_stack_new(void);
 
 typedef struct	s_queue {
 	t_list		*front;
 	t_list		*rear;
 }				t_queue;
-void			ft_enqueue(t_queue *queue, t_list *item);
-t_list			*ft_dequeue(t_queue *queue);
-t_queue			*ft_queue_init(void);
-void			ft_queue_del(t_queue *queue, void (*del)(void *, size_t));
+
+t_queue			*ft_queue_new(void);
 
 #endif
