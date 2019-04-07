@@ -6,5 +6,5 @@ set(GCC_COVERAGE_COMPILE_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS} -Wall -Wextra -Wer
 
 
 file(GLOB SRC ft_*.c)
-add_executable(libft main.c ${SRC})
+add_executable(libft tests.c ${SRC})
 target_compile_definitions(libft PRIVATE FT_ALL)
