@@ -91,7 +91,7 @@ typedef struct	s_stack
 	t_list		*top;
 }				t_stack;
 t_stack			*ft_stack_new(void);
-void			ft_stack_del(t_stack *stack, void (*del)(void *, size_t));
+void			ft_stack_del(t_stack **stack, void (*del)(void *, size_t));
 t_list			*ft_stack_pop(t_stack *stack);
 void			ft_stack_push(t_stack *stack, t_list *new);
 typedef struct	s_queue {
@@ -102,6 +102,6 @@ typedef struct	s_queue {
 t_queue			*ft_queue_new(void);
 t_list			*ft_dequeue(t_queue *queue);
 void			ft_enqueue(t_queue *queue, t_list *item);
-void			ft_queue_del(t_queue *queue, void (*del)(void *, size_t));
+void			ft_queue_del(t_queue **queue, void (*del)(void *, size_t));
 
 #endif

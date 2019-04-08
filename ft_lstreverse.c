@@ -6,8 +6,7 @@ void	ft_lstreverse(t_list **alst)
 	t_list *second;
 	t_list *first;
 
-	first = *alst;
-	if (!first || !(first->next))
+	if (!alst || !(first = *alst) || !(first->next))
 		return ;
 	second = first->next;
 	third = second->next;
