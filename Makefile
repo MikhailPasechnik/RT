@@ -68,6 +68,6 @@ fclean : clean
 re : fclean all
 
 test : all
-	@gcc  $(GCC_FLAGS) -L. tests.c /usr/local/lib/libtap.so -lft -D$(name) -o tests
+	@gcc  $(GCC_FLAGS) -L. tests.c -lft -D$(name) -o tests
 	$(info ************ Test $(name) .. **********)
 	./tests
