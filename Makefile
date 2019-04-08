@@ -60,7 +60,7 @@ $(NAME) :
 	@ranlib $(NAME)
 
 clean :
-	@/bin/rm -f $(echo $(OBJECT_FILES) | tr .c .o)
+	@/bin/rm -f $(OBJECT_FILES) tests
 
 fclean : clean
 	@/bin/rm -f $(NAME)
