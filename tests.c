@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <strings.h>
 
-static void	ft_put_is(const char *file, int line,
+void	ft_tap_is(const char *file, int line,
 			const char *a, const char *b, const char *name, ...)
 {
 	if (ft_strcmp(a, b))
@@ -37,7 +37,7 @@ static void	ft_put_is(const char *file, int line,
 		ft_putstr("OK\n");
 }
 
-static void	ft_put_ok(const char *file, int line,
+void	ft_tap_ok(const char *file, int line,
 			int a, const char *name, ...)
 {
 	if (!a)
@@ -55,10 +55,11 @@ static void	ft_put_ok(const char *file, int line,
 	else
 		ft_putstr("OK\n");
 }
-static void	_ft_cmp_mem(const char *file, int line,
+void	ft_tap_ismem(const char *file, int line,
 		const char *a, const char *b, size_t n, const char *name, ...)
 {
-	size_t i;
+	size_t	i;
+
 	i = 0;
 	while (i++ < n)
 	{
@@ -83,11 +84,11 @@ static void	_ft_cmp_mem(const char *file, int line,
 	ft_putstr("OK\n");
 }
 
-#define is(...)(ft_put_is(__FILE__, __LINE__, __VA_ARGS__, NULL))
-#define ok(...)(ft_put_ok(__FILE__, __LINE__, __VA_ARGS__, NULL))
-#define cmp_mem(...)(_ft_cmp_mem(__FILE__, __LINE__, __VA_ARGS__, NULL))
+#define is(...)(ft_tap_is(__FILE__, __LINE__, __VA_ARGS__, NULL))
+#define ok(...)(ft_tap_ok(__FILE__, __LINE__, __VA_ARGS__, NULL))
+#define ismem(...)(ft_tap_ismem(__FILE__, __LINE__, __VA_ARGS__, NULL))
 
-static void	test_ft_memset(void)
+void	test_ft_memset(void)
 {
 #if defined(FT_MEMSET) || defined(FT_ALL) || defined(FT_PART1)
     char s0[5] = "....";
@@ -99,28 +100,28 @@ static void	test_ft_memset(void)
     // dies_ok({ft_memset("", 'z', -1);});
 #endif
 }
-static void	test_ft_bzero(void)
+void	test_ft_bzero(void)
 {
 #if defined(FT_BZERO) || defined(FT_ALL) || defined(FT_PART1)
     char s0[5] = "....";
     ft_bzero(s0, 5);
-    cmp_mem(s0, "\0\0\0\0\0", 5, "complete bzero");
+	ismem(s0, "\0\0\0\0\0", 5, "complete bzero");
     // dies_ok({ft_bzero("", -1);});
 #endif
 }
-static void	test_ft_memcpy(void)
+void	test_ft_memcpy(void)
 {
 #if defined(FT_MEMCPY) || defined(FT_ALL) || defined(FT_PART1)
     char d0[5] = "....";
     ft_memcpy(d0, "____", 5);
-    cmp_mem(d0, "____", 5);
+	ismem(d0, "____", 5);
     char d1[1] = "";
     ft_memcpy(d0, "____", 1);
-    cmp_mem(d1, "", 1);
+	ismem(d1, "", 1);
     // dies_ok({ft_memcpy("", "", -1);});
 #endif
 }
-static void	test_ft_memccpy(void)
+void	test_ft_memccpy(void)
 {
 #if defined(FT_MEMCCPY) || defined(FT_ALL) || defined(FT_PART1)
     char d0[5] = "..!.";
@@ -129,11 +130,11 @@ static void	test_ft_memccpy(void)
     ft_memccpy(d0, "__!_", '_', 5);
     is(d0, "__!.");
     ft_memccpy(d0, "\0__!", '!', 5);
-    cmp_mem(d0, "\0__!", 5);
+	ismem(d0, "\0__!", 5);
     // dies_ok({ft_memccpy("", "", 'd', -1);});
 #endif
 }
-static void	test_ft_memmove(void)
+void	test_ft_memmove(void)
 {
 #if defined(FT_MEMMOVE) || defined(FT_ALL) || defined(FT_PART1)
     char    a[] = "lorem ipsum dolor sit amet";
@@ -143,277 +144,277 @@ static void	test_ft_memmove(void)
     is(d, "lore ipsum dolor sit amet");
 #endif
 }
-static void	test_ft_memchr(void)
+void	test_ft_memchr(void)
 {
 #if defined(FT_MEMCHR) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_memcmp(void)
+void	test_ft_memcmp(void)
 {
 #if defined(FT_MEMCMP) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strlen(void)
+void	test_ft_strlen(void)
 {
 #if defined(FT_STRLEN) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strdup(void)
+void	test_ft_strdup(void)
 {
 #if defined(FT_STRDUP) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strcpy(void)
+void	test_ft_strcpy(void)
 {
 #if defined(FT_STRCPY) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strncpy(void)
+void	test_ft_strncpy(void)
 {
 #if defined(FT_STRNCPY) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strcat(void)
+void	test_ft_strcat(void)
 {
 #if defined(FT_STRCAT) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strncat(void)
+void	test_ft_strncat(void)
 {
 #if defined(FT_STRNCAT) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strlcat(void)
+void	test_ft_strlcat(void)
 {
 #if defined(FT_STRLCAT) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strchr(void)
+void	test_ft_strchr(void)
 {
 #if defined(FT_STRCHR) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strrchr(void)
+void	test_ft_strrchr(void)
 {
 #if defined(FT_STRRCHR) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strstr(void)
+void	test_ft_strstr(void)
 {
 #if defined(FT_STRSTR) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strnstr(void)
+void	test_ft_strnstr(void)
 {
 #if defined(FT_STRNSTR) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strcmp(void)
+void	test_ft_strcmp(void)
 {
 #if defined(FT_STRCMP) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_strncmp(void)
+void	test_ft_strncmp(void)
 {
 #if defined(FT_STRNCMP) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_atoi(void)
+void	test_ft_atoi(void)
 {
 #if defined(FT_ATOI) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_isalpha(void)
+void	test_ft_isalpha(void)
 {
 #if defined(FT_ISALPHA) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_isdigit(void)
+void	test_ft_isdigit(void)
 {
 #if defined(FT_ISDIGIT) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_isalnum(void)
+void	test_ft_isalnum(void)
 {
 #if defined(FT_ISALNUM) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_isascii(void)
+void	test_ft_isascii(void)
 {
 #if defined(FT_ISASCII) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_isprint(void)
+void	test_ft_isprint(void)
 {
 #if defined(FT_ISPRINT) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_toupper(void)
+void	test_ft_toupper(void)
 {
 #if defined(FT_TOUPPER) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_tolower(void)
+void	test_ft_tolower(void)
 {
 #if defined(FT_TOLOWER) || defined(FT_ALL) || defined(FT_PART1)
 #endif
 }
-static void	test_ft_memalloc(void)
+void	test_ft_memalloc(void)
 {
 #if defined(FT_MEMALLOC) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_memdel(void)
+void	test_ft_memdel(void)
 {
 #if defined(FT_MEMDEL) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strnew(void)
+void	test_ft_strnew(void)
 {
 #if defined(FT_STRNEW) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strdel(void)
+void	test_ft_strdel(void)
 {
 #if defined(FT_STRDEL) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strclr(void)
+void	test_ft_strclr(void)
 {
 #if defined(FT_STRCLR) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_striter(void)
+void	test_ft_striter(void)
 {
 #if defined(FT_STRITER) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_striteri(void)
+void	test_ft_striteri(void)
 {
 #if defined(FT_STRITERI) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strmap(void)
+void	test_ft_strmap(void)
 {
 #if defined(FT_STRMAP) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strmapi(void)
+void	test_ft_strmapi(void)
 {
 #if defined(FT_STRMAPI) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strequ(void)
+void	test_ft_strequ(void)
 {
 #if defined(FT_STREQU) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strnequ(void)
+void	test_ft_strnequ(void)
 {
 #if defined(FT_STRNEQU) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strsub(void)
+void	test_ft_strsub(void)
 {
 #if defined(FT_STRSUB) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strjoin(void)
+void	test_ft_strjoin(void)
 {
 #if defined(FT_STRJOIN) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strtrim(void)
+void	test_ft_strtrim(void)
 {
 #if defined(FT_STRTRIM) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_strsplit(void)
+void	test_ft_strsplit(void)
 {
 #if defined(FT_STRSPLIT) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_itoa(void)
+void	test_ft_itoa(void)
 {
 #if defined(FT_ITOA) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putchar(void)
+void	test_ft_putchar(void)
 {
 #if defined(FT_PUTCHAR) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putstr(void)
+void	test_ft_putstr(void)
 {
 #if defined(FT_PUTSTR) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putendl(void)
+void	test_ft_putendl(void)
 {
 #if defined(FT_PUTENDL) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putnbr(void)
+void	test_ft_putnbr(void)
 {
 #if defined(FT_PUTNBR) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putchar_fd(void)
+void	test_ft_putchar_fd(void)
 {
 #if defined(FT_PUTCHAR_FD) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putstr_fd(void)
+void	test_ft_putstr_fd(void)
 {
 #if defined(FT_PUTSTR_FD) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putendl_fd(void)
+void	test_ft_putendl_fd(void)
 {
 #if defined(FT_PUTENDL_FD) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_putnbr_fd(void)
+void	test_ft_putnbr_fd(void)
 {
 #if defined(FT_PUTNBR_FD) || defined(FT_ALL) || defined(FT_PART2)
 #endif
 }
-static void	test_ft_lstnew(void)
+void	test_ft_lstnew(void)
 {
 #if defined(FT_LSTNEW) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_lstdelone(void)
+void	test_ft_lstdelone(void)
 {
 #if defined(FT_LSTDELONE) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_lstdel(void)
+void	test_ft_lstdel(void)
 {
 #if defined(FT_LSTDEL) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_lstadd(void)
+void	test_ft_lstadd(void)
 {
 #if defined(FT_LSTADD) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_lstiter(void)
+void	test_ft_lstiter(void)
 {
 #if defined(FT_LSTITER) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_lstmap(void)
+void	test_ft_lstmap(void)
 {
 #if defined(FT_LSTMAP) || defined(FT_ALL) || defined(FT_EXTRA)
 #endif
 }
-static void	test_ft_count_till(void)
+void	test_ft_count_till(void)
 {
 #if defined(FT_COUNT_TILL) || defined(FT_ALL) || defined(FT_EXTRA2)
 #endif
 }
-static void	test_ft_iswhitespace(void)
+void	test_ft_iswhitespace(void)
 {
 #if defined(FT_ISWHITESPACE) || defined(FT_ALL) || defined(FT_EXTRA2)
     ok(ft_iswhitespace('\t'));
@@ -424,7 +425,7 @@ static void	test_ft_iswhitespace(void)
     ok(!ft_iswhitespace('a'));
 #endif
 }
-static void	test_ft_lstreverse(void)
+void	test_ft_lstreverse(void)
 {
 #if defined(FT_LSTREVERSE) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_list *l;
@@ -439,7 +440,7 @@ static void	test_ft_lstreverse(void)
     // lives_ok({ft_lstreverse(NULL);});
 #endif
 }
-static void	test_ft_stack_new(void)
+void	test_ft_stack_new(void)
 {
 #if defined(FT_STACK_NEW) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_stack *s = ft_stack_new();
@@ -447,13 +448,13 @@ static void	test_ft_stack_new(void)
     free(s);
 #endif
 }
-static void    stack_del(void *c, size_t s)
+void    stack_del(void *c, size_t s)
 {
     memset(c, '!', s);
     (void)c;
     (void)s;
 }
-static void	test_ft_stack_del(void)
+void	test_ft_stack_del(void)
 {
 #if defined(FT_STACK_DEL) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_stack *s = malloc(sizeof(t_stack));
@@ -466,7 +467,7 @@ static void	test_ft_stack_del(void)
     is(c, "!!!!.");
 #endif
 }
-static void	test_ft_stack_pop(void)
+void	test_ft_stack_pop(void)
 {
 #if defined(FT_STACK_POP) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_list  l2 = {"2", 1, NULL};
@@ -477,7 +478,7 @@ static void	test_ft_stack_pop(void)
     ok(!s.top);
 #endif
 }
-static void	test_ft_stack_push(void)
+void	test_ft_stack_push(void)
 {
 #if defined(FT_STACK_PUSH) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_list  l4 = {"4", 1, NULL};
@@ -493,7 +494,7 @@ static void	test_ft_stack_push(void)
     is(s.top->next->content, "3");
 #endif
 }
-static void	test_ft_queue_new(void)
+void	test_ft_queue_new(void)
 {
 #if defined(FT_QUEUE_NEW) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_queue *q = ft_queue_new();
@@ -502,7 +503,7 @@ static void	test_ft_queue_new(void)
     free(q);
 #endif
 }
-static void	test_ft_dequeue(void)
+void	test_ft_dequeue(void)
 {
 #if defined(FT_DEQUEUE) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_list  l2 = {"2", 1, NULL};
@@ -518,7 +519,7 @@ static void	test_ft_dequeue(void)
     ok(q.front == NULL);
 #endif
 }
-static void	test_ft_enqueue(void)
+void	test_ft_enqueue(void)
 {
 #if defined(FT_ENQUEUE) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_list  l4 = {"4", 1, NULL};
@@ -538,7 +539,7 @@ static void	test_ft_enqueue(void)
     ok(q.rear == NULL);
 #endif
 }
-static void	test_ft_queue_del(void)
+void	test_ft_queue_del(void)
 {
 #if defined(FT_QUEUE_DEL) || defined(FT_ALL) || defined(FT_EXTRA2)
     t_queue *q;
