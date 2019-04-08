@@ -13,68 +13,62 @@
 #include "libft.h"
 #include <assert.h>
 #include <strings.h>
+#include <tap.h>
 
 void	test_ft_memset(void)
 {
 #if defined(FT_MEMSET) || defined(FT_ALL) || defined(FT_PART1)
     char s0[5] = "....";
     char s1[5] = "....";
+    is(ft_memset(s0, 'z', 4), memset(s1, 'z', 4));
     char s2[2] = "1";
     char s3[2] = "1";
-
-    assert(strcmp(ft_memset(s0, 'z', 4), memset(s1, 'z', 4)) == 0);
-    assert(strcmp(ft_memset(s2, 'z', 1), memset(s3, 'z', 1)) == 0);
+    is(ft_memset(s2, 'z', 1), memset(s3, 'z', 1));
+    dies_ok({ft_memset("", 'z', -1);});
 #endif
 }
 void	test_ft_bzero(void)
 {
 #if defined(FT_BZERO) || defined(FT_ALL) || defined(FT_PART1)
     char s0[5] = "....";
-    char s1[5] = ",,,,";
-    char s2[1] = "";
-    char s3[1] = "";
-
-    ft_bzero(s0, 4);
-    memset(s1, 0, sizeof(s1));
-    ft_bzero(s2, 4);
-    memset(s3, 0, sizeof(s3));
-    int i = 5;
-    while (i--)
-    {
-        assert(s0[i] == ' ');
-    }
+    ft_bzero(s0, 5);
+    cmp_mem(s0, "\0\0\0\0\0", 5);
+    dies_ok({ft_bzero("", -1);});
 #endif
 }
 void	test_ft_memcpy(void)
 {
 #if defined(FT_MEMCPY) || defined(FT_ALL) || defined(FT_PART1)
     char d0[5] = "....";
-    char s0[5] = "____";
-    char d0c[5] = "....";
+    ft_memcpy(d0, "____", 5);
+    cmp_mem(d0, "____", 5);
     char d1[1] = "";
-    char s1[1] = "";
-    char d1c[1] = "";
-
-    assert(strcmp(ft_memcpy(d0, s0, 4), memcpy(d0c, s0, 4)) == 0);
-    assert(strcmp(ft_memcpy(d1, s1, 0), memcpy(d1c, s1, 0)) == 0);
+    ft_memcpy(d0, "____", 1);
+    cmp_mem(d1, "", 1);
+    dies_ok({ft_memcpy("", "", -1);});
 #endif
 }
 void	test_ft_memccpy(void)
 {
 #if defined(FT_MEMCCPY) || defined(FT_ALL) || defined(FT_PART1)
     char d0[5] = "..!.";
-    char s0[5] = "__!_";
-    char d0c[5] = "..!.";
-    char d1[4] = "123";
-    char s1[4] = "321";
-    char d1c[4] = "123";
-    assert(strcmp(ft_memccpy(d0, s0, '!', 4), memccpy(d0c, s0, '!', 4)) == 0);
-    assert(ft_memccpy(d1, s1, '!', 4) == NULL && memccpy(d1c, s1, '!', 4) == NULL);
+    ft_memccpy(d0, "__!_", '!', 5);
+    is(d0, "__!.");
+    ft_memccpy(d0, "__!_", '_', 5);
+    is(d0, "__!.");
+    ft_memccpy(d0, "\0__!", '!', 5);
+    cmp_mem(d0, "\0__!", 5);
+    dies_ok({ft_memccpy("", "", 'd', -1);});
 #endif
 }
 void	test_ft_memmove(void)
 {
 #if defined(FT_MEMMOVE) || defined(FT_ALL) || defined(FT_PART1)
+    char    a[] = "lorem ipsum dolor sit amet";
+    char	*d;
+    d = a + 1;
+    ft_memmove(d, a, 4);
+    is(d, "lore ipsum dolor sit amet");
 #endif
 }
 void	test_ft_memchr(void)
@@ -350,51 +344,139 @@ void	test_ft_count_till(void)
 void	test_ft_iswhitespace(void)
 {
 #if defined(FT_ISWHITESPACE) || defined(FT_ALL) || defined(FT_EXTRA2)
+    ok(ft_iswhitespace('\t'));
+    ok(ft_iswhitespace(' '));
+    ok(ft_iswhitespace('\n'));
+    ok(!ft_iswhitespace('\0'));
+    ok(!ft_iswhitespace('1'));
+    ok(!ft_iswhitespace('a'));
 #endif
 }
 void	test_ft_lstreverse(void)
 {
 #if defined(FT_LSTREVERSE) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_list *l;
+    t_list c = {"c", 2, NULL};
+    t_list b = {"b", 2, &c};
+    t_list a = {"a", 2, &b};
+    l = &a;
+    ft_lstreverse(&l);
+    is(l->content, "c");
+    is(l->next->content, "b");
+    is(l->next->next->content, "a");
+    lives_ok({ft_lstreverse(NULL);});
 #endif
 }
 void	test_ft_stack_new(void)
 {
 #if defined(FT_STACK_NEW) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_stack s = *ft_stack_new();
+    ok(!s.top);
 #endif
+}
+void    stack_del(void *c, size_t s)
+{
+    memset(c, '!', s);
+    (void)c;
+    (void)s;
 }
 void	test_ft_stack_del(void)
 {
 #if defined(FT_STACK_DEL) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_stack *s = malloc(sizeof(t_stack));
+    t_list  *l = malloc(sizeof(t_list));
+    char c[] = ".....";
+    *l = (t_list){c, 4, NULL};
+    s->top = l;
+    ft_stack_del(&s, stack_del);
+    ok(s == NULL);
+    is(c, "!!!!.");
 #endif
 }
 void	test_ft_stack_pop(void)
 {
 #if defined(FT_STACK_POP) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_list  l2 = {"2", 1, NULL};
+    t_list  l1 = {"1", 1, &l2};
+    t_stack s = {&l1};
+    is(ft_stack_pop(&s)->content, "1");
+    is(ft_stack_pop(&s)->content, "2");
+    ok(!s.top);
 #endif
 }
 void	test_ft_stack_push(void)
 {
 #if defined(FT_STACK_PUSH) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_list  l4 = {"4", 1, NULL};
+    t_list  l3 = {"3", 1, NULL};
+    t_list  l2 = {"2", 1, NULL};
+    t_list  l1 = {"1", 1, NULL};
+    t_stack s = {NULL};
+    ft_stack_push(&s, &l1);
+    ft_stack_push(&s, &l2);
+    ft_stack_push(&s, &l3);
+    ft_stack_push(&s, &l4);
+    is(s.top->content, "4");
+    is(s.top->next->content, "3");
 #endif
 }
 void	test_ft_queue_new(void)
 {
 #if defined(FT_QUEUE_NEW) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_queue *q = ft_queue_new();
+    ok(!q->front);
+    ok(!q->rear);
+    free(q);
 #endif
 }
 void	test_ft_dequeue(void)
 {
 #if defined(FT_DEQUEUE) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_list  l2 = {"2", 1, NULL};
+    t_list  l1 = {"1", 1, &l2};
+    t_queue q = {&l1, &l2};
+    t_list  dq = *ft_dequeue(&q);
+    is(dq.content, "1");
+    is(q.rear->content, "2");
+    is(q.front->content, "2");
+    dq = *ft_dequeue(&q);
+    is(dq.content, "2");
+    ok(q.rear == NULL);
+    ok(q.front == NULL);
 #endif
 }
 void	test_ft_enqueue(void)
 {
 #if defined(FT_ENQUEUE) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_list  l4 = {"4", 1, NULL};
+    t_list  l3 = {"3", 1, NULL};
+    t_list  l2 = {"2", 1, NULL};
+    t_list  l1 = {"1", 1, NULL};
+    t_queue q = {NULL, NULL};
+    ft_enqueue(&q, &l1);
+    ft_enqueue(&q, &l2);
+    ft_enqueue(&q, &l3);
+    ft_enqueue(&q, &l4);
+    is(ft_dequeue(&q)->content, "1");
+    is(ft_dequeue(&q)->content, "2");
+    is(ft_dequeue(&q)->content, "3");
+    is(ft_dequeue(&q)->content, "4");
+    ok(q.front == NULL);
+    ok(q.rear == NULL);
 #endif
 }
 void	test_ft_queue_del(void)
 {
 #if defined(FT_QUEUE_DEL) || defined(FT_ALL) || defined(FT_EXTRA2)
+    t_queue *q = malloc(sizeof(t_stack));
+    t_list  *l = malloc(sizeof(t_list));
+    char c[] = ".....";
+    *l = (t_list){c, 4, NULL};
+    q->rear = l;
+    q->front = l;
+    ft_queue_del(&q, stack_del);
+    ok(q == NULL);
+    is(c, "!!!!.");
 #endif
 }
 int		main()

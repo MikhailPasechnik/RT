@@ -60,7 +60,7 @@ $(NAME) :
 	@ranlib $(NAME)
 
 clean :
-	@/bin/rm -f $(echo $(SRC) | tr .c .o)
+	@/bin/rm -f $(echo $(OBJECT_FILES) | tr .c .o)
 
 fclean : clean
 	@/bin/rm -f $(NAME)
@@ -68,6 +68,6 @@ fclean : clean
 re : fclean all
 
 test : all
-	@gcc  $(GCC_FLAGS) -L. tests.c -lft -D$(name) -o tests
+	@gcc  $(GCC_FLAGS) -L. tests.c /usr/local/lib/libtap.so -lft -D$(name) -o tests
 	$(info ************ Test $(name) .. **********)
-	@./tests && echo OK || echo KO
+	./tests
