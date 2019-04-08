@@ -72,6 +72,8 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
+size_t          ft_power(size_t nb, int power);
+size_t          ft_strhash(const char *s, size_t size);
 typedef struct	s_list
 {
 	void			*content;
@@ -85,7 +87,8 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstreverse(t_list **alst);
-
+t_list          *ft_lstfind(struct s_list *lst, const void *ref,
+        int (*cmp)(const void *, const void *));
 typedef struct	s_stack
 {
 	t_list		*top;
@@ -98,10 +101,21 @@ typedef struct	s_queue {
 	t_list		*front;
 	t_list		*rear;
 }				t_queue;
-
 t_queue			*ft_queue_new(void);
 t_list			*ft_dequeue(t_queue *queue);
 void			ft_enqueue(t_queue *queue, t_list *item);
 void			ft_queue_del(t_queue **queue, void (*del)(void *, size_t));
+typedef struct  s_pair
+{
+    const char  *key;
+    const void  *value;
+}               t_pair;
+t_pair          *ft_pairnew(void);
+typedef struct  s_htable
+{
+    size_t      size;
+    t_list      **bins;
+}               t_htable;
+t_htable        *ft_htnew(size_t size);
 
 #endif

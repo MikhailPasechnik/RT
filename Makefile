@@ -12,8 +12,8 @@
 
 NAME=libft.a
 SRCS=\
-    ft_lstnew.c        ft_queue_new.c   ft_strmapi.c                           \
-    ft_lstreverse.c    ft_stack_del.c   ft_strncat.c                           \
+    ft_lstnew.c        ft_queue_new.c   ft_strmapi.c     ft_strhash.c          \
+    ft_lstreverse.c    ft_stack_del.c   ft_strncat.c     ft_pairnew.c          \
     ft_atoi.c          ft_memalloc.c    ft_stack_new.c   ft_strncmp.c          \
     ft_bzero.c         ft_memccpy.c     ft_stack_pop.c   ft_strncpy.c          \
     ft_count_till.c    ft_memchr.c      ft_stack_push.c  ft_strnequ.c          \
@@ -26,14 +26,14 @@ SRCS=\
     ft_isprint.c       ft_putchar_fd.c  ft_strdup.c      ft_strtrim.c          \
     ft_iswhitespace.c  ft_putendl.c     ft_strequ.c      ft_tolower.c          \
     ft_itoa.c          ft_putendl_fd.c  ft_striter.c     ft_toupper.c          \
-    ft_lstadd.c        ft_putnbr.c      ft_striteri.c                          \
-    ft_lstdel.c        ft_putnbr_fd.c   ft_strjoin.c                           \
-    ft_lstdelone.c     ft_putstr.c      ft_strlcat.c                           \
+    ft_lstadd.c        ft_putnbr.c      ft_striteri.c    ft_power.c            \
+    ft_lstdel.c        ft_putnbr_fd.c   ft_strjoin.c     ft_lstfind.c          \
+    ft_lstdelone.c     ft_putstr.c      ft_strlcat.c     ft_htnew.c            \
     ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c                            \
     ft_lstmap.c        ft_queue_del.c   ft_strmap.c
 OBJECT_FILES=\
-    ft_lstnew.o        ft_queue_new.o   ft_strmapi.o                           \
-    ft_lstreverse.o    ft_stack_del.o   ft_strncat.o                           \
+    ft_lstnew.o        ft_queue_new.o   ft_strmapi.o     ft_strhash.o          \
+    ft_lstreverse.o    ft_stack_del.o   ft_strncat.o     ft_pairnew.o          \
     ft_atoi.o          ft_memalloc.o    ft_stack_new.o   ft_strncmp.o          \
     ft_bzero.o         ft_memccpy.o     ft_stack_pop.o   ft_strncpy.o          \
     ft_count_till.o    ft_memchr.o      ft_stack_push.o  ft_strnequ.o          \
@@ -46,9 +46,9 @@ OBJECT_FILES=\
     ft_isprint.o       ft_putchar_fd.o  ft_strdup.o      ft_strtrim.o          \
     ft_iswhitespace.o  ft_putendl.o     ft_strequ.o      ft_tolower.o          \
     ft_itoa.o          ft_putendl_fd.o  ft_striter.o     ft_toupper.o          \
-    ft_lstadd.o        ft_putnbr.o      ft_striteri.o                          \
-    ft_lstdel.o        ft_putnbr_fd.o   ft_strjoin.o                           \
-    ft_lstdelone.o     ft_putstr.o      ft_strlcat.o                           \
+    ft_lstadd.o        ft_putnbr.o      ft_striteri.o    ft_power.o            \
+    ft_lstdel.o        ft_putnbr_fd.o   ft_strjoin.o     ft_lstfind.o          \
+    ft_lstdelone.o     ft_putstr.o      ft_strlcat.o     ft_htnew.o            \
     ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o                            \
     ft_lstmap.o        ft_queue_del.o   ft_strmap.o
 GCC_FLAGS=-Wall -Wextra -Werror
