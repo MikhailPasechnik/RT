@@ -62,6 +62,7 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
 char			*ft_itoa(int n);
+char            *ft_itoa_base(char *dest, int n, int base);
 size_t			ft_count_till(const char *str, int dir, size_t start,
 								int (*f)(int), int cmp);
 void			ft_putchar(char c);
