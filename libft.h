@@ -105,17 +105,22 @@ t_queue			*ft_queue_new(void);
 t_list			*ft_dequeue(t_queue *queue);
 void			ft_enqueue(t_queue *queue, t_list *item);
 void			ft_queue_del(t_queue **queue, void (*del)(void *, size_t));
-typedef struct  s_pair
+typedef struct  s_htentry
 {
-    const char  *key;
-    const void  *value;
-}               t_pair;
-t_pair          *ft_pairnew(void);
+    void                *key;
+    void                *value;
+    struct s_htentry    *next;
+}               t_htentry;
 typedef struct  s_htable
 {
-    size_t      size;
-    t_list      **bins;
+    size_t              size;
+    t_htentry           **bins;
+    int                 (*key_cmp)(void *, void *);
+    int                 (*key_del)(void *);
+    int                 (*val_del)(void *);
 }               t_htable;
-t_htable        *ft_htnew(size_t size);
+t_htable        *ft_htnew(size_t size,
+        int (*key_cmp)(void *, void *),
+        int (*key_del)(void *), int (*val_del)(void *));
 
 #endif

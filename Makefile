@@ -13,7 +13,7 @@
 NAME=libft.a
 SRCS=\
     ft_lstnew.c        ft_queue_new.c   ft_strmapi.c     ft_strhash.c          \
-    ft_lstreverse.c    ft_stack_del.c   ft_strncat.c     ft_pairnew.c          \
+    ft_lstreverse.c    ft_stack_del.c   ft_strncat.c                           \
     ft_atoi.c          ft_memalloc.c    ft_stack_new.c   ft_strncmp.c          \
     ft_bzero.c         ft_memccpy.c     ft_stack_pop.c   ft_strncpy.c          \
     ft_count_till.c    ft_memchr.c      ft_stack_push.c  ft_strnequ.c          \
@@ -30,10 +30,11 @@ SRCS=\
     ft_lstdel.c        ft_putnbr_fd.c   ft_strjoin.c     ft_lstfind.c          \
     ft_lstdelone.c     ft_putstr.c      ft_strlcat.c     ft_htnew.c            \
     ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c                            \
-    ft_lstmap.c        ft_queue_del.c   ft_strmap.c
+    ft_lstmap.c        ft_queue_del.c   ft_strmap.c                            \
+    ft_htdel.c         ft_htget.c       ft_htset.c
 OBJECT_FILES=\
     ft_lstnew.o        ft_queue_new.o   ft_strmapi.o     ft_strhash.o          \
-    ft_lstreverse.o    ft_stack_del.o   ft_strncat.o     ft_pairnew.o          \
+    ft_lstreverse.o    ft_stack_del.o   ft_strncat.o                           \
     ft_atoi.o          ft_memalloc.o    ft_stack_new.o   ft_strncmp.o          \
     ft_bzero.o         ft_memccpy.o     ft_stack_pop.o   ft_strncpy.o          \
     ft_count_till.o    ft_memchr.o      ft_stack_push.o  ft_strnequ.o          \
@@ -50,7 +51,8 @@ OBJECT_FILES=\
     ft_lstdel.o        ft_putnbr_fd.o   ft_strjoin.o     ft_lstfind.o          \
     ft_lstdelone.o     ft_putstr.o      ft_strlcat.o     ft_htnew.o            \
     ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o                            \
-    ft_lstmap.o        ft_queue_del.o   ft_strmap.o
+    ft_lstmap.o        ft_queue_del.o   ft_strmap.o                            \
+    ft_htdel.o         ft_htget.o       ft_htset.o
 GCC_FLAGS=-Wall -Wextra -Werror
 all : $(NAME)
 
