@@ -31,7 +31,8 @@ SRCS=\
     ft_lstdelone.c     ft_putstr.c      ft_strlcat.c     ft_htnew.c            \
     ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c                            \
     ft_lstmap.c        ft_queue_del.c   ft_strmap.c                            \
-    ft_htdel.c         ft_htget.c       ft_htset.c
+    ft_htdel.c         ft_htget.c       ft_htset.c                             \
+    ft_tap_ok.c        ft_tap_is.c      ft_tap_ismem.c
 OBJECT_FILES=\
     ft_lstnew.o        ft_queue_new.o   ft_strmapi.o     ft_strhash.o          \
     ft_lstreverse.o    ft_stack_del.o   ft_strncat.o                           \
@@ -52,7 +53,8 @@ OBJECT_FILES=\
     ft_lstdelone.o     ft_putstr.o      ft_strlcat.o     ft_htnew.o            \
     ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o                            \
     ft_lstmap.o        ft_queue_del.o   ft_strmap.o                            \
-    ft_htdel.o         ft_htget.o       ft_htset.o
+    ft_htdel.o         ft_htget.o       ft_htset.o                             \
+    ft_tap_ok.o        ft_tap_is.o      ft_tap_ismem.o
 GCC_FLAGS=-Wall -Wextra -Werror
 all : $(NAME)
 
