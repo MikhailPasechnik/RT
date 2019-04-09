@@ -479,6 +479,34 @@ void	test_ft_queue_del(void)
     is(c, "!!!!.");
 #endif
 }
+void	test_ft_print_bits_fd(void)
+{
+#if defined(FT_PRINT_BITS_FD) || defined(FT_ALL) || defined(FT_EXTRA)
+	int n = 2147483647;
+	ft_print_bits_fd(sizeof(n), &n, 1);
+	ft_putchar('\n');
+#endif
+}
+void	test_ft_htnew(void)
+{
+#if defined(FT_HTNEW) || defined(FT_ALL) || defined(FT_EXTRA2)
+#endif
+}
+void	test_ft_htset(void)
+{
+#if defined(FT_HTSET) || defined(FT_ALL) || defined(FT_EXTRA2)
+#endif
+}
+void	test_ft_htget(void)
+{
+#if defined(FT_HTGET) || defined(FT_ALL) || defined(FT_EXTRA2)
+#endif
+}
+void	test_ft_htdel(void)
+{
+#if defined(FT_HTDEL) || defined(FT_ALL) || defined(FT_EXTRA2)
+#endif
+}
 int		main()
 {
     test_ft_memset();
@@ -550,5 +578,6 @@ int		main()
     test_ft_dequeue();
     test_ft_enqueue();
     test_ft_queue_del();
+	test_ft_print_bits_fd();
 	return (0);
 }

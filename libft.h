@@ -72,6 +72,7 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
+void			ft_print_bits_fd(size_t size, void *ptr, int fd);
 size_t          ft_power(size_t nb, int power);
 size_t          ft_strhash(const char *s, size_t size);
 typedef struct	s_list
@@ -122,11 +123,13 @@ typedef struct  s_htable
 t_htable        *ft_htnew(size_t size,
         int (*key_cmp)(void *, void *),
         int (*key_del)(void *), int (*val_del)(void *));
-
-void	ft_tap_ok(const char *file, int line, int a, const char *name, ...);
-void	ft_tap_is(const char *file, int line,
+int             ft_htset(t_htable *ht, void *key, void *value);
+void            *ft_htget(t_htable *ht, void *key);
+void	        ft_htdel(t_htable **ht);
+void			ft_tap_ok(const char *file, int line, int a, const char *name, ...);
+void			ft_tap_is(const char *file, int line,
 			const char *a, const char *b, const char *name, ...);
-void	ft_tap_ismem(const char *file, int line, const char *a, const char *b,
+void			ft_tap_ismem(const char *file, int line, const char *a, const char *b,
 			size_t n, const char *name, ...);
 #define is(...)(ft_tap_is(__FILE__, __LINE__, __VA_ARGS__, NULL))
 #define ok(...)(ft_tap_ok(__FILE__, __LINE__, __VA_ARGS__, NULL))

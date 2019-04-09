@@ -29,7 +29,7 @@ SRCS=\
     ft_lstadd.c        ft_putnbr.c      ft_striteri.c    ft_power.c            \
     ft_lstdel.c        ft_putnbr_fd.c   ft_strjoin.c     ft_lstfind.c          \
     ft_lstdelone.c     ft_putstr.c      ft_strlcat.c     ft_htnew.c            \
-    ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c                            \
+    ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c      ft_print_bits_fd.c    \
     ft_lstmap.c        ft_queue_del.c   ft_strmap.c                            \
     ft_htdel.c         ft_htget.c       ft_htset.c                             \
     ft_tap_ok.c        ft_tap_is.c      ft_tap_ismem.c
@@ -51,7 +51,7 @@ OBJECT_FILES=\
     ft_lstadd.o        ft_putnbr.o      ft_striteri.o    ft_power.o            \
     ft_lstdel.o        ft_putnbr_fd.o   ft_strjoin.o     ft_lstfind.o          \
     ft_lstdelone.o     ft_putstr.o      ft_strlcat.o     ft_htnew.o            \
-    ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o                            \
+    ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o      ft_print_bits_fd.o    \
     ft_lstmap.o        ft_queue_del.o   ft_strmap.o                            \
     ft_htdel.o         ft_htget.o       ft_htset.o                             \
     ft_tap_ok.o        ft_tap_is.o      ft_tap_ismem.o
