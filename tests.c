@@ -266,23 +266,23 @@ void	test_ft_itoa(void)
 void	test_ft_itoa_base(void)
 {
 #if defined(FT_ITOA_BASE) || defined(FT_ALL) || defined(FT_EXTRA)
-    char d[5] = "....";
+    char d[5] = "abcd";
     char c[1] = "!";
     char *p = NULL;
-    is(ft_itoa_base(d, 128, 10), "128");
-    is(ft_itoa_base(d, 11, 10), "11");
-    is(ft_itoa_base(d, 1, 10), "1");
-    is(ft_itoa_base(d, 0, 10), "0");
-    is(ft_itoa_base(d, -1, 10), "-1");
-    is(ft_itoa_base(d, -12, 10), "-12");
+    is(ft_itoa_base_ext(d, 128, 10, 1), "128");
+    is(ft_itoa_base_ext(d, 11, 10, 1), "11");
+    is(ft_itoa_base_ext(d, 1, 10, 1), "1");
+    is(ft_itoa_base_ext(d, 0, 10, 1), "0");
+    is(ft_itoa_base_ext(d, -1, 10, 1), "-1");
+    is(ft_itoa_base_ext(d, -12, 10, 1), "-12");
 
-    is(ft_itoa_base(d, 1, 2), "1");
-    is(ft_itoa_base(d, 0, 2), "0");
+    is(ft_itoa_base_ext(d, 1, 2, 1), "1");
+    is(ft_itoa_base_ext(d, 0, 2, 1), "0");
 
-    is(ft_itoa_base(d, 4096, 16), "1000");
-    is(ft_itoa_base(d, 128, 16), "80");
-    is(ft_itoa_base(d, 10, 16), "A");
-    is(ft_itoa_base(p, 4096, 16), "1000");
+    is(ft_itoa_base_ext(d, 4096, 16, 1), "1000");
+    is(ft_itoa_base_ext(d, 128, 16, 1), "80");
+    is(ft_itoa_base_ext(d, 10, 16, 1), "A");
+    is((p = ft_itoa_base(4096, 16)), "1000");
     ok(c[0] == '!');
     free(p);
 #endif

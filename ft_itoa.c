@@ -1,6 +1,6 @@
 #include "libft.h"
 
-char			*ft_itoa(int n)
+char    *ft_itoa(int n)
 {
-    return ft_itoa_base(NULL, n, 10);
+    return ft_itoa_base(n, 10);
 }

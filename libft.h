@@ -46,6 +46,8 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_iswhitespace(int c);
+char            *ft_strlowcase(char *str);
+char            *ft_strcapitalize(char *str);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -62,7 +64,8 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
 char			*ft_itoa(int n);
-char            *ft_itoa_base(char *dest, int n, int base);
+char            *ft_itoa_base(int n, int base);
+char            *ft_itoa_base_ext(char *dest, int n, int base, int sign);
 size_t			ft_count_till(const char *str, int dir, size_t start,
 								int (*f)(int), int cmp);
 void			ft_putchar(char c);
@@ -135,5 +138,7 @@ void			ft_tap_ismem(const char *file, int line, const char *a, const char *b,
 #define is(...)(ft_tap_is(__FILE__, __LINE__, __VA_ARGS__, NULL))
 #define ok(...)(ft_tap_ok(__FILE__, __LINE__, __VA_ARGS__, NULL))
 #define ismem(...)(ft_tap_ismem(__FILE__, __LINE__, __VA_ARGS__, NULL))
+#define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
+#define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
 
 #endif
