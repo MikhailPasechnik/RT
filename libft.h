@@ -120,13 +120,14 @@ typedef struct  s_htable
 {
     size_t              size;
     t_htentry           **bins;
-    int                 (*key_cmp)(void *, void *);
-    int                 (*key_del)(void *);
-    int                 (*val_del)(void *);
+    int                 (*func_key_cmp)(void *, void *);
+    int                 (*func_key_del)(void *);
+    size_t              (*func_key_hash)(void *, size_t);
+    int                 (*func_val_del)(void *);
 }               t_htable;
 t_htable        *ft_htnew(size_t size,
-        int (*key_cmp)(void *, void *),
-        int (*key_del)(void *), int (*val_del)(void *));
+		  int (*func_key_cmp)(void *, void *), int (*func_key_del)(void *),
+		  int (*func_val_del)(void *), size_t  (*func_key_hash)(void *, size_t));
 int             ft_htset(t_htable *ht, void *key, void *value);
 void            *ft_htget(t_htable *ht, void *key);
 void	        ft_htdel(t_htable **ht);

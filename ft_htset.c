@@ -5,7 +5,7 @@ int             ft_htset(t_htable *ht, void *key, void *value)
     size_t      hash;
     t_htentry   *entry;
 
-    hash = ft_strhash(key, ht->size);
+    hash = ht->func_key_hash(key, ht->size);
     entry = ht->bins[hash];
     while (entry)
     {

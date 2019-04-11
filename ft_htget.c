@@ -5,10 +5,10 @@ void            *ft_htget(t_htable *ht, void *key) {
 
     if (ht && key)
     {
-        entry = ht->bins[ft_strhash(key, ht->size)];
+        entry = ht->bins[ht->func_key_hash(key, ht->size)];
         while (entry)
         {
-            if (ht->key_cmp(entry->key, key) == 0)
+            if (ht->func_key_cmp(entry->key, key) == 0)
                 return (entry->value);
             entry = entry->next;
         }
