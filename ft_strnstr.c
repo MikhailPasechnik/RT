@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 17:08:22 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/06 17:15:33 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/13 13:17:00 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	const char	*start;
 	size_t		j;
-	size_t      i;
+	size_t		i;
 
 	i = 0;
 	while (*haystack && i < len)

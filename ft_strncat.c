@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 21:49:15 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/06 16:50:30 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/13 13:16:15 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 char	*ft_strncat(char *dest, const char *src, size_t n)
 {
-	char    *result;
+	char	*result;
 
-    result = dest;
-    while (*dest)
-        dest++;
-    while (n--)
-    {
+	result = dest;
+	while (*dest)
+		dest++;
+	while (n--)
+	{
 		if (!(*dest++ = *src++))
-		    return (result);
+			return (result);
 	}
 	*dest = '\0';
 	return (result);

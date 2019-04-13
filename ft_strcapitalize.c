@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcapitalize.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 21:48:14 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/03/05 22:09:21 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/13 13:11:25 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*ft_strcapitalize(char *str)
 			}
 		}
 		else if ((FT_ISLOWER(str[i - 1])) ||
-                 (FT_ISUPPER(str[i - 1])) ||
-                 (ft_isdigit(str[i - 1])))
+				(FT_ISUPPER(str[i - 1])) ||
+				(ft_isdigit(str[i - 1])))
 		{
 			str[i] = str[i] + (32 * FT_ISUPPER(str[i]));
 		}
