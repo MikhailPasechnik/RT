@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:17:05 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:45:04 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/13 14:15:13 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ size_t			ft_strlcat(char *dest, const char *src, size_t size);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strstr(const char *haystack, const char *needle);
-char			*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char			*ft_strnstr(const char *haystack, const char *needle,
+						size_t len);
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_atoi(const char *nptr);
@@ -46,8 +47,8 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_iswhitespace(int c);
-char            *ft_strlowcase(char *str);
-char            *ft_strcapitalize(char *str);
+char			*ft_strlowcase(char *str);
+char			*ft_strcapitalize(char *str);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -64,8 +65,8 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
 char			*ft_itoa(int n);
-char            *ft_itoa_base(int n, int base);
-char            *ft_itoa_base_ext(char *dest, int n, int base, int sign);
+char			*ft_itoa_base(int n, int base);
+char			*ft_itoa_base_ext(char *dest, int n, int base, int sign);
 size_t			ft_count_till(const char *str, int dir, size_t start,
 					int (*cmp)(int));
 void			ft_putchar(char c);
@@ -77,8 +78,8 @@ void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_print_bits_fd(size_t size, void *ptr, int fd);
-size_t          ft_power(size_t nb, int power);
-size_t          ft_strhash(const char *s, size_t size);
+size_t			ft_power(size_t nb, int power);
+size_t			ft_strhash(const char *s, size_t size);
 typedef struct	s_list
 {
 	void			*content;
@@ -92,8 +93,8 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstreverse(t_list **alst);
-t_list          *ft_lstfind(struct s_list *lst, const void *ref,
-        int (*cmp)(const void *, const void *));
+t_list			*ft_lstfind(struct s_list *lst, const void *ref,
+	int (*cmp)(const void *, const void *));
 typedef struct	s_stack
 {
 	t_list		*top;
@@ -110,29 +111,29 @@ t_queue			*ft_queue_new(void);
 t_list			*ft_dequeue(t_queue *queue);
 void			ft_enqueue(t_queue *queue, t_list *item);
 void			ft_queue_del(t_queue **queue, void (*del)(void *, size_t));
-typedef struct  s_htentry
+typedef struct	s_htentry
 {
-    void                *key;
-    void                *value;
-    struct s_htentry    *next;
-}               t_htentry;
-typedef struct  s_htable
+	void				*key;
+	void				*value;
+	struct s_htentry	*next;
+}				t_htentry;
+typedef struct	s_htable
 {
-    size_t              size;
-    t_htentry           **bins;
-    int                 (*func_key_cmp)(void *, void *);
-    size_t              (*func_key_hash)(void *, size_t);
+	size_t				size;
+	t_htentry			**bins;
+	int					(*func_key_cmp)(void *, void *);
+	size_t				(*func_key_hash)(void *, size_t);
 	void				(*func_key_value_del)(void *, void *);
-}               t_htable;
-t_htable        *ft_htnew(size_t size,
-		  int (*func_key_cmp)(void *, void *), 
-		  size_t (*func_key_hash)(void *, size_t),
-		  void (*func_key_value_del)(void *, void *));
-int             ft_htset(t_htable *ht, void *key, void *value);
-void            *ft_htget(t_htable *ht, void *key);
-void	ft_htdel(t_htable **ht);
+}				t_htable;
+t_htable		*ft_htnew(size_t size,
+	int (*func_key_cmp)(void *, void *),
+	size_t (*func_key_hash)(void *, size_t),
+	void (*func_key_value_del)(void *, void *));
+int				ft_htset(t_htable *ht, void *key, void *value);
+void			*ft_htget(t_htable *ht, void *key);
+void			ft_htdel(t_htable **ht);
 
-#define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
-#define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
+# define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
+# define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
 
 #endif
