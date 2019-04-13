@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:17:05 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/06 17:08:00 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/13 13:45:04 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char			*ft_itoa(int n);
 char            *ft_itoa_base(int n, int base);
 char            *ft_itoa_base_ext(char *dest, int n, int base, int sign);
 size_t			ft_count_till(const char *str, int dir, size_t start,
-								int (*f)(int), int cmp);
+					int (*cmp)(int));
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -121,24 +121,17 @@ typedef struct  s_htable
     size_t              size;
     t_htentry           **bins;
     int                 (*func_key_cmp)(void *, void *);
-    int                 (*func_key_del)(void *);
     size_t              (*func_key_hash)(void *, size_t);
-    int                 (*func_val_del)(void *);
+	void				(*func_key_value_del)(void *, void *);
 }               t_htable;
 t_htable        *ft_htnew(size_t size,
-		  int (*func_key_cmp)(void *, void *), int (*func_key_del)(void *),
-		  int (*func_val_del)(void *), size_t  (*func_key_hash)(void *, size_t));
+		  int (*func_key_cmp)(void *, void *), 
+		  size_t (*func_key_hash)(void *, size_t),
+		  void (*func_key_value_del)(void *, void *));
 int             ft_htset(t_htable *ht, void *key, void *value);
 void            *ft_htget(t_htable *ht, void *key);
-void	        ft_htdel(t_htable **ht);
-void			ft_tap_ok(const char *file, int line, int a, const char *name, ...);
-void			ft_tap_is(const char *file, int line,
-			const char *a, const char *b, const char *name, ...);
-void			ft_tap_ismem(const char *file, int line, const char *a, const char *b,
-			size_t n, const char *name, ...);
-#define is(...)(ft_tap_is(__FILE__, __LINE__, __VA_ARGS__, NULL))
-#define ok(...)(ft_tap_ok(__FILE__, __LINE__, __VA_ARGS__, NULL))
-#define ismem(...)(ft_tap_ismem(__FILE__, __LINE__, __VA_ARGS__, NULL))
+void	ft_htdel(t_htable **ht);
+
 #define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
 #define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
 
