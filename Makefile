@@ -11,53 +11,34 @@
 # **************************************************************************** #
 
 NAME=libft.a
-SRCS=\
-	ft_lstnew.c        ft_queue_new.c   ft_strmapi.c     ft_strhash.c          \
-	ft_lstreverse.c    ft_stack_del.c   ft_strncat.c                           \
-	ft_atoi.c          ft_memalloc.c    ft_stack_new.c   ft_strncmp.c          \
-	ft_bzero.c         ft_memccpy.c     ft_stack_pop.c   ft_strncpy.c          \
-	ft_count_till.c    ft_memchr.c      ft_stack_push.c  ft_strnequ.c          \
-	ft_dequeue.c       ft_memcmp.c      ft_strcat.c      ft_strnew.c           \
-	ft_enqueue.c       ft_memcpy.c      ft_strchr.c      ft_strnstr.c          \
-	ft_isalnum.c       ft_memdel.c      ft_strclr.c      ft_strrchr.c          \
-	ft_isalpha.c       ft_memmove.c     ft_strcmp.c      ft_strsplit.c         \
-	ft_isascii.c       ft_memset.c      ft_strcpy.c      ft_strstr.c           \
-	ft_isdigit.c       ft_putchar.c     ft_strdel.c      ft_strsub.c           \
-	ft_isprint.c       ft_putchar_fd.c  ft_strdup.c      ft_strtrim.c          \
-	ft_iswhitespace.c  ft_putendl.c     ft_strequ.c      ft_tolower.c          \
-	ft_itoa.c          ft_putendl_fd.c  ft_striter.c     ft_toupper.c          \
-	ft_lstadd.c        ft_putnbr.c      ft_striteri.c    ft_power.c            \
-	ft_lstdel.c        ft_putnbr_fd.c   ft_strjoin.c     ft_lstfind.c          \
-	ft_lstdelone.c     ft_putstr.c      ft_strlcat.c     ft_htnew.c            \
-	ft_lstiter.c       ft_putstr_fd.c   ft_strlen.c      ft_itoa_base.c        \
-	ft_lstmap.c        ft_queue_del.c   ft_strmap.c      ft_print_bits_fd.c    \
-	ft_htdel.c         ft_htget.c       ft_htset.c       ft_itoa_base_ext.c    \
-														 ft_strlowcase.c       \
-	ft_strcapitalize.c
-OBJECT_FILES=\
-	ft_lstnew.o        ft_queue_new.o   ft_strmapi.o     ft_strhash.o          \
-	ft_lstreverse.o    ft_stack_del.o   ft_strncat.o                           \
-	ft_atoi.o          ft_memalloc.o    ft_stack_new.o   ft_strncmp.o          \
-	ft_bzero.o         ft_memccpy.o     ft_stack_pop.o   ft_strncpy.o          \
-	ft_count_till.o    ft_memchr.o      ft_stack_push.o  ft_strnequ.o          \
-	ft_dequeue.o       ft_memcmp.o      ft_strcat.o      ft_strnew.o           \
-	ft_enqueue.o       ft_memcpy.o      ft_strchr.o      ft_strnstr.o          \
-	ft_isalnum.o       ft_memdel.o      ft_strclr.o      ft_strrchr.o          \
-	ft_isalpha.o       ft_memmove.o     ft_strcmp.o      ft_strsplit.o         \
-	ft_isascii.o       ft_memset.o      ft_strcpy.o      ft_strstr.o           \
-	ft_isdigit.o       ft_putchar.o     ft_strdel.o      ft_strsub.o           \
-	ft_isprint.o       ft_putchar_fd.o  ft_strdup.o      ft_strtrim.o          \
-	ft_iswhitespace.o  ft_putendl.o     ft_strequ.o      ft_tolower.o          \
-	ft_itoa.o          ft_putendl_fd.o  ft_striter.o     ft_toupper.o          \
-	ft_lstadd.o        ft_putnbr.o      ft_striteri.o    ft_power.o            \
-	ft_lstdel.o        ft_putnbr_fd.o   ft_strjoin.o     ft_lstfind.o          \
-	ft_lstdelone.o     ft_putstr.o      ft_strlcat.o     ft_htnew.o            \
-	ft_lstiter.o       ft_putstr_fd.o   ft_strlen.o      ft_itoa_base.o        \
-	ft_lstmap.o        ft_queue_del.o   ft_strmap.o      ft_print_bits_fd.o    \
-	ft_htdel.o         ft_htget.o       ft_htset.o       ft_itoa_base_ext.o    \
-														 ft_strlowcase.o       \
-	ft_strcapitalize.o
+FUNS=\
+	ft_lstnew         ft_queue_new    ft_strmapi      ft_strhash           \
+	ft_lstreverse     ft_stack_del    ft_strncat                           \
+	ft_atoi           ft_memalloc     ft_stack_new    ft_strncmp           \
+	ft_bzero          ft_memccpy      ft_stack_pop    ft_strncpy           \
+	ft_count_till     ft_memchr       ft_stack_push   ft_strnequ           \
+	ft_dequeue        ft_memcmp       ft_strcat       ft_strnew            \
+	ft_enqueue        ft_memcpy       ft_strchr       ft_strnstr           \
+	ft_isalnum        ft_memdel       ft_strclr       ft_strrchr           \
+	ft_isalpha        ft_memmove      ft_strcmp       ft_strsplit          \
+	ft_isascii        ft_memset       ft_strcpy       ft_strstr            \
+	ft_isdigit        ft_putchar      ft_strdel       ft_strsub            \
+	ft_isprint        ft_putchar_fd   ft_strdup       ft_strtrim           \
+	ft_iswhitespace   ft_putendl      ft_strequ       ft_tolower           \
+	ft_itoa           ft_putendl_fd   ft_striter      ft_toupper           \
+	ft_lstadd         ft_putnbr       ft_striteri     ft_power             \
+	ft_lstdel         ft_putnbr_fd    ft_strjoin      ft_lstfind           \
+	ft_lstdelone      ft_putstr       ft_strlcat      ft_htnew             \
+	ft_lstiter        ft_putstr_fd    ft_strlen       ft_itoa_base         \
+	ft_lstmap         ft_queue_del    ft_strmap       ft_print_bits_fd     \
+	ft_htdel          ft_htget        ft_htset        ft_itoa_base_ext     \
+	ft_strlowcase	  ft_tap_is		  ft_tap_ok		  ft_tap_ismem         \
+	ft_strcapitalize
+
+SRCS=$(addsuffix .c,$(FUNS))
+OBJECT_FILES=$(addsuffix .o,$(FUNS))
 GCC_FLAGS=-Wall -Wextra -Werror
+
 all : $(NAME)
 
 $(NAME) :
@@ -66,14 +47,21 @@ $(NAME) :
 	@ranlib $(NAME)
 
 clean :
-	@/bin/rm -f $(OBJECT_FILES) tests
+	@/bin/rm -f $(OBJECT_FILES)
 
 fclean : clean
-	@/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME) $(addprefix tests/test_,$(FUNS))
 
 re : fclean all
 
-test : all
-	@gcc  $(GCC_FLAGS) -L. tests.c -lft -D$(name) -o tests
-	$(info ************ Test $(name) .. **********)
-	./tests
+test-all:
+	@for s in $(FUNS) ; do \
+		if [ -f tests/test_$$s.c ]; then \
+			$(MAKE) test fun=$$s --no-print-directory;\
+        fi; \
+	done
+
+test: all
+	@gcc  $(GCC_FLAGS) -L. tests/test_$(fun).c -lft -o tests/test_$(fun);
+	$(info ************ $(fun))
+	@tests/test_$(fun)

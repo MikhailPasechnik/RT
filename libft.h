@@ -132,7 +132,22 @@ t_htable		*ft_htnew(size_t size,
 int				ft_htset(t_htable *ht, void *key, void *value);
 void			*ft_htget(t_htable *ht, void *key);
 void			ft_htdel(t_htable **ht);
+typedef struct	s_tap_fl
+{
+	const char	*file;
+	int			line;
+}				t_tap_fl;
 
+void			ft_tap_ok(t_tap_fl fl, int a);
+void			ft_tap_is(t_tap_fl fl, const char *a, const char *b);
+void			ft_tap_ismem(t_tap_fl fl, const char *a, const char *b,
+		size_t n);
+# define FT_TAP_IS(...)\
+	(ft_tap_is((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
+# define FT_TAP_OK(...)\
+	(ft_tap_ok((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
+# define FT_TAP_ISMEM(...)\
+	(ft_tap_ismem((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
 # define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
 # define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
 

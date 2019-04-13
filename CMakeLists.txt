@@ -5,6 +5,6 @@ project(libft C)
 set(GCC_COVERAGE_COMPILE_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS} -Wall -Wextra -Werror")
 
 
-file(GLOB SRC ft_*.c)
-add_executable(libft tests.c ${SRC})
+file(GLOB SRC ft_*.c tests/test_ft_*.c)
+add_executable(libft ${SRC})
 target_compile_definitions(libft PRIVATE FT_ALL)
