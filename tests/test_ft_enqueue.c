@@ -23,11 +23,11 @@ int		main(void)
 	ft_enqueue(&q, &l2);
 	ft_enqueue(&q, &l3);
 	ft_enqueue(&q, &l4);
-	IS(ft_dequeue(&q)->content, "1");
-	IS(ft_dequeue(&q)->content, "2");
-	IS(ft_dequeue(&q)->content, "3");
-	IS(ft_dequeue(&q)->content, "4");
-	OK(q.front == NULL);
-	OK(q.rear == NULL);
+	FT_IS(ft_dequeue(&q)->content, "1");
+	FT_IS(ft_dequeue(&q)->content, "2");
+	FT_IS(ft_dequeue(&q)->content, "3");
+	FT_IS(ft_dequeue(&q)->content, "4");
+	FT_OK(q.front == NULL);
+	FT_OK(q.rear == NULL);
 	return (0);
 }

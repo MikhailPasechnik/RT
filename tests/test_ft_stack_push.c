@@ -23,7 +23,7 @@ int		main(void)
 	ft_stack_push(&s, &l2);
 	ft_stack_push(&s, &l3);
 	ft_stack_push(&s, &l4);
-	IS(s.top->content, "4");
-	IS(s.top->next->content, "3");
+	FT_IS(s.top->content, "4");
+	FT_IS(s.top->next->content, "3");
 	return (0);
 }

@@ -14,5 +14,16 @@
 
 int		main(void)
 {
+	char	**r;
+
+	r = ft_strsplit("   a   b   c   ", ' ');
+	FT_IS(r[0], "a");
+	FT_IS(r[1], "b");
+	FT_IS(r[2], "c");
+	FT_OK(r[3] == NULL);
+	free(r[0]);
+	free(r[1]);
+	free(r[2]);
+	free(r);
 	return (0);
 }

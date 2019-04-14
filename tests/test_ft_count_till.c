@@ -19,11 +19,11 @@ static int	cmp(int c)
 
 int			main(void)
 {
-	CMP(ft_count_till("\n\n\na", 1, 0, cmp) , 3, "==");
-	CMP(ft_count_till("a\n\n\n", -1, 3, cmp) , 3, "==");
-	CMP(ft_count_till("a", 1, 0, cmp) , 0, "==");
-	CMP(ft_count_till("a", -1, 1, cmp) , 0, "==");
-	CMP(ft_count_till("", 1, 0, cmp) , 0, "==");
-	CMP(ft_count_till("", -1, 0, cmp) , 0, "==");
+	FT_CMP(ft_count_till("\n\n\na", 1, 0, cmp) , 3, "==");
+	FT_CMP(ft_count_till("a\n\n\n", -1, 3, cmp) , 3, "==");
+	FT_CMP(ft_count_till("a", 1, 0, cmp) , 0, "==");
+	FT_CMP(ft_count_till("a", -1, 1, cmp) , 0, "==");
+	FT_CMP(ft_count_till("", 1, 0, cmp) , 0, "==");
+	FT_CMP(ft_count_till("", -1, 0, cmp) , 0, "==");
 	return (0);
 }

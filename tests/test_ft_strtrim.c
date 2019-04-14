@@ -17,23 +17,23 @@ int		main(void)
 	char	*a;
 
 	a = ft_strtrim(" a ");
-	IS(a, "a");
+	FT_IS(a, "a");
 	ft_strdel(&a);
 	a = ft_strtrim(" \n\ta \n\t");
-	IS(a, "a");
+	FT_IS(a, "a");
 	ft_strdel(&a);
 	a = ft_strtrim(" \n\ta b\n\t");
-	IS(a, "a b");
+	FT_IS(a, "a b");
 	ft_strdel(&a);
 	a = ft_strtrim(" \n\ta \n\tb\n\t");
-	IS(a, "a \n\tb");
+	FT_IS(a, "a \n\tb");
 	ft_strdel(&a);
 	a = ft_strtrim(" \n\t");
-	IS(a, "");
+	FT_IS(a, "");
 	ft_strdel(&a);
 	a = ft_strtrim("");
-	IS(a, "");
+	FT_IS(a, "");
 	ft_strdel(&a);
-	OK(ft_strtrim(NULL) == NULL);
+	FT_OK(ft_strtrim(NULL) == NULL);
 	return (0);
 }

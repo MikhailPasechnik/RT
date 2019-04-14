@@ -16,9 +16,9 @@ int		main(void)
 {
 	char d0[5] = "....";
 	ft_memcpy(d0, "____", 5);
-	IS_MEM(d0, "____", 5);
+	FT_IS_MEM(d0, "____", 5);
 	char d1[1] = "";
 	ft_memcpy(d0, "____", 1);
-	IS_MEM(d1, "", 1);
+	FT_IS_MEM(d1, "", 1);
 	return (0);
 }

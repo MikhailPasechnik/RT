@@ -16,6 +16,6 @@ int		main(void)
 {
 	char s0[5] = "....";
 	ft_bzero(s0, 5);
-	IS_MEM(s0, "\0\0\0\0\0", 5);
+	FT_IS_MEM(s0, "\0\0\0\0\0", 5);
 	return (0);
 }

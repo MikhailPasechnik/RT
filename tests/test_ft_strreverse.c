@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_ft_queue_del.c                                :+:      :+:    :+:   */
+/*   test_ft_atoi.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,19 @@
 
 #include "../libft.h"
 
-static void    	queue_del(void *c, size_t s)
+int		main(void)
 {
-	memset(c, '!', s);
-	(void)c;
-	(void)s;
-}
+	char *a;
 
-int				main(void)
-{
-	t_queue *q;
-	q = malloc(sizeof(*q));
-	t_list  *l;
-	l = malloc(sizeof(*l));
-	char c[] = ".....";
-	*l = (t_list){c, 4, NULL};
-	q->rear = l;
-	q->front = l;
-	ft_queue_del(&q, queue_del);
-	FT_OK(q == NULL);
-	FT_IS(c, "!!!!.");
+	a = ft_strcpy((a = ft_strnew(5)), "12345");
+	ft_strreverse(&a);
+	FT_IS(a, "54321");
+	ft_strreverse(NULL);
+	a[2] = '\0';
+	ft_strreverse(&a);
+	FT_IS(a, "45");
+	a[0] = '\0';
+	FT_IS(a, "");
+	free(a);
 	return (0);
 }

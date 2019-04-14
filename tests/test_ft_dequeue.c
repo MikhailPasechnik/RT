@@ -18,12 +18,12 @@ int		main(void)
 	t_list  l1 = {"1", 1, &l2};
 	t_queue q = {&l1, &l2};
 	t_list  dq = *ft_dequeue(&q);
-	IS(dq.content, "1");
-	IS(q.rear->content, "2");
-	IS(q.front->content, "2");
+	FT_IS(dq.content, "1");
+	FT_IS(q.rear->content, "2");
+	FT_IS(q.front->content, "2");
 	dq = *ft_dequeue(&q);
-	IS(dq.content, "2");
-	OK(q.rear == NULL);
-	OK(q.front == NULL);
+	FT_IS(dq.content, "2");
+	FT_OK(q.rear == NULL);
+	FT_OK(q.front == NULL);
 	return (0);
 }

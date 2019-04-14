@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_ft_queue_del.c                                :+:      :+:    :+:   */
+/*   test_ft_strsplit_word.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,18 @@
 
 #include "../libft.h"
 
-static void    	queue_del(void *c, size_t s)
+int		main(void)
 {
-	memset(c, '!', s);
-	(void)c;
-	(void)s;
-}
+	char	**r;
 
-int				main(void)
-{
-	t_queue *q;
-	q = malloc(sizeof(*q));
-	t_list  *l;
-	l = malloc(sizeof(*l));
-	char c[] = ".....";
-	*l = (t_list){c, 4, NULL};
-	q->rear = l;
-	q->front = l;
-	ft_queue_del(&q, queue_del);
-	FT_OK(q == NULL);
-	FT_IS(c, "!!!!.");
+	r = ft_strsplit_word("<1>ab<1>cde<1>c", "<1>");
+	FT_IS(r[0], "ab");
+	FT_IS(r[1], "cde");
+	FT_IS(r[2], "c");
+	FT_OK(r[3] == NULL);
+	free(r[0]);
+	free(r[1]);
+	free(r[2]);
+	free(r);
 	return (0);
 }

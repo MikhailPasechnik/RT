@@ -27,7 +27,7 @@ int				main(void)
 	*l = (t_list){c, 4, NULL};
 	s->top = l;
 	ft_stack_del(&s, stack_del);
-	OK(s == NULL);
-	IS(c, "!!!!.");
+	FT_OK(s == NULL);
+	FT_IS(c, "!!!!.");
 	return (0);
 }

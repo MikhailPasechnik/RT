@@ -20,8 +20,8 @@ int		main(void)
 	t_list a = {"a", 2, &b};
 	l = &a;
 	ft_lstreverse(&l);
-	IS(l->content, "c");
-	IS(l->next->content, "b");
-	IS(l->next->next->content, "a");
+	FT_IS(l->content, "c");
+	FT_IS(l->next->content, "b");
+	FT_IS(l->next->next->content, "a");
 	return (0);
 }

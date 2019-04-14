@@ -15,8 +15,8 @@
 int		main(void)
 {
 	t_queue *q = ft_queue_new();
-	OK(!q->front);
-	OK(!q->rear);
+	FT_OK(!q->front);
+	FT_OK(!q->rear);
 	free(q);
 	return (0);
 }

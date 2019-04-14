@@ -33,10 +33,10 @@ static t_list	*ft_map(t_list *elem)
 
 static void		ft_check_res(t_list *res)
 {
-	IS(res->content, ".");
-	IS(res->next->content, "..");
-	IS(res->next->next->content, "...");
-	IS(res->next->next->next->content, "....");
+	FT_IS(res->content, ".");
+	FT_IS(res->next->content, "..");
+	FT_IS(res->next->next->content, "...");
+	FT_IS(res->next->next->next->content, "....");
 }
 
 static void		ft_del_res(void *c, size_t len)
@@ -58,9 +58,9 @@ int				main(void)
 	b = (t_list){"2\0", 2, &c};
 	a = (t_list){"\0", 1, &b};
 	res = ft_lstmap(&a, NULL);
-	OK(res == NULL);
+	FT_OK(res == NULL);
 	res = ft_lstmap(NULL, ft_map);
-	OK(res == NULL);
+	FT_OK(res == NULL);
 	res = ft_lstmap(&a, ft_map);
 	ft_check_res(res);
 	ft_lstdel(&res, ft_del_res);

@@ -18,6 +18,6 @@ int		main(void)
 	char	*d;
 	d = a + 1;
 	ft_memmove(d, a, 4);
-	IS(d, "lore ipsum dolor sit amet");
+	FT_IS(d, "lore ipsum dolor sit amet");
 	return (0);
 }

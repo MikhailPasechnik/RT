@@ -64,11 +64,14 @@ char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
+char 			**ft_strsplit_any(char const *s, char *c);
+char 			**ft_strsplit_word(char const *s, char *w);
 char			*ft_itoa(int n);
 char			*ft_itoa_base(int n, int base);
 char			*ft_itoa_base_ext(char *dest, int n, int base, int sign);
 size_t			ft_count_till(const char *str, int dir, size_t start,
 					int (*cmp)(int));
+void			ft_strreverse(char **str);
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -143,13 +146,13 @@ void			ft_tap_is(t_tap_fl fl, const char *a, const char *b);
 void			ft_tap_ismem(t_tap_fl fl, const char *a, const char *b,
 		size_t n);
 void			ft_tap_cmp(t_tap_fl fl, int a, int b, char *cmp);
-# define IS(...)\
+# define FT_IS(...)\
 	(ft_tap_is((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
-# define OK(...)\
+# define FT_OK(...)\
 	(ft_tap_ok((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
-# define IS_MEM(...)\
+# define FT_IS_MEM(...)\
 	(ft_tap_ismem((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
-# define CMP(...)\
+# define FT_CMP(...)\
 	(ft_tap_cmp((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
 # define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
 # define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))

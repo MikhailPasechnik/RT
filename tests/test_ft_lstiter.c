@@ -22,10 +22,10 @@ static void		ft_iter(t_list *elem)
 
 static void		ft_check_res(t_list *res)
 {
-	IS(res->content, ".");
-	IS(res->next->content, "..");
-	IS(res->next->next->content, "...");
-	IS(res->next->next->next->content, "....");
+	FT_IS(res->content, ".");
+	FT_IS(res->next->content, "..");
+	FT_IS(res->next->next->content, "...");
+	FT_IS(res->next->next->next->content, "....");
 }
 
 static void		ft_iter_del(t_list *elem)

@@ -33,7 +33,7 @@ FUNS=\
 	ft_lstmap         ft_queue_del    ft_strmap       ft_print_bits_fd     \
 	ft_htdel          ft_htget        ft_htset        ft_itoa_base_ext     \
 	ft_strlowcase	  ft_tap_is		  ft_tap_ok		  ft_tap_ismem         \
-	ft_strcapitalize
+	ft_strcapitalize  ft_strreverse   ft_strsplit_any ft_strsplit_word
 
 SRCS=$(addsuffix .c,$(FUNS))
 OBJECT_FILES=$(addsuffix .o,$(FUNS))
