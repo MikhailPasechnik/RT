@@ -17,8 +17,8 @@ int		main(void)
 	t_list  l2 = {"2", 1, NULL};
 	t_list  l1 = {"1", 1, &l2};
 	t_stack s = {&l1};
-	FT_TAP_IS(ft_stack_pop(&s)->content, "1");
-	FT_TAP_IS(ft_stack_pop(&s)->content, "2");
-	FT_TAP_OK(!s.top);
+	IS(ft_stack_pop(&s)->content, "1");
+	IS(ft_stack_pop(&s)->content, "2");
+	OK(!s.top);
 	return (0);
 }

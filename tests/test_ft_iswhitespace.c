@@ -14,11 +14,11 @@
 
 int		main(void)
 {
-	FT_TAP_OK(ft_iswhitespace('\t'));
-	FT_TAP_OK(ft_iswhitespace(' '));
-	FT_TAP_OK(ft_iswhitespace('\n'));
-	FT_TAP_OK(!ft_iswhitespace('\0'));
-	FT_TAP_OK(!ft_iswhitespace('1'));
-	FT_TAP_OK(!ft_iswhitespace('a'));
+	OK(ft_iswhitespace('\t'));
+	OK(ft_iswhitespace(' '));
+	OK(ft_iswhitespace('\n'));
+	OK(!ft_iswhitespace('\0'));
+	OK(!ft_iswhitespace('1'));
+	OK(!ft_iswhitespace('a'));
 	return (0);
 }

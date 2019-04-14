@@ -30,7 +30,7 @@ int				main(void)
 	q->rear = l;
 	q->front = l;
 	ft_queue_del(&q, queue_del);
-	FT_TAP_OK(q == NULL);
-	FT_TAP_IS(c, "!!!!.");
+	OK(q == NULL);
+	IS(c, "!!!!.");
 	return (0);
 }

@@ -142,12 +142,15 @@ void			ft_tap_ok(t_tap_fl fl, int a);
 void			ft_tap_is(t_tap_fl fl, const char *a, const char *b);
 void			ft_tap_ismem(t_tap_fl fl, const char *a, const char *b,
 		size_t n);
-# define FT_TAP_IS(...)\
+void			ft_tap_cmp(t_tap_fl fl, int a, int b, char *cmp);
+# define IS(...)\
 	(ft_tap_is((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
-# define FT_TAP_OK(...)\
+# define OK(...)\
 	(ft_tap_ok((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
-# define FT_TAP_ISMEM(...)\
+# define IS_MEM(...)\
 	(ft_tap_ismem((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
+# define CMP(...)\
+	(ft_tap_cmp((t_tap_fl){__FILE__, __LINE__}, __VA_ARGS__))
 # define FT_ISLOWER(c)(((c) >= 'a' && (c) <= 'z'))
 # define FT_ISUPPER(c)(((c) >= 'A' && (c) <= 'Z'))
 

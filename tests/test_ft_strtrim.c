@@ -14,5 +14,10 @@
 
 int		main(void)
 {
+	char	*a;
+
+	a = ft_strtrim(" a ");
+	IS(a, "a");
+	ft_strdel(&a);
 	return (0);
 }

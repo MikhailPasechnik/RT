@@ -16,9 +16,9 @@ int		main(void)
 {
 	char s0[5] = "....";
 	char s1[5] = "....";
-	FT_TAP_IS(ft_memset(s0, 'z', 4), memset(s1, 'z', 4));
+	IS(ft_memset(s0, 'z', 4), memset(s1, 'z', 4));
 	char s2[2] = "1";
 	char s3[2] = "1";
-	FT_TAP_IS(ft_memset(s2, 'z', 1), memset(s3, 'z', 1));
+	IS(ft_memset(s2, 'z', 1), memset(s3, 'z', 1));
 	return (0);
 }

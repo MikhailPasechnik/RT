@@ -15,7 +15,7 @@
 int		main(void)
 {
 	t_stack *s = ft_stack_new();
-	FT_TAP_OK(!s->top);
+	OK(!s->top);
 	free(s);
 	return (0);
 }

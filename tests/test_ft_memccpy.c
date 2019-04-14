@@ -16,10 +16,10 @@ int		main(void)
 {
 	char d0[5] = "..!.";
 	ft_memccpy(d0, "__!_", '!', 5);
-	FT_TAP_IS(d0, "__!.");
+	IS(d0, "__!.");
 	ft_memccpy(d0, "__!_", '_', 5);
-	FT_TAP_IS(d0, "__!.");
+	IS(d0, "__!.");
 	ft_memccpy(d0, "\0__!", '!', 5);
-	FT_TAP_ISMEM(d0, "\0__!", 5);
+	IS_MEM(d0, "\0__!", 5);
 	return (0);
 }
