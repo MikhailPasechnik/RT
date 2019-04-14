@@ -39,8 +39,10 @@ static size_t	ft_word_count(const char *str, const char *dl)
 {
 	size_t	count;
 
+	if (!str || !dl)
+		return (0);
 	count = 0;
-	while (str && dl && *str != '\0')
+	while (*str != '\0')
 	{
 		str += ft_count(str, dl, 1, ft_any_match);
 		if (!*str)
