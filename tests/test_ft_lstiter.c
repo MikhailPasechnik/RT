@@ -12,7 +12,42 @@
 
 #include "../libft.h"
 
-int		main(void)
+static void		ft_iter(t_list *elem)
 {
+	char	*c;
+
+	c = ft_memset(ft_strnew(elem->content_size), '.', elem->content_size);
+	*elem = (t_list){(void *)c, elem->content_size, elem->next};
+}
+
+static void		ft_check_res(t_list *res)
+{
+	IS(res->content, ".");
+	IS(res->next->content, "..");
+	IS(res->next->next->content, "...");
+	IS(res->next->next->next->content, "....");
+}
+
+static void		ft_iter_del(t_list *elem)
+{
+	ft_strdel((char **)&elem->content);
+}
+
+int				main(void)
+{
+	t_list	d;
+	t_list	c;
+	t_list	b;
+	t_list	a;
+
+	d = (t_list){"444\0", 4, NULL};
+	c = (t_list){"33\0", 3, &d};
+	b = (t_list){"2\0", 2, &c};
+	a = (t_list){"\0", 1, &b};
+	ft_lstiter(&a, NULL);
+	ft_lstiter(NULL, ft_iter);
+	ft_lstiter(&a, ft_iter);
+	ft_check_res(&a);
+	ft_lstiter(&a, ft_iter_del);
 	return (0);
 }

@@ -20,7 +20,7 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 
 	head = NULL;
 	new = NULL;
-	while (lst)
+	while (f && lst)
 	{
 		if ((tmp = f(lst)) == NULL)
 			return (NULL);
@@ -28,8 +28,8 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 			new = tmp;
 		else
 		{
-			new = new->next;
 			new->next = tmp;
+			new = new->next;
 		}
 		if (!head)
 			head = new;

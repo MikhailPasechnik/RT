@@ -20,7 +20,8 @@ size_t	ft_count_till(const char *str, int dir, size_t start,
 	if (!(dir == 1 || dir == -1))
 		return (0);
 	count = 0;
-	while ((dir == 1 ? str[start] : start) && cmp(str[start]) == 0)
+	while ((dir == 1 ? (unsigned char)str[start] : start) &&
+		cmp(str[start]) == 0)
 	{
 		start += dir;
 		count++;

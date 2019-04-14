@@ -12,6 +12,11 @@
 
 #include "libft.h"
 
+static int		ft_iswhitespace_cmp(int c)
+{
+	return (!ft_iswhitespace(c));
+}
+
 char			*ft_strtrim(char const *s)
 {
 	size_t	len;
@@ -19,14 +24,16 @@ char			*ft_strtrim(char const *s)
 	size_t	end;
 	char	*new;
 
-	len = ft_strlen(s);
-	end = ft_count_till(s, -1, len - 1, ft_iswhitespace);
-	start = ft_count_till(s, 1, 0, ft_iswhitespace);
-	if (start >= end)
-		return (ft_strnew(0));
-	else if ((new = ft_strnew(end - start)) == NULL)
+	if (!s)
 		return (NULL);
-	ft_strncpy(new, &s[start], end - start);
-	new[end - start] = '\0';
+	len = ft_strlen(s);
+	end = ft_count_till(s, -1, len - 1, ft_iswhitespace_cmp);
+	start = ft_count_till(s, 1, 0, ft_iswhitespace_cmp);
+	if (start >= len - end)
+		return (ft_strnew(0));
+	else if ((new = ft_strnew(len - start - end)) == NULL)
+		return (NULL);
+	ft_strncpy(new, &s[start], len - start - end);
+	new[len - start - end] = '\0';
 	return (new);
 }
