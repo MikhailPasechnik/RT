@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_tap_ismem.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 09:58:04 by bnesoi            #+#    #+#             */
+/*   Updated: 2019/04/26 09:58:34 by bnesoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-void	ft_tap_ismem(t_tap_fl fl, const char *a, const char *b, size_t n)
+void	ft_tap_ismem(t_plc place, const char *a, const char *b, size_t n)
 {
 	size_t	i;
 
@@ -10,11 +22,11 @@ void	ft_tap_ismem(t_tap_fl fl, const char *a, const char *b, size_t n)
 		if (*a != *b)
 		{
 			ft_putstr("KO\n#   Failed test at ");
-			ft_putstr(fl.file);
+			ft_putstr(place.file);
 			ft_putstr(" line ");
-			ft_putnbr(fl.line);
+			ft_putnbr(place.line);
 			ft_putstr("\n#      diff at: a[");
-			ft_putnbr(i-1);
+			ft_putnbr(i - 1);
 			ft_putstr("]\n");
 			return ;
 		}

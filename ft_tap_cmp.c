@@ -6,18 +6,18 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 09:59:43 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/24 09:59:44 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:00:09 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		ft_print_fail(t_tap_fl fl, int a, int b, char *cmp)
+static void		ft_print_fail(t_plc place, int a, int b, char *cmp)
 {
 	ft_putstr("KO\n#   Failed test ");
-	ft_putstr(fl.file);
+	ft_putstr(place.file);
 	ft_putstr(" line ");
-	ft_putnbr(fl.line);
+	ft_putnbr(place.line);
 	ft_putstr("\n#            a: ");
 	ft_putnbr(a);
 	ft_putstr("\n#  ");
@@ -27,7 +27,7 @@ static void		ft_print_fail(t_tap_fl fl, int a, int b, char *cmp)
 	ft_putstr("\n");
 }
 
-void			ft_tap_cmp(t_tap_fl fl, int a, int b, char *cmp)
+void			ft_tap_cmp(t_plc place, int a, int b, char *cmp)
 {
 	int		ok;
 
@@ -46,7 +46,7 @@ void			ft_tap_cmp(t_tap_fl fl, int a, int b, char *cmp)
 		ok = a != b;
 	if (!ok)
 	{
-		ft_print_fail(fl, a, b, cmp);
+		ft_print_fail(place, a, b, cmp);
 		return ;
 	}
 	ft_putstr("OK\n");
