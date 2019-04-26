@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsplit_ext.c                                  :+:      :+:    :+:   */
+/*   ft_strsplit_any.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 13:17:16 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:17:20 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:42:49 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "libft.h"
 
 static size_t	ft_count(const char *s, const char *c,
-						  int ref, int (*cmp)(const char *a, char b))
+	int ref, int (*cmp)(const char *a, char b))
 {
 	size_t	count;
 
@@ -47,13 +46,13 @@ static size_t	ft_word_count(const char *str, const char *dl)
 		str += ft_count(str, dl, 1, ft_any_match);
 		if (!*str)
 			return (count);
-		str += ft_count(str, dl, 0, ft_any_match) ;
+		str += ft_count(str, dl, 0, ft_any_match);
 		count++;
 	}
 	return (count);
 }
 
-char 			**ft_strsplit_any(char const *s, char *c)
+char			**ft_strsplit_any(char const *s, char *c)
 {
 	size_t		size;
 	char		**res;
@@ -72,7 +71,7 @@ char 			**ft_strsplit_any(char const *s, char *c)
 			return (NULL);
 		ft_strncpy(res[i], s, till_del);
 		res[i][till_del] = '\0';
-		s+=till_del;
+		s += till_del;
 		i++;
 	}
 	res[i] = NULL;

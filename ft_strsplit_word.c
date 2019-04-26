@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 13:17:16 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:17:20 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:43:10 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static size_t	ft_word_count(const char *str, const char *dl)
 {
 	size_t		count;
-	size_t 		len;
+	size_t		len;
 
 	if (!str || !dl)
 		return (0);
@@ -33,13 +33,13 @@ static size_t	ft_word_count(const char *str, const char *dl)
 	return (count);
 }
 
-char 			**ft_strsplit_word(char const *s, char *w)
+char			**ft_strsplit_word(char const *s, char *w)
 {
 	size_t		count;
 	char		**res;
 	size_t		i;
 	size_t		len;
-	const char 	*end;
+	const char	*end;
 
 	count = ft_word_count(s, w);
 	if (!s || !w || (res = malloc(sizeof(*res) * (count + 1))) == NULL)
@@ -50,7 +50,7 @@ char 			**ft_strsplit_word(char const *s, char *w)
 	while (i < count)
 	{
 		end = strstr(s, w);
-		end = end ?  end : s + ft_strlen(s);
+		end = end ? end : s + ft_strlen(s);
 		if ((res[i] = ft_strnew(end - s)) == NULL)
 			return (NULL);
 		ft_strncpy(res[i], s, end - s);
