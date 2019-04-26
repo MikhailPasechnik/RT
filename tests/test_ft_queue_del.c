@@ -6,26 +6,28 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:28:29 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-static void    	queue_del(void *c, size_t s)
+static void	queue_del(void *c, size_t s)
 {
 	memset(c, '!', s);
 	(void)c;
 	(void)s;
 }
 
-int				main(void)
+int			main(void)
 {
-	t_queue *q;
+	t_queue	*q;
+	t_list	*l;
+	char	c[6];
+
 	q = malloc(sizeof(*q));
-	t_list  *l;
 	l = malloc(sizeof(*l));
-	char c[] = ".....";
+	ft_strcpy(c, ".....");
 	*l = (t_list){c, 4, NULL};
 	q->rear = l;
 	q->front = l;

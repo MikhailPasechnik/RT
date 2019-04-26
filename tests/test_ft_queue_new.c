@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:28:44 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int		main(void)
 {
-	t_queue *q = ft_queue_new();
+	t_queue	*q;
+
+	q = ft_queue_new();
 	FT_OK(!q->front);
 	FT_OK(!q->rear);
 	free(q);

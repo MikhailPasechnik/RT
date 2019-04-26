@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:16:12 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,9 @@
 
 int		main(void)
 {
+	FT_OK(!ft_isascii(-1));
+	FT_OK(ft_isascii(0));
+	FT_OK(ft_isascii(127));
+	FT_OK(!ft_isascii(128));
 	return (0);
 }

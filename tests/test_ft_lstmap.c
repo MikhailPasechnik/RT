@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:21:48 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,6 @@ static t_list	*ft_map(t_list *elem)
 	return (e);
 }
 
-static void		ft_check_res(t_list *res)
-{
-	FT_IS(res->content, ".");
-	FT_IS(res->next->content, "..");
-	FT_IS(res->next->next->content, "...");
-	FT_IS(res->next->next->next->content, "....");
-}
-
 static void		ft_del_res(void *c, size_t len)
 {
 	(void)len;
@@ -51,7 +43,7 @@ int				main(void)
 	t_list	c;
 	t_list	b;
 	t_list	a;
-	t_list  *res;
+	t_list	*res;
 
 	d = (t_list){"444\0", 4, NULL};
 	c = (t_list){"33\0", 3, &d};
@@ -62,7 +54,10 @@ int				main(void)
 	res = ft_lstmap(NULL, ft_map);
 	FT_OK(res == NULL);
 	res = ft_lstmap(&a, ft_map);
-	ft_check_res(res);
+	FT_IS(res->content, ".");
+	FT_IS(res->next->content, "..");
+	FT_IS(res->next->next->content, "...");
+	FT_IS(res->next->next->next->content, "....");
 	ft_lstdel(&res, ft_del_res);
 	return (0);
 }

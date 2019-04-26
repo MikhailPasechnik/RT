@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:20:51 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ static void		ft_iter(t_list *elem)
 
 	c = ft_memset(ft_strnew(elem->content_size), '.', elem->content_size);
 	*elem = (t_list){(void *)c, elem->content_size, elem->next};
-}
-
-static void		ft_check_res(t_list *res)
-{
-	FT_IS(res->content, ".");
-	FT_IS(res->next->content, "..");
-	FT_IS(res->next->next->content, "...");
-	FT_IS(res->next->next->next->content, "....");
 }
 
 static void		ft_iter_del(t_list *elem)
@@ -47,7 +39,10 @@ int				main(void)
 	ft_lstiter(&a, NULL);
 	ft_lstiter(NULL, ft_iter);
 	ft_lstiter(&a, ft_iter);
-	ft_check_res(&a);
+	FT_IS(a.content, ".");
+	FT_IS(a.next->content, "..");
+	FT_IS(a.next->next->content, "...");
+	FT_IS(a.next->next->next->content, "....");
 	ft_lstiter(&a, ft_iter_del);
 	return (0);
 }

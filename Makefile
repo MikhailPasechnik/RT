@@ -6,7 +6,7 @@
 #    By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2019/04/13 13:52:36 by bnesoi           ###   ########.fr        #
+#    Updated: 2019/04/26 10:39:49 by bnesoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ FUNS=\
 	ft_lstmap         ft_queue_del    ft_strmap       ft_print_bits_fd     \
 	ft_htdel          ft_htget        ft_htset        ft_itoa_base_ext     \
 	ft_strlowcase	  ft_tap_is		  ft_tap_ok		  ft_tap_ismem         \
-	ft_strcapitalize  ft_strreverse   ft_strsplit_any ft_strsplit_word
+	ft_strcapitalize  ft_strreverse   ft_strsplit_any ft_strsplit_word	   \
+	ft_tap_cmp
 
 SRCS=$(addsuffix .c,$(FUNS))
 OBJECT_FILES=$(addsuffix .o,$(FUNS))

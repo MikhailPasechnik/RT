@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/04/26 10:13:23 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,17 @@
 
 int		main(void)
 {
-	t_list  l4 = {"4", 1, NULL};
-	t_list  l3 = {"3", 1, NULL};
-	t_list  l2 = {"2", 1, NULL};
-	t_list  l1 = {"1", 1, NULL};
-	t_queue q = {NULL, NULL};
+	t_list	l4;
+	t_list	l3;
+	t_list	l2;
+	t_list	l1;
+	t_queue	q;
+
+	l4 = (t_list){"4", 1, NULL};
+	l3 = (t_list){"3", 1, NULL};
+	l2 = (t_list){"2", 1, NULL};
+	l1 = (t_list){"1", 1, NULL};
+	q = (t_queue){NULL, NULL};
 	ft_enqueue(&q, &l1);
 	ft_enqueue(&q, &l2);
 	ft_enqueue(&q, &l3);
