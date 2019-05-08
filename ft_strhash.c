@@ -14,20 +14,15 @@
 
 size_t	ft_strhash(const char *s, size_t size)
 {
-	size_t	hash;
-	size_t	i;
+	size_t  hash;
+	size_t  i;
 
 	i = 0;
 	hash = 0;
-	while (s && s[i])
+	while(s && s[i])
 	{
-		hash += s[i];
-		hash += (hash << 10);
-		hash ^= (hash >> 6);
+		hash = (hash + s[i]) % size;
 		i++;
 	}
-	hash += (hash << 3);
-	hash ^= (hash >> 11);
-	hash += (hash << 15);
-	return (hash % size);
+	return hash;
 }
