@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/04 09:23:34 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/13 13:10:13 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/08 20:36:15 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,11 @@
 
 int		main(void)
 {
+	char *s;
+
+	s = ft_strnew(3);
+	ft_strcpy(s, "abc");
+	ft_strclr(s);
+	FT_IS_MEM(s, "\0\0\0\0", 4);
 	return (0);
 }
