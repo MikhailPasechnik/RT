@@ -14,5 +14,9 @@
 
 int		main(void)
 {
+	FT_OK(ft_isalnum('a'));
+	FT_OK(ft_isalnum('Z'));
+	FT_OK(ft_isalnum('0'));
+	FT_OK(ft_isalnum('1'));
 	return (0);
 }

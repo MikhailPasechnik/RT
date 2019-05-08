@@ -14,5 +14,8 @@
 
 int		main(void)
 {
+	FT_IS(ft_itoa(100), "100");
+	FT_IS(ft_itoa(0), "0");
+	FT_IS(ft_itoa(-1), "-1");
 	return (0);
 }

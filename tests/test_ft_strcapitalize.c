@@ -14,5 +14,10 @@
 
 int		main(void)
 {
+	char	*s;
+
+	s = ft_strnew(100);
+	ft_strcpy(s, "abc123 - OK!");
+	FT_IS(ft_strcapitalize(s), "Abc123 - Ok!");
 	return (0);
 }

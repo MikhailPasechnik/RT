@@ -14,5 +14,7 @@
 
 int		main(void)
 {
+	FT_OK(ft_atoi("   -100") == -100);
+	FT_OK(ft_atoi("0 ") == 0);
 	return (0);
 }

@@ -12,7 +12,18 @@
 
 #include "../libft.h"
 
-int		main(void)
+static void		del(void *c, size_t s)
 {
+}
+
+int				main(void)
+{
+	t_list	*l;
+
+	l = ft_lstnew("abc", 4);
+	FT_IS(l->content, "abc");
+	FT_OK(l->content_size == 4);
+	FT_OK(l->next == NULL);
+	ft_lstdel(&l, del);
 	return (0);
 }

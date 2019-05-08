@@ -12,7 +12,28 @@
 
 #include "../libft.h"
 
-int		main(void)
+static int			func_key_cmp(void *a, void *b)
 {
+	return (ft_strcmp(a, b));
+}
+
+static size_t		func_key_hash(void *key, size_t size)
+{
+	return (ft_strhash(key, size));
+}
+
+void				func_key_value_del(void *key, void *value)
+{
+	FT_IS(key, "a");
+	FT_IS(value, "A");
+}
+
+int					main(void)
+{
+	t_htable	*t;
+
+	t = ft_htnew(100, func_key_cmp, func_key_hash, func_key_value_del);
+	ft_htset(t, "a", "A");
+	ft_htdel(&t);
 	return (0);
 }

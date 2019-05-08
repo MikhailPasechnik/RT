@@ -16,8 +16,8 @@ int		main(void)
 {
 	char	**r;
 
-	r = ft_strsplit_word("<1>ab<1>cde<1>c", "<1>");
-	FT_IS(r[0], "ab");
+	r = ft_strsplit_word("<1><1>cde<1>c", "<1>");
+	FT_IS(r[0], "");
 	FT_IS(r[1], "cde");
 	FT_IS(r[2], "c");
 	FT_OK(r[3] == NULL);

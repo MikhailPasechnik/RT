@@ -12,7 +12,14 @@
 
 #include "../libft.h"
 
-int		main(void)
+int				main(void)
 {
+	t_htable	*t;
+
+	t = ft_htnew(100, NULL, NULL, NULL);
+	FT_OK(t->size == 100);
+	FT_OK(t->bins != NULL);
+	FT_OK(t->bins[0] == NULL);
+	FT_OK(t->bins[99] == NULL);
 	return (0);
 }
