@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:17:05 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/26 09:59:57 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/08 20:28:20 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_print_bits_fd(size_t size, void *ptr, int fd);
-size_t			ft_power(size_t nb, int power);
+int				ft_power(int nb, int power);
 size_t			ft_strhash(const char *s, size_t size);
 
 typedef struct	s_list
