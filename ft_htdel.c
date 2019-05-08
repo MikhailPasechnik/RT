@@ -29,10 +29,11 @@ void	ft_htdel(t_htable **ht)
 					(*ht)->func_key_value_del((*ht)->bins[i]->key,
 						(*ht)->bins[i]->value);
 				ft_memdel((void **)&(*ht)->bins[i]);
-				(*ht)->bins[i++] = tmp;
+				(*ht)->bins[i] = tmp;
 			}
-			ft_memdel((void **)&(*ht)->bins);
+			i++;
 		}
+		ft_memdel((void **)&(*ht)->bins);
 		ft_memdel((void **)ht);
 		*ht = NULL;
 	}
