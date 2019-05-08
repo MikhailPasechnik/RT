@@ -21,5 +21,6 @@ int				main(void)
 	FT_OK(t->bins != NULL);
 	FT_OK(t->bins[0] == NULL);
 	FT_OK(t->bins[99] == NULL);
+	ft_htdel(&t);
 	return (0);
 }

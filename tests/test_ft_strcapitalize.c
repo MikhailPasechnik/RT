@@ -19,5 +19,6 @@ int		main(void)
 	s = ft_strnew(100);
 	ft_strcpy(s, "abc123 - OK!");
 	FT_IS(ft_strcapitalize(s), "Abc123 - Ok!");
+	ft_strdel(&s);
 	return (0);
 }

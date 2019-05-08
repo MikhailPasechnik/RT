@@ -19,5 +19,6 @@ int		main(void)
 	s = ft_strnew(2);
 	ft_strcpy(s, "a");
 	FT_IS(ft_strcat(s, "b"), "ab");
+	ft_strdel(&s);
 	return (0);
 }

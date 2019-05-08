@@ -20,5 +20,6 @@ int		main(void)
 	ft_strcpy(s, "abc");
 	ft_strclr(s);
 	FT_IS_MEM(s, "\0\0\0\0", 4);
+	ft_strdel(&s);
 	return (0);
 }

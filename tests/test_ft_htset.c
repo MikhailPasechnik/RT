@@ -33,5 +33,6 @@ int					main(void)
 	FT_IS(ft_htget(t, "a"), "A");
 	ft_htset(t, "a", "N");
 	FT_IS(ft_htget(t, "a"), "N");
+	ft_htdel(&t);
 	return (0);
 }

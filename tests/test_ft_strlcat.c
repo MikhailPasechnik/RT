@@ -21,5 +21,6 @@ int		main(void)
 	FT_CMP(ft_strlcat(d, "bc", 3), 3, "==");
 	FT_CMP(ft_strlcat(d, "bc", 3), 4, "==");
 	FT_CMP(ft_strlcat(d, "bcd", 3), 5, "==");
+	ft_strdel(&d);
 	return (0);
 }
