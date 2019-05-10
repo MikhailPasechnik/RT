@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 16:07:08 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/24 10:09:18 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/10 12:33:28 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	char		*d;
 	const char	*s;
 
+	if (!dest && !src)
+		return (NULL);
 	if (dest > src)
 	{
 		d = dest;

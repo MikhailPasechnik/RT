@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 13:17:16 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/26 10:42:49 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/10 12:34:48 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,14 @@ char			**ft_strsplit_any(char const *s, char *c)
 		s += ft_count(s, c, 1, ft_any_match);
 		till_del = ft_count(s, c, 0, ft_any_match);
 		if ((res[i] = ft_strnew(till_del)) == NULL)
+		{
+			while (res[--i])
+				ft_memfree(res[i]);
 			return (NULL);
+		}
 		ft_strncpy(res[i], s, till_del);
-		res[i][till_del] = '\0';
+		res[i++][till_del] = '\0';
 		s += till_del;
-		i++;
 	}
 	res[i] = NULL;
 	return (res);

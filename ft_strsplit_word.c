@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 13:17:16 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/26 10:43:10 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/10 14:48:48 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,14 @@ char			**ft_strsplit_word(char const *s, char *w)
 		end = strstr(s, w);
 		end = end ? end : s + ft_strlen(s);
 		if ((res[i] = ft_strnew(end - s)) == NULL)
+		{
+			while (res[--i])
+				ft_memfree(res[i]);
 			return (NULL);
+		}
 		ft_strncpy(res[i], s, end - s);
-		res[i][end - s] = '\0';
+		res[i++][end - s] = '\0';
 		s = end + len;
-		i++;
 	}
 	res[i] = NULL;
 	return (res);
