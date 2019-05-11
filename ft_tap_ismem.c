@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 09:58:04 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/26 09:58:34 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/11 15:28:20 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_tap_ismem(t_plc place, const char *a, const char *b, size_t n)
 		{
 			ft_putstr("KO\n#   Failed test at ");
 			ft_putstr(place.file);
-			ft_putstr(" line ");
+			ft_putstr(":");
 			ft_putnbr(place.line);
 			ft_putstr("\n#      diff at: a[");
 			ft_putnbr(i - 1);

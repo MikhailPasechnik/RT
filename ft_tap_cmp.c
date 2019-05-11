@@ -6,7 +6,7 @@
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 09:59:43 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/04/26 10:00:09 by bnesoi           ###   ########.fr       */
+/*   Updated: 2019/05/11 15:28:04 by bnesoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void		ft_print_fail(t_plc place, int a, int b, char *cmp)
 {
 	ft_putstr("KO\n#   Failed test ");
 	ft_putstr(place.file);
-	ft_putstr(" line ");
+	ft_putstr(":");
 	ft_putnbr(place.line);
 	ft_putstr("\n#            a: ");
 	ft_putnbr(a);
