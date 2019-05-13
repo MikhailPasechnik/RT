@@ -70,7 +70,7 @@ char			**ft_strsplit_any(char const *s, char *c)
 		if ((res[i] = ft_strnew(till_del)) == NULL)
 		{
 			while (res[--i])
-				ft_memfree(res[i]);
+				ft_strdel(&res[i]);
 			return (NULL);
 		}
 		ft_strncpy(res[i], s, till_del);

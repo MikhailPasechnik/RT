@@ -17,16 +17,17 @@ static t_list	*cpy_list(t_list *lst)
 	return (lst ? ft_lstnew(lst->content, lst->content_size) : NULL);
 }
 
-static void		free_lst(t_list *head)
+static void		*free_lst(t_list *head)
 {
 	t_list	*tmp;
 
 	while (head)
 	{
 		tmp = head->next;
-		ft_memdel(&head);
+		ft_memdel((void **)&head);
 		head = tmp;
 	}
+	return (NULL);
 }
 
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
@@ -40,10 +41,7 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 	while (f && lst)
 	{
 		if ((tmp = cpy_list(f(lst))) == NULL)
-		{
-			free_lst(head);
-			return (NULL);
-		}
+			return (free_lst(head));
 		else if (!new)
 			new = tmp;
 		else
