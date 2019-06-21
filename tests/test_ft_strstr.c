@@ -14,5 +14,6 @@
 
 int		main(void)
 {
+	FT_IS(ft_strstr("21", ""), "21");
 	return (0);
 }
