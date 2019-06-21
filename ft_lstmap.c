@@ -12,46 +12,38 @@
 
 #include "libft.h"
 
-static t_list	*cpy_list(t_list *lst)
-{
-	return (lst ? ft_lstnew(lst->content, lst->content_size) : NULL);
-}
-
-static void		*free_lst(t_list *head)
+static void		*free_lst(t_list *first)
 {
 	t_list	*tmp;
 
-	while (head)
+	while (first)
 	{
-		tmp = head->next;
-		ft_memdel((void **)&head);
-		head = tmp;
+		tmp = first->next;
+		ft_memdel((void **)&first);
+		first = tmp;
 	}
 	return (NULL);
 }
 
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list	*tmp;
-	t_list	*new;
-	t_list	*head;
+	t_list	*current;
+	t_list	*first;
 
-	head = NULL;
-	new = NULL;
-	while (f && lst)
+	if (!lst || !f || !(current = f(lst)))
+		return (NULL);
+	if((current = ft_lstnew(current->content, current->content_size)) == NULL)
+		return (NULL);
+	first = current;
+	lst = lst->next;
+	while (lst && (current->next = f(lst)))
 	{
-		if ((tmp = cpy_list(f(lst))) == NULL)
-			return (free_lst(head));
-		else if (!new)
-			new = tmp;
-		else
-		{
-			new->next = tmp;
-			new = new->next;
-		}
-		if (!head)
-			head = new;
+		if ((current->next = ft_lstnew(
+				current->next->content, current->next->content_size
+				)) == NULL)
+			return (free_lst(first));
+		current = current->next;
 		lst = lst->next;
 	}
-	return (head);
+	return (first);
 }

@@ -14,21 +14,18 @@
 
 static t_list	*ft_map(t_list *elem)
 {
-	t_list	*e;
 	size_t	i;
 	char	*c;
 
 	i = 0;
 	ft_strcpy((c = ft_strnew(elem->content_size)), elem->content);
-	e = ft_lstnew(c, elem->content_size);
-	if (!e)
-		return (0);
-	while (i < e->content_size)
+	while (i < elem->content_size)
 	{
-		((char *)e->content)[i] = '.';
+		elem->content = c;
+		((char *)elem->content)[i] = '.';
 		i++;
 	}
-	return (e);
+	return (elem);
 }
 
 static void		ft_del_res(void *c, size_t len)
