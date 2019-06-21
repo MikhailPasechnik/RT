@@ -21,5 +21,10 @@ int		main(void)
 	d = a + 1;
 	ft_memmove(d, a, 4);
 	FT_IS(d, "lore ipsum dolor sit amet");
+	ft_strcpy(a, "lorem ipsum dolor sit amet");
+	d = a + 1;
+	ft_memmove(a, d, 4);
+	FT_IS(a, "oremm ipsum dolor sit amet");
+	FT_OK(ft_memmove(NULL, NULL, 4) == NULL);
 	return (0);
 }
