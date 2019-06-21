@@ -47,9 +47,8 @@ $(NAME) : ${OBJECT_FILES}
 	@ar rc $(NAME) $(OBJECT_FILES)
 	@ranlib $(NAME)
 
-so : ${OBJECT_FILES}
-	@ar rc $(SONAME) $(OBJECT_FILES)
-	@ranlib $(SONAME)
+so : ${SRCS}
+	@gcc $(GCC_FLAGS) ${SRCS} -fPIC -shared -o $(SONAME)
 
 ${OBJECT_FILES}: ${SRCS}
 	@gcc $(GCC_FLAGS) -o $@ -c $<
