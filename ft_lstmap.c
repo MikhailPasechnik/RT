@@ -14,6 +14,7 @@
 
 static void		del_lst(void *c, size_t s)
 {
+	(void)s;
 	ft_memdel(&c);
 }
 
