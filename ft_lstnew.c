@@ -18,8 +18,18 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 
 	if ((new = (t_list *)malloc(sizeof(*new))) == NULL)
 		return (NULL);
+	new->content_size = 0;
+	new->content = 0;
 	new->next = NULL;
-	new->content_size = content ? content_size : 0;
-	new->content = content ? (void *)content : NULL;
+	if (content)
+	{
+		new->content_size = content_size;
+		if ((new->content = ft_memalloc(content_size)) == NULL)
+		{
+			free(new);
+			return (NULL);
+		}
+		ft_memmove(new->content, content, content_size);
+	}
 	return (new);
 }
