@@ -42,10 +42,12 @@ GCC_FLAGS=-Wall -Wextra -Werror
 
 all : $(NAME)
 
-$(NAME) :
-	@gcc $(GCC_FLAGS) -c $(SRCS)
+$(NAME) : ${OBJECT_FILES}
 	@ar rc $(NAME) $(OBJECT_FILES)
 	@ranlib $(NAME)
+
+${OBJECT_FILES}: ${SRCS}
+	gcc $(GCC_FLAGS) -o $@ -c $<
 
 clean :
 	@/bin/rm -f $(OBJECT_FILES)
