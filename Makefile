@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME=libft.a
+SONAME=libft.so
 FUNS=\
 	ft_lstnew         ft_queue_new    ft_strmapi      ft_strhash           \
 	ft_lstreverse     ft_stack_del    ft_strncat                           \
@@ -46,8 +47,12 @@ $(NAME) : ${OBJECT_FILES}
 	@ar rc $(NAME) $(OBJECT_FILES)
 	@ranlib $(NAME)
 
+so : ${OBJECT_FILES}
+	@ar rc $(SONAME) $(OBJECT_FILES)
+	@ranlib $(SONAME)
+
 ${OBJECT_FILES}: ${SRCS}
-	gcc $(GCC_FLAGS) -o $@ -c $<
+	@gcc $(GCC_FLAGS) -o $@ -c $<
 
 clean :
 	@/bin/rm -f $(OBJECT_FILES)
