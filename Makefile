@@ -39,7 +39,7 @@ FUNS=\
 
 SRCS=$(addsuffix .c,$(FUNS))
 OBJECT_FILES=$(addsuffix .o,$(FUNS))
-GCC_FLAGS=-Wall -Wextra -Werror -O3
+GCC_FLAGS=-Wall -Wextra -Werror
 
 all : $(NAME)
 
