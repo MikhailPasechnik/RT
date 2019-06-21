@@ -14,7 +14,7 @@
 
 static void	stack_del(void *c, size_t s)
 {
-	memset(c, '!', s);
+	ft_memset(c, '!', s);
 	(void)c;
 	(void)s;
 }
@@ -25,8 +25,8 @@ int			main(void)
 	t_list	*l;
 	char	c[6];
 
-	s = malloc(sizeof(t_stack));
-	l = malloc(sizeof(t_list));
+	s = ft_memalloc(sizeof(t_stack));
+	l = ft_memalloc(sizeof(t_list));
 	ft_strcpy(c, ".....");
 	*l = (t_list){c, 4, NULL};
 	s->top = l;
