@@ -23,5 +23,6 @@ int		main(void)
 	FT_IS_MEM(d0, "____", 5);
 	ft_memcpy(d0, "____", 1);
 	FT_IS_MEM(d1, "", 1);
+	FT_OK(ft_memcpy(NULL, NULL, 3) == NULL);
 	return (0);
 }
