@@ -19,9 +19,9 @@ static t_list	*ft_map(t_list *elem)
 
 	i = 0;
 	ft_strcpy((c = ft_strnew(elem->content_size)), elem->content);
-	while (i < elem->content_size)
+	elem->content = c;
+	while (i < elem->content_size - 1)
 	{
-		elem->content = c;
 		((char *)elem->content)[i] = '.';
 		i++;
 	}
@@ -34,6 +34,11 @@ static void		ft_del_res(void *c, size_t len)
 	ft_strdel((char **)&c);
 }
 
+static void		ft_del_src(t_list *e)
+{
+	ft_strdel((char **)&e->content);
+}
+
 int				main(void)
 {
 	t_list	d;
@@ -42,10 +47,10 @@ int				main(void)
 	t_list	a;
 	t_list	*res;
 
-	d = (t_list){"444\0", 4, NULL};
-	c = (t_list){"33\0", 3, &d};
-	b = (t_list){"2\0", 2, &c};
-	a = (t_list){"\0", 1, &b};
+	d = (t_list){"444\0", 5, NULL};
+	c = (t_list){"33\0", 4, &d};
+	b = (t_list){"2\0", 3, &c};
+	a = (t_list){"\0", 2, &b};
 	res = ft_lstmap(&a, NULL);
 	FT_OK(res == NULL);
 	res = ft_lstmap(NULL, ft_map);
@@ -55,6 +60,7 @@ int				main(void)
 	FT_IS(res->next->content, "..");
 	FT_IS(res->next->next->content, "...");
 	FT_IS(res->next->next->next->content, "....");
+	ft_lstiter(&a, ft_del_src);
 	ft_lstdel(&res, ft_del_res);
 	return (0);
 }

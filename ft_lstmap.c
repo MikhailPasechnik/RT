@@ -12,16 +12,14 @@
 
 #include "libft.h"
 
+static void		del_lst(void *c, size_t s)
+{
+	ft_memdel(&c);
+}
+
 static void		*free_lst(t_list *first)
 {
-	t_list	*tmp;
-
-	while (first)
-	{
-		tmp = first->next;
-		ft_memdel((void **)&first);
-		first = tmp;
-	}
+	ft_lstdel(&first, del_lst);
 	return (NULL);
 }
 
