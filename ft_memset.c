@@ -17,7 +17,8 @@ void	*ft_memset(void *s, int c, size_t n)
 	char	*value;
 
 	value = s;
+	c = (c & 0xFF);
 	while (n--)
-		value[n] = c;
+		*value++ = c;
 	return (s);
 }
