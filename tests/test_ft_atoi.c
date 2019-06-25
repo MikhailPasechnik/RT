@@ -16,5 +16,6 @@ int		main(void)
 {
 	FT_OK(ft_atoi("   -100") == -100);
 	FT_OK(ft_atoi("0 ") == 0);
+	FT_CMP(ft_atoi("99999999999999999999999999"), -1, "==");
 	return (0);
 }
