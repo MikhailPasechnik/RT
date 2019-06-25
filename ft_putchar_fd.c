@@ -14,15 +14,5 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	unsigned int	wc;
-
-	wc = c;
-	if (wc < 0x80)
-		write(fd, &wc, 1);
-	else if (wc < 0x800)
-		write(fd, &wc, 2);
-	else if (wc < 0x10000)
-		write(fd, &wc, 3);
-	else
-		write(fd, &wc, 4);
+	write(fd, &c, 1);
 }
