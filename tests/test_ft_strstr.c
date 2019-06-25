@@ -15,5 +15,6 @@
 int		main(void)
 {
 	FT_IS(ft_strstr("21", ""), "21");
+	FT_IS(ft_strstr("see F your F return FF now FF", "FF"), "FF now FF");
 	return (0);
 }
