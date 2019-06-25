@@ -16,6 +16,7 @@ static void		del(void *c, size_t s)
 {
 	FT_OK(((char *)c)[0] == '1');
 	FT_OK(s == 2);
+	ft_strdel((char **)&c);
 }
 
 int				main(void)
