@@ -14,7 +14,7 @@
 
 static void	queue_del(void *c, size_t s)
 {
-	memset(c, '!', s);
+	ft_memset(c, '!', s);
 	(void)c;
 	(void)s;
 }
@@ -25,8 +25,8 @@ int			main(void)
 	t_list	*l;
 	char	c[6];
 
-	q = malloc(sizeof(*q));
-	l = malloc(sizeof(*l));
+	q = ft_memalloc(sizeof(*q));
+	l = ft_memalloc(sizeof(*l));
 	ft_strcpy(c, ".....");
 	*l = (t_list){c, 4, NULL};
 	q->rear = l;

@@ -18,7 +18,7 @@ void	ft_stack_del(t_stack **stack, void (*del)(void *, size_t))
 		ft_lstdel(&(*stack)->top, del);
 	if (stack)
 	{
-		free(*stack);
+		ft_memdel((void**)stack);
 		*stack = NULL;
 	}
 }

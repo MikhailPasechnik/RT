@@ -60,7 +60,7 @@ char			**ft_strsplit_any(char const *s, char *c)
 	size_t		i;
 
 	size = ft_word_count(s, c);
-	if (!s || !c || (res = malloc(sizeof(*res) * (size + 1))) == NULL)
+	if (!s || !c || (res = ft_memalloc(sizeof(*res) * (size + 1))) == NULL)
 		return (NULL);
 	i = 0;
 	while (i < size)

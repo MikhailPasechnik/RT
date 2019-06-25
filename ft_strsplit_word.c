@@ -59,7 +59,7 @@ char			**ft_strsplit_word(char const *s, char *w)
 	s += ft_strnequ(s, w, len) ? len : 0;
 	while (i < count)
 	{
-		end = strstr(s, w);
+		end = ft_strstr(s, w);
 		end = end ? end : s + ft_strlen(s);
 		if ((res[i] = ft_strnew(end - s)) == NULL)
 			return (free_res(res));

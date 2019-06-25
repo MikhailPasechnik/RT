@@ -14,25 +14,27 @@
 
 size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
-	size_t	src_len;
-	size_t	dest_len;
-	size_t	left_len;
-	size_t	cpy_len;
+	const char	*s;
+	char		*d;
+	size_t		clen;
+	size_t		dlen;
 
-	src_len = ft_strlen(src);
-	left_len = size;
-	dest_len = 0;
-	while (*dest && left_len > 0)
+	clen = size;
+	d = dest;
+	s = src;
+	while (--clen && *d)
+		d++;
+	dlen = d - dest;
+	clen = size - dlen;
+	while (*s)
 	{
-		dest++;
-		left_len--;
-		dest_len++;
+		if (clen > 1)
+		{
+			*d++ = *s;
+			clen--;
+		}
+		s++;
 	}
-	if (dest_len < left_len)
-	{
-		cpy_len = src_len < left_len - 1 ? src_len : left_len - 1;
-		ft_memmove(dest, src, cpy_len);
-		dest[cpy_len] = '\0';
-	}
-	return (src_len + dest_len);
+	*d = '\0';
+	return(dlen + (s - src));
 }
