@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -23,11 +23,12 @@
 # include "mlx.h"
 # include "keys.h"
 
-# define WIN_X 1000
-# define WIN_Y 1000
+# define WIN_X 500
+# define WIN_Y 300
 # define T_INC 10
 # define R_INC 5
 # define USG_MSG	"./fractol"
+# define WIN_TITLE	"Fractol"
 
 typedef struct	s_color
 {
@@ -45,8 +46,22 @@ typedef struct	s_mlx
 	void        *img_ptr;
 	unsigned	size_x;
 	unsigned	size_y;
+
+	int        *pic_ptr;
+	int        bpp;
+	int        size_line;
+	int        endian;
+
 }				t_mlx;
 
 int				finish(t_mlx *mlx);
 
+/*
+** Hooks
+*/
+
+int		key_press(int k, t_mlx *win);
+int		mouse_press(int button, int x, int y, t_mlx *win);
+int		mouse_release(int button, int x, int y, t_mlx *win);
+int		mouse_move(int x, int y, t_mlx *win);
 #endif

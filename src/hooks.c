@@ -12,22 +12,27 @@
 
 #include "fractol.h"
 
-int		key_hook(int k, t_mlx *win)
+int		key_press(int k, t_mlx *win)
 {
-	return (1);
+    printf("key_press: %d\n", k);
+    k == KEY_ESC ? finish(win) : 0;
+    return (1);
 }
 
 int		mouse_press(int button, int x, int y, t_mlx *win)
 {
+    printf("mouse_press: %d\n", button);
 	return (1);
 }
 
 int		mouse_release(int button, int x, int y, t_mlx *win)
 {
+    printf("mouse_release: %d\n", button);
 	return (1);
 }
 
 int		mouse_move(int x, int y, t_mlx *win)
 {
+    printf("mouse_move: %d %d\n", x, y);
 	return (1);
 }
