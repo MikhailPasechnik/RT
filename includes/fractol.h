@@ -22,6 +22,7 @@
 # include "libft.h"
 # include "mlx.h"
 # include "keys.h"
+# include "opencl_defs.h"
 
 # define WIN_X 500
 # define WIN_Y 300
