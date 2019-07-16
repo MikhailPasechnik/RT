@@ -1,4 +1,4 @@
-#include "opencl_defs.h"
+#include "ocl.h"
 
 static int 		open_file_fd(const char *file_name)
 {
@@ -47,8 +47,8 @@ static char 	*read_file(const char *file_name)
 	return (res);
 }
 
-cl_program		opencl_compile_program(cl_context ctx, cl_device_id device_id,
-		const char *file_name, int build_log)
+cl_program		ocl_compile_program(cl_context ctx, cl_device_id device_id,
+									  const char *file_name, int build_log)
 {
 	cl_program	program;
 	char 		*buff;
@@ -68,10 +68,10 @@ cl_program		opencl_compile_program(cl_context ctx, cl_device_id device_id,
 	if (err != CL_SUCCESS)
 	{
 		perror("opencl: Failed to build program");
-		(log = opencl_get_build_log(program, device_id)) ? perror(log) : 0;
+		(log = ocl_get_build_log(program, device_id)) ? perror(log) : 0;
 		log ? ft_strdel(&log): 0;
 		return (NULL);
 	}
-	build_log ? opencl_log_program_build(program, device_id) : 0;
+	build_log ? ocl_log_program_build(program, device_id) : 0;
 	return (program);
 }

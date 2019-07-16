@@ -1,6 +1,6 @@
-#include "opencl_defs.h"
+#include "ocl.h"
 
-static const char 	*opencl_get_error_string1(int error)
+static const char 	*ocl_get_error_string3(int error)
 {
 	switch(error){
 		// run-time and JIT compiler errors
@@ -28,7 +28,7 @@ static const char 	*opencl_get_error_string1(int error)
 	}
 }
 
-static const char 	*opencl_get_error_string2(int error)
+static const char 	*ocl_get_error_string2(int error)
 {
 	switch(error){
 		// compile-time errors
@@ -53,11 +53,11 @@ static const char 	*opencl_get_error_string2(int error)
 		case -48: return ("CL_INVALID_KERNEL");
 		case -49: return ("CL_INVALID_ARG_INDEX");
 		case -50: return ("CL_INVALID_ARG_VALUE");
-		default: return (NULL);
+		default: return (ocl_get_error_string3(error));
 	}
 }
 
-static const char 	*opencl_get_error_string3(int error)
+static const char 	*ocl_get_error_string1(int error)
 {
 	switch(error){
 		// compile-time errors
@@ -80,18 +80,14 @@ static const char 	*opencl_get_error_string3(int error)
 		case -66: return ("CL_INVALID_COMPILER_OPTIONS");
 		case -67: return ("CL_INVALID_LINKER_OPTIONS");
 		case -68: return ("CL_INVALID_DEVICE_PARTITION_COUNT");
-		default: return (NULL);
+		default: return (ocl_get_error_string2(error));
 	}
 }
 
-const char 			*opencl_get_error_string(int error)
+const char 			*ocl_get_error_string(int error)
 {
 	const char *msg;
-	msg = opencl_get_error_string1(error);
-	if (!msg)
-		msg = opencl_get_error_string2(error);
-	if (!msg)
-		msg = opencl_get_error_string3(error);
+	msg = ocl_get_error_string1(error);
 	if (msg)
 		return (msg);
 	

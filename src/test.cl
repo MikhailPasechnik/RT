@@ -5,5 +5,8 @@ __kernel void square(
 {
    int i = get_global_id(0);
    if(i < count)
-       output[i] = input[i] * input[i];
+   {
+	   output[i] = input[i] * input[i];
+	   // printf("get_global_id(0): %d\n", i);
+   }
 }
