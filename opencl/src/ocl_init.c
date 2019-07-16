@@ -33,7 +33,7 @@ int				ocl_init(t_ocl *cl)
 	{
 		clReleaseDevice(cl->device);
 		cl->device = NULL;
-		perror("opencl: Failed to create context");
+		OCL_PUT_ERROR(err, "opencl: Failed to create context");
 		return (0);
 	}
 	cl->queue = clCreateCommandQueueWithProperties(cl->context, cl->device, NULL, &err);
@@ -43,7 +43,7 @@ int				ocl_init(t_ocl *cl)
 		clReleaseContext(cl->context);
 		cl->device = NULL;
 		cl->context = NULL;
-		perror("opencl: Failed to create queue");
+		OCL_PUT_ERROR(err, "opencl: Failed to create queue");
 		return (0);
 	}
 	return (1);
