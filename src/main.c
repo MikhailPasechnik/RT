@@ -68,37 +68,42 @@ int		main(int argc, char **argv)
 	cl_kernel kernel;
 	kernel = clCreateKernel(program, "square", &err);
 	if (err != CL_SUCCESS)
-		OCL_PUT_ERROR(err, "Failed clCreateKernel\n");
+		OCL_ERROR(err, "Failed clCreateKernel\n");
 	mem_in = clCreateBuffer(cl.context, CL_MEM_READ_ONLY, sizeof(*data) * DATA_SIZE, NULL, NULL);
 	mem_out = clCreateBuffer(cl.context, CL_MEM_READ_WRITE, sizeof(*result) * DATA_SIZE, NULL, NULL);
 	if (!mem_in || !mem_out)
-		OCL_PUT_ERROR(err, "Failed clCreateBuffer\n");
-
+		OCL_ERROR(err, "Failed clCreateBuffer\n");
 	err = clEnqueueWriteBuffer(cl.queue, mem_in, CL_TRUE, 0, sizeof(*result) * DATA_SIZE, data, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
-		OCL_PUT_ERROR(err, "Failed clEnqueueWriteBuffer\n");
+		OCL_ERROR(err, "Failed clEnqueueWriteBuffer\n");
 	err = 0;
 	err = clSetKernelArg(kernel, 0, sizeof(cl_mem), &mem_in);
 	err |= clSetKernelArg(kernel, 1, sizeof(cl_mem), &mem_out);
 	err |= clSetKernelArg(kernel, 2, sizeof(unsigned int), &count);
 	if (err != CL_SUCCESS)
-		OCL_PUT_ERROR(err, "Failed clSetKernelArg\n");
+		OCL_ERROR(err, "Failed clSetKernelArg\n");
 
 	err = clGetKernelWorkGroupInfo(kernel, cl.device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local), &local, NULL);
 	if (err != CL_SUCCESS)
-		OCL_PUT_ERROR(err, "Failed clGetKernelWorkGroupInfo\n");
+		OCL_ERROR(err, "Failed clGetKernelWorkGroupInfo\n");
 	printf("local %d\n", (int)local);
 
 	// Number of total work items - localSize must be devisor
-	global  = ceil(count/(float)local)*local;;
+	global  = ceil(count/(float)local)*local;
 	if (local > count)
 		local = count;
 	err = clEnqueueNDRangeKernel(cl.queue, kernel, 1, NULL, &global, &local, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
-		OCL_PUT_ERROR(err, "Failed clEnqueueNDRangeKernel");
+		OCL_ERROR(err, "Failed clEnqueueNDRangeKernel");
 
 	clFinish(cl.queue);
-	clEnqueueReadBuffer(cl.queue, mem_out, CL_TRUE, 0, sizeof(*result) * DATA_SIZE, result, 0, NULL, NULL);
+	if (OCL_ERROR2(
+		clEnqueueReadBuffer(
+			cl.queue, mem_out, CL_TRUE, 0,
+			sizeof(*result) * DATA_SIZE, result, 0, NULL, NULL
+		)
+	))
+		exit(1);
 
 	i = count - 5;
 	while (i < count)

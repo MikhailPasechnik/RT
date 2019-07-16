@@ -61,13 +61,11 @@ cl_program		ocl_compile_program(cl_context ctx, cl_device_id device_id,
 	size = ft_strlen(buff);
 	program = clCreateProgramWithSource(ctx, 1, (const char **)&buff, &size, &err);
 	ft_strdel(&buff);
-	(err != CL_SUCCESS) ? OCL_PUT_ERROR(err, "opencl: Couldn't create the program") : 0;
-	if (err != CL_SUCCESS)
+	if (OCL_ERROR(err, "Couldn't create the program"))
 		return (NULL);
 	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	if (err != CL_SUCCESS)
+	if (OCL_ERROR(err, "Failed to build program"))
 	{
-		OCL_PUT_ERROR(err, "opencl: Failed to build program");
 		(log = ocl_get_build_log(program, device_id)) ? perror(log) : 0;
 		log ? ft_strdel(&log): 0;
 		return (NULL);
