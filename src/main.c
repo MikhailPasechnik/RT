@@ -10,34 +10,50 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include "SDL.h"
 #include "fractol.h"
-
-void    init_mlx(t_mlx *mlx)
-{
-	mlx->mlx_ptr = mlx_init();
-	mlx->size_x = WIN_X;
-	mlx->size_y = WIN_Y;
-	mlx->win_ptr = mlx_new_window(
-			mlx->mlx_ptr, mlx->size_x, mlx->size_y, WIN_TITLE);
-	mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, mlx->size_x, mlx->size_y);
-	mlx->pic_ptr = (int *)mlx_get_data_addr(
-			mlx->img_ptr, &mlx->bpp, &mlx->size_line, &mlx->endian);
-	mlx_key_hook(mlx->win_ptr,  &key_press, mlx);
-	mlx_hook(mlx->win_ptr, 17, 0, &finish, mlx);
-}
-
-void    start()
-{
-	t_mlx mlx;
-	init_mlx(&mlx);
-	mlx_loop(mlx.mlx_ptr);
-}
+#include "ocl.h"
 
 #define DATA_SIZE (1024)
 
 int		main(int argc, char **argv)
 {
-	if (argc != 1)
+
+	//The window we'll be rendering to
+	SDL_Window* window = NULL;
+
+	//The surface contained by the window
+	SDL_Surface* screenSurface = NULL;
+
+	//Initialize SDL
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	{
+		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+	}
+	else
+	{
+		//Create window
+		window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+								  SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (window == NULL)
+		{
+			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			//Get window surface
+			screenSurface = SDL_GetWindowSurface( window );
+
+			//Fill the surface white
+			SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+
+			//Update the surface
+			SDL_UpdateWindowSurface( window );
+		}
+	}
+
+	if (argc != 1 || !argv)
 	{
 		ft_putstr(USG_MSG);
 		return (0);
@@ -47,7 +63,6 @@ int		main(int argc, char **argv)
 	float result[DATA_SIZE];
 	cl_mem mem_in;
 	cl_mem mem_out;
-	unsigned int corresc;
 	size_t global;
 	size_t local;
 	unsigned int count = DATA_SIZE;
@@ -105,8 +120,8 @@ int		main(int argc, char **argv)
 	))
 		exit(1);
 
-	i = count - 5;
-	while (i < count)
+	i = 0;
+	while (i < (int)count)
 	{
 		printf("%d = %f > %f\n", i, data[i], result[i]);
 		i++;
@@ -114,5 +129,12 @@ int		main(int argc, char **argv)
 	program ? ocl_log_program_build(program, cl.device) : 0;
 	program ? clReleaseProgram(program) : 0;
 	ocl_release(&cl);
+	//Destroy window
+	SDL_Delay( 2000 );
+
+	SDL_DestroyWindow( window );
+
+	//Quit SDL subsystems
+	SDL_Quit();
 	return (0);
 }

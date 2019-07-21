@@ -10,22 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef FRACTOL_H
+# define FRACTOL_H
 
-# include <stdlib.h>
 # include <math.h>
 # include <stdio.h>
-# include <fcntl.h>
-# include <errno.h>
 
 # include "libft.h"
-# include "mlx.h"
 # include "keys.h"
 # include "ocl.h"
 
-# define WIN_X 500
-# define WIN_Y 300
+
+# define SCREEN_WIDTH 500
+# define SCREEN_HEIGHT 300
 # define T_INC 10
 # define R_INC 5
 # define USG_MSG	"./fractol"
@@ -40,29 +37,10 @@ typedef struct	s_color
 # define COLOR(r, g, b)((t_color){r, g, b})
 # define PACK_COLOR(c)((((unsigned)((c.r << 8u) + c.g) << 8u) + c.b))
 
-typedef struct	s_mlx
+typedef struct	s_app
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-	void        *img_ptr;
-	unsigned	size_x;
-	unsigned	size_y;
+}				t_app;
 
-	int        *pic_ptr;
-	int        bpp;
-	int        size_line;
-	int        endian;
+int				finish(t_app *app);
 
-}				t_mlx;
-
-int				finish(t_mlx *mlx);
-
-/*
-** Hooks
-*/
-
-int		key_press(int k, t_mlx *win);
-int		mouse_press(int button, int x, int y, t_mlx *win);
-int		mouse_release(int button, int x, int y, t_mlx *win);
-int		mouse_move(int x, int y, t_mlx *win);
 #endif

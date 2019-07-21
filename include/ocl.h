@@ -1,14 +1,15 @@
-#ifndef OPENCL_H
-# define OPENCL_H
+#ifndef OCL_H
+# define OCL_H
 
 #ifdef __APPLE__
 	# include <OpenCL/opencl.h>
 #else
 	# include <CL/opencl.h>
 #endif
-# include <stdio.h>
+
 # include <fcntl.h>
-# include <unistd.h>
+# include <errno.h>
+
 # include "libft.h"
 
 cl_device_id	ocl_create_device();

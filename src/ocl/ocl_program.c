@@ -24,7 +24,7 @@ static char 	*read_file(const char *file_name)
 
 	if (!(fd = open_file_fd(file_name)))
 	{
-		perror(file_name);
+		ft_putendl_fd("Failed to read file", 2);
 		return (NULL);
 	}
 	if ((res = ft_strnew(0)) == NULL)
@@ -66,7 +66,7 @@ cl_program		ocl_compile_program(cl_context ctx, cl_device_id device_id,
 	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
 	if (OCL_ERROR(err, "Failed to build program"))
 	{
-		(log = ocl_get_build_log(program, device_id)) ? perror(log) : 0;
+		(log = ocl_get_build_log(program, device_id)) ? ft_putendl_fd(log, 2) : 0;
 		log ? ft_strdel(&log): 0;
 		return (NULL);
 	}
