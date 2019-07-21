@@ -50,7 +50,7 @@ $(NAME) : ${OBJECT_FILES}
 so : ${SRCS}
 	@gcc $(GCC_FLAGS) ${SRCS} -fPIC -shared -o $(SONAME)
 
-${OBJECT_FILES}: ${SRCS}
+%.o: %.c libft.h
 	@gcc $(GCC_FLAGS) -o $@ -c $<
 
 clean :
