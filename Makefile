@@ -40,6 +40,7 @@ LIBFT_DIR	=	./libft
 
 SDL_DIR		=	./SDL
 SDL_DIST	=	$(PWD)/SDL/dist
+SDL_INCLUDE =	$(SDL_DIR)/dist/include/SDL2
 SDL_LINK	=	`$(SDL_DIST)/bin/sdl2-config --cflags --libs`
 
 
@@ -47,7 +48,7 @@ SRC			=	$(addprefix $(DIR_SRC)/, $(SRC_FILES))
 HDR			=	$(addprefix $(DIR_INC)/, $(HDR_FILES))
 OBJ			=	$(addprefix $(DIR_OBJ)/, $(SRC_FILES:.c=.o))
 
-INCLUDES	=	-I $(LIBFT_DIR) -I $(DIR_INC) -I $(SDL_DIR)/dist/include
+INCLUDES	=	-I $(LIBFT_DIR) -I $(DIR_INC) -I $(SDL_INCLUDE)
 LIBS		=	./libft/libft.a -lOpenCL -lm
 all: $(NAME)
 
@@ -56,7 +57,7 @@ $(DIR_OBJ):
 	@mkdir $(DIR_OBJ)/ocl
 
 $(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME) $(SDL_LINK)
 
 $(DIR_OBJ)/%.o:$(DIR_SRC)/%.c $(SRC)
 	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
@@ -71,6 +72,7 @@ $(SDL_DIST):
 	cd $(SDL_DIR)/tmp; ../configure --prefix=$(SDL_DIST)
 	$(MAKE) -C $(SDL_DIR)/tmp
 	$(MAKE) -C $(SDL_DIR)/tmp install > /dev/null
+	$(info SDL_LINK: $(SDL_LINK))
 
 clean :
 	@/bin/rm -rf $(DIR_OBJ)
