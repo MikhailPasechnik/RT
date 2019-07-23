@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME=fractol
+NAME=RTv1
 
 OS			=	$(shell uname -s)
 CC			=	gcc
@@ -32,7 +32,7 @@ SRC_FILES	=			\
 
 
 HDR_FILES	=			\
-	fractol.h 			\
+	rt.h 			\
 	keys.h 				\
 	ocl.h				\
 	cgmath.h
