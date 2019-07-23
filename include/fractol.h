@@ -19,28 +19,23 @@
 # include "libft.h"
 # include "keys.h"
 # include "ocl.h"
+# include "SDL.h"
+
 
 
 # define SCREEN_WIDTH 500
 # define SCREEN_HEIGHT 300
-# define T_INC 10
-# define R_INC 5
-# define USG_MSG	"./fractol"
-# define WIN_TITLE	"Fractol"
 
-typedef struct	s_color
+typedef struct	s_view
 {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-}				t_color;
-# define COLOR(r, g, b)((t_color){r, g, b})
-# define PACK_COLOR(c)((((unsigned)((c.r << 8u) + c.g) << 8u) + c.b))
+	SDL_Window	*win;
+}				t_view;
+
 
 typedef struct	s_app
 {
-}				t_app;
+	t_ocl		ocl;
 
-int				finish(t_app *app);
+}				t_app;
 
 #endif
