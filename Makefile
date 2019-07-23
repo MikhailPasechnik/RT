@@ -17,18 +17,25 @@ CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 
 SRC_FILES	=			\
-	hooks.c 			\
 	main.c 				\
-	finish.c 			\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
 	ocl/ocl_program.c  	\
-	ocl/ocl_utils.c
+	ocl/ocl_utils.c		\
+	cgmath/mat4.c  		\
+	cgmath/mat4_op.c  	\
+	cgmath/mat4_rts.c  	\
+	cgmath/mat4_transform.c  \
+	cgmath/mat4_utils.c \
+	cgmath/vec3.c  		\
+	cgmath/vec3_op.c
+
 
 HDR_FILES	=			\
 	fractol.h 			\
 	keys.h 				\
-	ocl.h
+	ocl.h				\
+	cgmath.h
 
 
 DIR_SRC		=	./src
@@ -49,17 +56,25 @@ HDR			=	$(addprefix $(DIR_INC)/, $(HDR_FILES))
 OBJ			=	$(addprefix $(DIR_OBJ)/, $(SRC_FILES:.c=.o))
 
 INCLUDES	=	-I $(LIBFT_DIR) -I $(DIR_INC) -I $(SDL_INCLUDE)
-LIBS		=	./libft/libft.a -lOpenCL -lm
+LIBS		:=	./libft/libft.a -lm
+
+ifeq ($(OS),Linux)
+	LIBS	:= $(LIBS) -lOpenCL
+else
+	LIBS	:= $(LIBS) -framework OpenCL
+endif
+
 all: $(NAME)
 
 $(DIR_OBJ):
 	@mkdir $(DIR_OBJ)
 	@mkdir $(DIR_OBJ)/ocl
+	@mkdir $(DIR_OBJ)/cgmath
 
 $(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME) $(SDL_LINK)
 
-$(DIR_OBJ)/%.o:$(DIR_SRC)/%.c $(SRC)
+$(DIR_OBJ)/%.o:$(DIR_SRC)/%.c $(HDR)
 	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
 $(LIBFT): FAKE
