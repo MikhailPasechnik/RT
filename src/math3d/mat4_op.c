@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cgmath.h"
+#include "math3d.h"
 
 void	m4_rotate_relative(t_mat4 *m, t_vec3 *p, t_vec3 *r)
 {

@@ -19,6 +19,7 @@
 # include "libft.h"
 # include "keys.h"
 # include "ocl.h"
+# include "math3d.h"
 # include "SDL.h"
 
 

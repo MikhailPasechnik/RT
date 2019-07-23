@@ -22,20 +22,20 @@ SRC_FILES	=			\
 	ocl/ocl_init.c  	\
 	ocl/ocl_program.c  	\
 	ocl/ocl_utils.c		\
-	cgmath/mat4.c  		\
-	cgmath/mat4_op.c  	\
-	cgmath/mat4_rts.c  	\
-	cgmath/mat4_transform.c  \
-	cgmath/mat4_utils.c \
-	cgmath/vec3.c  		\
-	cgmath/vec3_op.c
+	math3d/mat4.c  		\
+	math3d/mat4_op.c  	\
+	math3d/mat4_rts.c  	\
+	math3d/mat4_transform.c  \
+	math3d/mat4_utils.c \
+	math3d/vec3.c  		\
+	math3d/vec3_op.c
 
 
 HDR_FILES	=			\
 	rt.h 			\
 	keys.h 				\
 	ocl.h				\
-	cgmath.h
+	math3d.h
 
 
 DIR_SRC		=	./src
@@ -69,7 +69,7 @@ all: $(NAME)
 $(DIR_OBJ):
 	@mkdir $(DIR_OBJ)
 	@mkdir $(DIR_OBJ)/ocl
-	@mkdir $(DIR_OBJ)/cgmath
+	@mkdir $(DIR_OBJ)/math3d
 
 $(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME) $(SDL_LINK)
