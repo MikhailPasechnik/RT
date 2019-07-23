@@ -19,6 +19,7 @@ cl_device_id	ocl_create_device()
 
 int				ocl_init(t_ocl *cl)
 {
+	ft_bzero(cl, sizeof(*cl));
 	cl_int	err;
 	if (!(cl->device = ocl_create_device()))
 		return (0);

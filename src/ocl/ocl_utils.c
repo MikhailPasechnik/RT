@@ -2,9 +2,9 @@
 
 void	ocl_release(t_ocl *cl)
 {
-	if (cl->queue)
+	if (cl->queue != NULL)
 		clReleaseCommandQueue(cl->queue);
-	if (cl->context)
+	if (cl->context != NULL)
 		clReleaseContext(cl->context);
 }
 
