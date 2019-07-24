@@ -30,7 +30,7 @@ int				ocl_init(t_ocl *cl)
 		cl->device = NULL;
 		return (0);
 	}
-	cl->queue = clCreateCommandQueueWithProperties(cl->context, cl->device, NULL, &err);
+	cl->queue = clCreateCommandQueue(cl->context, cl->device, 0, &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
 	{
 		clReleaseDevice(cl->device);
