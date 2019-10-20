@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static uint16_t		get_long_string(t_real r, char *res, int prec, \
+static uint16_t		get_long_string(t_pf_real r, char *res, int prec, \
 									unsigned int flg)
 {
 	int				i;
@@ -67,7 +67,7 @@ static void			pf_lm_round(uint16_t l_int[], uint16_t l_frac[], \
 	}
 }
 
-static uint8_t		get_longarrs(t_real *r, uint16_t tmp[], uint8_t is_den)
+static uint8_t		get_longarrs(t_pf_real *r, uint16_t tmp[], uint8_t is_den)
 {
 	int64_t			i;
 
@@ -89,7 +89,7 @@ static uint8_t		get_longarrs(t_real *r, uint16_t tmp[], uint8_t is_den)
 	return (r->r_n_exp == -16382);
 }
 
-static uint16_t		double_toa(t_real *r, char *res, int prec, unsigned int flg)
+static uint16_t		double_toa(t_pf_real *r, char *res, int prec, unsigned int flg)
 {
 	uint16_t		tmp[PF_LM_MAXLEN];
 	uint8_t			is_denorm;
@@ -106,7 +106,7 @@ void				pf_put_float(t_pf_format *f)
 {
 	char			res[PF_LM_MAXLEN];
 	int				len;
-	t_real			real;
+	t_pf_real			real;
 
 	pf_fast_bzero(real.r_long_int, sizeof(uint16_t) * PF_LM_MAXLEN);
 	pf_fast_bzero(real.r_long_frac, sizeof(uint16_t) * PF_LM_MAXLEN);

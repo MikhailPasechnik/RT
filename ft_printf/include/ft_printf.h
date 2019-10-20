@@ -40,7 +40,7 @@ typedef struct		s_real_num
 	int16_t			r_n_exp;
 	uint16_t		r_long_int[PF_LM_MAXLEN];
 	uint16_t		r_long_frac[PF_LM_MAXLEN];
-}					t_real;
+}					t_pf_real;
 
 typedef struct		s_pf_format
 {
@@ -125,7 +125,7 @@ void				pf_put_pad(t_pf_format *f);
 
 uintmax_t			pf_u_power(uintmax_t nb, int p);
 int16_t				pf_u_exp_power(int16_t nb, int p);
-int					is_not_realnum(t_real *real, t_pf_format *f);
+int					is_not_realnum(t_pf_real *real, t_pf_format *f);
 int16_t				pf_lm_checktrailing(uint16_t longn[], int16_t pos);
 void				pf_fast_bzero(void *s, size_t n);
 int					pf_in(const char *s, char c);

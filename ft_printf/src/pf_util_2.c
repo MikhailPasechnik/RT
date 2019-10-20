@@ -36,7 +36,7 @@ void			pf_fast_bzero(void *s, size_t n)
 		*v++ = 0;
 }
 
-int				is_not_realnum(t_real *real, t_pf_format *f)
+int				is_not_realnum(t_pf_real *real, t_pf_format *f)
 {
 	int			flag;
 
