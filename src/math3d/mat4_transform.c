@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "math3d.h"
+#include "m3d.h"
 
-void	m4_translate(t_mat4 *m, t_vec3 *t)
+void	m3d_m4_translate(t_mat4 *m, t_m3d_vec3 *t)
 {
 	m->r[3][0] +=
 			t->x * m->r[0][0] +
@@ -32,20 +32,20 @@ void	m4_translate(t_mat4 *m, t_vec3 *t)
 			t->z * m->r[2][3];
 }
 
-void	m4_set_translate(t_mat4 *m, t_vec3 *t)
+void	m3d_m4_set_translate(t_mat4 *m, t_m3d_vec3 *t)
 {
-	m4_identity(m);
+	m3d_m4_identity(m);
 	m->r[3][0] = t->x;
 	m->r[3][1] = t->y;
 	m->r[3][2] = t->z;
 }
 
-void	m4_set_rotation(t_mat4 *m, t_vec3 *r)
+void	m3d_m4_set_rotation(t_mat4 *m, t_m3d_vec3 *r)
 {
-	t_real	cos_v[3];
-	t_real	sin_v[3];
+	t_m3d_real	cos_v[3];
+	t_m3d_real	sin_v[3];
 
-	m4_identity(m);
+	m3d_m4_identity(m);
 	cos_v[2] = cos(TO_RAD(r->z));
 	cos_v[1] = cos(TO_RAD(r->y));
 	cos_v[0] = cos(TO_RAD(r->x));
@@ -63,7 +63,7 @@ void	m4_set_rotation(t_mat4 *m, t_vec3 *r)
 	m->r[2][2] = cos_v[1] * cos_v[0];
 }
 
-void	m4_rotate(t_mat4 *m, t_vec3 *r)
+void	m3d_m4_rotate(t_mat4 *m, t_m3d_vec3 *r)
 {
 	t_mat4	mr;
 	t_mat4	mc;
@@ -71,8 +71,8 @@ void	m4_rotate(t_mat4 *m, t_vec3 *r)
 	int		cc;
 	int		k;
 
-	mc = *m4_copy(m, &mc);
-	m4_set_rotation(&mr, r);
+	mc = *m3d_m4_copy(m, &mc);
+	m3d_m4_set_rotation(&mr, r);
 	rr = 3;
 	while (rr--)
 	{
@@ -88,13 +88,13 @@ void	m4_rotate(t_mat4 *m, t_vec3 *r)
 	}
 }
 
-void	m4_scale(t_mat4 *m, t_vec3 *s)
+void	m3d_m4_scale(t_mat4 *m, t_m3d_vec3 *s)
 {
 	int		r;
 	int		c;
-	t_real	*v;
+	t_m3d_real	*v;
 
-	v = (t_real *)s;
+	v = (t_m3d_real *)s;
 	r = 3;
 	while (r--)
 	{

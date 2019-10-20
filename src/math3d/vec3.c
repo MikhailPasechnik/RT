@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "math3d.h"
+#include "m3d.h"
 
-t_vec3	*v3_add(t_vec3 *a, t_vec3 *b, t_vec3 *out)
+t_m3d_vec3	*m3d_v3_add(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out)
 {
 	if (!a || !b || !out)
 		return (NULL);
@@ -22,7 +22,7 @@ t_vec3	*v3_add(t_vec3 *a, t_vec3 *b, t_vec3 *out)
 	return (out);
 }
 
-t_vec3	*v3_sub(t_vec3 *a, t_vec3 *b, t_vec3 *out)
+t_m3d_vec3	*m3d_v3_sub(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out)
 {
 	if (!a || !b || !out)
 		return (NULL);
@@ -32,7 +32,7 @@ t_vec3	*v3_sub(t_vec3 *a, t_vec3 *b, t_vec3 *out)
 	return (out);
 }
 
-t_vec3	*v3s_mull(t_vec3 *v, t_real s, t_vec3 *out)
+t_m3d_vec3	*m3d_v3_mull_s(t_m3d_vec3 *v, t_m3d_real s, t_m3d_vec3 *out)
 {
 	if (!v || !out)
 		return (NULL);
@@ -42,10 +42,10 @@ t_vec3	*v3s_mull(t_vec3 *v, t_real s, t_vec3 *out)
 	return (out);
 }
 
-t_vec3	*v3_copy(t_vec3 *v, t_vec3 *out)
+t_m3d_vec3	*m3d_v3_copy(t_m3d_vec3 *v, t_m3d_vec3 *out)
 {
 	if (!v || !out)
 		return (NULL);
-	ft_memmove(out, v, sizeof(t_vec3));
+	ft_memmove(out, v, sizeof(t_m3d_vec3));
 	return (out);
 }

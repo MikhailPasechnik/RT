@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "math3d.h"
+#include "m3d.h"
 
-void	m4_rotate_relative(t_mat4 *m, t_vec3 *p, t_vec3 *r)
+void	m3d_m4_rotate_relative(t_mat4 *m, t_m3d_vec3 *p, t_m3d_vec3 *rot)
 {
 	t_mat4	inv_rel;
 	t_mat4	tmp;
 
-	m4_set_translate(&tmp, p);
-	m4_mul(m, m4_inv(&tmp, &inv_rel), m);
-	m4_rotate(&tmp, r);
-	m4_mul(m, &tmp, m);
+	m3d_m4_set_translate(&tmp, p);
+	m3d_m4_mul(m, m3d_m4_inv(&tmp, &inv_rel), m);
+	m3d_m4_rotate(&tmp, rot);
+	m3d_m4_mul(m, &tmp, m);
 }
