@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,44 +12,34 @@
 
 #include "rt.h"
 
-int		sdl_init()
+size_t	rt_tab_len(char **tab)
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
-	{
-		ft_putendl_fd("Failed to init SDL! SDL_Error: ", 2);
-		ft_putendl_fd(SDL_GetError(), 2);
-		return (0);
-	}
-	return (1);
+	size_t	len;
+
+	len = 0;
+	while (tab && tab[len])
+		len++;
+	return (len);
 }
 
-void	sdl_loop(t_app *app)
+void	*rt_tab_free(char **tab)
 {
-	SDL_Event	event;
-	int			quit;
+	int	i;
 
-	quit = 0;
-	while (!quit)
-		while (SDL_PollEvent(&event))
-		{
-			quit = event.type == SDL_QUIT;
-			if (SDL_GetWindowID(app->win) == event.window.windowID)
-				on_app_event(app, &event);
-			quit = quit || app->quit;
-		}
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+	return (NULL);
 }
 
-int main(int argc, char **argv)
+void	*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h)
 {
-	t_app app;
-	!sdl_init() ? exit(1) : 0;
-	if (!app_start(&app, argv + 1, argc - 1))
-		app_finish(&app);
-	else
+	if (rect)
 	{
-		sdl_loop(&app);
-		app_finish(&app);
+		rect->x = x;
+		rect->y = y;
+		rect->w = w;
+		rect->h = h;
 	}
-	SDL_Quit();
-	return (0);
 }

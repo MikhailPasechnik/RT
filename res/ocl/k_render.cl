@@ -1,4 +1,4 @@
-__kernel void square(
+__kernel void k_render(
    __global float* input,
    __global float* output,
    const unsigned int count)
@@ -7,6 +7,5 @@ __kernel void square(
    if(i < count)
    {
 	   output[i] = input[i] * input[i];
-	   // printf("get_global_id(0): %d\n", i);
    }
 }
