@@ -40,7 +40,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	rt_set_rect(&app->rect, 0, 0, app->width, app->height);
 	if (!(ocl_init(&app->ocl)))
 		return (app_error("Failed to initialise OpenCL", 0));
-	if (!new_renderer(&app->ren, &app->ocl))
+	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC, RT_CL_INCLUDE))
 		return (app_error("Failed to create renderer", 0));
 	if (!(app->win = SDL_CreateWindow(
 			RT_WIN_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

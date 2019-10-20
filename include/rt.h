@@ -84,7 +84,7 @@ void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed);
 /*
 ** Render functions
 */
-int				new_renderer(t_renderer *ren, t_ocl *ocl);
+int				new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options);
 void			delete_renderer(t_renderer *ren);
 int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect);
 

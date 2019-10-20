@@ -25,17 +25,17 @@ static int	log_build_log(t_renderer *ren, t_ocl *ocl, int fd)
 	return (0);
 }
 
-int new_renderer(t_renderer *ren, t_ocl *ocl)
+int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 {
 	int			err;
 
-	if (!(ren->src = ft_strsplit_any(RT_CL_SRC, " \n")))
+	if (!(ren->src = ft_strsplit_any(src, " \n")))
 		return (0);
 	ren->src_count = rt_tab_len(ren->src);
 	ren->program = ocl_create_program(ocl->context,
 			(const char **)ren->src, ren->src_count);
 	if (!ren->program || OCL_ERROR(clBuildProgram(
-			ren->program, 0, NULL, RT_CL_INCLUDE, NULL, NULL),
+			ren->program, 0, NULL, options, NULL, NULL),
 					"Failed to build program"))
         return (log_build_log(ren, ocl, 2));
 	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
@@ -70,6 +70,7 @@ static int	pre_render(t_renderer *ren, t_ocl *ocl)
 
 int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect)
 {
+	return (1); // TODO
 	int		err;
 	size_t	size;
 
