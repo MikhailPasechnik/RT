@@ -13,13 +13,13 @@ typedef struct	s_inter
 }				t_inter;
 
 __kernel void k_render(
+		uint width,
+		uint height,
 		__global t_object* scene,
-		__global t_inter* inter)
+		__global char* output)
 {
-	int id = get_global_id(0);
-	inter[0].p.x = 22;
-	inter[0].p.y = 33;
-	inter[0].p.z = 44;
-	inter[0].id = 21;
-	printf("CL: id: %d\n", id);
+	int x = get_global_id(0);
+	int y = get_global_id(1);
+	int i = y * width + x;
+	output[i] = '#';
 }
