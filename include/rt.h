@@ -35,6 +35,20 @@
 # endif
 # define RT_CL_SRC "res/ocl/k_render.cl"
 
+/*
+ * Rectangle
+ * 		orig: rectangle start position
+ * 		size: is width and height
+ *
+ * 	Can be used to specify kernel work area
+ *   clEnqueueNDRangeKernel(q, k, 2, &r.orig, &r.size, NULL, 0, NULL, NULL);
+*/
+typedef struct	s_urect
+{
+	size_t orig[2];
+	size_t size[2];
+}				t_urect;
+
 typedef struct	s_renderer
 {
 	cl_kernel 			render_kernel;
