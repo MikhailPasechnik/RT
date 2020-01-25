@@ -61,7 +61,7 @@ SDL_LINK	=	`$(SDL_DIST)/bin/sdl2-config --cflags --libs`
 SRC			=	$(addprefix $(DIR_SRC)/, $(SRC_FILES))
 HDR			=	$(addprefix $(DIR_INC)/, $(HDR_FILES))
 OBJ			=	$(addprefix $(DIR_OBJ)/, $(SRC_FILES:.c=.o))
-
+OBJ_NO_MAIN =   $(shell echo $(OBJ)| sed 's/\.\/obj\/main.o//g')
 INCLUDES	=	-I$(LIBFT_DIR) -I$(DIR_INC) -I$(SDL_INCLUDE) -I$(PRINTF_DIR)/include
 LIBS		:=	$(LIBFT) $(PRINTF) -lm
 
@@ -81,6 +81,15 @@ $(DIR_OBJ):
 
 $(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME) $(SDL_LINK)
+
+# FRO TEST's
+test1: $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT) $(PRINTF)
+	$(CC) $(CFLAGS) -c $(INCLUDES) tests/cl_sandbox.c -o tests/cl_sandbox.o
+	$(CC) $(CFLAGS)  $(OBJ_NO_MAIN) tests/cl_sandbox.o $(LIBS)  -o cl_sandbox1 $(SDL_LINK)
+
+test2: $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT) $(PRINTF)
+	$(CC) $(CFLAGS) -c $(INCLUDES) tests1/cl_sandbox.c -o tests1/cl_sandbox.o
+	$(CC) $(CFLAGS)  $(OBJ_NO_MAIN) tests1/cl_sandbox.o $(LIBS)  -o cl_sandbox2 $(SDL_LINK)
 
 $(DIR_OBJ)/%.o:$(DIR_SRC)/%.c
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
