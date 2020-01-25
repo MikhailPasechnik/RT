@@ -14,10 +14,15 @@ NAME=RTv1
 
 OS			=	$(shell uname -s)
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra  # -Werror
 
 SRC_FILES	=			\
-	main.c 				\
+	app.c				\
+	events.c			\
+	file_io.c			\
+	main.c				\
+	renderer.c			\
+	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
 	ocl/ocl_program.c  	\
@@ -44,6 +49,8 @@ DIR_OBJ		=	./obj
 
 LIBFT		=	./libft/libft.a
 LIBFT_DIR	=	./libft
+PRINTF		= 	./ft_printf/libftprintf.a
+PRINTF_DIR	= 	./ft_printf
 
 SDL_DIR		=	./SDL
 SDL_DIST	=	$(PWD)/SDL/dist
@@ -55,8 +62,8 @@ SRC			=	$(addprefix $(DIR_SRC)/, $(SRC_FILES))
 HDR			=	$(addprefix $(DIR_INC)/, $(HDR_FILES))
 OBJ			=	$(addprefix $(DIR_OBJ)/, $(SRC_FILES:.c=.o))
 
-INCLUDES	=	-I $(LIBFT_DIR) -I $(DIR_INC) -I $(SDL_INCLUDE)
-LIBS		:=	./libft/libft.a -lm
+INCLUDES	=	-I$(LIBFT_DIR) -I$(DIR_INC) -I$(SDL_INCLUDE) -I$(PRINTF_DIR)/include
+LIBS		:=	$(LIBFT) $(PRINTF) -lm
 
 ifeq ($(OS),Linux)
 	LIBS	:= $(LIBS) -lOpenCL
@@ -67,18 +74,22 @@ endif
 all: $(NAME)
 
 $(DIR_OBJ):
-	@mkdir $(DIR_OBJ)
-	@mkdir $(DIR_OBJ)/ocl
-	@mkdir $(DIR_OBJ)/math3d
+	echo DIR_OBJ: "$(DIR_OBJ)"
+	mkdir $(DIR_OBJ)
+	mkdir $(DIR_OBJ)/ocl
+	mkdir $(DIR_OBJ)/math3d
 
-$(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT)
+$(NAME): $(SDL_DIST)  $(DIR_OBJ) $(OBJ) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME) $(SDL_LINK)
 
-$(DIR_OBJ)/%.o:$(DIR_SRC)/%.c $(HDR)
-	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+$(DIR_OBJ)/%.o:$(DIR_SRC)/%.c
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
 $(LIBFT): FAKE
-	@$(MAKE) -C $(LIBFT_DIR)/ --no-print-directory
+	$(MAKE) -C $(LIBFT_DIR)/ --no-print-directory
+
+$(PRINTF): FAKE
+	$(MAKE) -C $(PRINTF_DIR)/ --no-print-directory
 
 $(SDL_DIST):
 	$(info ************ Compiling SDL *************)
