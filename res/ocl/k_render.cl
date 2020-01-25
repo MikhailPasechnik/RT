@@ -1,11 +1,1 @@
-__kernel void k_render(
-   __global float* input,
-   __global float* output,
-   const unsigned int count)
-{
-   int i = get_global_id(0);
-   if(i < count)
-   {
-	   output[i] = input[i] * input[i];
-   }
-}
+__kernel void k_render(   const unsigned int width,   const unsigned int height,   __global int	*result   ){	int id = get_global_id(0);	int x = id % width;	int y = id / height;	result[id] = ((((x << 8u) + y) << 8u) +  1);	//printf("%d, x: %d y: %d\n", id, x, y);}
