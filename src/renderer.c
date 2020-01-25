@@ -38,8 +38,14 @@ int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 			ren->program, 0, NULL, options, NULL, NULL),
 					"Failed to build program"))
         return (log_build_log(ren, ocl, 2));
+#ifdef __APPLE__
+	ren->queue = clCreateCommandQueue(ocl->context,
+			ocl->device, 0, &err);
+#else
 	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
 			ocl->device, 0, &err);
+#endif
+	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
 		return (0);
 	return (1);
@@ -65,12 +71,15 @@ static int	pre_render(t_renderer *ren, t_ocl *ocl)
 		ren->out_mem = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE,
 				sizeof(cl_int) * ren->out_w * ren->out_h, NULL, &err);
 	}
+	err |= clSetKernelArg(ren->render_kernel, 0, sizeof(cl_uint), &ren->out_w);
+	err |= clSetKernelArg(ren->render_kernel, 1, sizeof(cl_uint), &ren->out_h);
+	err |= clSetKernelArg(ren->render_kernel, 2, sizeof(ren->out_mem), &ren->out_mem);
 	return (OCL_ERROR(err, "Failed to pre render!") ? 0 : 1);
 }
 
 int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect)
 {
-	return (1); // TODO
+	// return (1); // TODO
 	int		err;
 	size_t	size;
 
