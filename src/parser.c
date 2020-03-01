@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/01 20:43:18 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/01 21:09:46 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void	parser_obj(char **scn, t_app *app, int n) // ++ 01_03
 	}
 }
 
-void	parser_light(char **scn, t_app *app, int n) // добавить проверку на type?
+void	parser_light(char **scn, t_app *app, int n)
 {
 	t_light	*ll;
 	
@@ -286,7 +286,7 @@ void	parser_light(char **scn, t_app *app, int n) // добавить прове�
 		check_obj(app);
 		app->light_sum++;
 		app->light = add_ll(app, ll);
-		n += 5; // 4, если убрать тип
+		n += 4;
 	}
 }
 
@@ -341,6 +341,6 @@ void	parser(t_app *app, char *scene) // ++ 01_03
 	app_init(app);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 3);
-	n = (app->light_sum) * 5 + 3; // номер строки, с которой начинаются объекты, если источников > 1
+	n = (app->light_sum) * 4 + 3; // номер строки, с которой начинаются объекты, если источников > 1
 	parser_obj(app->scene, app, n);
 }
