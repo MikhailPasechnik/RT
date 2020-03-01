@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+         #
+#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2019/04/26 10:39:49 by bnesoi           ###   ########.fr        #
+#    Updated: 2020/03/01 20:35:38 by bmahi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ FUNS=\
 	ft_htdel          ft_htget        ft_htset        ft_itoa_base_ext     \
 	ft_strlowcase	  ft_tap_is		  ft_tap_ok		  ft_tap_ismem         \
 	ft_strcapitalize  ft_strreverse   ft_strsplit_any ft_strsplit_word	   \
-	ft_tap_cmp
+	ft_tap_cmp        get_next_line
 
 SRCS=$(addsuffix .c,$(FUNS))
 OBJECT_FILES=$(addsuffix .o,$(FUNS))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:17:05 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/05/08 20:28:20 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/03/01 20:35:40 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/syslimits.h>
 
 void			*ft_memset(void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);
@@ -83,6 +84,8 @@ void			ft_putnbr_fd(int n, int fd);
 void			ft_print_bits_fd(size_t size, void *ptr, int fd);
 int				ft_power(int nb, int power);
 size_t			ft_strhash(const char *s, size_t size);
+
+int				get_next_line(const int fd, char **line);
 
 typedef struct	s_list
 {

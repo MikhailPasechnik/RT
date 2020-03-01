@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/07/14 16:38:37 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/03/01 20:39:33 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define RT_H
 
 # include <math.h>
-# include "libft.h"
+# include "../libft/libft.h"
 # include "ft_printf.h"
 # include "ocl.h"
 # include "m3d.h"
 # include "SDL.h"
+# include "obj.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
@@ -49,7 +50,7 @@ typedef struct	s_urect
 	size_t size[2];
 }				t_urect;
 
-typedef struct	s_renderer
+typedef struct			s_renderer
 {
 	cl_kernel 			render_kernel;
 
@@ -65,9 +66,9 @@ typedef struct	s_renderer
 
 	int					width;
 	int					height;
-}				t_renderer;
+}						t_renderer;
 
-typedef struct	s_app
+typedef struct			s_app
 {
 	SDL_Window			*win;
 	int					width;
@@ -78,7 +79,20 @@ typedef struct	s_app
 
 	t_renderer			ren;
 	t_ocl				ocl;
-}				t_app;
+
+	t_cam				cam;
+	t_obj				*obj;
+	t_light				*light; // 
+
+	int					obj_sum; // objects of scene
+	int					light_sum; // lights of scene
+
+	int					obj_count;
+	int					light_count;
+
+	int					lines; // lines of buf
+	char				**scene; // scene for parser
+}						t_app;
 
 /*
 ** App functions
@@ -108,4 +122,25 @@ int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect);
 size_t			rt_tab_len(char **tab);
 void			*rt_tab_free(char **tab);
 void			*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h);
+
+/*
+** Kate functions
+*/
+int				kill(char *message);
+void			parser(t_app *app, char *scene);
+char			**read_scene(int fd, int *lines);
+void			check_obj(t_app *app);
+void			app_init(t_app *app);
+void			parser_cam(t_cam *cam, char **scn);
+void			parser_light(char **scn, t_app *app, int n);
+void			parser_obj(char **scn, t_app *app, int n);
+t_light			*add_ll(t_app *app, t_light *ll);
+t_obj			*add_ol(t_app *app, t_obj *ol);
+t_vec			array_attack(char *s);
+t_color			array_color(char *s);
+t_color			col_init(int r, int g, int b);
+t_vec			vec_init(double x, double y, double z);
+void			ignore_str(char **ptr);
+int				ptr_atoi(char **str);
+
 #endif
