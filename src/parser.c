@@ -12,10 +12,13 @@
 
 #include "../include/rt.h"
 
-# define PARSE_NAME_OBJ if ((ft_strncmp(scn[n], "plane_", 6) || \
-	ft_strncmp(scn[n], "cylinder_", 9) || ft_strncmp(scn[n], "sphere_", 7) || \
-	ft_strncmp(scn[n], "cone_", 5)) && (scn[n][ft_strlen(scn[n]) - 1] != ':' \
-	&& scn[n][ft_strlen(scn[n])] != '\0'))
+int is_valid_obj_name(char *str)
+{
+	return ((ft_strncmp(str, "plane_", 6) || \
+		ft_strncmp(str, "cylinder_", 9) || ft_strncmp(str, "sphere_", 7) || \
+		ft_strncmp(str, "cone_", 5)) && (str[ft_strlen(str) - 1] != ':' \
+		&& str[ft_strlen(str)] != '\0'));
+}
 
 int		kill(char *message) // ++
 {
@@ -208,7 +211,7 @@ void	parser_obj(char **scn, t_app *app, int n) // ++ 01_03
 	
 	while (n < app->lines)
 	{
-		PARSE_NAME_OBJ
+		if (!is_valid_obj_name(scn[n]))
 			kill ("Error name obj");
 		if (!(ol = (t_obj *)malloc(sizeof(t_obj))))
 			kill("Malloc dropped!");
