@@ -15,24 +15,31 @@
 
 # include "libft.h"
 # include <math.h>
-
+#ifdef __APPLE__
+# include <OpenCL/opencl.h>
+#else
+# include <CL/opencl.h>
+#endif
 # define EPSILON 0.000001
 # define R_ABS fabs
 # define R_ROUND round
+# ifndef M_PI
+# define M_PI 3.14159265
+# endif
 # define TO_RAD(a)((a)*(M_PI / 180.0))
 
-typedef double	t_m3d_real;
-typedef struct	s_m3d_mat4
-{
-	t_m3d_real	r[4][4];
-}				t_mat4;
-typedef struct	s_m3d_vec3
-{
-	t_m3d_real	x;
-	t_m3d_real	y;
-	t_m3d_real	z;
-}				t_m3d_vec3;
+typedef cl_double t_real;
+typedef cl_double16	t_mat4;
+typedef cl_double3	t_vec3;
 # define VEC(x, y, z)((t_vec3){x, y, z})
+/*
+** Helper to access cl_double16 by row and column on pointer var
+*/
+# define M44(m, r, c)(m->s[r * 4 + c])
+/*
+** Helper to access cl_double16 by row and column on static var
+*/
+# define M44S(m, r, c)(m.s[r * 4 + c])
 
 /*
 ** Matrix3 ops

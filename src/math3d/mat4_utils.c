@@ -24,7 +24,7 @@ t_mat4			*m4_identity(t_mat4 *m)
 	{
 		j = 4;
 		while (j--)
-			m->r[i][j] = i == j;
+			M44(m, i, j) = i == j;
 	}
 	return (m);
 }
@@ -40,7 +40,7 @@ int				m4_is_identity(t_mat4 *m)
 		j = 4;
 		while (j--)
 		{
-			if (R_ABS(m->r[i][j] - (t_real)(i == j)) > EPSILON)
+			if (R_ABS(M44(m, i, j) - (t_real)(i == j)) > EPSILON)
 				return (0);
 		}
 	}
