@@ -29,6 +29,7 @@ SRC_FILES	=			\
 	ocl/ocl_utils.c		\
 	math3d/mat4.c  		\
 	math3d/mat4_op.c  	\
+	math3d/mat4_inv.c  	\
 	math3d/mat4_rts.c  	\
 	math3d/mat4_transform.c  \
 	math3d/mat4_utils.c \
