@@ -12,14 +12,14 @@
 
 #include "m3d.h"
 
-t_mat4			*m3d_m4_extract_rotation(t_mat4 *m, t_mat4 *out)
+t_mat4			*m4_extract_rotation(t_mat4 *m, t_mat4 *out)
 {
-	t_m3d_vec3 s;
+	t_vec3 s;
 
 	if (!m || !out)
 		return (NULL);
-	m3d_m4_extract_scale(m, &s);
-	m3d_m4_identity(out);
+	m4_extract_scale(m, &s);
+	m4_identity(out);
 	out->r[0][0] = m->r[0][0] / s.x;
 	out->r[0][1] = m->r[0][1] / s.y;
 	out->r[0][2] = m->r[0][2] / s.z;
@@ -32,7 +32,7 @@ t_mat4			*m3d_m4_extract_rotation(t_mat4 *m, t_mat4 *out)
 	return (out);
 }
 
-t_m3d_vec3			*m3d_m4_extract_translation(t_mat4 *m, t_m3d_vec3 *out)
+t_vec3			*m4_extract_translation(t_mat4 *m, t_vec3 *out)
 {
 	if (!m || !out)
 		return (NULL);
@@ -42,12 +42,12 @@ t_m3d_vec3			*m3d_m4_extract_translation(t_mat4 *m, t_m3d_vec3 *out)
 	return (out);
 }
 
-t_m3d_vec3			*m3d_m4_extract_scale(t_mat4 *m, t_m3d_vec3 *out)
+t_vec3			*m4_extract_scale(t_mat4 *m, t_vec3 *out)
 {
 	if (!m || !out)
 		return (NULL);
-	out->x = m3d_v3_mag((t_m3d_vec3 *) m->r[0]);
-	out->y = m3d_v3_mag((t_m3d_vec3 *) m->r[1]);
-	out->z = m3d_v3_mag((t_m3d_vec3 *) m->r[2]);
+	out->x = v3_mag((t_vec3 *) m->r[0]);
+	out->y = v3_mag((t_vec3 *) m->r[1]);
+	out->z = v3_mag((t_vec3 *) m->r[2]);
 	return (out);
 }

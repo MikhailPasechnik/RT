@@ -12,7 +12,7 @@
 
 #include "m3d.h"
 
-t_mat4			*m3d_m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out)
+t_mat4			*m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out)
 {
 	int		r;
 	int		c;
@@ -22,8 +22,8 @@ t_mat4			*m3d_m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out)
 
 	if ((!a || !b) || !out)
 		return (NULL);
-	a == out ? a = m3d_m4_copy(a, &a_copy) : 0;
-	b == out ? b = m3d_m4_copy(b, &b_copy) : 0;
+	a == out ? a = m4_copy(a, &a_copy) : 0;
+	b == out ? b = m4_copy(b, &b_copy) : 0;
 	r = 4;
 	while (r--)
 	{
@@ -40,14 +40,14 @@ t_mat4			*m3d_m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out)
 	return (out);
 }
 
-t_m3d_vec3			*m3d_m4_v3_mul(t_mat4 *a, t_m3d_vec3 *b, t_m3d_vec3 *out)
+t_vec3			*m4_v3_mul(t_mat4 *a, t_vec3 *b, t_vec3 *out)
 {
-	t_m3d_real	w;
-	t_m3d_vec3	b_copy;
+	t_real	w;
+	t_vec3	b_copy;
 
 	if (!a || !b || !out)
 		return (NULL);
-	b == out ? b = m3d_v3_copy(b, &b_copy) : 0;
+	b == out ? b = v3_copy(b, &b_copy) : 0;
 	w = b->x * a->r[0][3] +
 		b->y * a->r[1][3] +
 		b->z * a->r[2][3] + a->r[3][3];
@@ -66,7 +66,7 @@ t_m3d_vec3			*m3d_m4_v3_mul(t_mat4 *a, t_m3d_vec3 *b, t_m3d_vec3 *out)
 	return (out);
 }
 
-static void		coefficient(t_mat4 *m, t_m3d_real *out)
+static void		coefficient(t_mat4 *m, t_real *out)
 {
 	out[0] = m->r[1][2] * m->r[2][3] - m->r[1][3] * m->r[2][2];
 	out[1] = m->r[1][2] * m->r[3][3] - m->r[1][3] * m->r[3][2];
@@ -88,8 +88,8 @@ static void		coefficient(t_mat4 *m, t_m3d_real *out)
 	out[18] = m->r[1][0] * m->r[2][1] - m->r[1][1] * m->r[2][0];
 }
 
-static void		inv_apply(const t_m3d_real m[4][4],
-							 const t_m3d_real *c, t_m3d_real o[4][4], t_m3d_real d)
+static void		inv_apply(const t_real m[4][4],
+							 const t_real *c, t_real o[4][4], t_real d)
 {
 	o[0][0] = d * (m[1][1] * c[3] - m[1][2] * c[4] + m[1][3] * c[7]);
 	o[0][1] = d * -(m[0][1] * c[3] - m[0][2] * c[4] + m[0][3] * c[7]);
@@ -109,10 +109,10 @@ static void		inv_apply(const t_m3d_real m[4][4],
 	o[3][3] = d * (m[0][0] * c[9] - m[0][1] * c[16] + m[0][2] * c[18]);
 }
 
-t_mat4			*m3d_m4_inv(t_mat4 *m, t_mat4 *out)
+t_mat4			*m4_inv(t_mat4 *m, t_mat4 *out)
 {
-	t_m3d_real d;
-	t_m3d_real c[19];
+	t_real d;
+	t_real c[19];
 
 	if (!m || !out)
 		return (NULL);

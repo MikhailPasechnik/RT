@@ -37,38 +37,38 @@ typedef struct	s_m3d_vec3
 /*
 ** Matrix3 ops
 */
-t_mat4			*m3d_m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out);
-t_m3d_vec3		*m3d_m4_v3_mul(t_mat4 *a, t_m3d_vec3 *b, t_m3d_vec3 *out);
-t_mat4			*m3d_m4_identity(t_mat4 *m);
-int				m3d_m4_is_identity(t_mat4 *m);
-t_mat4			*m3d_m4_copy(t_mat4 *m, t_mat4 *out);
-void			m3d_m4_translate(t_mat4 *m, t_m3d_vec3 *t);
-void			m3d_m4_rotate(t_mat4 *m, t_m3d_vec3 *r);
-void			m3d_m4_set_rotation(t_mat4 *m, t_m3d_vec3 *r);
-void			m3d_m4_scale(t_mat4 *m, t_m3d_vec3 *s);
-void			m3d_m4_set_translate(t_mat4 *m, t_m3d_vec3 *t);
-t_m3d_vec3		*m3d_m4_extract_translation(t_mat4 *m, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_m4_extract_scale(t_mat4 *m, t_m3d_vec3 *out);
-t_mat4			*m3d_m4_extract_rotation(t_mat4 *m, t_mat4 *out);
-void			m3d_m4_rotate_relative(t_mat4 *m, t_m3d_vec3 *p, t_m3d_vec3 *rot);
+t_mat4			*m4_mul(t_mat4 *a, t_mat4 *b, t_mat4 *out);
+t_vec3		*m4_v3_mul(t_mat4 *a, t_vec3 *b, t_vec3 *out);
+t_mat4			*m4_identity(t_mat4 *m);
+int				m4_is_identity(t_mat4 *m);
+t_mat4			*m4_copy(t_mat4 *m, t_mat4 *out);
+void			m4_translate(t_mat4 *m, t_vec3 *t);
+void			m4_rotate(t_mat4 *m, t_vec3 *r);
+void			m4_set_rotation(t_mat4 *m, t_vec3 *r);
+void			m4_scale(t_mat4 *m, t_vec3 *s);
+void			m4_set_translate(t_mat4 *m, t_vec3 *t);
+t_vec3		*m4_extract_translation(t_mat4 *m, t_vec3 *out);
+t_vec3		*m4_extract_scale(t_mat4 *m, t_vec3 *out);
+t_mat4			*m4_extract_rotation(t_mat4 *m, t_mat4 *out);
+void			m4_rotate_relative(t_mat4 *m, t_vec3 *p, t_vec3 *rot);
 
 /*
 ** TODO: Determinant and Inverse
 **		implement this?
 **		https://www.sanfoundry.com/c-program-find-inverse-matrix/
 */
-t_m3d_real		m3d_m4_det(t_mat4 *m);
-t_mat4			*m3d_m4_inv(t_mat4 *m, t_mat4 *out);
+t_real		m4_det(t_mat4 *m);
+t_mat4			*m4_inv(t_mat4 *m, t_mat4 *out);
 
 /*
 ** Vec3 ops
 */
-t_m3d_real		m3d_v3_mag(t_m3d_vec3 *v);
-t_m3d_vec3		*m3d_v3_add(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_v3_sub(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_v3_cross(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_v3_norm(t_m3d_vec3 *v, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_v3_mull_s(t_m3d_vec3 *v, t_m3d_real s, t_m3d_vec3 *out);
-t_m3d_vec3		*m3d_v3_copy(t_m3d_vec3 *v, t_m3d_vec3 *out);
+t_real		v3_mag(t_vec3 *v);
+t_vec3		*v3_add(t_vec3 *a, t_vec3 *b, t_vec3 *out);
+t_vec3		*v3_sub(t_vec3 *a, t_vec3 *b, t_vec3 *out);
+t_vec3		*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out);
+t_vec3		*v3_norm(t_vec3 *v, t_vec3 *out);
+t_vec3		*v3_mull_s(t_vec3 *v, t_real s, t_vec3 *out);
+t_vec3		*v3_copy(t_vec3 *v, t_vec3 *out);
 
 #endif

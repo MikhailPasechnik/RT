@@ -12,7 +12,7 @@
 
 #include "m3d.h"
 
-t_mat4			*m3d_m4_identity(t_mat4 *m)
+t_mat4			*m4_identity(t_mat4 *m)
 {
 	int	i;
 	int	j;
@@ -29,7 +29,7 @@ t_mat4			*m3d_m4_identity(t_mat4 *m)
 	return (m);
 }
 
-int				m3d_m4_is_identity(t_mat4 *m)
+int				m4_is_identity(t_mat4 *m)
 {
 	int	i;
 	int	j;
@@ -40,14 +40,14 @@ int				m3d_m4_is_identity(t_mat4 *m)
 		j = 4;
 		while (j--)
 		{
-			if (R_ABS(m->r[i][j] - (t_m3d_real)(i == j)) > EPSILON)
+			if (R_ABS(m->r[i][j] - (t_real)(i == j)) > EPSILON)
 				return (0);
 		}
 	}
 	return (1);
 }
 
-t_mat4			*m3d_m4_copy(t_mat4 *m, t_mat4 *out)
+t_mat4			*m4_copy(t_mat4 *m, t_mat4 *out)
 {
 	if (!m || !out)
 		return (NULL);

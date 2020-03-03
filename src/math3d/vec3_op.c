@@ -12,13 +12,13 @@
 
 #include "m3d.h"
 
-t_m3d_vec3	*m3d_v3_norm(t_m3d_vec3 *v, t_m3d_vec3 *out)
+t_vec3	*v3_norm(t_vec3 *v, t_vec3 *out)
 {
-	t_m3d_real mag;
+	t_real mag;
 
 	if (!v || !out)
 		return (NULL);
-	mag = m3d_v3_mag(v);
+	mag = v3_mag(v);
 	if (!mag)
 		return (NULL);
 	out->x = v->x / mag;
@@ -27,7 +27,7 @@ t_m3d_vec3	*m3d_v3_norm(t_m3d_vec3 *v, t_m3d_vec3 *out)
 	return (out);
 }
 
-t_m3d_real	m3d_v3_mag(t_m3d_vec3 *v)
+t_real	v3_mag(t_vec3 *v)
 {
 	return (sqrt(
 			pow(v->x, 2) +
@@ -35,7 +35,7 @@ t_m3d_real	m3d_v3_mag(t_m3d_vec3 *v)
 			pow(v->z, 2)));
 }
 
-t_m3d_vec3	*m3d_v3_cross(t_m3d_vec3 *a, t_m3d_vec3 *b, t_m3d_vec3 *out)
+t_vec3	*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out)
 {
 	if (!a || !b || !out)
 		return (NULL);
