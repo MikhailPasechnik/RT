@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/obj.h"
 #include "../include/rt.h"
 
 int is_valid_obj_name(char *str)
@@ -26,31 +27,12 @@ int		kill(char *message) // ++
 	exit(1);	
 }
 
-t_vec	vec_init(double x, double y, double z) // ++
+static void	ignore_str(char **ptr) // ++
 {
-	t_vec	v_init;
-
-	v_init.x_pos = x;
-	v_init.y_pos = y;
-	v_init.z_pos = z;
-	return (v_init);
+	while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
+		++(*ptr);
 }
 
-t_color	col_init(int r, int g, int b) // ++ 20_02
-{
-	t_color	col;
-
-	r = (r < 0) ? 0 : r;
-	r = (r > 255) ? 255 : r;
-	g = (g < 0) ? 0 : g;
-	g = (g > 255) ? 255 : g;
-	b = (b < 0) ? 0 : b;
-	b = (b > 255) ? 255 : b;
-	col.r = r;
-	col.g = g;
-	col.b = b;
-	return (col);
-}
 
 int		ptr_atoi(char **str) // ++ 20_02
 {
@@ -73,72 +55,64 @@ int		ptr_atoi(char **str) // ++ 20_02
 
 t_color	array_color(char *s) // ++ 20_02
 {
-	int		r;
-	int		g;
-	int		b;
-	int		c;
+	t_color	c;
+	int		i;
 
 	ignore_str(&s);
 	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
 		kill("Error in array!");
-	c = 0;
-	while (*s && c < 3)
+	i = 0;
+	c = COLOR(0, 0, 0);
+	while (*s && i < 3)
 	{
-		++c;
+		++i;
 		ignore_str(&s);
-		if (c == 1)
-			r = ptr_atoi(&s);
-		else if (c == 2)
-			g = ptr_atoi(&s);
-		else if (c == 3)
-			b = ptr_atoi(&s);
+		if (i == 1)
+			c.r = ptr_atoi(&s);
+		else if (i == 2)
+			c.g = ptr_atoi(&s);
+		else if (i == 3)
+			c.b = ptr_atoi(&s);
 		else
 			kill("Error in array!");
 		ignore_str(&s);
-		if (c < 3 && *s != ',')
+		if (i < 3 && *s != ',')
 			kill("Error in array coordinate!");
 		++s;
-		ignore_str(&s);		
+		ignore_str(&s);
 	}
-	return (col_init(r, g, b));
+	return (c);
 }
 
-void	ignore_str(char **ptr) // ++
+t_vec3	array_attack(char *s) // ++ 20_02
 {
-	while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
-		++(*ptr);
-}
-
-t_vec	array_attack(char *s) // ++ 20_02
-{
-	double	x;
-	double	y;
-	double	z;
+	t_vec3		v;
 	int			c;
 
 	ignore_str(&s);
 	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
 		kill("Error in array!");
 	c = 0;
+	v = VEC(0, 0, 0);
 	while (*s && c < 3)
 	{
 		++c;
 		ignore_str(&s);
 		if (c == 1)
-			x = (float)ptr_atoi(&s);
+			v.x = (float)ptr_atoi(&s);
 		else if (c == 2)
-			y = (float)ptr_atoi(&s);
+			v.y = (float)ptr_atoi(&s);
 		else if (c == 3)
-			z = (float)ptr_atoi(&s);
+			v.z = (float)ptr_atoi(&s);
 		else
 			kill("Error in array!");
 		ignore_str(&s);
 		if (c < 3 && *s != ',')
 			kill("Error in array coordinate!");
 		++s;
-		ignore_str(&s);		
+		ignore_str(&s);
 	}
-	return (vec_init(x, y, z));
+	return (v);
 }
 
 void	app_init(t_app *app) // + (to do ?)
@@ -149,9 +123,9 @@ void	app_init(t_app *app) // + (to do ?)
 	app->light_count = 0;
 	app->obj = NULL;
 	app->light = NULL;
-	app->cam.pos = vec_init(0, 0, 0);
-	app->cam.dir = vec_init(0, 0, 0);
-	app->cam.rot = vec_init(0, 0, 0);
+	app->cam.pos = VEC(0, 0, 0);
+	app->cam.dir = VEC(0, 0, 0);
+	app->cam.rot = VEC(0, 0, 0);
 }
 
 t_obj	*add_ol(t_app *app, t_obj *ol) // ++ 26_02
@@ -224,7 +198,7 @@ void	parser_obj(char **scn, t_app *app, int n) // ++ 01_03
 		else if (!ft_strncmp(scn[n], "cone_", 5))
 			ol->name = ID_CON;
 		if (!ft_strncmp(scn[n + 1], "  position:", 11))
-			ol->vec_pos = array_attack(scn[n + 1]);
+			ol->pos = array_attack(scn[n + 1]);
 		if (!ft_strncmp(scn[n + 2], "  color:", 8))
 			ol->color = array_color(scn[n + 2]);
 		if (!ft_strncmp(scn[n + 3], "  specular:", 11))
@@ -248,9 +222,9 @@ void	parser_obj(char **scn, t_app *app, int n) // ++ 01_03
 			ol->r = (float)ptr_atoi(&(scn[n + 6]));
 		}
 		if (!ft_strncmp(scn[n + 5], "  rotate:", 9) && ol->name != 1)
-			ol->vec_rot = array_attack(scn[n + 5]);
+			ol->rot = array_attack(scn[n + 5]);
 		if (ol->name == 1)
-			ol->vec_rot = vec_init(0, 0, 0);
+			ol->rot = VEC(0, 0, 0);
 		if (ol->name == 2)
 			ol->r = 0;
 		if (ol->name > 2)
@@ -315,7 +289,8 @@ char	**read_scene(int fd, int *lines) // ++ 01_03
 
 	while (get_next_line(fd, &gnled) > 0)
   {
-    scn = (char **)malloc(sizeof(char *) * (size + 2));
+    if(!(scn = (char **)malloc(sizeof(char *) * (size + 2))))
+		kill("Malloc dropped!");
     i = 0;
     while (i < size)
 		{

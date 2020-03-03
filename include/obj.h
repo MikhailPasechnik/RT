@@ -13,6 +13,7 @@
 #ifndef OBJ_H
 # define OBJ_H
 
+#include "../include/m3d.h"
 # include "../include/rt.h"
 
 # define ID_SPH	1
@@ -21,32 +22,26 @@
 # define ID_CON	4
 
 # define NLL 0.000001
-
-typedef struct			s_vec
-{
-	double				x_pos;
-	double				y_pos;
-	double				z_pos;
-}						t_vec; // or cl_double4 - ? in output
+# define COLOR(r, g, b) ((t_color){r, g, b})
 
 typedef struct			s_color
 {
-	int					r;
-	int					g;
-	int					b;
+	cl_uchar			r;
+	cl_uchar			g;
+	cl_uchar			b;
 }						t_color; // cl_int - ? 
 
 typedef struct			s_cam
 {
-	t_vec				pos;
-	t_vec				dir;
-	t_vec				rot;
+	t_vec3				pos;
+	t_vec3				dir;
+	t_vec3				rot;
 }						t_cam;
 
 typedef struct			s_obj
 {
-	t_vec				vec_pos;
-	t_vec				vec_rot;
+	t_vec3				pos;
+	t_vec3				rot;
 	t_color				color;
 	cl_double			r;
 	cl_int				name;
@@ -57,7 +52,7 @@ typedef struct			s_obj
 
 typedef	struct			s_light
 {
-	t_vec				vec_pos;
+	t_vec3				pos;
 	double				inten;
 	t_color				color;
 //	t_vec				vec_p;
