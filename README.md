@@ -2,12 +2,18 @@
 
 ## Algorithms:
 
-#### Sphere intersection
-| ray sphere intersection            | ray sphere normal                  |
-|------------------------------------|------------------------------------|
-| ![](/res/img/raysphereisect.png)   | ![](/res/img/rayspherenormal.png)  |
-| ray sphere edge cases              |
-| ![](/res/img/rayspherecases.png)   |
+#### Sphere intersection:
+##### Ray sphere intersection:
+
+![<img src="/res/img/raysphereisect.png" width="250"/>](/res/img/raysphereisect.png)
+
+##### Ray sphere normal:
+
+![<img src="/res/img/rayspherenormal.png" width="250"/>](/res/img/rayspherenormal.png)
+
+##### Ray sphere edge cases:
+
+![<img src="/res/img/rayspherecases.png" width="250"/>](/res/img/rayspherecases.png)
 
 
    
