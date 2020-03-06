@@ -79,7 +79,22 @@ t_hit *sphere_inter(t_obj *obj, t_ray *ray, t_hit *hit)
 
 t_hit *plane_inter(t_obj *obj, t_ray *ray, t_hit *hit)
 {
-	return (NULL);
+	t_real d;
+	t_vec3 v;
+	t_real t;
+
+	d = v3_dot(&ray->dir, &obj->rot);
+	if (d < EPSILON)
+		return (NULL);
+	v3_sub(&ray->orig, &obj->pos, &v);
+	t = v3_dot(&v, &ray->dir) / d;
+	if (t < 0)
+		return (NULL);
+
+	v3_add(&ray->orig, v3_mull_s(&ray->dir, t, &v), &hit->at);
+	v3_norm(v3_sub(&hit->at, &obj->pos, &v), &hit->norm);
+	hit->obj = obj;
+	return (hit);
 }
 
 t_hit *cube_inter(t_obj *obj, t_ray *ray, t_hit *hit)
