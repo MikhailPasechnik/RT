@@ -62,9 +62,9 @@ t_hit *sphere_inter(t_obj *obj, t_ray *ray, t_hit *hit)
 	if (tca < 0)
 		return (NULL);
 	thc = v3_dot(&L, &L) - tca * tca;
-	if (thc > obj->r)
+	if (thc > obj->radius)
 		return (NULL);
-	t0 = R_SQRT(obj->r - thc);
+	t0 = R_SQRT(obj->radius - thc);
 	t1 = tca + t0;
 	t0 = tca - t0;
 	if (t1 < 0 && t0 < 0)

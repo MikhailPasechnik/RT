@@ -1,7 +1,7 @@
 #ifndef FILE_IO_H
 #define FILE_IO_H
 
-//# include <fcntl.h>
+# include <fcntl.h>
 #include    <errno.h>
 # include   "../include/rt.h"
 # include   "../libft/libft.h"

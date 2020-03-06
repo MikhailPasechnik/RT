@@ -12,7 +12,7 @@ file(GLOB SRC src/*.c src/ocl/*.c src/math3d/*.c)
 
 link_directories(libft ft_printf)
 include_directories(libft include ${OpenCL_INCLUDE_DIRS} ft_printf/include)
-link_libraries(ft_printf ft ${OpenCL_LIBRARY})
+link_libraries(m ft_printf ft ${OpenCL_LIBRARY})
 
 add_executable(${NAME} ${SRC})
 
