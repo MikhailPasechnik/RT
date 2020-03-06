@@ -23,6 +23,7 @@
 # define EPSILON 0.000001
 # define R_ABS fabs
 # define R_ROUND round
+# define R_SQRT sqrt
 # ifndef M_PI
 # define M_PI 3.14159265
 # endif
@@ -73,6 +74,7 @@ t_mat4			*m4_inv(t_mat4 *m, t_mat4 *out);
 t_real		v3_mag(t_vec3 *v);
 t_vec3		*v3_add(t_vec3 *a, t_vec3 *b, t_vec3 *out);
 t_vec3		*v3_sub(t_vec3 *a, t_vec3 *b, t_vec3 *out);
+t_real		v3_dot(t_vec3 *a, t_vec3 *b);
 t_vec3		*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out);
 t_vec3		*v3_norm(t_vec3 *v, t_vec3 *out);
 t_vec3		*v3_mull_s(t_vec3 *v, t_real s, t_vec3 *out);

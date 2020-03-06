@@ -44,3 +44,10 @@ t_vec3	*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out)
 	out->z = a->x * b->y - a->y * b->x;
 	return (out);
 }
+
+t_real v3_dot(t_vec3 *a, t_vec3 *b)
+{
+	if (!a || !b)
+		return (0);
+	return (a->x * b->x + a->y * b->y + a->z * b->z);
+}
