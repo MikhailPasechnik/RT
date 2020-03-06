@@ -42,7 +42,7 @@ int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 	ren->queue = clCreateCommandQueue(ocl->context,
 			ocl->device, 0, &err);
 #else
-	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
+	ren->queue = clCreateCommandQueue(ocl->context,
 			ocl->device, 0, &err);
 #endif
 	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
@@ -77,7 +77,7 @@ static int	pre_render(t_renderer *ren, t_ocl *ocl)
 	return (OCL_ERROR(err, "Failed to pre render!") ? 0 : 1);
 }
 
-int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect)
+int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, int *rect)
 {
 	// return (1); // TODO
 	int		err;

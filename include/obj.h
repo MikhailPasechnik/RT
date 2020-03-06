@@ -20,16 +20,33 @@
 # define ID_PLN	2
 # define ID_CYL 3
 # define ID_CON	4
+# define ID_CUB	5
+# define IS_SPH(o) ((o)->id == (ID_SPH))
+# define IS_PLN(o) ((o)->id == (ID_PLN))
+# define IS_CYL(o) ((o)->id == (ID_CYL))
+# define IS_CON(o) ((o)->id == (ID_CON))
+# define IS_CUB(o) ((o)->id == (ID_CUB))
 
 # define NLL 0.000001
 # define COLOR(r, g, b) ((t_color){r, g, b})
+
+/*
+**
+**
+** Recommend declaring your structure from the widest types first
+** down to the narrowest types.
+** First, this avoids wasted unused spaces due to alignment.
+** Second, this often avoids any headaches
+** with different alignments on different devices.
+*/
+
 
 typedef struct			s_color
 {
 	cl_uchar			r;
 	cl_uchar			g;
 	cl_uchar			b;
-}						t_color; // cl_int - ? 
+}						t_color;
 
 typedef struct			s_cam
 {
@@ -38,49 +55,31 @@ typedef struct			s_cam
 	t_vec3				rot;
 }						t_cam;
 
+typedef struct 			s_mat
+{
+	t_vec3				diffuse;
+	cl_double			specular;
+}						t_mat;
+
 typedef struct			s_obj
 {
+	t_mat				mat;
 	t_vec3				pos;
 	t_vec3				rot;
-	t_color				color;
-	cl_double			r;
-	cl_int				name;
-	cl_double			specul;
-	cl_double			reflect;
-	struct s_obj		*next;
+
+	t_real				radius;
+	t_real				height;
+	cl_int				id;
 }						t_obj;
 
 typedef	struct			s_light
 {
 	t_vec3				pos;
-	double				inten;
+	t_vec3				dir;
 	t_color				color;
-//	t_vec				vec_p;
-//	t_vec				vec_n;
-//	cl_double			new_inten;
-	struct s_light		*next;	
 }						t_light;
 
-typedef struct			s_cl
-{
-	cl_context			context;
-	cl_command_queue	queue;
-	cl_platform_id		*plat_id;
-	cl_device_id		*dev_id;
-	cl_uint				num_plat;
-	cl_uint				num_dev;
-	cl_kernel			kernel;
-	cl_program			prog;
-	cl_mem				obj_mem;
-	cl_mem				light_mem;
-	cl_mem				img;
-	cl_mem				d_mem;
-	cl_mem				i_mem;
-	t_obj				*cl_obj;
-	t_light				*cl_light;
-	int					*data;
-	int 				o_count;
-	int 				l_count;
-}						t_cl;
+typedef t_list t_obj_list;
+typedef t_list t_light_list;
 
 #endif
