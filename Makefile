@@ -22,6 +22,7 @@ SRC_FILES	=			\
 	file_io.c			\
 	main.c				\
 	renderer.c			\
+	trace.c			    \
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
@@ -38,8 +39,11 @@ SRC_FILES	=			\
 
 
 HDR_FILES	=			\
-	rt.h 			\
+	rt.h 			    \
 	keys.h 				\
+	trace.h 			\
+	obj.h 			    \
+	file_io.h    	    \
 	ocl.h				\
 	math3d.h
 
