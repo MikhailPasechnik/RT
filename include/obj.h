@@ -10,11 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJ_H
+# ifndef OBJ_H
 # define OBJ_H
-
-#include "../include/m3d.h"
-# include "../include/rt.h"
 
 # define ID_SPH	1
 # define ID_PLN	2
@@ -27,11 +24,14 @@
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
 
-# define NLL 0.000001
-# define COLOR(r, g, b) ((t_color){r, g, b})
+typedef cl_double       t_real;
+typedef cl_double16     t_mat4;
+typedef cl_double3      t_vec3;
+typedef cl_int          t_int;
+typedef cl_uint         t_uint;
 
 /*
-**
+** OpenCL compatible structs
 **
 ** Recommend declaring your structure from the widest types first
 ** down to the narrowest types.
@@ -40,13 +40,15 @@
 ** with different alignments on different devices.
 */
 
-
-typedef struct			s_color
+typedef struct          s_options
 {
-	cl_uchar			r;
-	cl_uchar			g;
-	cl_uchar			b;
-}						t_color;
+    t_real              fov;
+    t_uint              width;
+    t_uint              height;
+    t_uint              scene_size;
+    t_uint              lights_size;
+    t_uint              cameras_size;
+}                       t_options;
 
 typedef struct			s_cam
 {
@@ -66,20 +68,28 @@ typedef struct			s_obj
 	t_mat				mat;
 	t_vec3				pos;
 	t_vec3				rot;
-
 	t_real				radius;
 	t_real				height;
-	cl_int				id;
+	t_int				id;
 }						t_obj;
 
 typedef	struct			s_light
 {
 	t_vec3				pos;
 	t_vec3				dir;
-	t_color				color;
+    t_vec3				diffuse;
 }						t_light;
 
-typedef t_list t_obj_list;
-typedef t_list t_light_list;
+typedef	struct	s_ray {
+    t_vec3	orig;
+    t_vec3	dir;
+    t_real	t;
+}				t_ray;
+
+typedef struct	s_hit_cpu {
+    t_vec3	pos;
+    t_vec3	norm;
+    t_uint  obj_index;
+}				t_hit_cpu;
 
 #endif

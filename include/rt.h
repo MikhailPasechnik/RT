@@ -30,9 +30,9 @@
 ** Rt OpenCL source setup
 */
 # ifdef __APPLE__
-#  define RT_CL_INCLUDE "-I res/cl"
+#  define RT_CL_INCLUDE "-I res/ocl -I./include"
 # else
-#  define RT_CL_INCLUDE "-I./res/cl"
+#  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
 # define RT_CL_SRC "res/ocl/k_render.cl"
 
@@ -122,25 +122,5 @@ int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, int *rect);
 size_t			rt_tab_len(char **tab);
 void			*rt_tab_free(char **tab);
 void			*rt_set_rect(int *rect, int x, int y, int w, int h);
-
-/*
-** Kate functions
-*/
-//int				kill(char *message);
-//void			parser(t_app *app, char *scene);
-//char			**read_scene(int fd, int *lines);
-//void			check_obj(t_app *app);
-//void			app_init(t_app *app);
-//void			parser_cam(t_cam *cam, char **scn);
-//void			parser_light(char **scn, t_app *app, int n);
-//void			parser_obj(char **scn, t_app *app, int n);
-//t_light			*add_ll(t_app *app, t_light *ll);
-//t_obj			*add_ol(t_app *app, t_obj *ol);
-//t_vec			array_attack(char *s);
-//t_color			array_color(char *s);
-//t_color			col_init(int r, int g, int b);
-//t_vec			vec_init(double x, double y, double z);
-//void			ignore_str(char **ptr);
-//int				ptr_atoi(char **str);
 
 #endif

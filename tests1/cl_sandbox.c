@@ -1,22 +1,9 @@
 #include <assert.h>
 #include "rt.h"
+#include "obj.h"
 
 typedef cl_int t_int;
 
-typedef struct 			s_mat_
-{
-	t_vec3			diffuse;
-	t_real			specular;
-}	t_mat_;
-
-typedef struct s_obj_
-{
-	t_mat_				mat;
-	t_vec3				pos;
-	t_vec3				rot;
-	t_real				height;
-	t_real				radius;
-}		t_obj_;
 void print_m4(t_mat4 M)
 {
     printf("[%.3f %.3f %.3f %.3f\n"
@@ -51,7 +38,7 @@ t_mat4 m4_mul2(t_mat4 M, t_mat4 N)
     return (result);
 }
 
-void fake_sphere(t_obj_ *s)
+void fake_sphere(t_obj *s)
 {
 	s->pos = VEC(0,0, 2);
 	s->rot = VEC(3, 2, 1);
@@ -61,6 +48,8 @@ void fake_sphere(t_obj_ *s)
 	s->mat.specular = 44;
 	s->mat.diffuse = VEC(1, 3333333, 3);
 }
+
+
 
 int main(void)
 {
@@ -89,8 +78,9 @@ int main(void)
 
 	int		w = 20;
 	int		h = 20;
+	int		fow = 80;
 	int		s = 4;
-	t_obj_   	*scene = malloc(sizeof(t_obj_) * s);
+	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
     cl_char		output[w * h + sizeof(cl_char)];
@@ -104,32 +94,40 @@ int main(void)
 	}
 	printf("\n");
 	assert(ocl_init(&ocl));
-	assert(new_renderer(&ren, &ocl, "tests1/cl_sandbox.cl", NULL));
+	assert(new_renderer(&ren, &ocl, "tests1/cl_sandbox.cl", RT_CL_INCLUDE));
 	k = clCreateKernel(ren.program, "k_render", &err);
 	assert(!OCL_ERROR2(err));
 
 	// Scene
-	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, s * sizeof(t_obj_), scene, &err);
+	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, s * sizeof(t_obj), scene, &err);
 	assert(!OCL_ERROR2(err));
 //	err = clEnqueueWriteBuffer(ren.queue, scene_mem, CL_TRUE, 0, s * sizeof(t_obj_), scene, 0, NULL, NULL);
 //	assert(!OCL_ERROR2(err));
 
 	t_vec3 test_vec[10] = {0};
 	test_vec[5] = VEC(666666666666, 4, 5);
-	cl_mem test_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 10 * sizeof(t_vec3), test_vec, &err);
+	cl_mem cameras_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, 1, test_vec, &err);
+    assert(!OCL_ERROR2(err));
+    cl_mem lights_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, 1, test_vec, &err);
 	assert(!OCL_ERROR2(err));
-	printf("scene_mem: %d scene: %d\n", sizeof(scene_mem), s * sizeof(t_obj_));
-
 	assert(!OCL_ERROR2(err));
 	// Set arguments
 	output_mem = clCreateBuffer(ocl.context, CL_MEM_READ_WRITE, sizeof(cl_char) * w * h, NULL, &err);
 	assert(!OCL_ERROR2(err));
-	err |= clSetKernelArg(k, 0, sizeof(cl_uint), &w);
-	err |= clSetKernelArg(k, 1, sizeof(cl_uint), &h);
-	err |= clSetKernelArg(k, 2, sizeof(cl_uint), &s);
-	err |= clSetKernelArg(k, 3, sizeof(cl_mem), &scene_mem);
-	err |= clSetKernelArg(k, 4, sizeof(cl_mem), &test_mem);
-	err |= clSetKernelArg(k, 5, sizeof(cl_mem), &output_mem);
+	t_options options = (t_options){
+        .fov = fow,
+        .width = w,
+        .height = h,
+        .scene_size = s,
+        .lights_size = 0,
+        .cameras_size = 0
+	};
+	t_cam cam = {0};
+	err |= clSetKernelArg(k, 0, sizeof(t_options), &options);
+	err |= clSetKernelArg(k, 1, sizeof(t_cam), &cam);
+	err |= clSetKernelArg(k, 2, sizeof(cl_mem), &scene_mem);
+	err |= clSetKernelArg(k, 3, sizeof(cl_mem), &lights_mem);
+	err |= clSetKernelArg(k, 4, sizeof(cl_mem), &output_mem);
 	assert(!OCL_ERROR2(err));
 
 	int size = w * h;
