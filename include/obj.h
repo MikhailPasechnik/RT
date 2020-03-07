@@ -13,22 +13,37 @@
 # ifndef OBJ_H
 # define OBJ_H
 
+# ifdef __APPLE__
+# include <OpenCL/opencl.h>
+# elseif __UNIX__
+# include <CL/opencl.h>
+# endif
+
 # define ID_SPH	1
 # define ID_PLN	2
 # define ID_CYL 3
 # define ID_CON	4
 # define ID_CUB	5
+# define T_SPH "sphere"
+# define T_PLN "plane"
+# define T_CYL "cylinder"
+# define T_CON "cone"
+# define T_CUB "cube"
+# define T_LIGHT "light"
+# define T_CAM "camera"
 # define IS_SPH(o) ((o)->id == (ID_SPH))
 # define IS_PLN(o) ((o)->id == (ID_PLN))
 # define IS_CYL(o) ((o)->id == (ID_CYL))
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
+# define COLOR(r, g, b, a) ((t_color){r, g, b, a})
 
 typedef cl_double       t_real;
 typedef cl_double16     t_mat4;
 typedef cl_double3      t_vec3;
 typedef cl_int          t_int;
 typedef cl_uint         t_uint;
+typedef cl_double3      t_color;
 
 /*
 ** OpenCL compatible structs
@@ -42,6 +57,8 @@ typedef cl_uint         t_uint;
 
 typedef struct          s_options
 {
+    t_vec3              background_color;
+    t_real              reflection_depth;
     t_real              fov;
     t_uint              width;
     t_uint              height;
@@ -59,8 +76,12 @@ typedef struct			s_cam
 
 typedef struct 			s_mat
 {
-	t_vec3				diffuse;
-	cl_double			specular;
+	t_color				diffuse;
+    t_real			    specular;
+    t_real			    refraction;
+    t_real			    ior;
+    t_real			    fresnel;
+	t_real			    reflection;
 }						t_mat;
 
 typedef struct			s_obj
@@ -78,7 +99,9 @@ typedef	struct			s_light
 {
 	t_vec3				pos;
 	t_vec3				dir;
-    t_vec3				diffuse;
+    t_color				color;
+    t_real				intensity;
+    t_int				id;
 }						t_light;
 
 typedef	struct	s_ray {

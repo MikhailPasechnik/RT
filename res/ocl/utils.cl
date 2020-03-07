@@ -18,7 +18,6 @@ void print_render_args(t_options *options, t_cam* camera,
         options->cameras_size
     );
     int i = 0;
-    return;
     while (i < options->scene_size)
     {
         printf("Obj: id: %d radius: %f pos: {%f %f %f}\n",

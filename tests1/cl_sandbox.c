@@ -69,8 +69,6 @@ void fake_sphere(t_obj *s)
 	s->mat.diffuse = VEC(1, 3333333, 3);
 }
 
-
-
 int main(void)
 {
     t_mat4 d161 = (t_mat4){

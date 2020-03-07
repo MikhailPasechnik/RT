@@ -33,13 +33,13 @@ void	*rt_tab_free(char **tab)
 	return (NULL);
 }
 
-//void	*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h)
-//{
-//	if (rect)
-//	{
-//		rect->x = x;
-//		rect->y = y;
-//		rect->w = w;
-//		rect->h = h;
-//	}
-//}
+void	*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h)
+{
+	if (rect)
+	{
+		rect->x = x;
+		rect->y = y;
+		rect->w = w;
+		rect->h = h;
+	}
+}

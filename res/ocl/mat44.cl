@@ -1,23 +1,49 @@
 #include "rt.hcl"
 
-t_mat4 m4_mul(t_mat4 M, t_mat4 N)
+t_mat4 m4_mul(t_mat4 *m, t_mat4 *n)
 {
     t_mat4 result = (t_mat4){
-            M.s0 * N.s0 + M.s1 * N.s4 + M.s2 * N.s8 + M.s3 * N.sC,
-            M.s0 * N.s1 + M.s1 * N.s5 + M.s2 * N.s9 + M.s3 * N.sD,
-            M.s0 * N.s2 + M.s1 * N.s6 + M.s2 * N.sA + M.s3 * N.sE,
-            M.s0 * N.s3 + M.s1 * N.s7 + M.s2 * N.sB + M.s3 * N.sF,
-            M.s4 * N.s0 + M.s5 * N.s4 + M.s6 * N.s8 + M.s7 * N.sC,
-            M.s4 * N.s1 + M.s5 * N.s5 + M.s6 * N.s9 + M.s7 * N.sD,
-            M.s4 * N.s2 + M.s5 * N.s6 + M.s6 * N.sA + M.s7 * N.sE,
-            M.s4 * N.s3 + M.s5 * N.s7 + M.s6 * N.sB + M.s7 * N.sF,
-            M.s8 * N.s0 + M.s9 * N.s4 + M.sA * N.s8 + M.sB * N.sC,
-            M.s8 * N.s1 + M.s9 * N.s5 + M.sA * N.s9 + M.sB * N.sD,
-            M.s8 * N.s2 + M.s9 * N.s6 + M.sA * N.sA + M.sB * N.sE,
-            M.s8 * N.s3 + M.s9 * N.s7 + M.sA * N.sB + M.sB * N.sF,
-            M.sC * N.s0 + M.sD * N.s4 + M.sE * N.s8 + M.sF * N.sC,
-            M.sC * N.s1 + M.sD * N.s5 + M.sE * N.s9 + M.sF * N.sD,
-            M.sC * N.s2 + M.sD * N.s6 + M.sE * N.sA + M.sF * N.sE,
-            M.sC * N.s3 + M.sD * N.s7 + M.sE * N.sB + M.sF * N.sF};
+    m->s0 * n->s0 + m->s1 * n->s4 + m->s2 * n->s8 + m->s3 * n->sC,
+    m->s0 * n->s1 + m->s1 * n->s5 + m->s2 * n->s9 + m->s3 * n->sD,
+    m->s0 * n->s2 + m->s1 * n->s6 + m->s2 * n->sA + m->s3 * n->sE,
+    m->s0 * n->s3 + m->s1 * n->s7 + m->s2 * n->sB + m->s3 * n->sF,
+    m->s4 * n->s0 + m->s5 * n->s4 + m->s6 * n->s8 + m->s7 * n->sC,
+    m->s4 * n->s1 + m->s5 * n->s5 + m->s6 * n->s9 + m->s7 * n->sD,
+    m->s4 * n->s2 + m->s5 * n->s6 + m->s6 * n->sA + m->s7 * n->sE,
+    m->s4 * n->s3 + m->s5 * n->s7 + m->s6 * n->sB + m->s7 * n->sF,
+    m->s8 * n->s0 + m->s9 * n->s4 + m->sA * n->s8 + m->sB * n->sC,
+    m->s8 * n->s1 + m->s9 * n->s5 + m->sA * n->s9 + m->sB * n->sD,
+    m->s8 * n->s2 + m->s9 * n->s6 + m->sA * n->sA + m->sB * n->sE,
+    m->s8 * n->s3 + m->s9 * n->s7 + m->sA * n->sB + m->sB * n->sF,
+    m->sC * n->s0 + m->sD * n->s4 + m->sE * n->s8 + m->sF * n->sC,
+    m->sC * n->s1 + m->sD * n->s5 + m->sE * n->s9 + m->sF * n->sD,
+    m->sC * n->s2 + m->sD * n->s6 + m->sE * n->sA + m->sF * n->sE,
+    m->sC * n->s3 + m->sD * n->s7 + m->sE * n->sB + m->sF * n->sF};
     return (result);
+}
+/* M.s0, M.s1, M.s2, M.s3
+** M.s4, M.s5, M.s6, M.s7
+** M.s8, M.s9, M.sA, M.sB
+** M.sC, M.sD, M.sE, M.sF
+*/
+t_vec3 m4_mul_vec3(t_mat4 *m, t_vec3 *v)
+{
+    t_real	w;
+    t_vec3	out;
+
+    w = v->x * m->s3 + v->y * m->s7 +
+        v->z * m->s8 + m->sF;
+    out.x = (
+         v->x * m->s0 +
+         v->y * m->s4 +
+         v->z * m->s8 + m->sC) / w;
+    out.y = (
+         v->x * m->s1 +
+         v->y * m->s5 +
+         v->z * m->s9 + m->sD) / w;
+    out.z = (
+         v->x * m->s2 +
+         v->y * m->s6 +
+         v->z * m->sA + m->sE) / w;
+    return (out);
 }

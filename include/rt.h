@@ -14,11 +14,11 @@
 # define RT_H
 
 # include <math.h>
-# include "../libft/libft.h"
+# include "libft.h"
 # include "ft_printf.h"
 # include "ocl.h"
 # include "m3d.h"
-//# include "SDL.h"
+# include "SDL.h"
 # include "obj.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
@@ -37,6 +37,8 @@
 # define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
 # define RT_K_RENDER "k_render"
 
+typedef t_list  t_obj_list;
+typedef t_list  t_light_list;
 /*
  * Rectangle
  * 		orig: rectangle start position
@@ -47,81 +49,101 @@
 */
 typedef struct	s_urect
 {
-	size_t orig[2];
-	size_t size[2];
+    size_t orig[2];
+    size_t size[2];
 }				t_urect;
 
 typedef struct			s_renderer
 {
-	cl_kernel 			render_kernel;
+    cl_kernel 			render_kernel;
 
-	cl_program			program;
-	cl_command_queue	queue;
+    cl_program			program;
+    cl_command_queue	queue;
 
-	char				**src;
-	size_t				src_count;
+    char				**src;
+    size_t				src_count;
 
-	cl_mem				out_mem;
-	int					out_w;
-	int					out_h;
+    cl_mem				out_mem;
+    int					out_w;
+    int					out_h;
 
-	int					width;
-	int					height;
+    int					width;
+    int					height;
 }						t_renderer;
 
-//typedef struct			s_app
-//{
-//	SDL_Window			*win;
-//	int					width;
-//	int					height;
-//	int 				quit;
-//
-//	SDL_Rect			rect;
-//
-//	t_renderer			ren;
-//	t_ocl				ocl;
-//
-//	t_cam				cam;
-//	t_obj				*obj;
-//	t_light				*light; //
-//
-//	int					obj_sum; // objects of scene
-//	int					light_sum; // lights of scene
-//
-//	int					obj_count;
-//	int					light_count;
-//
-//	int					lines; // lines of buf
-//	char				**scene; // scene for parser
-//}						t_app;
+typedef struct			s_app
+{
+    SDL_Window			*win;
+    int					width;
+    int					height;
+    int 				quit;
+
+    SDL_Rect			rect;
+
+    t_renderer			ren;
+    t_ocl				ocl;
+
+    t_cam				cam;
+    t_obj_list          *obj_list;
+    t_light_list        *light_list; //
+
+    int					obj_count;
+    int					light_count; // lights of scene
+
+    int					lines; // lines of buf
+    char				**scene; // scene for parser
+}						t_app;
 
 /*
 ** App functions
 */
-//int				app_start(t_app *app, char **argv, int argc);
-//void			app_finish(t_app *app);
-//void			on_app_event(t_app *app, SDL_Event *event);
+int				app_start(t_app *app, char **argv, int argc);
+void			app_finish(t_app *app);
+void			on_app_event(t_app *app, SDL_Event *event);
 
 /*
 ** Event functions
 */
-//void			on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed);
-//void			on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed);
-//void			on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed);
-//void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed);
+void			on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed);
+void			on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed);
+void			on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed);
+void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed);
 
 /*
 ** Render functions
 */
 int				new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options);
 void			delete_renderer(t_renderer *ren);
-int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, int *rect);
+int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect);
 
 /*
 ** Utils functions
 */
 size_t			rt_tab_len(char **tab);
 void			*rt_tab_free(char **tab);
-void			*rt_set_rect(int *rect, int x, int y, int w, int h);
+void			*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h);
+
+
+typedef t_list t_obj_list;
+typedef t_list t_light_list;
+
+/*
+** Kate functions
+*/
+int				kill(char *message);
+void			parser(t_app *app, char *scene);
+char			**read_scene(int fd, int *lines);
+void			check_obj(t_app *app);
+void			app_init(t_app *app);
+void			parser_cam(t_cam *cam, char **scn);
+void			parser_light(char **scn, t_app *app, int n);
+void			parser_obj(char **scn, t_app *app, int n);
+t_light			*add_ll(t_app *app, t_light *ll);
+t_obj			*add_ol(t_app *app, t_obj *ol);
+t_vec3			array_attack(char *s);
+t_color			color_attack(char *s);
+t_color			col_init(int r, int g, int b);
+t_vec3			vec_init(double x, double y, double z);
+void			ignore_str(char **ptr);
 
 #endif

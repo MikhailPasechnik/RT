@@ -35,34 +35,3 @@ cylinder_01:
   reflective:   30
   rotate:       [0, -1, 0]
   radius:       50
-- type: cylinder
-  position:     [1, -2, 0]
-  color:        [10, 90, 10]
-  specular:     10
-  reflective:   30
-  rotate:       [0, -1, 0]
-  radius:       50
-
-- type: cylinder
-  position:     [1, -2, 0]
-  color:        [10, 90, 10]
-  specular:     10
-  reflective:   30
-  rotate:       [0, -1, 0]
-  radius:       50
-
-- type: cylinder
-  position:     [1, -2, 0]
-  color:        [10, 90, 10]
-  specular:     10
-  reflective:   30
-  rotate:       [0, -1, 0]
-  radius:       50
-
-- type: cylinder
-  position:     [1, -2, 0]
-  color:        [10, 90, 10]
-  specular:     10
-  reflective:   30
-  rotate:       [0, -1, 0]
-  radius:       50

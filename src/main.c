@@ -53,31 +53,31 @@ int main(int argc, char **argv)
 	
 	parser(app, argv[1]);
 	printf("Loading...\n\nlines in file = %d\nlights = %d\nobjects = %d\nOBJ_ID:\n1 - sphere\n2 - plane\n3 - cylinder\n4 - cone\n\ncamera position:\nx: %g, y: %g, z: %g\n\n",
-		app->lines, app->light_sum, app->obj_sum, app->cam.pos.x_pos,
-		app->cam.pos.y_pos, app->cam.pos.z_pos);
-	l = app->light;
+           app->lines, app->light_count, app->obj_count, app->cam.pos.x,
+           app->cam.pos.y, app->cam.pos.z);
+	l = app->light_list;
 	while (l)
 	{
 		printf("light position:	[%g, %g, %g]\nlight color:	[%d, %d, %d]\nintensity = %g\n\n",
-			l->vec_pos.x_pos, l->vec_pos.y_pos, l->vec_pos.z_pos,l->color.r,
+			l->pos.x_pos, l->pos.y_pos, l->pos.z_pos,l->color.r,
 			l->color.g, l->color.b, l->inten);
 		l = l->next;			
 	}
-	o = app->obj;
+	o = app->obj_list;
 	while (o)
 	{
 		if (o->name == ID_SPH)
 			printf("OBJ_ID = %d\nobj position:	[%g, %g, %g]\nobj color:	[%d, %d, %d]\nradius = %g\nspecularity = %g\nreflective = %g\n\n",
-				o->name, o->vec_pos.x_pos, o->vec_pos.y_pos, o->vec_pos.z_pos,
+				o->name, o->pos.x_pos, o->pos.y_pos, o->pos.z_pos,
 				o->color.r, o->color.g, o->color.b, o->r, o->specul, o->reflect);
 		else if (o->name == ID_CON || o->name == ID_CYL)
 			printf("OBJ_ID = %d\nobj position:	[%g, %g, %g]\nobj color:	[%d, %d, %d]\nobj rotate:	[%g, %g, %g]\nradius = %g\nspecularity = %g\nreflective = %g\n\n",
-				o->name, o->vec_pos.x_pos, o->vec_pos.y_pos, o->vec_pos.z_pos,
+				o->name, o->pos.x_pos, o->pos.y_pos, o->pos.z_pos,
 				o->color.r, o->color.g, o->color.b, o->vec_rot.x_pos, o->vec_rot.y_pos,
 				o->vec_rot.z_pos, o->r, o->specul, o->reflect);
 		else if (o->name == ID_PLN)
 			printf("OBJ_ID = %d\nobj position:	[%g, %g, %g]\nobj color:	[%d, %d, %d]\nobj rotate:	[%g, %g, %g]\nspecularity = %g\nreflective = %g\n\n",
-				o->name, o->vec_pos.x_pos, o->vec_pos.y_pos, o->vec_pos.z_pos,
+				o->name, o->pos.x_pos, o->pos.y_pos, o->pos.z_pos,
 				o->color.r, o->color.g, o->color.b, o->vec_rot.x_pos, o->vec_rot.y_pos,
 				o->vec_rot.z_pos, o->specul, o->reflect);
 		o = o->next;			

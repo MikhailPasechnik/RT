@@ -77,7 +77,7 @@ static int	pre_render(t_renderer *ren, t_ocl *ocl)
 	return (OCL_ERROR(err, "Failed to pre render!") ? 0 : 1);
 }
 
-int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, int *rect)
+int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect)
 {
 	// return (1); // TODO
 	int		err;
