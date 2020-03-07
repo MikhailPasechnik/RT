@@ -8,7 +8,7 @@ typedef double3 cl_double3;
 typedef int cl_int;
 typedef uint cl_uint;
 
-
+# define EPSILON 0.000001
 # define VEC(x, y, z)((t_vec3){x, y, z})
 
 /*
@@ -27,4 +27,13 @@ typedef struct	s_hit {
 	t_vec3	norm;
 	__global t_obj	*obj;
 }				t_hit;
+
+/*
+** For each object perform intersection and if intersects set hit
+** for the first time, later on hit choose which is closest
+** and update hit if new one is closest
+*/
+t_hit	        *intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit);
+void            print_render_args(t_options *options, t_cam* camera, __global t_obj* scene, __global t_light* lights);
+t_mat4          m4_mul(t_mat4 M, t_mat4 N);
 # endif

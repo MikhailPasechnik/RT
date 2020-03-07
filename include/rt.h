@@ -34,7 +34,8 @@
 # else
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
+# define RT_K_RENDER "k_render"
 
 /*
  * Rectangle

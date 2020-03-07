@@ -38,13 +38,33 @@ t_mat4 m4_mul2(t_mat4 M, t_mat4 N)
     return (result);
 }
 
+int rand_interval(unsigned int min, unsigned int max, int offset)
+{
+    int r;
+    const unsigned int range = 1 + max - min;
+    const unsigned int buckets = RAND_MAX / range;
+    const unsigned int limit = buckets * range;
+
+    /* Create equal size buckets all in a row, then fire randomly towards
+     * the buckets until you land in one of them. All buckets are equally
+     * likely. If you land off the end of the line of buckets, try again. */
+    do
+    {
+        r = rand();
+    } while (r >= limit);
+
+    return (int)(min + (r / buckets)) - offset;
+}
+
 void fake_sphere(t_obj *s)
 {
-	s->pos = VEC(0,0, 2);
+	s->pos = VEC(rand_interval(0, 20, 10),rand_interval(0, 20, 10), rand_interval(1, 10, 0));
 	s->rot = VEC(3, 2, 1);
 //	s->i = (cl_int3){4, 4, 4};
-	s->radius = 10;
+	s->radius = rand_interval(1, 5, 0);
 	s->height = 0;
+	s->id = ID_SPH;
+	s->symbol = rand_interval(49, 49 + 50, 0);
 	s->mat.specular = 44;
 	s->mat.diffuse = VEC(1, 3333333, 3);
 }
@@ -68,8 +88,6 @@ int main(void)
     t_mat4 d163;
     m4_mul(&d161, &d162, &d163);
     m4_inv(&d161, &d163);
-    print_m4(d163);
-    print_m4(m4_mul2(d161,d162));
 
 	int			err;
 	t_ocl		ocl;
@@ -79,12 +97,12 @@ int main(void)
 	int		w = 20;
 	int		h = 20;
 	int		fow = 80;
-	int		s = 4;
+	int		s = 5;
 	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
-    cl_char		output[w * h + sizeof(cl_char)];
-	ft_memset(output, '.', w * h + sizeof(cl_char));
+    t_int		output[w * h + sizeof(t_int)];
+	ft_memset(output, '.', w * h + sizeof(t_int));
 	output[w * h] = '\0';
 
 	int i = 0;
@@ -92,27 +110,24 @@ int main(void)
 	{
 		fake_sphere(&scene[i++]);
 	}
-	printf("\n");
 	assert(ocl_init(&ocl));
-	assert(new_renderer(&ren, &ocl, "tests1/cl_sandbox.cl", RT_CL_INCLUDE));
-	k = clCreateKernel(ren.program, "k_render", &err);
+	assert(new_renderer(&ren, &ocl, RT_CL_SRC, RT_CL_INCLUDE));
+	k = clCreateKernel(ren.program, RT_K_RENDER, &err);
 	assert(!OCL_ERROR2(err));
 
 	// Scene
-	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, s * sizeof(t_obj), scene, &err);
+	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, s * sizeof(t_obj), scene, &err);
 	assert(!OCL_ERROR2(err));
-//	err = clEnqueueWriteBuffer(ren.queue, scene_mem, CL_TRUE, 0, s * sizeof(t_obj_), scene, 0, NULL, NULL);
-//	assert(!OCL_ERROR2(err));
+	err = clEnqueueWriteBuffer(ren.queue, scene_mem, CL_TRUE, 0, s * sizeof(t_obj), scene, 0, NULL, NULL);
+	assert(!OCL_ERROR2(err));
 
 	t_vec3 test_vec[10] = {0};
 	test_vec[5] = VEC(666666666666, 4, 5);
-	cl_mem cameras_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, 1, test_vec, &err);
-    assert(!OCL_ERROR2(err));
+	assert(!OCL_ERROR2(err));
     cl_mem lights_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, 1, test_vec, &err);
 	assert(!OCL_ERROR2(err));
-	assert(!OCL_ERROR2(err));
 	// Set arguments
-	output_mem = clCreateBuffer(ocl.context, CL_MEM_READ_WRITE, sizeof(cl_char) * w * h, NULL, &err);
+	output_mem = clCreateBuffer(ocl.context, CL_MEM_READ_WRITE, sizeof(t_int) * w * h, NULL, &err);
 	assert(!OCL_ERROR2(err));
 	t_options options = (t_options){
         .fov = fow,
@@ -136,7 +151,7 @@ int main(void)
 	assert(!OCL_ERROR2(err));
 	assert(!OCL_ERROR2(clFinish(ren.queue)));
 	clEnqueueReadBuffer(ren.queue, output_mem, CL_TRUE, 0,
-						sizeof(cl_char) * size, &output, 0, NULL, NULL
+						sizeof(t_int) * size, &output, 0, NULL, NULL
 	);
 	assert(!OCL_ERROR2(err));
 	printf("dot: %f\n", v3_dot(&VEC(1,2,3), &VEC(1,2,3)));
@@ -147,7 +162,7 @@ int main(void)
         x = 0;
         while (x < w)
         {
-            ft_printf(" %c ", output[y * w + x]);
+            ft_printf(" %c ", (char)output[y * w + x]);
             x++;
         }
         ft_printf("\n");
