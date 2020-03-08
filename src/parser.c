@@ -34,14 +34,14 @@ static void	ignore_str(char **ptr) // ++
 }
 
 
-int		ptr_atoi(char **str) // ++ 20_02
+int		ptr_atoi_int(char **str, int fraction) // ++ 20_02
 {
   int n;
   int sign;
 
   n = 0;
-  sign = **str == '-' ? -1 : 1;
-  if (**str == '+' || **str == '-')
+  sign = **str == '-' && !fraction ? -1 : 1;
+  if (**str == '+' || (**str == '-' && !fraction))
     ++(*str);
   if (!ft_isdigit(**str))
       kill("Error in number!");
@@ -51,6 +51,23 @@ int		ptr_atoi(char **str) // ++ 20_02
     ++(*str);
   }
   return (n * sign);
+}
+
+t_real  ptr_atoi(char **str)
+{
+    int w;
+    int f;
+
+    w = ptr_atoi_int(str, 0);
+    if ((**str) == '.')
+    {
+        if (!ft_isdigit(**str))
+            kill("Error in number!");
+        ++(**str);
+        f = ptr_atoi_int(str, 1);
+    } else
+        f = 0;
+    return ((t_real)w + f ? 1.0 / (t_real)f : 0);
 }
 
 t_color	array_color(char *s) // ++ 20_02

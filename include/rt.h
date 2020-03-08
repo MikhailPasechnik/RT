@@ -141,6 +141,6 @@ t_color			array_color(char *s);
 t_color			col_init(int r, int g, int b);
 t_vec			vec_init(double x, double y, double z);
 void			ignore_str(char **ptr);
-int				ptr_atoi(char **str);
+t_real				ptr_atoi(char **str);
 
 #endif
