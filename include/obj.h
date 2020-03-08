@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/01 20:38:58 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/08 20:45:45 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # define ID_CYL 3
 # define ID_CON	4
 # define ID_CUB	5
+# define ID_DIRECT 1
+# define ID_POINT 2
+# define ID_AMB 3
 # define T_SPH "sphere"
 # define T_PLN "plane"
 # define T_CYL "cylinder"
@@ -99,18 +102,31 @@ typedef	struct			s_light
 	t_vec3				dir;
     t_color				color;
     t_real				intensity;
+    t_int               id;
 }						t_light;
 
-typedef	struct	s_ray {
-    t_vec3	orig;
-    t_vec3	dir;
-    t_real	t;
-}				t_ray;
+typedef	struct	        s_ray {
+    t_vec3	            orig;
+    t_vec3	            dir;
+    t_real	            t;
+}				        t_ray;
 
-typedef struct	s_hit_cpu {
-    t_vec3	pos;
-    t_vec3	norm;
-    t_uint  obj_index;
-}				t_hit_cpu;
+typedef struct	        s_hit_cpu {
+    t_vec3	            pos;
+    t_vec3	            norm;
+    t_uint              obj_index;
+}				        t_hit_cpu;
+
+typedef struct 			s_obj_list
+{
+	t_obj				obj;
+	struct s_obj		*next;
+}						t_obj_list;
+
+typedef struct 			s_light_list
+{
+	t_light				light;
+	struct s_light		*next;
+}						t_light_list;
 
 #endif

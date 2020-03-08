@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/01 20:39:33 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/08 20:45:35 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef struct			s_app
 	t_ocl				ocl;
 
 	t_cam				cam;
-	t_obj				*obj;
-	t_light				*light; // 
+	t_obj_list			*obj_list;
+	t_light_list		*light_list; // 
 
 	int					obj_sum; // objects of scene
 	int					light_sum; // lights of scene
@@ -136,11 +136,11 @@ void			parser_light(char **scn, t_app *app, int n);
 void			parser_obj(char **scn, t_app *app, int n);
 t_light			*add_ll(t_app *app, t_light *ll);
 t_obj			*add_ol(t_app *app, t_obj *ol);
-t_vec			array_attack(char *s);
+t_vec3			array_attack(char *s);
 t_color			array_color(char *s);
 t_color			col_init(int r, int g, int b);
-t_vec			vec_init(double x, double y, double z);
+t_vec3			vec_init(double x, double y, double z);
 void			ignore_str(char **ptr);
-t_real				ptr_atoi(char **str);
+t_real			ptr_atoi(char **str);
 
 #endif

@@ -2,12 +2,12 @@
 
 # include "m3d.h"
 # include "obj.h"
-
+/*
 typedef	struct	s_ray {
 	t_vec3	orig;
 	t_vec3	dir;
 	t_real	t;
-}				t_ray;
+}				t_ray;*/
 
 typedef struct	s_hit {
 	t_vec3	at;
