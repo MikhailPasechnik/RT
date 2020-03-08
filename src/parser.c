@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/08 20:45:51 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/08 21:06:47 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ void    parse_real(char *str, void *vp)
 
 int is_valid_obj_name(char *str)
 {
-	return ((ft_strcmp(str, "plane") || \
-		ft_strcmp(str, "cylinder") || ft_strcmp(str, "sphere") || \
-		ft_strcmp(str, "cone")) && str[ft_strlen(str)] != '\0');
+	return ((!ft_strcmp(str, T_CAM) || !ft_strcmp(str, T_CON) \
+		|| !ft_strcmp(str, T_CUB) || !ft_strcmp(str, T_CYL) \
+		|| !ft_strcmp(str, T_LIGHT) || !ft_strcmp(str, T_PLN) \
+		|| !ft_strcmp(str, T_SPH)) && str[ft_strlen(str)] == '\0');
 }
 
 int		kill(char *message) // ++
@@ -227,40 +228,40 @@ void	parser_obj(char **scn, t_app *app, int n)
 
     while (!key_type(scn[n]) && n <= app->lines)
     {
-        if (!is_valid_obj_name(scn[n]))
+    if (!is_valid_obj_name(scn[n] + 8))
 			kill ("Error name obj");
-        ft_bzero(&ol, sizeof(t_obj));
-        if (!ft_strcmp(scn[n] + 8, T_SPH))
-            ol.id = ID_SPH;
-        else if (!ft_strcmp(scn[n] + 8, T_PLN))
-		    ol.id = ID_PLN;
+    ft_bzero(&ol, sizeof(t_obj));
+    if (!ft_strcmp(scn[n] + 8, T_SPH))
+    	ol.id = ID_SPH;
+    else if (!ft_strcmp(scn[n] + 8, T_PLN))
+		  ol.id = ID_PLN;
 		else if (!ft_strcmp(scn[n] + 8, T_CYL))
-		    ol.id = ID_CYL;
+		  ol.id = ID_CYL;
 		else if (!ft_strcmp(scn[n] + 8, T_CON))
-		    ol.id = ID_CON;
+		  ol.id = ID_CON;
 		else if (!ft_strcmp(scn[n] + 8, T_CUB))
-		    ol.id = ID_CUB;
-        i = 0;
-        while (i < phelp_len)
-        {
-            // Parse field with function from t_phelp
-            if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-            {
-                phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-                break;
-            }
-            i++;
-        }
-        check_obj(app);
-        app->obj_sum++;
-        ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
-        n = (ol.id > 2) ? n + 7 : n + 6;
+		  ol.id = ID_CUB;
+    i = 0;
+    while (i < phelp_len)
+    {
+    // Parse field with function from t_phelp
+    	if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
+    	{
+      	phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
+        break;
+      }
+      i++;
+    }
+    check_obj(app);
+    app->obj_sum++;
+    ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
+    n = (ol.id > 2) ? n + 7 : n + 6;
     }
 }
 
 void	parser_light(char **scn, t_app *app, int n)
 {
-	t_light	ll;
+		t_light	ll;
     int     i;
     t_phelp phelp[5];
     int     phelp_len;
@@ -273,27 +274,25 @@ void	parser_light(char **scn, t_app *app, int n)
     phelp[2] = PHELP("  direction:", &ll.dir, parse_vec3);
     phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real);
   	
-	while (key_type(scn[n]) && (!ft_strcmp(scn[n] + 8, T_LIGHT) \
-		&& scn[n][ft_strlen(scn[n])] == '\0'))
+	while (key_type(scn[n]) && is_valid_obj_name(scn[n] + 8))
 	{
 		if (!ft_strcmp(scn[1], "  dispersion:   1"))
-            ll.id = ID_DIRECT;
-        else if (!ft_strcmp(scn[1], "  dispersion:   2"))
-            ll.id = ID_AMB;
-        else if (!ft_strcmp(scn[1], "  dispersion:   3"))
-            ll.id = ID_POINT;
-        i = 0;
-        while (i < phelp_len)
-        {
-            // Parse field with function from t_phelp
-            if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-            {
-                phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-                break;
-            }
-            i++;
-        }
-        check_obj(app);
+    	ll.id = ID_DIRECT;
+    else if (!ft_strcmp(scn[1], "  dispersion:   2"))
+     	ll.id = ID_AMB;
+    else if (!ft_strcmp(scn[1], "  dispersion:   3"))
+    	ll.id = ID_POINT;
+    i = 0;
+    while (i < phelp_len)
+    {
+     	if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
+      {
+				phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
+        break;
+      }
+      i++;
+    }
+    check_obj(app);
 		app->light_sum++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
 		n += 5;
