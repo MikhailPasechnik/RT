@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/08 21:09:41 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/08 20:45:51 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		kill(char *message) // ++
 	exit(1);	
 }
 
-static void	ignore_str(char **ptr) // ++
+void	ignore_str(char **ptr) // ++
 {
 	while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
 		++(*ptr);
@@ -170,12 +170,8 @@ t_vec3	array_attack(char *s) // ++ 20_02
 
 void	app_init(t_app *app) // + (to do ?)
 {
-	app->obj_sum = 0;
-	app->obj_count = 0;
-	app->light_sum = 0;
-	app->light_count = 0;
-//	app->obj = NULL;
-//	app->light = NULL;
+	app->op.obj_count = 0;
+	app->op.light_count = 0;
 	app->cam.pos = VEC(0, 0, 0);
 	app->cam.dir = VEC(0, 0, 0);
 }
@@ -184,22 +180,26 @@ void	check_obj(t_app *app) // TO DO
 {
 	t_obj_list		*objects;
 	t_light_list	*lights;
+	t_obj			*obj;
+	t_light			*lig;
 
 	lights = app->light_list;
 	objects = app->obj_list;
 	while (lights)
 	{
-			if (lights->light.intensity < 0)
-				kill("Intensity must be positive!");
-			lights = lights->next;
+		lig = lights->content;
+		if (lig->intensity < 0)
+			kill("Intensity must be positive!");
+		lights = lights->next;
 	}
 	while (objects)
 	{
-		if (objects->obj.id != 2 && objects->obj.radius < 0)
+		obj = objects->content;
+		if (obj->id != 2 && obj->radius < 0)
 			kill("Raduis so small!");
-		if (objects->obj.mat.specular < 0)
+		if (obj->mat.specular < 0)
 			kill("Specularity must be positive!");
-		if (objects->obj.mat.reflection < 0)
+		if (obj->mat.reflection < 0)
 			kill("Reflective must be positive!");
 		objects = objects->next;
 	}
@@ -253,7 +253,7 @@ void	parser_obj(char **scn, t_app *app, int n)
       i++;
     }
     check_obj(app);
-    app->obj_sum++;
+	app->op.obj_count++;
     ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
     n = (ol.id > 2) ? n + 7 : n + 6;
     }
@@ -261,7 +261,7 @@ void	parser_obj(char **scn, t_app *app, int n)
 
 void	parser_light(char **scn, t_app *app, int n)
 {
-		t_light	ll;
+	t_light	ll;
     int     i;
     t_phelp phelp[5];
     int     phelp_len;
@@ -293,7 +293,7 @@ void	parser_light(char **scn, t_app *app, int n)
       i++;
     }
     check_obj(app);
-		app->light_sum++;
+		app->op.light_count++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
 		n += 5;
 	}
@@ -355,6 +355,6 @@ void	parser(t_app *app, char *scene) // ++ 01_03
 	app_init(app);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 3);
-	n = (app->light_sum) * 5 + 4; // номер строки, с которой начинаются объекты, если источников > 1
+	n = (app->op.light_count) * 5 + 4; // номер строки, с которой начинаются объекты, если источников > 1
 	parser_obj(app->scene, app, n);
 }
