@@ -1,5 +1,10 @@
 #include "rt.hcl"
 
+t_real deg2rad(t_real deg)
+{
+    return deg / 2 * (M_PI / 180);
+}
+
 void print_render_args(t_options *options, t_cam* camera,
         __global t_obj* scene, __global t_light* lights)
 {

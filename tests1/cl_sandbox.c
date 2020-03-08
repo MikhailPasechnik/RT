@@ -58,8 +58,8 @@ int rand_interval(unsigned int min, unsigned int max, int offset)
 
 void fake_sphere(t_obj *s)
 {
-	s->pos = VEC(rand_interval(0, 20, 10),rand_interval(0, 20, 10), rand_interval(1, 10, 0));
-	s->rot = VEC(3, 2, 1);
+	s->pos = VEC(rand_interval(0, 20, 10),rand_interval(0, 20, 10), rand_interval(7, 25, 0));
+	s->rot = VEC(1,0,0);
 //	s->i = (cl_int3){4, 4, 4};
 	s->radius = rand_interval(1, 5, 0);
 	s->height = 0;
@@ -71,31 +71,15 @@ void fake_sphere(t_obj *s)
 
 int main(void)
 {
-    t_mat4 d161 = (t_mat4){
-            1, 2, 0, 0,
-            0, 1, 2, 0,
-            0, 0, 1, 3,
-            0, 0, 0, 1
-    };
-    t_mat4 d162 = (t_mat4){
-            1, 0, 0, 0,
-            5, 1, 0, 0,
-            0, 4, 1, 0,
-            0, 0, 0, 1
-    };
-    t_mat4 d163;
-    m4_mul(&d161, &d162, &d163);
-    m4_inv(&d161, &d163);
-
 	int			err;
 	t_ocl		ocl;
 	t_renderer	ren;
 	cl_kernel   k;
 
-	int		w = 20;
-	int		h = 20;
-	int		fow = 80;
-	int		s = 5;
+	int		w = 190;
+	int		h = 100;
+	int		fow = 68;
+	int		s = 55;
 	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
@@ -108,6 +92,11 @@ int main(void)
 	{
 		fake_sphere(&scene[i++]);
 	}
+    scene[0].id = ID_PLN;
+    scene[0].symbol = '0';
+    scene[0].rot = VEC(0, 0, -1);
+    scene[0].rot = VEC(0, 10, -1);
+    v3_norm(&scene[0].rot, &scene[0].rot);
 	assert(ocl_init(&ocl));
 	assert(new_renderer(&ren, &ocl, RT_CL_SRC, RT_CL_INCLUDE));
 	k = clCreateKernel(ren.program, RT_K_RENDER, &err);
@@ -120,7 +109,7 @@ int main(void)
 	assert(!OCL_ERROR2(err));
 
 	t_vec3 test_vec[10] = {0};
-	test_vec[5] = VEC(666666666666, 4, 5);
+	test_vec[5] = VEC(4, 4, 5);
 	assert(!OCL_ERROR2(err));
     cl_mem lights_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY, 1, test_vec, &err);
 	assert(!OCL_ERROR2(err));
@@ -128,6 +117,8 @@ int main(void)
 	output_mem = clCreateBuffer(ocl.context, CL_MEM_READ_WRITE, sizeof(t_int) * w * h, NULL, &err);
 	assert(!OCL_ERROR2(err));
 	t_options options = (t_options){
+	    .background_color = VEC(0,0,0),
+	    .reflection_depth = 0,
         .fov = fow,
         .width = w,
         .height = h,
@@ -135,7 +126,11 @@ int main(void)
         .lights_size = 0,
         .cameras_size = 0
 	};
-	t_cam cam = {0};
+
+	t_cam cam = {
+        .pos = VEC(0,0,0),
+        .dir = VEC(0,0,1)
+	};
 	err |= clSetKernelArg(k, 0, sizeof(t_options), &options);
 	err |= clSetKernelArg(k, 1, sizeof(t_cam), &cam);
 	err |= clSetKernelArg(k, 2, sizeof(cl_mem), &scene_mem);

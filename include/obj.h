@@ -71,7 +71,6 @@ typedef struct			s_cam
 {
 	t_vec3				pos;
 	t_vec3				dir;
-	t_vec3				rot;
 }						t_cam;
 
 typedef struct 			s_mat

@@ -34,15 +34,15 @@ static inline t_hit *plane_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
     t_real t;
 
     d = dot(ray->dir, obj->rot);
-    if (d < EPSILON)
+    if (d > EPSILON)
         return (NULL);
     t = dot(ray->orig - obj->pos, ray->dir) / d;
     if (t < 0)
         return (NULL);
-
     hit->pos = ray->orig + ray->dir * t;
     hit->norm = normalize(hit->pos - obj->pos);
     hit->obj = obj;
+    printf("plane_inter!\n");
     return (hit);
 }
 
@@ -91,10 +91,10 @@ t_hit	*intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
     while (size--)
     {
         new = NULL;
-        if (IS_SPH(&scene[size]))
-            new = sphere_inter(&scene[size], ray, &t);
-        else if (IS_PLN(&scene[size]))
+        if (IS_PLN(&scene[size]))
             new = plane_inter(&scene[size], ray, &t);
+        else if (IS_SPH(&scene[size]))
+            new = sphere_inter(&scene[size], ray, &t);
         else if (IS_CYL(&scene[size]))
             new = cylinder_inter(&scene[size], ray, &t);
         else if (IS_CON(&scene[size]))
