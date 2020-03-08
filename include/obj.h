@@ -10,77 +10,107 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJ_H
+# ifndef OBJ_H
 # define OBJ_H
 
-#include "../include/m3d.h"
-# include "../include/rt.h"
+# ifdef __APPLE__
+# include <OpenCL/opencl.h>
+# elif __unix__
+# include <CL/opencl.h>
+# endif
 
 # define ID_SPH	1
 # define ID_PLN	2
 # define ID_CYL 3
 # define ID_CON	4
+# define ID_CUB	5
+# define T_SPH "sphere"
+# define T_PLN "plane"
+# define T_CYL "cylinder"
+# define T_CON "cone"
+# define T_CUB "cube"
+# define T_LIGHT "light"
+# define T_CAM "camera"
+# define IS_SPH(o) ((o)->id == (ID_SPH))
+# define IS_PLN(o) ((o)->id == (ID_PLN))
+# define IS_CYL(o) ((o)->id == (ID_CYL))
+# define IS_CON(o) ((o)->id == (ID_CON))
+# define IS_CUB(o) ((o)->id == (ID_CUB))
+# define COLOR(r, g, b, a) ((t_color){r, g, b})
 
-# define NLL 0.000001
-# define COLOR(r, g, b) ((t_color){r, g, b})
+typedef cl_double       t_real;
+typedef cl_double16     t_mat4;
+typedef cl_double3      t_vec3;
+typedef cl_int          t_int;
+typedef cl_uint         t_uint;
+typedef cl_double3      t_color;
 
-typedef struct			s_color
+/*
+** OpenCL compatible structs
+**
+** Recommend declaring your structure from the widest types first
+** down to the narrowest types.
+** First, this avoids wasted unused spaces due to alignment.
+** Second, this often avoids any headaches
+** with different alignments on different devices.
+*/
+
+typedef struct          s_options
 {
-	cl_uchar			r;
-	cl_uchar			g;
-	cl_uchar			b;
-}						t_color; // cl_int - ? 
+    t_vec3              background_color;
+    t_real              reflection_depth;
+    t_uint              width;
+    t_uint              height;
+    t_uint              scene_size;
+    t_uint              lights_size;
+}                       t_options;
 
 typedef struct			s_cam
 {
 	t_vec3				pos;
 	t_vec3				dir;
-	t_vec3				rot;
+    t_real              fov;
 }						t_cam;
+
+typedef struct 			s_mat
+{
+	t_color				diffuse;
+    t_real			    specular;
+    t_real			    refraction;
+    t_real			    ior;
+    t_real			    fresnel;
+	t_real			    reflection;
+}						t_mat;
 
 typedef struct			s_obj
 {
+	t_mat				mat;
 	t_vec3				pos;
 	t_vec3				rot;
-	t_color				color;
-	cl_double			r;
-	cl_int				name;
-	cl_double			specul;
-	cl_double			reflect;
-	struct s_obj		*next;
+	t_real				radius;
+	t_real				height;
+	t_int				id;
+	t_int				symbol;
 }						t_obj;
 
 typedef	struct			s_light
 {
 	t_vec3				pos;
-	double				inten;
-	t_color				color;
-//	t_vec				vec_p;
-//	t_vec				vec_n;
-//	cl_double			new_inten;
-	struct s_light		*next;	
+	t_vec3				dir;
+    t_color				color;
+    t_real				intensity;
 }						t_light;
 
-typedef struct			s_cl
-{
-	cl_context			context;
-	cl_command_queue	queue;
-	cl_platform_id		*plat_id;
-	cl_device_id		*dev_id;
-	cl_uint				num_plat;
-	cl_uint				num_dev;
-	cl_kernel			kernel;
-	cl_program			prog;
-	cl_mem				obj_mem;
-	cl_mem				light_mem;
-	cl_mem				img;
-	cl_mem				d_mem;
-	cl_mem				i_mem;
-	t_obj				*cl_obj;
-	t_light				*cl_light;
-	int					*data;
-	int 				o_count;
-	int 				l_count;
-}						t_cl;
+typedef	struct	s_ray {
+    t_vec3	orig;
+    t_vec3	dir;
+    t_real	t;
+}				t_ray;
+
+typedef struct	s_hit_cpu {
+    t_vec3	pos;
+    t_vec3	norm;
+    t_uint  obj_index;
+}				t_hit_cpu;
 
 #endif
