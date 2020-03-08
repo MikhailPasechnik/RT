@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/08 21:06:47 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/08 21:09:41 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void	parser_obj(char **scn, t_app *app, int n)
     phelp[5] = PHELP("  reflective:", &ol.mat.reflection, parse_real);
     phelp[6] = PHELP("  height:", &ol.height, parse_real);
 
-    while (!key_type(scn[n]) && n <= app->lines)
+    while (key_type(scn[n]) && n <= app->lines)
     {
     if (!is_valid_obj_name(scn[n] + 8))
 			kill ("Error name obj");
