@@ -14,7 +14,7 @@ NAME=RTv1
 
 OS			=	$(shell uname -s)
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra  # -Werror
+CFLAGS		=	#-Wall # -Wextra  -Werror=unused
 
 SRC_FILES	=			\
 	app.c				\
@@ -22,7 +22,7 @@ SRC_FILES	=			\
 	file_io.c			\
 	main.c				\
 	renderer.c			\
-	trace.c			    \
+	generator.c			\
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
@@ -41,7 +41,6 @@ SRC_FILES	=			\
 HDR_FILES	=			\
 	rt.h 			    \
 	keys.h 				\
-	trace.h 			\
 	obj.h 			    \
 	file_io.h    	    \
 	ocl.h				\

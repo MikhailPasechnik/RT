@@ -64,8 +64,8 @@ typedef struct          s_options
     t_real              reflection_depth;
     t_uint              width;
     t_uint              height;
-    t_uint              scene_size;
-    t_uint              lights_size;
+    t_uint              obj_count;
+    t_uint              light_count;
 }                       t_options;
 
 typedef struct			s_cam
@@ -116,17 +116,5 @@ typedef struct	        s_hit_cpu {
     t_vec3	            norm;
     t_uint              obj_index;
 }				        t_hit_cpu;
-
-typedef struct 			s_obj_list
-{
-	t_obj				obj;
-	struct s_obj		*next;
-}						t_obj_list;
-
-typedef struct 			s_light_list
-{
-	t_light				light;
-	struct s_light		*next;
-}						t_light_list;
 
 #endif

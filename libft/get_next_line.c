@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+# ifndef OPEN_MAX
+# define OPEN_MAX 265
+# endif
 
 # define BUFF_SIZE 30
 

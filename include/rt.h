@@ -14,12 +14,13 @@
 # define RT_H
 
 # include <math.h>
-# include "../libft/libft.h"
+# include "libft.h"
 # include "ft_printf.h"
 # include "ocl.h"
 # include "m3d.h"
 # include "SDL.h"
 # include "obj.h"
+# include "file_io.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
@@ -30,12 +31,20 @@
 ** Rt OpenCL source setup
 */
 # ifdef __APPLE__
-#  define RT_CL_INCLUDE "-I res/cl"
+#  define RT_CL_INCLUDE "-I res/ocl -I./include"
 # else
-#  define RT_CL_INCLUDE "-I./res/cl"
+#  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
+# define RT_K_RENDER "k_render"
+# define RT_K_OPTIONS_ARG 0
+# define RT_K_CAMERA_ARG 1
+# define RT_K_SCENE_ARG 2
+# define RT_K_LIGHTS_ARG 3
+# define RT_K_OUTPUT_ARG 4
 
+typedef t_list  t_obj_list;
+typedef t_list  t_light_list;
 /*
  * Rectangle
  * 		orig: rectangle start position
@@ -60,6 +69,8 @@ typedef struct			s_renderer
 	char				**src;
 	size_t				src_count;
 
+	cl_mem				obj_mem;
+	cl_mem				light_mem;
 	cl_mem				out_mem;
 	int					out_w;
 	int					out_h;
@@ -80,15 +91,18 @@ typedef struct			s_app
 	t_renderer			ren;
 	t_ocl				ocl;
 
+	t_options 			op;
+
 	t_cam				cam;
-	t_obj_list			*obj_list;
-	t_light_list		*light_list; // 
+	t_obj_list          *obj_list;
+	t_light_list        *light_list;
 
-	int					obj_sum; // objects of scene
-	int					light_sum; // lights of scene
-
-	int					obj_count;
-	int					light_count;
+	int                 op_changed;
+	int                 cm_changed;
+	int                 ol_changed;   // If true recreate obj_array and fill it with pointers from ol
+	int                 ll_changed;   // If true recreate light_array and fill it with pointers from ll
+	t_obj               *obj_array;   // Array of pointers to obj in obj_list
+	t_light             *light_array; // Array of pointers to light in light_list
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
@@ -122,6 +136,8 @@ int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect);
 size_t			rt_tab_len(char **tab);
 void			*rt_tab_free(char **tab);
 void			*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h);
+void			generate_scene(t_app *app);
+
 
 /*
 ** Kate functions

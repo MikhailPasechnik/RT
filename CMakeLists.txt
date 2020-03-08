@@ -9,6 +9,8 @@ add_subdirectory(ft_printf)
 add_subdirectory(SDL)
 
 file(GLOB SRC src/*.c src/ocl/*.c src/math3d/*.c)
+file(GLOB_RECURSE RES_CL res/ocl/*)
+FILE(COPY ${RES_CL} DESTINATION "${CMAKE_BINARY_DIR}/res/ocl/")
 
 link_directories(libft SDL ft_printf)
 include_directories(libft include ${OpenCL_INCLUDE_DIRS} SDL/include ft_printf/include)
@@ -19,3 +21,4 @@ add_executable(${NAME} ${SRC})
 # Tests
 list(FILTER SRC EXCLUDE REGEX "main.c")
 add_executable(cl_sandbox tests/cl_sandbox.c ${SRC})
+add_executable(cl_sandbox2 tests1/cl_sandbox.c ${SRC})

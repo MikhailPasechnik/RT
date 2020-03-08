@@ -54,3 +54,6 @@ dkms.conf
 # Jet
 .idea
 cmake-build-*
+
+dist
+tmp
