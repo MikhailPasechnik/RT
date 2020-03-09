@@ -24,7 +24,7 @@ SRC_FILES	=			\
 	renderer.c			\
 	generator.c			\
 	transfer.c			\
-	parser.cd			\
+	parser.c			\
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
