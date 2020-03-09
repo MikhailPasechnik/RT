@@ -31,7 +31,7 @@
 ** Rt OpenCL source setup
 */
 # ifdef __APPLE__
-#  define RT_CL_INCLUDE "-I res/ocl -I./include"
+#  define RT_CL_INCLUDE "-I res/ocl -I include"
 # else
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
