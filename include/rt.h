@@ -113,7 +113,23 @@ typedef struct			s_app
 */
 int				app_start(t_app *app, char **argv, int argc);
 void			app_finish(t_app *app);
+int				app_error(const char *msg, int returns);
 void			on_app_event(t_app *app, SDL_Event *event);
+
+/*
+** Transfer memory from CPU to GPU
+** 		1. Clean up previously allocated GPU buffer and CPU array
+** 		2. Copy CPU linked list to buffer
+** 		3. Create GPU buffer from CPU array
+*/
+int				transfer_objects(t_app *app);
+int				transfer_light(t_app *app);
+
+/*
+** Partial GPU buffer update
+*/
+int				update_light(t_app *app, t_light *light, int index);
+int				update_object(t_app *app, t_obj *obj, int index);
 
 /*
 ** Event functions
