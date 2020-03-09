@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/08 20:45:51 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/10 00:08:50 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,37 @@ void    parse_real(char *str, void *vp)
     *p = ptr_atoi(&str);
 }
 
-int is_valid_obj_name(char *str)
+int		is_valid_light_name(char *str)
 {
-	return ((!ft_strcmp(str, T_CAM) || !ft_strcmp(str, T_CON) \
-		|| !ft_strcmp(str, T_CUB) || !ft_strcmp(str, T_CYL) \
-		|| !ft_strcmp(str, T_LIGHT) || !ft_strcmp(str, T_PLN) \
-		|| !ft_strcmp(str, T_SPH)) && str[ft_strlen(str)] == '\0');
+    return (!ft_strcmp(str, T_LIGHT) && str[ft_strlen(str)] == '\0');
+}
+
+int		is_valid_obj_name(char *str)
+{
+	return ((!ft_strcmp(str, T_CON) || !ft_strcmp(str, T_CUB) \
+	    || !ft_strcmp(str, T_CYL) || !ft_strcmp(str, T_PLN) \
+	    || !ft_strcmp(str, T_SPH)) && str[ft_strlen(str)] == '\0');
 }
 
 int		kill(char *message) // ++
 {
 	perror(message);
-	exit(1);	
+	exit(1);
 }
 
-void	ignore_str(char **ptr) // ++
+void	ignore_str(char **ptr)
 {
 	while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
 		++(*ptr);
 }
 
-int		ptr_atoi_int(char **str, int fraction) // ++ 20_02
+int		ptr_atoi_int(char **str, int fraction)
 {
   int n;
   int sign;
 
   n = 0;
-  sign = **str == '-' && !fraction ? -1 : 1;
+  sign = (**str == '-' && !fraction) ? -1 : 1;
   if (**str == '+' || (**str == '-' && !fraction))
     ++(*str);
   if (!ft_isdigit(**str))
@@ -90,21 +94,31 @@ t_real  ptr_atoi(char **str)
 {
     int	w;
     int	f;
+    int d;
+    int p;
 
     w = ptr_atoi_int(str, 0);
+    p = 0;
     if ((**str) == '.')
     {
-      if (!ft_isdigit(**str))
-          kill("Error in number!");
-      ++(**str);
-      f = ptr_atoi_int(str, 1);
+        ++(*str);
+        while (ft_isdigit(**str))
+        {
+            ++(*str);
+            p++;
+        }
+        if (p > 2)
+            kill("Only two digit after '.' !");
+        d = (p == 1) ? 10 : 100;
+        (*str) = (d == 100) ? (*str) - 2 : (*str) - 1;
+        f = (w > 0) ? ptr_atoi_int(str, 1) : -(ptr_atoi_int(str, 1));
     }
-		else
-			f = 0;
-    return ((t_real)w + f ? 1.0 / (t_real)f : 0);
+    else
+		f = 0;
+    return ((t_real)w + (f ? (t_real)f / d : 0));
 }
 
-t_color	array_color(char *s) // ++ 20_02
+t_color	array_color(char *s)
 {
 	int			i;
 	int			r;
@@ -136,7 +150,7 @@ t_color	array_color(char *s) // ++ 20_02
 	return (COLOR(r, g, b, 1));
 }
 
-t_vec3	array_attack(char *s) // ++ 20_02
+t_vec3	array_attack(char *s)
 {
 	int			c;
 	double	x;
@@ -152,11 +166,11 @@ t_vec3	array_attack(char *s) // ++ 20_02
 		++c;
 		ignore_str(&s);
 		if (c == 1)
-			x = (float)ptr_atoi(&s);
+			x = ptr_atoi(&s);
 		else if (c == 2)
-			y = (float)ptr_atoi(&s);
+			y = ptr_atoi(&s);
 		else if (c == 3)
-			z = (float)ptr_atoi(&s);
+			z = ptr_atoi(&s);
 		else
 			kill("Error in array!");
 		ignore_str(&s);
@@ -168,7 +182,7 @@ t_vec3	array_attack(char *s) // ++ 20_02
 	return (VEC({x, y, z}));
 }
 
-void	app_init(t_app *app) // + (to do ?)
+void	app_init(t_app *app)
 {
 	app->op.obj_count = 0;
 	app->op.light_count = 0;
@@ -176,7 +190,7 @@ void	app_init(t_app *app) // + (to do ?)
 	app->cam.dir = VEC(0, 0, 0);
 }
 
-void	check_obj(t_app *app) // TO DO
+void	check_obj(t_app *app)
 {
 	t_obj_list		*objects;
 	t_light_list	*lights;
@@ -195,7 +209,9 @@ void	check_obj(t_app *app) // TO DO
 	while (objects)
 	{
 		obj = objects->content;
-		if (obj->id != 2 && obj->radius < 0)
+		if (obj->id == 1)
+		    obj->rot = VEC(0, 0, 0);
+		if (obj->id != 2 && obj->id != 5 && obj->radius < 0)
 			kill("Raduis so small!");
 		if (obj->mat.specular < 0)
 			kill("Specularity must be positive!");
@@ -205,57 +221,56 @@ void	check_obj(t_app *app) // TO DO
 	}
 }
 
-
 void	parser_obj(char **scn, t_app *app, int n)
 {
     t_obj   ol;
     int     i;
-    t_phelp phelp[10];
+    t_phelp phelp[7];
     int     phelp_len;
 
-    phelp_len = 10;
-    ft_bzero(&phelp, sizeof(t_phelp) * 10);
-
-    // Add all fields here!
+    phelp_len = 7;
+    ft_bzero(&phelp, sizeof(t_phelp) * 7);
 
     phelp[0] = PHELP("  position:", &ol.pos, parse_vec3);
     phelp[1] = PHELP("  color:", &ol.mat.diffuse, parse_color);
     phelp[2] = PHELP("  rotation:", &ol.rot, parse_vec3);
-    phelp[3] = PHELP("  radius:", &ol.rot, parse_real);
+    phelp[3] = PHELP("  radius:", &ol.radius, parse_real);
     phelp[4] = PHELP("  specular:", &ol.mat.specular, parse_real);
     phelp[5] = PHELP("  reflective:", &ol.mat.reflection, parse_real);
     phelp[6] = PHELP("  height:", &ol.height, parse_real);
 
-    while (key_type(scn[n]) && n <= app->lines)
+    while (scn[n] && key_type(scn[n]) && is_valid_obj_name(scn[n] + 8))
     {
-    if (!is_valid_obj_name(scn[n] + 8))
-			kill ("Error name obj");
-    ft_bzero(&ol, sizeof(t_obj));
-    if (!ft_strcmp(scn[n] + 8, T_SPH))
-    	ol.id = ID_SPH;
-    else if (!ft_strcmp(scn[n] + 8, T_PLN))
-		  ol.id = ID_PLN;
-		else if (!ft_strcmp(scn[n] + 8, T_CYL))
-		  ol.id = ID_CYL;
-		else if (!ft_strcmp(scn[n] + 8, T_CON))
-		  ol.id = ID_CON;
-		else if (!ft_strcmp(scn[n] + 8, T_CUB))
-		  ol.id = ID_CUB;
-    i = 0;
-    while (i < phelp_len)
-    {
-    // Parse field with function from t_phelp
-    	if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-    	{
-      	phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-        break;
-      }
-      i++;
-    }
-    check_obj(app);
-	app->op.obj_count++;
-    ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
-    n = (ol.id > 2) ? n + 7 : n + 6;
+        ft_bzero(&ol, sizeof(t_obj));
+        if (!ft_strcmp(scn[n] + 8, T_SPH))
+            ol.id = ID_SPH;
+        else if (!ft_strcmp(scn[n] + 8, T_PLN))
+            ol.id = ID_PLN;
+        else if (!ft_strcmp(scn[n] + 8, T_CYL))
+            ol.id = ID_CYL;
+        else if (!ft_strcmp(scn[n] + 8, T_CON))
+            ol.id = ID_CON;
+        else if (!ft_strcmp(scn[n] + 8, T_CUB))
+            ol.id = ID_CUB;
+        n++;
+        while (scn[n] && scn[n][0] != '-')
+        {
+            i = 0;
+            while (i < phelp_len)
+            {
+                if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
+                {
+                    phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
+                    break;
+                }
+                else
+                    i++;
+            }
+            n++;
+        }
+        check_obj(app);
+        app->op.obj_count++;
+        ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
     }
 }
 
@@ -263,45 +278,51 @@ void	parser_light(char **scn, t_app *app, int n)
 {
 	t_light	ll;
     int     i;
-    t_phelp phelp[5];
+    t_phelp phelp[4];
     int     phelp_len;
 
-    phelp_len = 5;
-    ft_bzero(&phelp, sizeof(t_phelp) * 5);
+    phelp_len = 4;
+    ft_bzero(&phelp, sizeof(t_phelp) * 4);
 
     phelp[0] = PHELP("  position:", &ll.pos, parse_vec3);
-    phelp[1] = PHELP("  color:", &ll.color, parse_color);
-    phelp[2] = PHELP("  direction:", &ll.dir, parse_vec3);
+    phelp[1] = PHELP("  direction:", &ll.dir, parse_vec3);
+    phelp[2] = PHELP("  color:", &ll.color, parse_color);
     phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real);
-  	
-	while (key_type(scn[n]) && is_valid_obj_name(scn[n] + 8))
+
+	while (key_type(scn[n]) && is_valid_light_name(scn[n] + 8))
 	{
-		if (!ft_strcmp(scn[1], "  dispersion:   1"))
-    	ll.id = ID_DIRECT;
-    else if (!ft_strcmp(scn[1], "  dispersion:   2"))
-     	ll.id = ID_AMB;
-    else if (!ft_strcmp(scn[1], "  dispersion:   3"))
-    	ll.id = ID_POINT;
-    i = 0;
-    while (i < phelp_len)
-    {
-     	if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-      {
-				phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-        break;
-      }
-      i++;
-    }
-    check_obj(app);
+        ft_bzero(&ll, sizeof(t_light));
+        n++;
+        while (scn[n][0] != '-')
+        {
+            i = 0;
+            while (i < phelp_len)
+            {
+                if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
+                {
+                    phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
+                    break;
+                }
+                else
+                    i++;
+            }
+            if (!ft_strcmp(scn[n], "  dispersion:   1"))
+                ll.id = ID_DIRECT;
+            else if (!ft_strcmp(scn[n], "  dispersion:   2"))
+                ll.id = ID_POINT;
+            else if (!ft_strcmp(scn[n], "  dispersion:   3"))
+                ll.id = ID_AMB;
+            n++;
+        }
+        check_obj(app);
 		app->op.light_count++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
-		n += 5;
 	}
 }
 
-void	parser_cam(t_cam *cam, char **scn) // ++ 20_02
+void	parser_cam(t_cam *cam, char **scn)
 {
-	if (!key_type(scn[0]) || ft_strcmp(scn[0] + 8, "camera"))
+	if (!key_type(scn[0]) || ft_strcmp(scn[0] + 8, T_CAM))
 		kill("Error in str 'camera'");
 	if (ft_strncmp(scn[1], "  position:", 11))
 		kill("Error in str 'cam_pos'");
@@ -315,9 +336,9 @@ void	parser_cam(t_cam *cam, char **scn) // ++ 20_02
 	cam->fov = ptr_atoi(&scn[3]);
 }
 
-char	**read_scene(int fd, int *lines) // ++ 01_03
+char	**read_scene(int fd, int *lines)
 {
-	char 	*gnled;
+  char 	*gnled;
   char 	**arr_old = NULL;
   char 	**scn;
   int 	size = 0;
@@ -342,7 +363,7 @@ char	**read_scene(int fd, int *lines) // ++ 01_03
 	return (scn);
 }
 
-void	parser(t_app *app, char *scene) // ++ 01_03
+void	parser(t_app *app, char *scene)
 {
 	int	n;
 	int	fd;
@@ -354,7 +375,7 @@ void	parser(t_app *app, char *scene) // ++ 01_03
 	app->scene = read_scene(fd, &(app->lines));
 	app_init(app);
 	parser_cam(&app->cam, app->scene);
-	parser_light(app->scene, app, 3);
-	n = (app->op.light_count) * 5 + 4; // номер строки, с которой начинаются объекты, если источников > 1
+	parser_light(app->scene, app, 4);
+	n = (app->op.light_count) * 6 + 4; // номер строки, с которой начинаются объекты, если источников > 1
 	parser_obj(app->scene, app, n);
 }

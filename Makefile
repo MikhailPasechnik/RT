@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+         #
+#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2019/07/10 13:57:12 by bnesoi           ###   ########.fr        #
+#    Updated: 2020/03/10 00:07:52 by bmahi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC_FILES	=			\
 	renderer.c			\
 	generator.c			\
 	transfer.c			\
+	parser.cd			\
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\

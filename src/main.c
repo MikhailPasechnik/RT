@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/06/21 12:52:38 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/03/10 00:07:57 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "../include/rt.h"
 
 int		sdl_init()
 {
@@ -45,7 +45,8 @@ int main(int argc, char **argv)
 
 	ft_bzero(&app, sizeof(t_app));
 
-	generate_scene(&app);
+//	generate_scene(&app);
+	parser(&app, argv[1]);
 	!sdl_init() ? exit(1) : 0;
 	if (!app_start(&app, argv + 1, argc - 1))
 	    app_finish(&app);

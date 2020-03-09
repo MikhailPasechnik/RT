@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/08 20:45:35 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/10 00:04:00 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,18 +169,20 @@ void			generate_scene(t_app *app);
 int				kill(char *message);
 void			parser(t_app *app, char *scene);
 char			**read_scene(int fd, int *lines);
-void			check_obj(t_app *app);
-void			app_init(t_app *app);
 void			parser_cam(t_cam *cam, char **scn);
 void			parser_light(char **scn, t_app *app, int n);
 void			parser_obj(char **scn, t_app *app, int n);
-t_light			*add_ll(t_app *app, t_light *ll);
-t_obj			*add_ol(t_app *app, t_obj *ol);
+void			check_obj(t_app *app);
+void			app_init(t_app *app);
 t_vec3			array_attack(char *s);
 t_color			array_color(char *s);
-t_color			col_init(int r, int g, int b);
-t_vec3			vec_init(double x, double y, double z);
-void			ignore_str(char **ptr);
 t_real			ptr_atoi(char **str);
+int				ptr_atoi_int(char **str, int fraction);
+void			ignore_str(char **ptr);
+int 			is_valid_obj_name(char *str);
+int		        is_valid_light_name(char *str);
+void			parse_real(char *str, void *vp);
+void			parse_vec3(char *str, void *vp);
+void			parse_color(char *str, void *vp);
 
 #endif
