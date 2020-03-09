@@ -23,6 +23,7 @@ SRC_FILES	=			\
 	main.c				\
 	renderer.c			\
 	generator.c			\
+	transfer.c			\
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\
