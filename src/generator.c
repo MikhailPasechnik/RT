@@ -94,7 +94,7 @@ void	generate_scene(t_app *app)
 	// ground_plane(&o);
 	// ft_lstadd(&app->obj_list, ft_lstnew(&o, sizeof(t_obj)));
 	// app->op.scene_size++;
-	s = rand_interval(25, 50);
+	s = rand_interval(70, 150);
 	while(s--)
 	{
 		fake_obj(&o, ID_SPH);
