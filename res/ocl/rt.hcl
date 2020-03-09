@@ -9,6 +9,9 @@ typedef int cl_int;
 typedef uint cl_uint;
 
 # define EPSILON 0.000001
+# ifndef NULL
+# define NULL ((void *)0)
+# endif
 # define VEC(x, y, z)((t_vec3){x, y, z})
 
 /*
