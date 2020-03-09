@@ -128,8 +128,16 @@ int				transfer_light(t_app *app);
 /*
 ** Partial GPU buffer update
 */
-int				update_light(t_app *app, t_light *light, int index);
-int				update_object(t_app *app, t_obj *obj, int index);
+int				update_light(cl_mem mem, cl_command_queue queue, t_light *light,
+						int index);
+int				update_object(cl_mem mem, cl_command_queue queue, t_obj *obj,
+					 	int index);
+
+/*
+**  Kernel arguments update
+*/
+int				update_camera(cl_kernel kernel, t_cam *cam, int arg_num);
+int				update_options(cl_kernel kernel, t_options *options, int arg_num);
 
 /*
 ** Event functions

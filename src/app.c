@@ -21,24 +21,23 @@ inline int app_error(const char *msg, int returns)
 
 static int app_pre_render(t_app *app)
 {
-	int err;
-
-	err = 0;
 	app->ren.width = app->op.width;
 	app->ren.height = app->op.height;
 	if (app->ol_changed && !transfer_objects(app))
-		return 0;
+		return (0);
+	app->ol_changed = 0;
 	if (app->ll_changed && !transfer_light(app))
-		return 0;
-	if (app->cm_changed)
-		err |= clSetKernelArg(app->ren.render_kernel,
-			  RT_K_CAMERA_ARG, sizeof(t_cam), &app->cam);
-	OCL_ERROR(err, "To set camera kernel arg!");
-	if (app->op_changed)
-		err |= clSetKernelArg(app->ren.render_kernel,
-			  RT_K_OPTIONS_ARG, sizeof(t_options), &app->op);
-	OCL_ERROR(err, "To set options kernel arg!");
-	return (OCL_ERROR2(err) ? 0 : 1);
+		return (0);
+	app->ll_changed = 0;
+	if (app->cm_changed &&
+		!update_camera(app->ren.render_kernel, &app->cam, RT_K_CAMERA_ARG))
+		return (0);
+	app->cm_changed = 0;
+	if (app->op_changed &&
+		!update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG))
+		return (0);
+	app->op_changed = 0;
+	return (1);
 }
 
 static int app_render(t_app *app)

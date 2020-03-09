@@ -60,22 +60,43 @@ int		transfer_light(t_app *app)
 	return (OCL_ERROR(err, "Failed to create gpu buffer for lights!") ? 0 : 1);
 }
 
-int		update_object(t_app *app, t_obj *obj, int index)
+int		update_object(cl_mem mem, cl_command_queue queue, t_obj *obj,
+						int index)
 {
 	int err;
 
-	err = clEnqueueWriteBuffer(app->ren.queue, app->ren.obj_mem,
+	err = clEnqueueWriteBuffer(queue, mem,
 		CL_TRUE, index * sizeof(t_obj), sizeof(t_obj), obj, 0, NULL, NULL
 	);
 	return (OCL_ERROR(err, "Failed to update object!") ? 0 : 1);
 }
 
-int		update_light(t_app *app, t_light *light, int index)
+int		update_light(cl_mem mem, cl_command_queue queue, t_light *light,
+						int index)
 {
 	int err;
 
-	err = clEnqueueWriteBuffer(app->ren.queue, app->ren.light_mem,
+	err = clEnqueueWriteBuffer(queue, mem,
 		CL_TRUE, index * sizeof(t_light), sizeof(t_light), light, 0, NULL, NULL
 	);
 	return (OCL_ERROR(err, "Failed to update light!") ? 0 : 1);
+}
+
+int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
+{
+	int err;
+
+	err = clSetKernelArg(kernel, arg_num, sizeof(t_cam), cam);
+	OCL_ERROR(err, "Failed to set camera kernel arg!");
+	return (err == CL_SUCCESS);
+}
+
+int		update_options(cl_kernel kernel, t_options *options, int arg_num)
+{
+
+	int err;
+
+	err = clSetKernelArg(kernel, arg_num, sizeof(t_options), options);
+	OCL_ERROR(err, "Failed to set option kernel arg!");
+	return (err == CL_SUCCESS);
 }
