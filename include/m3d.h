@@ -29,9 +29,12 @@
 # endif
 # define TO_RAD(a)((a)*(M_PI / 180.0))
 
-typedef cl_double t_real;
-typedef cl_double16	t_mat4;
-typedef cl_double3	t_vec3;
+typedef cl_float		t_real;
+typedef cl_float16		t_mat4;
+typedef cl_float4		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_float4		t_color;
 # define VEC(x, y, z)((t_vec3){x, y, z})
 /*
 ** Helper to access cl_double16 by row and column on pointer var

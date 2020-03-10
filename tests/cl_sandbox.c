@@ -16,6 +16,12 @@ typedef struct	s_inter
 	cl_int 	id;
 }				t_inter;
 
+typedef struct			s_cam_
+{
+	t_vec3				pos;
+	t_vec3				dir;
+	t_real				fov;
+}						t_cam_;
 
 int main(void)
 {
@@ -48,10 +54,14 @@ int main(void)
 	// Intersection
 	output_mem = clCreateBuffer(ocl.context, CL_MEM_WRITE_ONLY, sizeof(cl_char) * w * h, NULL, &err);
 	assert(!OCL_ERROR2(err));
+
+	t_cam_ f16 = (t_cam_){0};
+
 	err |= clSetKernelArg(k, 0, sizeof(cl_uint), &w);
 	err |= clSetKernelArg(k, 1, sizeof(cl_uint), &h);
 	err |= clSetKernelArg(k, 2, sizeof(scene_mem), &scene_mem);
 	err |= clSetKernelArg(k, 3, sizeof(output_mem), &output_mem);
+	err |= clSetKernelArg(k, 4, sizeof(t_cam_), &f16);
 	assert(!OCL_ERROR2(err));
 
 	// Do it

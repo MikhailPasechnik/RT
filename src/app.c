@@ -42,13 +42,17 @@ static int app_pre_render(t_app *app)
 
 static int app_render(t_app *app)
 {
-	SDL_Surface	*surface;
+	SDL_Surface		*surface;
+	SDL_Renderer	*renderer;
 
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
 	surface = SDL_GetWindowSurface(app->win);
 	if (!render(&app->ren, &app->ocl, surface->pixels, &app->rect))
 		return (app_error("Failed to render!", 0));
+//	renderer = SDL_GetRenderer(app->win);
+//	SDL_Rect r =  (SDL_Rect){.h = 10, .w = 10, .x = 0, .y = 0};
+//	SDL_RenderDrawRect(renderer, &r);
 	SDL_UpdateWindowSurface(app->win);
 	return (1);
 }

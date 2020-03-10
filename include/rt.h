@@ -36,13 +36,13 @@
 # else
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl res/ocl/ray.cl"
 # define RT_K_RENDER "k_render"
-# define RT_K_OPTIONS_ARG 0
-# define RT_K_CAMERA_ARG 1
-# define RT_K_SCENE_ARG 2
-# define RT_K_LIGHTS_ARG 3
-# define RT_K_OUTPUT_ARG 4
+# define RT_K_OBJ_ARG 0
+# define RT_K_LIGHTS_ARG 1
+# define RT_K_OUTPUT_ARG 2
+# define RT_K_OPTIONS_ARG 3
+# define RT_K_CAMERA_ARG 4
 
 typedef t_list  t_obj_list;
 typedef t_list  t_light_list;
@@ -99,7 +99,6 @@ typedef struct			s_app
 {
 	SDL_Window			*win;
 	int 				quit;
-	unsigned int		mouse_flag;
 
 	SDL_Rect			rect;
 

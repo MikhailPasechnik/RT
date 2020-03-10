@@ -45,8 +45,8 @@ int main(int argc, char **argv)
 
 	ft_bzero(&app, sizeof(t_app));
 
-//	generate_scene(&app);
-	parser(&app, argv[1]);
+	generate_scene(&app);
+//	parser(&app, argv[1]);
 	!sdl_init() ? exit(1) : 0;
 	if (!app_start(&app, argv + 1, argc - 1))
 	    app_finish(&app);

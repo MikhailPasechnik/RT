@@ -15,8 +15,27 @@
 
 # ifdef __APPLE__
 # include <OpenCL/opencl.h>
+typedef cl_float		t_real;
+typedef cl_float16		t_mat4;
+typedef cl_float4		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_float4		t_color;
 # elif __unix__
 # include <CL/opencl.h>
+typedef cl_float		t_real;
+typedef cl_float16		t_mat4;
+typedef cl_float4		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_float4		t_color;
+# else
+typedef float		t_real;
+typedef float16		t_mat4;
+typedef float4		t_vec3;
+typedef int			t_int;
+typedef uint		t_uint;
+typedef float4		t_color;
 # endif
 
 # define ID_SPH	1
@@ -40,13 +59,6 @@
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
-
-typedef cl_double		t_real;
-typedef cl_double16		t_mat4;
-typedef cl_double3		t_vec3;
-typedef cl_int			t_int;
-typedef cl_uint			t_uint;
-typedef cl_double3		t_color;
 
 /*
 ** OpenCL compatible structs

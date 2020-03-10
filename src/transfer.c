@@ -36,6 +36,13 @@ int		push_buffer(cl_command_queue queue, t_buffer *buffer,
 	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
 }
 
+int		set_kernel_arg(cl_kernel kernel, int arg_num, void *ptr, size_t size)
+{
+	int err;
+
+	err = clSetKernelArg(kernel, arg_num, size, ptr);
+	return (OCL_ERROR(err, "Failed to set kernel arg!") ? 0 : 1);
+}
 
 int		transfer_objects(t_app *app)
 {
@@ -59,11 +66,13 @@ int		transfer_objects(t_app *app)
 	}
 	if (i != app->op.obj_count || it != NULL)
 		return (app_error("Object count not equal to Object list length!", 0));
-	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_obj) * app->op.obj_count, 0) && free_buffer(&buffer))
+	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_obj) * app->op.obj_count, 0)
+		&& free_buffer(&buffer))
 		return (app_error("Failed to push objects buffer!", 0));
 	free_buffer(&app->ren.obj_buf);
 	app->ren.obj_buf = buffer;
-	return (1);
+	return (set_kernel_arg(app->ren.render_kernel, RT_K_OBJ_ARG, &buffer
+	.gpu, sizeof(cl_mem)));
 }
 
 int		transfer_light(t_app *app)
@@ -74,7 +83,7 @@ int		transfer_light(t_app *app)
 	t_buffer buffer;
 
 	buffer = create_buffer(app->ocl.context,
-			sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
 	light = buffer.cpu;
@@ -88,11 +97,13 @@ int		transfer_light(t_app *app)
 	}
 	if (i != app->op.light_count || it != NULL)
 		return (app_error("Light count not equal to Light list length!", 0));
-	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_light) * app->op.light_count, 0) && free_buffer(&buffer))
+	if (!push_buffer(app->ren.queue, &buffer,
+			sizeof(t_light) *	app->op.light_count, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push light buffer!", 0));
 	free_buffer(&app->ren.light_buf);
 	app->ren.light_buf = buffer;
-	return (1);
+	return (set_kernel_arg(app->ren.render_kernel, RT_K_LIGHTS_ARG, &buffer
+			.gpu, sizeof(cl_mem)));
 }
 
 int		update_object(t_app *app, int index,  t_obj *obj)
@@ -132,7 +143,6 @@ int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
 
 int		update_options(cl_kernel kernel, t_options *options, int arg_num)
 {
-
 	int err;
 
 	err = clSetKernelArg(kernel, arg_num, sizeof(t_options), options);
