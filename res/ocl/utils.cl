@@ -32,3 +32,13 @@ void print_render_args(t_options *options, t_cam* camera,
         i++;
     }
 }
+
+uint pack_color(t_color *c)
+{
+	uchar3 t;
+
+	t.x = clamp(c->x, 0, 1.0) * 255;
+	t.y = clamp(c->y, 0, 1.0) * 255;
+	t.z = clamp(c->z, 0, 1.0) * 255;
+	return ((((t.x << 8u) + t.y) << 8u) + t.z);
+}

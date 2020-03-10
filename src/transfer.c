@@ -1,85 +1,124 @@
 #include "rt.h"
 
+
+t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags)
+{
+	int			err;
+	t_buffer	buffer;
+
+	err = 0;
+	buffer.cpu = ft_memalloc(size);
+	buffer.gpu = clCreateBuffer(ctx, flags, size, NULL, &err);
+	OCL_ERROR2(err);
+	buffer.valid = err == CL_SUCCESS && buffer.cpu != NULL;
+	buffer.size = size;
+	return (buffer);
+}
+
+
+int		free_buffer(t_buffer *buffer)
+{
+	if (buffer)
+	{
+		(buffer)->cpu ? ft_memdel(&buffer->cpu) : 0;
+		(buffer)->gpu ? clReleaseMemObject(buffer->gpu) : 0;
+	}
+	return (1);
+}
+
+int		push_buffer(cl_command_queue queue, t_buffer *buffer,
+		size_t size, size_t offset)
+{
+	int err;
+
+	err = clEnqueueWriteBuffer(queue, buffer->gpu, CL_TRUE, offset, size,
+							   buffer->cpu, 0, NULL, NULL);
+	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
+}
+
+
 int		transfer_objects(t_app *app)
 {
-	t_obj	*obj_array;
 	int		i;
-	int		err;
 	t_list	*it;
+	t_obj	*obj;
+	t_buffer buffer;
 
-	if (!(obj_array = ft_memalloc(sizeof(t_obj) * app->op.obj_count)))
-		return (app_error("Failed to allocate memory for objects buffer!", 0));
-	app->ren.obj_mem ? clReleaseMemObject(app->ren.obj_mem) : 0;
-	app->obj_array ? ft_memdel((void **)&app->obj_array) : 0;
-	app->obj_array = obj_array;
+	buffer = create_buffer(app->ocl.context,
+		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+	if (!buffer.valid && free_buffer(&buffer))
+		return (app_error("Failed to allocate objects buffer!", 0));
+	obj = buffer.cpu;
 	i = 0;
 	it = app->obj_list;
 	while (it && i < app->op.obj_count)
 	{
-		app->obj_array[i] = *(t_obj*)it->content;
+		obj[i] = *(t_obj*)it->content;
 		it = it->next;
 		i++;
 	}
 	if (i != app->op.obj_count || it != NULL)
-		return (app_error("Object count not equal to Object List length!", 0));
-	app->ren.obj_mem = clCreateBuffer(app->ocl.context,
-			CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR,
-			app->op.obj_count * sizeof(t_obj), app->obj_array, &err);
-	err |= clSetKernelArg(app->ren.render_kernel,
-						  RT_K_SCENE_ARG, sizeof(cl_mem), &app->ren.obj_mem);
-	return (OCL_ERROR(err, "Failed to create gpu buffer for objects!") ? 0 : 1);
+		return (app_error("Object count not equal to Object list length!", 0));
+	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_obj) * app->op.obj_count, 0) && free_buffer(&buffer))
+		return (app_error("Failed to push objects buffer!", 0));
+	free_buffer(&app->ren.obj_buf);
+	app->ren.obj_buf = buffer;
+	return (1);
 }
 
 int		transfer_light(t_app *app)
 {
-	t_light	*light_array;
 	int		i;
-	int		err;
 	t_list	*it;
+	t_light	*light;
+	t_buffer buffer;
 
-	if (!(light_array = ft_memalloc(sizeof(t_light) * app->op.light_count)))
-		return (app_error("Failed to allocate memory for lights buffer!", 0));
-	app->ren.light_mem ? clReleaseMemObject(app->ren.light_mem) : 0;
-	app->light_array ? ft_memdel((void **)&app->light_array) : 0;
-	app->light_array = light_array;
+	buffer = create_buffer(app->ocl.context,
+			sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+	if (!buffer.valid && free_buffer(&buffer))
+		return (app_error("Failed to allocate light buffer!", 0));
+	light = buffer.cpu;
 	i = 0;
 	it = app->light_list;
 	while (it && i < app->op.light_count)
 	{
-		app->light_array[i] = *(t_light*)it->content;
+		light[i] = *(t_light*)it->content;
 		it = it->next;
 		i++;
 	}
 	if (i != app->op.light_count || it != NULL)
-		return (app_error("Light count not equal to Light List length!", 0));
-	app->ren.light_mem = clCreateBuffer(app->ocl.context,
-			CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR,
-			app->op.light_count * sizeof(t_light), app->light_array, &err);
-	err |= clSetKernelArg(app->ren.render_kernel,
-						  RT_K_LIGHTS_ARG, sizeof(cl_mem), &app->ren.light_mem);
-	return (OCL_ERROR(err, "Failed to create gpu buffer for lights!") ? 0 : 1);
+		return (app_error("Light count not equal to Light list length!", 0));
+	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_light) * app->op.light_count, 0) && free_buffer(&buffer))
+		return (app_error("Failed to push light buffer!", 0));
+	free_buffer(&app->ren.light_buf);
+	app->ren.light_buf = buffer;
+	return (1);
 }
 
-int		update_object(cl_mem mem, cl_command_queue queue, t_obj *obj,
-						int index)
+int		update_object(t_app *app, int index,  t_obj *obj)
 {
-	int err;
+	t_obj *buff;
 
-	err = clEnqueueWriteBuffer(queue, mem,
-		CL_TRUE, index * sizeof(t_obj), sizeof(t_obj), obj, 0, NULL, NULL
-	);
-	return (OCL_ERROR(err, "Failed to update object!") ? 0 : 1);
+	if (obj)
+	{
+		buff = app->ren.obj_buf.cpu;
+		buff[index] = *obj;
+	}
+	return (push_buffer(app->ren.queue, &app->ren.obj_buf,
+			sizeof(t_obj), sizeof(t_obj) * index));
 }
 
-int		update_light(cl_mem mem, cl_command_queue queue, t_light *light,
-						int index)
+int		update_light(t_app *app, int index,  t_light *light)
 {
-	int err;
+	t_light *buff;
 
-	err = clEnqueueWriteBuffer(queue, mem,
-		CL_TRUE, index * sizeof(t_light), sizeof(t_light), light, 0, NULL, NULL
-	);
-	return (OCL_ERROR(err, "Failed to update light!") ? 0 : 1);
+	if (light)
+	{
+		buff = app->ren.light_buf.cpu;
+		buff[index] = *light;
+	}
+	return (push_buffer(app->ren.queue, &app->ren.light_buf,
+			sizeof(t_light), sizeof(t_light) * index));
 }
 
 int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)

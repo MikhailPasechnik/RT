@@ -95,5 +95,11 @@ void	on_app_event(t_app *app, SDL_Event *event)
 		on_mouse_wheel(&event->wheel, app, &changed);
 	else if (event->type == SDL_KEYDOWN)
 		on_key_press(&event->key, app, &changed);
+	else if (event->type == SDL_WINDOWEVENT_ENTER ||
+			event->type == SDL_WINDOWEVENT_LEAVE)
+		on_mouse_focus(event, app, &changed);
+	else if (event->type == SDL_MOUSEBUTTONUP ||
+			event->type == SDL_MOUSEBUTTONDOWN)
+		on_mouse_button(&event->button, app, &changed);
 	changed ? app_render(app) : 0;
 }

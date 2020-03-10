@@ -26,6 +26,7 @@
 # define RT_WIN_NAME "RTv1"
 # define RT_WIN_WIDTH 500
 # define RT_WIN_HEIGHT 300
+# define RT_BUF_EXTRA 50
 
 /*
 ** Rt OpenCL source setup
@@ -59,6 +60,15 @@ typedef struct	s_urect
 	size_t size[2];
 }				t_urect;
 
+typedef struct	s_buffer
+{
+	cl_mem		gpu;
+	void		*cpu;
+	int			valid;
+	size_t 		size;
+}				t_buffer;
+
+
 typedef struct			s_renderer
 {
 	cl_kernel 			render_kernel;
@@ -69,6 +79,12 @@ typedef struct			s_renderer
 	char				**src;
 	size_t				src_count;
 
+	t_buffer			obj_buf;
+	t_buffer			light_buf;
+	t_buffer			obj_sel_buf;
+	t_buffer			light_sel_buf;
+
+	cl_mem				light_sel_mem;
 	cl_mem				obj_mem;
 	cl_mem				light_mem;
 	cl_mem				out_mem;
@@ -82,9 +98,8 @@ typedef struct			s_renderer
 typedef struct			s_app
 {
 	SDL_Window			*win;
-	int					width;
-	int					height;
 	int 				quit;
+	unsigned int		mouse_flag;
 
 	SDL_Rect			rect;
 
@@ -103,6 +118,10 @@ typedef struct			s_app
 	int                 ll_changed;   // If true recreate light_array and fill it with pointers from ll
 	t_obj               *obj_array;   // Array of pointers to obj in obj_list
 	t_light             *light_array; // Array of pointers to light in light_list
+	cl_bool				*obj_sel; // Array of indexes to selected objects
+	cl_bool				*light_sel;  // Array of indexes to selected lights
+	size_t				obj_sel_buff_len;
+	size_t				light_sel_buff_len;
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
@@ -128,10 +147,8 @@ int				transfer_light(t_app *app);
 /*
 ** Partial GPU buffer update
 */
-int				update_light(cl_mem mem, cl_command_queue queue, t_light *light,
-						int index);
-int				update_object(cl_mem mem, cl_command_queue queue, t_obj *obj,
-					 	int index);
+int				update_light(t_app *app, int index,  t_light *light);
+int				update_object(t_app *app, int index,  t_obj *obj);
 
 /*
 **  Kernel arguments update
@@ -146,6 +163,8 @@ void			on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed);
 void			on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed);
 void			on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed);
 void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed);
+void			on_mouse_button(SDL_MouseButtonEvent *event, t_app *app, int *changed);
+void			on_mouse_focus(SDL_Event *event, t_app *app, int *changed);
 
 /*
 ** Render functions

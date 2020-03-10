@@ -62,46 +62,57 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 
 /*
 ** Check that distance from origin to new hit is smaller than old
-** and update old with new in that case
+** and update old with new in that case.
+** Returns 1 if ray is updated
 */
-static inline void update_ray(t_hit *old, t_hit *new, t_ray *ray, int *set)
+static inline int update_ray(t_hit *old, t_hit *new, t_ray *ray, int *set)
 {
     if (!*set)
     {
         *old = *new;
         *set = 1;
+        return (1);
     }
     else if (length(new->pos - ray->orig) < length(old->pos - ray->orig))
-        *old = *new;
+	{
+		*old = *new;
+		return (1);
+	}
+	return (0);
 }
 
 /*
 ** For each object perform intersection and if intersects set hit
 ** for the first time, later on hit choose which is closest
-** and update hit if new one is closest
+** and update hit if new one is closest.
+** Returns index of object hit or -1 if none hit
 */
-t_hit	*intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
+t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
 {
-    t_hit	t;
+    t_hit	tmp;
     t_hit	*new;
     int		set;
+    int		index;
 
+    if (!scene || !size || !ray || !hit)
+    	return (-1);
+	*hit = (t_hit){0};
     set = 0;
     while (size--)
     {
         new = NULL;
         if (IS_PLN(&scene[size]))
-            new = plane_inter(&scene[size], ray, &t);
+            new = plane_inter(&scene[size], ray, &tmp);
         else if (IS_SPH(&scene[size]))
-            new = sphere_inter(&scene[size], ray, &t);
+            new = sphere_inter(&scene[size], ray, &tmp);
         else if (IS_CYL(&scene[size]))
-            new = cylinder_inter(&scene[size], ray, &t);
+            new = cylinder_inter(&scene[size], ray, &tmp);
         else if (IS_CON(&scene[size]))
-            new = cone_inter(&scene[size], ray, &t);
+            new = cone_inter(&scene[size], ray, &tmp);
         else if (IS_CUB(&scene[size]))
-            new = cube_inter(&scene[size], ray, &t);
-        if (new)
-            update_ray(hit, new, ray, &set);
+            new = cube_inter(&scene[size], ray, &tmp);
+        if (new && update_ray(hit, new, ray, &set))
+			index = size;
     }
-    return (set ? hit : NULL);
+    return (index);
 }
