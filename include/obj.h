@@ -41,12 +41,12 @@
 # define IS_CUB(o) ((o)->id == (ID_CUB))
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 
-typedef cl_double       t_real;
-typedef cl_double16     t_mat4;
-typedef cl_double3      t_vec3;
-typedef cl_int          t_int;
-typedef cl_uint         t_uint;
-typedef cl_double3      t_color;
+typedef cl_double		t_real;
+typedef cl_double16		t_mat4;
+typedef cl_double3		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_double3		t_color;
 
 /*
 ** OpenCL compatible structs
@@ -58,31 +58,31 @@ typedef cl_double3      t_color;
 ** with different alignments on different devices.
 */
 
-typedef struct          s_options
+typedef struct			s_options
 {
-    t_vec3              background_color;
-    t_real              reflection_depth;
-    t_uint              width;
-    t_uint              height;
-    t_uint              obj_count;
-    t_uint              light_count;
-}                       t_options;
+	t_vec3				background_color;
+	t_real				reflection_depth;
+	t_uint				width;
+	t_uint				height;
+	t_uint				obj_count;
+	t_uint				light_count;
+}						t_options;
 
 typedef struct			s_cam
 {
 	t_vec3				pos;
 	t_vec3				dir;
-    t_real              fov;
+	t_real				fov;
 }						t_cam;
 
 typedef struct 			s_mat
 {
 	t_color				diffuse;
-    t_real			    specular;
-    t_real			    refraction;
-    t_real			    ior;
-    t_real			    fresnel;
-	t_real			    reflection;
+	t_real				specular;
+	t_real				refraction;
+	t_real				ior;
+	t_real				fresnel;
+	t_real				reflection;
 }						t_mat;
 
 typedef struct			s_obj
@@ -96,25 +96,25 @@ typedef struct			s_obj
 	t_int				symbol;
 }						t_obj;
 
-typedef	struct			s_light
+typedef struct			s_light
 {
 	t_vec3				pos;
 	t_vec3				dir;
-    t_color				color;
-    t_real				intensity;
-    t_int               id;
+	t_color				color;
+	t_real				intensity;
+	t_int				id;
 }						t_light;
 
-typedef	struct	        s_ray {
-    t_vec3	            orig;
-    t_vec3	            dir;
-    t_real	            t;
-}				        t_ray;
+typedef struct			s_ray {
+	t_vec3				orig;
+	t_vec3				dir;
+	t_real				t;
+}						t_ray;
 
-typedef struct	        s_hit_cpu {
-    t_vec3	            pos;
-    t_vec3	            norm;
-    t_uint              obj_index;
-}				        t_hit_cpu;
+typedef struct			s_hit_cpu {
+	t_vec3				pos;
+	t_vec3				norm;
+	t_uint				obj_index;
+}						t_hit_cpu;
 
 #endif
