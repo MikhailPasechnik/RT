@@ -16,7 +16,12 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <stdio.h>
+#ifdef WIN32
+# include <io.h>
+# include <fcntl.h>
+#else
 # include <unistd.h>
+#endif
 # include <stdint.h>
 # include <float.h>
 

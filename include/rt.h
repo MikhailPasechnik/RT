@@ -25,16 +25,22 @@
 # define RT_WIN_NAME "RTv1"
 # define RT_WIN_WIDTH 500
 # define RT_WIN_HEIGHT 300
-
+#include <windows.h>
 /*
 ** Rt OpenCL source setup
 */
 # ifdef __APPLE__
-#  define RT_CL_INCLUDE "-I res/cl"
+#  define RT_CL_INCLUDE "-I res/ocl -I include"
 # else
-#  define RT_CL_INCLUDE "-I./res/cl"
+#  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
+# define RT_K_RENDER "k_render"
+# define RT_K_OPTIONS_ARG 0
+# define RT_K_CAMERA_ARG 1
+# define RT_K_SCENE_ARG 2
+# define RT_K_LIGHTS_ARG 3
+# define RT_K_OUTPUT_ARG 4
 
 /*
  * Rectangle

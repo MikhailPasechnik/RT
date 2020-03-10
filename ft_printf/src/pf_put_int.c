@@ -83,7 +83,7 @@ static void			put_signed(t_pf_format *f)
 		n = f->flg & PF_F_IMAX ? va_arg(f->va_args, intmax_t) :
 			va_arg(f->va_args, long long);
 	else if (f->flg & (PF_F_SIZE | PF_F_LONG))
-		n = f->flg & PF_F_SIZE ? va_arg(f->va_args, ssize_t) :
+		n = f->flg & PF_F_SIZE ? va_arg(f->va_args, size_t) :
 			va_arg(f->va_args, long);
 	else if (f->flg & PF_F_SHORT || f->flg & PF_F_CHAR)
 		n = f->flg & PF_F_SHORT ?

@@ -41,6 +41,9 @@ int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 #ifdef __APPLE__
 	ren->queue = clCreateCommandQueue(ocl->context,
 			ocl->device, 0, &err);
+#elif __WINDOWS__
+	ren->queue = clCreateCommandQueue(ocl->context,
+			ocl->device, 0, &err);
 #else
 	ren->queue = clCreateCommandQueue(ocl->context,
 			ocl->device, 0, &err);

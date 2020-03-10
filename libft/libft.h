@@ -13,10 +13,16 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifdef WIN32
+# define OPEN_MAX 256
+# include <io.h>
+# include <fcntl.h>
+# else
 # include <unistd.h>
+# endif
 # include <stdlib.h>
 # include <string.h>
-# include <sys/syslimits.h>
+# include <limits.h>
 
 void			*ft_memset(void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);
