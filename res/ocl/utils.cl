@@ -26,9 +26,9 @@ void print_render_args(t_options *options, t_cam* camera,
 		camera->pos.x,
 		camera->pos.y,
 		camera->pos.z,
-		camera->dir.x,
-		camera->dir.y,
-		camera->dir.z
+		camera->rot.x,
+		camera->rot.y,
+		camera->rot.z
     );
     int i = options->obj_count;
     while (i < options->obj_count)

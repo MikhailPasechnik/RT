@@ -83,7 +83,7 @@ typedef struct			s_options
 typedef struct			s_cam
 {
 	t_vec3				pos;
-	t_vec3				dir;
+	t_vec3				rot;
 	t_real				fov;
 }						t_cam;
 

@@ -187,7 +187,7 @@ void	app_init(t_app *app)
 	app->op.obj_count = 0;
 	app->op.light_count = 0;
 	app->cam.pos = VEC(0, 0, 0);
-	app->cam.dir = VEC(0, 0, 0);
+	app->cam.rot = VEC(0, 0, 0);
 }
 
 void	check_obj(t_app *app)
@@ -327,9 +327,9 @@ void	parser_cam(t_cam *cam, char **scn)
 	if (ft_strncmp(scn[1], "  position:", 11))
 		kill("Error in str 'cam_pos'");
 	cam->pos = array_attack(scn[1]);
-	if (ft_strncmp(scn[2], "  direction:", 12))
+	if (ft_strncmp(scn[2], "  rotation:", 11))
 		kill("Error in str 'cam_dir'");
-	cam->dir = array_attack(scn[2]);
+	cam->rot = array_attack(scn[2]);
 	if (ft_strncmp(scn[3], "  fov:", 6))
 		kill("Error in str 'cam_fov'");
 	ignore_str(&scn[3]);

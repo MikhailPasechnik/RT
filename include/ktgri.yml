@@ -1,6 +1,6 @@
 - type: camera
   position:     [-150.52, -200, 20]
-  direction:    [1, 2, 3]
+  rotation:    [1, 2, 3]
   fov:          60
 - type: light
   color:        [200, 300, 250]

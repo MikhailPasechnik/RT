@@ -79,7 +79,7 @@ void	generate_scene(t_app *app)
 	app->cam = (t_cam){
 			.fov=80,
 			.pos = VEC(0,0,0),
-			.dir = VEC(0,0,1)
+			.rot = VEC(0,0,1)
 	};
 	app->op = (t_options){
 			.background_color = VEC(0,0,0),
