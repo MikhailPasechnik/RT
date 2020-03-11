@@ -17,25 +17,25 @@
 # include <OpenCL/opencl.h>
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;
-typedef cl_float4		t_vec3;
+typedef cl_float3		t_vec3;
 typedef cl_int			t_int;
 typedef cl_uint			t_uint;
-typedef cl_float4		t_color;
+typedef cl_float3		t_color;
 # elif __unix__
 # include <CL/opencl.h>
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;
-typedef cl_float4		t_vec3;
+typedef cl_float3		t_vec3;
 typedef cl_int			t_int;
 typedef cl_uint			t_uint;
-typedef cl_float4		t_color;
+typedef cl_float3		t_color;
 # else
 typedef float		t_real;
 typedef float16		t_mat4;
-typedef float4		t_vec3;
+typedef float3		t_vec3;
 typedef int			t_int;
 typedef uint		t_uint;
-typedef float4		t_color;
+typedef float3		t_color;
 # endif
 
 # define ID_SPH	1
