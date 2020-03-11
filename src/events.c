@@ -2,7 +2,7 @@
 
 void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 {
-	if (event->state & SDL_BUTTON_LMASK)
+	if (event->state & SDL_BUTTON_LMASK && SDL_GetModState() & KMOD_CTRL)
 	{
 		v3_add(&app->cam.dir, &VEC(event->yrel * 0.7, event->xrel * 0.7, 0),
 				&app->cam.dir);
