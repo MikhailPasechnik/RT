@@ -60,7 +60,6 @@ int main(void)
 	size_t buffer_offset[3] = {r.orig[0], r.orig[1], 0};
 	size_t host_offset[3] = {r.orig[0], r.orig[1], 0};
 	size_t region[3] = {r.size[0], r.size[1], 1};
-
 	size_t  buffer_row_pitch = w;
 	size_t  buffer_slice_pitch = 0;
 	err = clEnqueueNDRangeKernel(ren.queue, k, 2, &r.orig, &r.size, NULL, 0, NULL, NULL);

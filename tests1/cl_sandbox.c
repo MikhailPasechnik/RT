@@ -83,15 +83,15 @@ int main(void)
 	t_renderer	ren;
 	cl_kernel   k;
 
-	int		w = 30;
-	int		h = 30;
+	int		w = 20;
+	int		h = 20;
 	int		fow = 68;
 	int		s = 10;
 	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
-    t_int		output[w * h + sizeof(t_int)];
-	ft_memset(output, '.', w * h + sizeof(t_int));
+    t_int		output[w * h * sizeof(t_int)];
+	ft_memset(output, '.', w * h * sizeof(t_int));
 	output[w * h] = '\0';
 
 	int i = 0;
@@ -103,11 +103,11 @@ int main(void)
     v3_norm(&scene[0].rot, &scene[0].rot);
 	assert(ocl_init(&ocl));
 	assert(new_renderer(&ren, &ocl, RT_CL_SRC, RT_CL_INCLUDE));
-	k = clCreateKernel(ren.program, RT_K_RENDER, &err);
+	k = clCreateKernel(ren.program, RT_K_SELECT, &err);
 	assert(!OCL_ERROR2(err));
 
 	// Scene
-	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, s * sizeof
+	scene_mem = clCreateBuffer(ocl.context, CL_MEM_READ_WRITE|CL_MEM_USE_HOST_PTR, s * sizeof
 	(t_obj), scene, &err);
 	assert(!OCL_ERROR2(err));
 //	err = clEnqueueWriteBuffer(ren.queue, scene_mem, CL_TRUE, 0, s * sizeof(t_obj), scene, 0, NULL, NULL);
@@ -146,16 +146,37 @@ int main(void)
 	err |= clSetKernelArg(k, 4, sizeof(cl_mem), &output_mem);
 	assert(!OCL_ERROR2(err));
 
-	int size = w * h;
-	int offset = 0;
-	err = clEnqueueNDRangeKernel(ren.queue, k, 1, &offset, &size, NULL, 0, NULL, NULL);
+//	{
+//		0, 1,   2,  3,  4,  5,  6,  7,
+//		8, 9,  10, 11, 12, 13, 14, 15
+//	}
+	// Do it
+	t_urect r;
+	r = (t_urect){2, 2, 12, 12};
+	size_t buffer_offset[3] = 	{r.orig[0] * sizeof(t_int), r.orig[1], 0};
+	size_t region[3] = 			{r.size[0] * sizeof(t_int), r.size[1], 1};
+	size_t  buffer_row_pitch = w * sizeof(t_int);
+	size_t  buffer_slice_pitch = 0;
+	err = clEnqueueNDRangeKernel(ren.queue, k, 2, &r.orig, &r.size, NULL, 0, NULL, NULL);
 	assert(!OCL_ERROR2(err));
 	assert(!OCL_ERROR2(clFinish(ren.queue)));
-	clEnqueueReadBuffer(ren.queue, output_mem, CL_TRUE, 0,
-						sizeof(t_int) * size, &output, 0, NULL, NULL
+	err = clEnqueueReadBufferRect(
+			ren.queue,
+			output_mem,
+			CL_TRUE,
+			buffer_offset,
+			buffer_offset,
+			region,
+
+			buffer_row_pitch,
+			0,
+			buffer_row_pitch,
+			0,
+			&output,
+			0, NULL, NULL
 	);
 	assert(!OCL_ERROR2(err));
-	printf("dot: %f\n", v3_dot(&VEC(1,2,3), &VEC(1,2,3)));
+	printf("buffer_row_pitch: %d\n", buffer_row_pitch);
     int x, y;
     y = 0;
     while (y < h)
@@ -163,7 +184,7 @@ int main(void)
         x = 0;
         while (x < w)
         {
-            ft_printf(" %c ", (char)output[y * w + x]);
+            ft_printf(" %c ", (char)output[y * w + x] ? (char)output[y * w + x] : '~');
             x++;
         }
         ft_printf("\n");

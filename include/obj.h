@@ -94,6 +94,8 @@ typedef struct			s_obj
 	t_real				height;
 	t_int				id;
 	t_int				symbol;
+	t_int				selected;
+	t_int				deleted;
 }						t_obj;
 
 typedef	struct			s_light

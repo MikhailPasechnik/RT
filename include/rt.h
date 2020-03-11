@@ -34,8 +34,9 @@
 # else
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl res/ocl/k_select.cl"
 # define RT_K_RENDER "k_render"
+# define RT_K_SELECT "k_select"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1
 # define RT_K_SCENE_ARG 2
