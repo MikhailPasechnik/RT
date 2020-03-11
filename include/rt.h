@@ -84,9 +84,6 @@ typedef struct			s_renderer
 	t_buffer			obj_sel_buf;
 	t_buffer			light_sel_buf;
 
-	cl_mem				light_sel_mem;
-	cl_mem				obj_mem;
-	cl_mem				light_mem;
 	cl_mem				out_mem;
 	int					out_w;
 	int					out_h;
@@ -115,12 +112,6 @@ typedef struct			s_app
 	int                 cm_changed;
 	int                 ol_changed;   // If true recreate obj_array and fill it with pointers from ol
 	int                 ll_changed;   // If true recreate light_array and fill it with pointers from ll
-	t_obj               *obj_array;   // Array of pointers to obj in obj_list
-	t_light             *light_array; // Array of pointers to light in light_list
-	cl_bool				*obj_sel; // Array of indexes to selected objects
-	cl_bool				*light_sel;  // Array of indexes to selected lights
-	size_t				obj_sel_buff_len;
-	size_t				light_sel_buff_len;
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
