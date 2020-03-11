@@ -8,16 +8,12 @@ __kernel void k_render(
 	t_cam camera
 )
 {
-    int id;
-	uint2 pixel;
 	t_ray camera_ray;
 	t_hit camera_hit;
 	t_color color;
-
-	id = get_global_id(0);
-    pixel.x = id % options.width;
-    pixel.y = id / options.height;
-	camera_ray = new_camera_ray(&options, &camera, pixel);
+	int id = get_global_id(0);
+	camera_ray = new_camera_ray(&options, &camera,
+			(uint2){id % options.width, id / options.height});
 
 	if (get_global_id(0) == 0)
 	{
