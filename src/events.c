@@ -4,12 +4,10 @@ void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 {
 	if (event->state & SDL_BUTTON_LMASK)
 	{
-		v3_add(&app->cam.dir, &VEC(event->yrel * 0.1, event->xrel * 0.1, 0),
+		v3_add(&app->cam.dir, &VEC(event->yrel * 0.7, event->xrel * 0.7, 0),
 				&app->cam.dir);
-//		v3_norm(&app->cam.dir, &app->cam.dir);
 		app->cm_changed = 1;
 		*changed = 1;
-//		ft_printf("r: %f\n", v3_mag(&app->cam.dir));
 	}
 }
 
@@ -28,11 +26,9 @@ void	on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed)
 	t_vec3 v;
 
 	m4_identity(&m);
-	m4_translate(&m, &app->cam.pos);
-	m4_rotate(&m, &app->cam.dir);
-	m4_translate(&m, &VEC(0, 0, (event->y) * 0.1));
-	m4_extract_translation(&m, &app->cam.pos);
-
+	m4_set_rotation(&m, &app->cam.dir);
+	v3_mull_s(&VEC(m.s8, m.s9,m.sA), event->y > 0 ? 1 : -1, &v);
+	v3_add(&app->cam.pos, &v, &app->cam.pos);
 	app->cm_changed = 1;
 	*changed = 1;
 }
