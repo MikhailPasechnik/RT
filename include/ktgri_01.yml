@@ -1,6 +1,6 @@
 - type: camera
   position:     [0, -10, 15]
-  rotation:     [75, 0, 0]
+  rotation:     [90, 0, 0]
   fov:          80
 - type: plane
   position:     [0, 0, 0]
@@ -10,6 +10,18 @@
   rotation:     [0, 0, 0]
 - type: sphere
   position:     [0, 0, 1]
+  color:        [190, 20, 150]
+  specular:     10
+  reflective:   10
+  radius:       3
+- type: sphere
+  position:     [0, 0, 3]
+  color:        [190, 20, 150]
+  specular:     10
+  reflective:   10
+  radius:       2
+- type: sphere
+  position:     [0, 0, 4]
   color:        [190, 20, 150]
   specular:     10
   reflective:   10
