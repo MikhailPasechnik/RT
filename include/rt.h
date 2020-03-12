@@ -38,11 +38,12 @@
 # endif
 # define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl res/ocl/ray.cl"
 # define RT_K_RENDER "k_render"
-# define RT_K_OBJ_ARG 0
-# define RT_K_LIGHTS_ARG 1
-# define RT_K_OUTPUT_ARG 2
-# define RT_K_OPTIONS_ARG 3
-# define RT_K_CAMERA_ARG 4
+# define RT_K_OPTIONS_ARG 0
+# define RT_K_CAMERA_ARG 1
+# define RT_K_OBJ_ARG 2
+# define RT_K_LIGHTS_ARG 3
+# define RT_K_COLOR_ARG 4
+# define RT_K_INDEX_ARG 5
 
 typedef t_list  t_obj_list;
 typedef t_list  t_light_list;
@@ -81,8 +82,8 @@ typedef struct			s_renderer
 
 	t_buffer			obj_buf;
 	t_buffer			light_buf;
-	t_buffer			obj_sel_buf;
-	t_buffer			light_sel_buf;
+	t_buffer			color_buf;
+	t_buffer			index_buf;
 
 	cl_mem				out_mem;
 	int					out_w;
@@ -112,6 +113,7 @@ typedef struct			s_app
 	int                 cm_changed;
 	int                 ol_changed;   // If true recreate obj_array and fill it with pointers from ol
 	int                 ll_changed;   // If true recreate light_array and fill it with pointers from ll
+	int                 wh_changed;   // If true width and height changed reinitialize buffers
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
@@ -129,17 +131,14 @@ void			on_app_event(t_app *app, SDL_Event *event);
 ** GPU and CPU buffer management functions
 */
 /*
-** Transfer memory from CPU to GPU
-** 		1. Clean up previously allocated GPU buffer and CPU array
-** 		2. Copy CPU linked list to buffer
-** 		3. Create GPU buffer from CPU array
+** Transfer scene objects linked lists to CPU|GPU buffer
 */
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
 t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only);
-
+int				update_output_buffers(t_app *app)
 /*
-** Partial GPU buffer update
+** Partial buffer update
 */
 int				update_light(t_app *app, int index,  t_light *light);
 int				update_object(t_app *app, int index,  t_obj *obj);

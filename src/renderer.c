@@ -71,7 +71,7 @@ static int	pre_render(t_renderer *ren, t_ocl *ocl)
 		ren->out_mem = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE,
 				sizeof(t_int) * ren->out_w * ren->out_h, NULL, &err);
 	}
-	err |= clSetKernelArg(ren->render_kernel, RT_K_OUTPUT_ARG,
+	err |= clSetKernelArg(ren->render_kernel, RT_K_COLOR_ARG,
 			sizeof(cl_mem), &ren->out_mem);
 	return (OCL_ERROR(err, "Failed to pre render!") ? 0 : 1);
 }

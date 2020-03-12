@@ -23,6 +23,7 @@ int		free_buffer(t_buffer *buffer)
 		(buffer)->cpu ? ft_memdel(&buffer->cpu) : 0;
 		(buffer)->gpu ? clReleaseMemObject(buffer->gpu) : 0;
 	}
+	ft_bzero(buffer, sizeof(t_buffer));
 	return (1);
 }
 
@@ -153,4 +154,23 @@ int		update_options(cl_kernel kernel, t_options *options, int arg_num)
 	err = clSetKernelArg(kernel, arg_num, sizeof(t_options), options);
 	OCL_ERROR(err, "Failed to set option kernel arg!");
 	return (err == CL_SUCCESS);
+}
+
+int		update_output_buffers(t_app *app)
+{
+	size_t size;
+
+	size = app->op.width * app->op.height;
+	// TODO: check if re-alloc needed checking  buffer.size and size
+	app->ren.color_buf.valid ? free_buffer(&app->ren.color_buf) : 0;
+	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
+	app->ren.color_buf = create_buffer(app->ocl.context,
+			size * sizeof(t_int), CL_MEM_WRITE_ONLY, 1);
+	if (!app->ren.color_buf.valid && free_buffer(&app->ren.color_buf))
+		return (app_error("Failed to allocate color buffer!", 0));
+	app->ren.index_buf = create_buffer(app->ocl.context,
+			size * sizeof(t_int), CL_MEM_WRITE_ONLY, 0);
+	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
+		return (app_error("Failed to allocate index buffer!", 0));
+	return (1);
 }
