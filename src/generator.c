@@ -79,7 +79,7 @@ void	generate_scene(t_app *app)
 	app->cam = (t_cam){
 			.fov=80,
 			.pos = VEC(0,0,0),
-			.dir = VEC(0,0,1)
+			.dir = VEC(0, 0, 0)
 	};
 	app->op = (t_options){
 			.background_color = VEC(0,0,0),
@@ -94,10 +94,12 @@ void	generate_scene(t_app *app)
 	// ground_plane(&o);
 	// ft_lstadd(&app->obj_list, ft_lstnew(&o, sizeof(t_obj)));
 	// app->op.scene_size++;
-	s = rand_interval(70, 150);
+	s = 10;//rand_interval(70, 150);
 	while(s--)
 	{
 		fake_obj(&o, ID_SPH);
+		if (s == 9)
+			o.pos = VEC(0,0,0);
 		ft_lstadd(&app->obj_list, ft_lstnew(&o, sizeof(t_obj)));
 		app->op.obj_count++;
 	}
@@ -112,4 +114,8 @@ void	generate_scene(t_app *app)
 	app->ll_changed = 1;
 	app->op_changed = 1;
 	app->cm_changed = 1;
+	m4_set_rotation(&app->cam.mtx, &app->cam.dir);
+	app->cam.mtx.sC = app->cam.pos.x;
+	app->cam.mtx.sD = app->cam.pos.y;
+	app->cam.mtx.sE = app->cam.pos.z;
 }

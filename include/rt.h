@@ -25,7 +25,7 @@
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
 # define RT_WIN_WIDTH 500
-# define RT_WIN_HEIGHT 300
+# define RT_WIN_HEIGHT 500
 # define RT_BUF_EXTRA 50
 
 /*
@@ -36,7 +36,7 @@
 # else
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
-# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl res/ocl/ray.cl"
+# define RT_CL_SRC "res/ocl/k_render.cl res/ocl/mat44.cl res/ocl/trace.cl res/ocl/utils.cl res/ocl/ray.cl res/ocl/rt.hcl include/obj.h"
 # define RT_K_RENDER "k_render"
 # define RT_K_OBJ_ARG 0
 # define RT_K_LIGHTS_ARG 1
@@ -193,5 +193,11 @@ int		        is_valid_light_name(char *str);
 void			parse_real(char *str, void *vp);
 void			parse_vec3(char *str, void *vp);
 void			parse_color(char *str, void *vp);
+
+/*
+** Navigation functions
+*/
+void			nav_move_camera(t_cam *cam, t_vec3 *by);
+void			nav_rotate_camera(t_cam *cam, t_vec3 *rot, t_vec3 *around);
 
 #endif

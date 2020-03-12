@@ -32,6 +32,9 @@ void    parse_color(char *str, void *vp)
 {
     t_color *p = vp;
     *p = array_color(str);
+    p->x /= 255.0;
+    p->y /= 255.0;
+    p->z /= 255.0;
 }
 
 void    parse_vec3(char *str, void *vp)

@@ -32,15 +32,15 @@ t_vec3 m4_mul_vec3(t_mat4 *m, t_vec3 *v)
     out.x = (
          v->x * m->s0 +
          v->y * m->s4 +
-         v->z * m->s8 + m->sC) / w;
+         v->z * m->s8) / w;
     out.y = (
          v->x * m->s1 +
          v->y * m->s5 +
-         v->z * m->s9 + m->sD) / w;
+         v->z * m->s9) / w;
     out.z = (
          v->x * m->s2 +
          v->y * m->s6 +
-         v->z * m->sA + m->sE) / w;
+         v->z * m->sA) / w;
     return (out);
 }
 

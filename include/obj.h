@@ -82,6 +82,7 @@ typedef struct			s_options
 
 typedef struct			s_cam
 {
+	t_mat4				mtx;
 	t_vec3				pos;
 	t_vec3				dir;
 	t_real				fov;

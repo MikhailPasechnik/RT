@@ -1,5 +1,6 @@
 #include "rt.hcl"
 
+
 __kernel void k_render(
 	__global t_obj* objects,
 	__global t_light* lights,

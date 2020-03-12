@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "rt.h"
 
 
@@ -56,6 +57,7 @@ int		transfer_objects(t_app *app)
 	t_obj	*obj;
 	t_buffer buffer;
 
+	printf("HOST: sizeof of t_obj: %d\n", sizeof(t_obj));
 	buffer = create_buffer(app->ocl.context,
 		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
@@ -141,6 +143,7 @@ int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
 {
 	int err;
 
+	printf("HOST: sizeof of t_cam: %d\n", sizeof(t_cam));
 	err = clSetKernelArg(kernel, arg_num, sizeof(t_cam), cam);
 	OCL_ERROR(err, "Failed to set camera kernel arg!");
 	return (err == CL_SUCCESS);

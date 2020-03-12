@@ -30,7 +30,7 @@ void print_render_args(t_options *options, t_cam* camera,
 		camera->dir.y,
 		camera->dir.z
     );
-    int i = options->obj_count;
+    int i = 0;
     while (i < options->obj_count)
     {
         printf("Obj: id: %d radius: %f pos: {%f %f %f}\n",
@@ -51,4 +51,14 @@ uint pack_color(t_color *c)
 	t.y = clamp(c->y, 0.0f, 1.0f) * 255;
 	t.z = clamp(c->z, 0.0f, 1.0f) * 255;
 	return ((((t.x << 8u) + t.y) << 8u) + t.z);
+}
+
+t_vec3 dir_from_rot(t_vec3 rot)
+{
+	t_vec3 dir;
+
+	dir.x = sin(radians(rot.z));
+	dir.y = -(sin(radians(rot.x)) * cos(radians(rot.z)));
+	dir.z = cos(radians(rot.x)) * cos(radians(rot.y));
+	return (dir);
 }

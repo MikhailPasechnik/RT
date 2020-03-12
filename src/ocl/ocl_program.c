@@ -12,7 +12,10 @@ cl_program		ocl_create_program(cl_context ctx, const char **file_names, size_t c
 		return (NULL);
 	program = clCreateProgramWithSource(ctx, count, (const char **)content, size, &err);
 	while (count--)
+	{
+		ft_printf("%s", content[count]);
 		free(content[count]);
+	}
 	free(content);
 	free(size);
 	if (OCL_ERROR(err, "Couldn't create the program"))

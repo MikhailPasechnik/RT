@@ -28,6 +28,7 @@
 # define M_PI 3.14159265
 # endif
 # define TO_RAD(a)((a / 2)*(M_PI / 180.0))
+# define TO_DEG(r)((r * 180.0 / M_PI))
 
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;

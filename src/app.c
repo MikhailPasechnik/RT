@@ -65,6 +65,10 @@ int				app_start(t_app *app, char **argv, int argc)
 	app->cm_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
 	app->op.width = RT_WIN_WIDTH;
+	m4_set_rotation(&app->cam.mtx, &app->cam.dir);
+	app->cam.mtx.sC = app->cam.pos.x;
+	app->cam.mtx.sD = app->cam.pos.y;
+	app->cam.mtx.sE = app->cam.pos.z;
 
 	rt_set_rect(&app->rect, 0, 0, app->op.width, app->op.height);
 	if (!(ocl_init(&app->ocl)))
