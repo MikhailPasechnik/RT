@@ -70,7 +70,7 @@ static inline t_hit *plane_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 
 	n = dir_from_rot(obj->rot);
 	d = dot(n, ray->dir);
-	if (d < EPSILON)
+	if (d > EPSILON)
 		return (NULL);
 	t = dot(obj->pos - ray->orig, n) / d;
     if (t < 0)
