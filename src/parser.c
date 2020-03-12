@@ -147,7 +147,7 @@ t_color	array_color(char *s)
 		++s;
 		ignore_str(&s);
 	}
-	return (COLOR(r, g, b, 1));
+	return (COLOR(r / 255.0, g / 255.0, b / 255.0, 1));
 }
 
 t_vec3	array_attack(char *s)
