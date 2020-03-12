@@ -1,14 +1,9 @@
 # ifndef OBJ_HCL
 # define OBJ_HCL
 
+# define __OPENCL_DEVICE__
 /*
 ** Include host OpenCL compatible structs
-**
-** Recommend declaring your structure from the widest types first
-** down to the narrowest types.
-** First, this avoids wasted unused spaces due to alignment.
-** Second, this often avoids any headaches
-** with different alignments on different devices.
 */
 # include "obj.h"
 # define EPSILON 0.000001

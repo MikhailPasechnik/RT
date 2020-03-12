@@ -13,29 +13,29 @@
 # ifndef OBJ_H
 # define OBJ_H
 
-# ifdef __APPLE__
-# include <OpenCL/opencl.h>
-typedef cl_float		t_real;
-typedef cl_float16		t_mat4;
-typedef cl_float3		t_vec3;
-typedef cl_int			t_int;
-typedef cl_uint			t_uint;
-typedef cl_float3		t_color;
-# elif __unix__
-# include <CL/opencl.h>
-typedef cl_float		t_real;
-typedef cl_float16		t_mat4;
-typedef cl_float3		t_vec3;
-typedef cl_int			t_int;
-typedef cl_uint			t_uint;
-typedef cl_float3		t_color;
-# else
+/*
+** Check that we are compiling on device and define types without "cl_" prefix.
+** Else define types with "cl_" prefix.
+*/
+# ifdef __OPENCL_DEVICE__
 typedef float		t_real;
 typedef float16		t_mat4;
 typedef float3		t_vec3;
 typedef int			t_int;
 typedef uint		t_uint;
 typedef float3		t_color;
+# else
+# ifdef __APPLE__
+# include <OpenCL/opencl.h>
+# else
+# include <CL/opencl.h>
+# endif
+typedef cl_float		t_real;
+typedef cl_float16		t_mat4;
+typedef cl_float3		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_float3		t_color;
 # endif
 
 # define ID_SPH	1
