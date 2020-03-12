@@ -32,16 +32,18 @@ static inline t_hit *plane_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
     t_real d;
     t_vec3 v;
     t_real t;
+    t_vec3 n;
 
-    d = dot(ray->dir, obj->rot);
-    if (d > EPSILON)
-        return (NULL);
-    t = dot(ray->orig - obj->pos, ray->dir) / d;
+	n = dir_from_rot(obj->rot);
+	d = dot(n, ray->dir);
+	if (d < EPSILON)
+		return (NULL);
+	t = dot(obj->pos - ray->orig, n) / d;
     if (t < 0)
         return (NULL);
-    hit->pos = ray->orig + ray->dir * t;
-    hit->norm = normalize(hit->pos - obj->pos);
-    hit->obj = obj;
+	hit->pos = ray->orig + ray->dir * t;
+	hit->norm = n;
+	hit->obj = obj;
     return (hit);
 }
 
