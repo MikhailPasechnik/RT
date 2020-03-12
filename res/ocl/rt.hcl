@@ -6,7 +6,7 @@
 ** Include host OpenCL compatible structs
 */
 # include "obj.h"
-# define EPSILON 0.000001
+# define EPSILON 1e-6
 # ifndef NULL
 # define NULL ((void *)0)
 # endif
