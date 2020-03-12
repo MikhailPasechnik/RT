@@ -5,7 +5,7 @@ __kernel void k_render(
 	t_cam camera,
 	__global t_obj* objects,
 	__global t_light* lights,
-	__global t_int* color_buffer,
+	__global t_int* color_buffer
 //	__global t_int* index_buffer
 )
 {
