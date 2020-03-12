@@ -126,6 +126,9 @@ int				app_error(const char *msg, int returns);
 void			on_app_event(t_app *app, SDL_Event *event);
 
 /*
+** GPU and CPU buffer management functions
+*/
+/*
 ** Transfer memory from CPU to GPU
 ** 		1. Clean up previously allocated GPU buffer and CPU array
 ** 		2. Copy CPU linked list to buffer
@@ -133,6 +136,7 @@ void			on_app_event(t_app *app, SDL_Event *event);
 */
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
+t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only);
 
 /*
 ** Partial GPU buffer update

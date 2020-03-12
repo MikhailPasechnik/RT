@@ -1,16 +1,16 @@
 #include "rt.h"
 
 
-t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags)
+t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only)
 {
 	int			err;
 	t_buffer	buffer;
 
 	err = 0;
-	buffer.cpu = ft_memalloc(size);
+	buffer.cpu = !gpu_only ? ft_memalloc(size) : NULL;
 	buffer.gpu = clCreateBuffer(ctx, flags, size, NULL, &err);
 	OCL_ERROR2(err);
-	buffer.valid = err == CL_SUCCESS && buffer.cpu != NULL;
+	buffer.valid = err == CL_SUCCESS && (!gpu_only && buffer.cpu != NULL);
 	buffer.size = size;
 	return (buffer);
 }
@@ -57,7 +57,7 @@ int		transfer_objects(t_app *app)
 	t_buffer buffer;
 
 	buffer = create_buffer(app->ocl.context,
-		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate objects buffer!", 0));
 	obj = buffer.cpu;
@@ -88,7 +88,7 @@ int		transfer_light(t_app *app)
 	t_buffer buffer;
 
 	buffer = create_buffer(app->ocl.context,
-		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
 	light = buffer.cpu;
