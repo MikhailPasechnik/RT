@@ -136,7 +136,7 @@ void			on_app_event(t_app *app, SDL_Event *event);
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
 t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only);
-int				update_output_buffers(t_app *app)
+int				update_output_buffers(t_app *app);
 /*
 ** Partial buffer update
 */
