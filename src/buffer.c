@@ -10,7 +10,7 @@ t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_
 	buffer.cpu = !gpu_only ? ft_memalloc(size) : NULL;
 	buffer.gpu = clCreateBuffer(ctx, flags, size, NULL, &err);
 	OCL_ERROR2(err);
-	buffer.valid = err == CL_SUCCESS && (!gpu_only && buffer.cpu != NULL);
+	buffer.valid = err == CL_SUCCESS && (!gpu_only || buffer.cpu != NULL);
 	buffer.size = size;
 	return (buffer);
 }
