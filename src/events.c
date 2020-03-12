@@ -6,7 +6,7 @@ void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 	{
 		nav_rotate_camera(&app->cam,
 				&VEC(event->yrel * 35, event->xrel * 35, 0),
-				 &VEC(0, 0, 0)); // TODO: rotate around selection
+						  &VEC(app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE)); // TODO: rotate around selection
 		app->cm_changed = 1;
 		*changed = 1;
 	}
