@@ -33,4 +33,5 @@ t_vec3			m4_mul_vec3(t_mat4 *m, t_vec3 *v);
 t_real			deg2rad(t_real deg);
 t_ray			new_camera_ray(t_options *options, t_cam *cam, uint2 pixel);
 uint			pack_color(t_color *c);
+t_vec3			dir_from_rot(t_vec3 rot);
 # endif

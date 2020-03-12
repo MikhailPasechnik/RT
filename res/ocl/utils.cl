@@ -52,3 +52,13 @@ uint pack_color(t_color *c)
 	t.z = clamp(c->z, 0.0f, 1.0f) * 255;
 	return ((((t.x << 8u) + t.y) << 8u) + t.z);
 }
+
+t_vec3 dir_from_rot(t_vec3 rot)
+{
+	t_vec3 dir;
+
+	dir.x = sin(radians(rot.z));
+	dir.y = -(sin(radians(rot.x)) * cos(radians(rot.z)));
+	dir.z = cos(radians(rot.x)) * cos(radians(rot.y));
+	return (dir);
+}
