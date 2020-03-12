@@ -23,7 +23,7 @@ SRC_FILES	=			\
 	main.c				\
 	renderer.c			\
 	generator.c			\
-	transfer.c			\
+	buffer.c			\
 	navigation.c		\
 	parser.c			\
 	utils.c				\
