@@ -2,10 +2,11 @@
 
 void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 {
-	if (event->state & SDL_BUTTON_LMASK)
+	if (event->state & SDL_BUTTON_LMASK) // && SDL_GetModState() & KMOD_ALT)
 	{
-		v3_add(&app->cam.dir, &VEC(event->yrel * 0.7, event->xrel * 0.7, 0),
-				&app->cam.dir);
+		nav_rotate_camera(&app->cam,
+				&VEC(event->yrel * 35, event->xrel * 35, 0),
+				 &VEC(0, 0, 0)); // TODO: rotate around selection
 		app->cm_changed = 1;
 		*changed = 1;
 	}
@@ -22,13 +23,7 @@ void	on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed)
 
 void	on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed)
 {
-	t_mat4 m;
-	t_vec3 v;
-
-	m4_identity(&m);
-	m4_set_rotation(&m, &app->cam.dir);
-	v3_mull_s(&VEC(m.s8, m.s9,m.sA), event->y > 0 ? 1 : -1, &v);
-	v3_add(&app->cam.pos, &v, &app->cam.pos);
+	nav_move_camera(&app->cam, &VEC(0, 0, event->y > 0 ? -1 : 1));
 	app->cm_changed = 1;
 	*changed = 1;
 }

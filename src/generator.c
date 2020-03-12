@@ -77,10 +77,10 @@ void	generate_scene(t_app *app)
 	t_light	l;
 
 	app->cam = (t_cam){
-			.fov=80,
-			.pos = VEC(0,0,0),
-			.rot = VEC(0,0,1)
+			.fov=80
 	};
+	ft_bzero(&app->cam.mtx, sizeof(t_mat4));
+	m4_set_rotation(&app->cam.mtx, &VEC(0,0,0));
 	app->op = (t_options){
 			.background_color = VEC(0,0,0),
 			.reflection_depth = 0,

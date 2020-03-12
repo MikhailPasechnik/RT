@@ -20,15 +20,11 @@ void print_render_args(t_options *options, t_cam* camera,
     );
     printf("Camera:\n"
         "\tfov: %f\n"
-        "\tpos: %f %f %f\n"
-        "\trot: %f %f %f\n",
+        "\tpos: %f %f %f\n",
         camera->fov,
-		camera->pos.x,
-		camera->pos.y,
-		camera->pos.z,
-		camera->rot.x,
-		camera->rot.y,
-		camera->rot.z
+		camera->mtx.sC,
+		camera->mtx.sD,
+		camera->mtx.sE
     );
     int i = options->obj_count;
     while (i < options->obj_count)

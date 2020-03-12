@@ -194,4 +194,10 @@ void			parse_real(char *str, void *vp);
 void			parse_vec3(char *str, void *vp);
 void			parse_color(char *str, void *vp);
 
+/*
+** Navigation functions
+*/
+void			nav_move_camera(t_cam *cam, t_vec3 *by);
+void			nav_rotate_camera(t_cam *cam, t_vec3 *rot, t_vec3 *around);
+
 #endif
