@@ -332,10 +332,8 @@ void	parser_cam(t_cam *cam, char **scn)
 	rot = array_attack(scn[2]);
 	if (ft_strncmp(scn[3], "  fov:", 6))
 		kill("Error in str 'cam_fov'");
-	m4_set_rotation(&cam->mtx, &rot);
-	cam->mtx.sC = pos.x;
-	cam->mtx.sD = pos.y;
-	cam->mtx.sE = pos.z;
+	m4_set_translate(&cam->mtx, &pos);
+	m4_rotate(&cam->mtx, &rot);
 	ignore_str(&scn[3]);
 	cam->fov = ptr_atoi(&scn[3]);
 }
