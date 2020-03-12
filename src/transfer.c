@@ -36,12 +36,17 @@ int		push_buffer(cl_command_queue queue, t_buffer *buffer,
 	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
 }
 
+int		pull_buffer(cl_command_queue queue, t_buffer buffer, size_t size)
+{
+	return (OCL_ERROR(clEnqueueReadBuffer(
+			queue, buffer.gpu, CL_TRUE, 0, size, buffer.cpu, 0, NULL, NULL
+	), "Failed to pull buffer from GPU!") ? 0 : 1);
+}
+
 int		set_kernel_arg(cl_kernel kernel, int arg_num, void *ptr, size_t size)
 {
-	int err;
-
-	err = clSetKernelArg(kernel, arg_num, size, ptr);
-	return (OCL_ERROR(err, "Failed to set kernel arg!") ? 0 : 1);
+	return (OCL_ERROR(clSetKernelArg(kernel, arg_num, size, ptr),
+			"Failed to set kernel arg!") ? 0 : 1);
 }
 
 int		transfer_objects(t_app *app)
