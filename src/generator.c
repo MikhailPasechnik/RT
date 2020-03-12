@@ -80,7 +80,8 @@ void	generate_scene(t_app *app)
 			.fov=80
 	};
 	ft_bzero(&app->cam.mtx, sizeof(t_mat4));
-	m4_set_rotation(&app->cam.mtx, &VEC(0,0,0));
+	m4_set_translate(&app->cam.mtx, &VEC(0, -10, 15));
+	m4_rotate(&app->cam.mtx, &VEC(180, 0, 0));
 	app->op = (t_options){
 			.background_color = VEC(0,0,0),
 			.reflection_depth = 0,
