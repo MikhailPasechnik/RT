@@ -1,5 +1,21 @@
 #include "rt.hcl"
 
+/*
+** Sphere intersections:
+**    First project ray normal onto line between ray origin and sphere center:
+**       Check that it is not behind us ignoring radius
+**       because if sphere overlaps we are hitting its back side.
+**       The dot product between the ray and the plane normal will be > 0
+**       if they are facing each other, and < 0 if looking away.
+**
+**       Then using Pythagorean theorem we check that we are not overshooting sphere.
+**
+**       Finally using point we found and Pythagorean theorem we find to intersection
+**       candidates from whom we choose the closest one.
+**
+**       Sphere normal at intersection computed by normalising difference
+**       between sphere center and intersection point.
+*/
 static inline t_hit *sphere_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 {
     t_vec3 L;
@@ -27,6 +43,24 @@ static inline t_hit *sphere_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
     return (hit);
 }
 
+/*
+** Plane intersections:
+**    First test that ray is not parallel and facing ray:
+**       The dot product between the ray and the plane normal will be > 0
+**       if they are facing each other, and < 0 if looking away.
+**
+**       (p−p0) ⋅ n = 0   Point on plane
+**       r0 + r ∗ t = p   Point on ray
+**
+**       Insert ray equation into plane equation
+**
+**       r ∗ t ⋅ n + (r0 − p0) ⋅ n = 0     Point on ray and on plane
+**       t = ((p0 - l0) ⋅ n) / (r ⋅ n)     Solve for t
+**
+**    Check that t is not negative (if negative plane is behind the ray)
+**    By multiplying t * p we get intersection point
+**    and intersection normal is simply plain normal.
+*/
 static inline t_hit *plane_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 {
     t_real d;
