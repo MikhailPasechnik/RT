@@ -46,15 +46,16 @@ int rand_interval(int min, int max)
 void fake_obj(t_obj *s, t_int id)
 {
 	s->pos = VEC(
-	        rand_interval(-10, 10),
-	        rand_interval(-10, 10),
-	        rand_interval(7, 25)
+	        rand_interval(-55, 55),
+	        rand_interval(-55, 55),
+	        rand_interval(-25, 25)
     );
-	s->rot = VEC(1,0,0);
-	s->radius = rand_interval(1, 5);
+	s->pos = VEC(0, 0, 20);
+	s->rot = VEC(0, 0, 0);
+	s->radius = 3;
 	s->height = rand_interval(1, 5);
 	s->id = id;
-	s->symbol = rand_interval(49, 100);
+	s->symbol = rand_interval(49, 55);
 	s->mat.ior = rand_interval(0, 255) / 255.0;
 	s->mat.fresnel = rand_interval(0, 255) / 255.0;
 	s->mat.reflection = rand_interval(0, 255) / 255.0;
@@ -83,10 +84,10 @@ int main(void)
 	t_renderer	ren;
 	cl_kernel   k;
 
-	int		w = 30;
-	int		h = 30;
+	int		w = 10;
+	int		h = 10;
 	int		fow = 68;
-	int		s = 10;
+	int		s = 2;
 	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
@@ -97,7 +98,7 @@ int main(void)
 	int i = 0;
 	while (i < s)
 	{
-        fake_obj(&scene[i++], ID_SPH);
+        fake_obj(&scene[i++], ID_CYL);
 	}
     ground_plane(&scene[0]);
     v3_norm(&scene[0].rot, &scene[0].rot);
@@ -133,7 +134,7 @@ int main(void)
 	t_cam cam = {
         .fov=fow,
         .pos = VEC(0,0,0),
-        .dir = VEC(0,0,1)
+        .dir = VEC(0,0,0)
 	};
 	err |= clSetKernelArg(k, 0, sizeof(t_options), &options);
 	assert(!OCL_ERROR2(err));
