@@ -50,11 +50,11 @@ void fake_obj(t_obj *s, t_int id)
 	        rand_interval(-55, 55),
 	        rand_interval(-25, 25)
     );
-	s->pos = VEC(0, 0, 20);
+	s->pos = VEC(0, 0, 30);
 	s->rot = VEC(0, 0, 0);
-	s->radius = 3;
-	s->height = rand_interval(1, 5);
-	s->id = id;
+	s->radius = 2;
+	s->height = 5;
+	s->id = rand_interval(ID_CYL - 1, ID_CON);
 	s->symbol = rand_interval(49, 55);
 	s->mat.ior = rand_interval(0, 255) / 255.0;
 	s->mat.fresnel = rand_interval(0, 255) / 255.0;
@@ -84,10 +84,10 @@ int main(void)
 	t_renderer	ren;
 	cl_kernel   k;
 
-	int		w = 10;
-	int		h = 10;
+	int		w = 40;
+	int		h = 40;
 	int		fow = 68;
-	int		s = 2;
+	int		s = 4;
 	t_obj   	scene[s];
 	cl_mem 		scene_mem;
 	cl_mem 		output_mem;
@@ -98,7 +98,7 @@ int main(void)
 	int i = 0;
 	while (i < s)
 	{
-        fake_obj(&scene[i++], ID_CYL);
+        fake_obj(&scene[i++], ID_CON);
 	}
     ground_plane(&scene[0]);
     v3_norm(&scene[0].rot, &scene[0].rot);
