@@ -61,7 +61,8 @@ void			m4_set_translate(t_mat4 *m, t_vec3 *t);
 t_vec3		*m4_extract_translation(t_mat4 *m, t_vec3 *out);
 t_vec3		*m4_extract_scale(t_mat4 *m, t_vec3 *out);
 t_mat4			*m4_extract_rotation(t_mat4 *m, t_mat4 *out);
-void			m4_rotate_relative(t_mat4 *m, t_vec3 *p, t_vec3 *rot);
+void		m4_rotate_relative(t_mat4 *m, t_mat4 *p, t_vec3 *rot);
+t_mat4		look_at(t_vec3 from, t_vec3 to);
 
 /*
 ** TODO: Determinant and Inverse

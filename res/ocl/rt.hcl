@@ -6,7 +6,7 @@
 ** Include host OpenCL compatible structs
 */
 # include "obj.h"
-# define EPSILON 1e-6
+# define EPSILON 1e-16
 # ifndef NULL
 # define NULL ((void *)0)
 # endif
@@ -26,8 +26,8 @@ typedef struct	s_hit {
 t_int			intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit);
 void			print_render_args(t_options *options, t_cam* camera, __global t_obj* scene, __global t_light* lights);
 t_mat4			m4_mul(t_mat4 *m, t_mat4 *n);
-void			m4_set_rotation(t_mat4 *m, t_vec3 *r);
-void			m4_set_translate(t_mat4 *m, t_vec3 *t);
+void			m4_set_rotation(t_mat4 *m, t_vec3 r);
+void			m4_set_translate(t_mat4 *m, t_vec3 t);
 void			m4_identity(t_mat4 *m);
 t_vec3			m4_mul_vec3(t_mat4 *m, t_vec3 *v);
 t_real			deg2rad(t_real deg);

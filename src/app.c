@@ -65,6 +65,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	app->cm_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
 	app->op.width = RT_WIN_WIDTH;
+	app->op.background_color = VEC(44/255.,44/255.,44/255.);
 
 	rt_set_rect(&app->rect, 0, 0, app->op.width, app->op.height);
 	if (!(ocl_init(&app->ocl)))
