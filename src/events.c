@@ -16,9 +16,6 @@ void	on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed)
 {
 	(void)event;
 	SDL_GetWindowSize(app->win, (int *)&app->op.width, (int *)&app->op.height);
-	rt_set_rect(&app->rect, 0, 0, app->op.width, app->op.height);
-	SDL_DestroyTexture(app->canvas);
-	app->canvas = NULL;
 	app->op_changed = 1;
 	*changed = 1;
 }
@@ -32,9 +29,6 @@ void	on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed)
 
 void	on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed)
 {
-	const Uint8 *keyboard;
-
-	keyboard = SDL_GetKeyboardState(NULL);
 	if (event->keysym.sym == SDLK_ESCAPE)
 	{
 		app->quit = 1;

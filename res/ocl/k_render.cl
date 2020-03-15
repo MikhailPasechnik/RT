@@ -5,15 +5,15 @@ __kernel void k_render(
 	t_cam camera,
 	__global t_obj* objects,
 	__global t_light* lights,
-	__global t_int* color_buffer
-//	__global t_int* index_buffer
+	__global t_int* color_buffer,
+	__global t_int* index_buffer
 )
 {
 	t_ray camera_ray;
 	t_int obj_index;
 	t_hit camera_hit;
 	t_ray shadow_ray;
-	t_ray shadow_hit;
+	t_hit shadow_hit;
 	t_color color;
 
 	int id = get_global_id(0);
@@ -32,7 +32,7 @@ __kernel void k_render(
 		color = camera_hit.obj->mat.diffuse * dot(camera_ray.dir, camera_hit.norm * -1);
 		//		color = camera_hit.obj->mat.diffuse;
 		// color = ((camera_hit.norm * -1) + 1) / 2;
-		int i = 0;
+		t_uint i = 0;
 		while (i < options.light_count)
 		{
 			if (lights[i].id == ID_DIRECT)
@@ -59,6 +59,6 @@ __kernel void k_render(
     else
 		color = options.background_color;
 
-//    index_buffer[id] = obj_index;
+    index_buffer[id] = obj_index;
 	color_buffer[id] = pack_color(&color);
 }

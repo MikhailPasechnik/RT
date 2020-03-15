@@ -22,8 +22,8 @@ int		free_buffer(t_buffer *buffer)
 	{
 		(buffer)->host ? ft_memdel(&buffer->host) : 0;
 		(buffer)->device ? clReleaseMemObject(buffer->device) : 0;
+		ft_bzero(buffer, sizeof(t_buffer));
 	}
-	ft_bzero(buffer, sizeof(t_buffer));
 	return (1);
 }
 
@@ -34,15 +34,14 @@ int		push_buffer(cl_command_queue queue, t_buffer *buffer,
 
 	err = clEnqueueWriteBuffer(queue, buffer->device, CL_TRUE, offset, size,
 							   buffer->host, 0, NULL, NULL);
-	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
+	return (OCL_ERROR(err, "Failed to push data to OpenCL memory!") ? 0 : 1);
 }
 
-int		pull_memory(cl_command_queue queue, cl_mem mem, size_t size,
-		void* dest)
+int		pull_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset)
 {
 	return (OCL_ERROR(clEnqueueReadBuffer(
-			queue, mem, CL_TRUE, 0, size, dest, 0, NULL, NULL
-	), "Failed to pull OpenCL memory!") ? 0 : 1);
+			queue, buffer->device, CL_TRUE, offset, size, buffer->host, 0, NULL, NULL),
+			"Failed to pull OpenCL memory to host!") ? 0 : 1);
 }
 
 int		set_kernel_arg(cl_kernel kernel, int arg_num, void *ptr, size_t size)
@@ -155,23 +154,4 @@ int		update_options(cl_kernel kernel, t_options *options, int arg_num)
 	err = clSetKernelArg(kernel, arg_num, sizeof(t_options), options);
 	OCL_ERROR(err, "Failed to set option kernel arg!");
 	return (err == CL_SUCCESS);
-}
-
-int		update_output_buffers(t_app *app)
-{
-	size_t size;
-
-	size = app->op.width * app->op.height;
-	// TODO: check if re-alloc needed checking  buffer.size and size
-	app->ren.color_buf.valid ? free_buffer(&app->ren.color_buf) : 0;
-	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
-	app->ren.color_buf = create_buffer(app->ocl.context,
-			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
-	if (!app->ren.color_buf.valid && free_buffer(&app->ren.color_buf))
-		return (app_error("Failed to allocate color buffer!", 0));
-	app->ren.index_buf = create_buffer(app->ocl.context,
-			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
-	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
-		return (app_error("Failed to allocate index buffer!", 0));
-	return (1);
 }
