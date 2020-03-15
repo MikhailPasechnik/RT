@@ -28,7 +28,8 @@ __kernel void k_render(
 
 	if (obj_index != -1)
 	{
-		color = (VEC(180, 180, 180) / 255.0f) * dot(camera_ray.dir, camera_hit.norm * -1);
+//		color = (VEC(180, 180, 180) / 255.0f) * dot(camera_ray.dir, camera_hit.norm * -1);
+		color = camera_hit.obj->mat.diffuse * dot(camera_ray.dir, camera_hit.norm * -1);
 		//		color = camera_hit.obj->mat.diffuse;
 		// color = ((camera_hit.norm * -1) + 1) / 2;
 		int i = 0;
@@ -53,7 +54,7 @@ __kernel void k_render(
 			}
 			i++;
 		}
-		color = ((camera_hit.norm * -1) + 1) / 2;
+		//color = ((camera_hit.norm * -1) + 1) / 2;
 	}
     else
 		color = options.background_color;

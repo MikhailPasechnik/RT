@@ -171,11 +171,23 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 
 	ray_to_object_space(obj, ray, &dir, &pos);
 //
-	float k;
-	if (obj->radius < obj->height)
-		k = obj->radius / obj->height;
-	else
-		k = obj->height / obj->radius;
+
+	t_hit cap_hit;
+
+	t_ray r;
+	r.orig = pos;
+	r.dir = dir;
+
+	if(disk_inter(VEC(0, 0, -1), VEC(0, 0, 0), obj->radius, &r, &cap_hit))
+	{
+		hit->obj = obj;
+		hit->pos = cap_hit.pos;
+		hit->norm = VEC(0, 0, -1);
+		hit_to_world_space(obj, hit);
+		return (hit);
+	}
+
+	float k = obj->radius / obj->height;
 	k = k * k;
 
 //	t_vec3 p1 = VEC(obj->pos.x + obj->radius, obj->pos.y, obj->pos.z);
@@ -232,25 +244,12 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	}
 
 
-	t_hit cap_hit;
 
-	t_ray r;
-	r.orig = pos;
-	r.dir = dir;
-
-	if(disk_inter(VEC(0, 0, -1), VEC(0, 0, 0), obj->radius, &r, &cap_hit))
-	{
-		hit->obj = obj;
-		hit->pos = cap_hit.pos;
-		hit->norm = VEC(0, 0, -1);
-		hit_to_world_space(obj, hit);
-		return (hit);
-	}
 
 	hit->pos = pos + dir * t0;
-	hit->norm = normalize(VEC(hit->pos.x, hit->pos.y, 0));
-	hit->norm /= obj->height / obj->radius;
-	hit->norm.z = obj->height / obj->radius;
+	hit->norm = normalize(VEC(hit->pos.x, hit->pos.y, sin(obj->height / obj->radius)));
+//	hit->norm /= obj->height / obj->radius;
+//	hit->norm.z = obj->height / obj->radius;
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 //	hit->pos = ray->orig + ray->dir * t0;
