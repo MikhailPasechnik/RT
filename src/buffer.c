@@ -1,16 +1,16 @@
 #include "rt.h"
 
 
-t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only)
+t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags)
 {
 	int			err;
 	t_buffer	buffer;
 
 	err = 0;
-	buffer.host = !gpu_only ? ft_memalloc(size) : NULL;
+	buffer.host = ft_memalloc(size);
 	buffer.device = clCreateBuffer(ctx, flags, size, NULL, &err);
 	OCL_ERROR2(err);
-	buffer.valid = err == CL_SUCCESS && (!gpu_only || buffer.host != NULL);
+	buffer.valid = err == CL_SUCCESS && buffer.host != NULL;
 	buffer.size = size;
 	return (buffer);
 }
@@ -37,11 +37,12 @@ int		push_buffer(cl_command_queue queue, t_buffer *buffer,
 	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
 }
 
-int		pull_buffer(cl_command_queue queue, t_buffer buffer, size_t size)
+int		pull_memory(cl_command_queue queue, cl_mem mem, size_t size,
+		void* dest)
 {
 	return (OCL_ERROR(clEnqueueReadBuffer(
-			queue, buffer.device, CL_TRUE, 0, size, buffer.host, 0, NULL, NULL
-	), "Failed to pull buffer from GPU!") ? 0 : 1);
+			queue, mem, CL_TRUE, 0, size, dest, 0, NULL, NULL
+	), "Failed to pull OpenCL memory!") ? 0 : 1);
 }
 
 int		set_kernel_arg(cl_kernel kernel, int arg_num, void *ptr, size_t size)
@@ -58,7 +59,7 @@ int		transfer_objects(t_app *app)
 	t_buffer buffer;
 
 	buffer = create_buffer(app->ocl.context,
-		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
+		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate objects buffer!", 0));
 	obj = buffer.host;
@@ -89,7 +90,7 @@ int		transfer_light(t_app *app)
 	t_buffer buffer;
 
 	buffer = create_buffer(app->ocl.context,
-		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
+		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
 	light = buffer.host;
@@ -165,11 +166,11 @@ int		update_output_buffers(t_app *app)
 	app->ren.color_buf.valid ? free_buffer(&app->ren.color_buf) : 0;
 	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
 	app->ren.color_buf = create_buffer(app->ocl.context,
-			size * sizeof(t_int), CL_MEM_WRITE_ONLY, 1);
+			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf.valid && free_buffer(&app->ren.color_buf))
 		return (app_error("Failed to allocate color buffer!", 0));
 	app->ren.index_buf = create_buffer(app->ocl.context,
-			size * sizeof(t_int), CL_MEM_WRITE_ONLY, 0);
+			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
 		return (app_error("Failed to allocate index buffer!", 0));
 	return (1);

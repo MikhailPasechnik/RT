@@ -25,7 +25,7 @@
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
 # define RT_WIN_WIDTH 500
-# define RT_WIN_HEIGHT 300
+# define RT_WIN_HEIGHT 500
 # define RT_BUF_EXTRA 50
 
 /*
@@ -68,6 +68,16 @@ typedef struct	s_buffer
 	int			valid;
 	size_t 		size;
 }				t_buffer;
+
+
+typedef struct	s_tx_buffer
+{
+	cl_mem		device;
+	SDL_Texture	*host;
+	int			valid;
+	size_t 		width;
+	size_t 		height;
+}				t_tx_buffer;
 
 
 typedef struct			s_renderer
@@ -137,7 +147,7 @@ void			on_app_event(t_app *app, SDL_Event *event);
 */
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
-t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only);
+t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags);
 int				update_output_buffers(t_app *app);
 /*
 ** Partial buffer update

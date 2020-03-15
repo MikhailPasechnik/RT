@@ -38,7 +38,7 @@ static int app_pre_render(t_app *app)
 		return (0);
 	app->op_changed = 0;
 	app->canvas = !app->canvas ? SDL_CreateTexture(app->renderer,
-			SDL_PIXELFORMAT_RGBA8888,
+			SDL_PIXELFORMAT_RGB888,
 			SDL_TEXTUREACCESS_STREAMING, app->op
 			.width, app->op.height) : app->canvas;
 	if (!app->canvas)
