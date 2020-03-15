@@ -1,5 +1,30 @@
 #include "rt.hcl"
 
+
+
+static inline t_hit *disk_inter(t_vec3 dir, t_vec3 pos, t_real radius, t_ray
+*ray, t_hit *hit)
+{
+	t_vec3 hit_pos;
+	t_real d;
+    t_real t;
+
+	d = dot(dir, ray->dir);
+	if (d > EPSILON)
+		return (NULL);
+	t = dot(pos - ray->orig, dir) / d;
+    if (t < 0)
+        return (NULL);
+	hit_pos = ray->orig + ray->dir * t;
+
+	float d2 = dot(hit_pos - pos, hit_pos - pos);
+	if (sqrt(d2) > radius)
+		return (NULL);
+	hit->pos = hit_pos;
+	hit->norm = dir;
+    return (hit);
+}
+
 /*
 ** Sphere intersections:
 **    First project ray normal onto line between ray origin and sphere center:
@@ -99,7 +124,7 @@ t_int solve_quadratic(
 {
 	// Find quadratic discriminant
 	float discriminant = b * b - 4.0 * a * c;
-	if (discriminant < EPSILON)
+	if (discriminant <= EPSILON)
 		return (0);
 	float rootDiscriminant = sqrt(discriminant);
 
@@ -135,8 +160,8 @@ void hit_to_world_space(t_hit *hit)
 	m4_identity(&object_space);
 	m4_set_rotation(&object_space, hit->obj->rot);
 	hit->norm = m4_mul_vec3(&object_space, &hit->norm);
-	hit->pos += hit->obj->pos;
 	hit->pos =  m4_mul_vec3(&object_space, &hit->pos);
+	hit->pos += hit->obj->pos;
 }
 
 static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
@@ -145,9 +170,13 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	t_vec3 dir;
 
 	ray_to_object_space(*obj, ray, &dir, &pos);
-
-	float k = obj->radius / obj->height;
-	k *= k;
+//
+	float k;
+	if (obj->radius < obj->height)
+		k = obj->radius / obj->height;
+	else
+		k = obj->height / obj->radius;
+	k = k * k;
 
 //	t_vec3 p1 = VEC(obj->pos.x + obj->radius, obj->pos.y, obj->pos.z);
 //	t_vec3 p2 = VEC(obj->pos.x, obj->pos.y + obj->height, obj->pos.z);
@@ -158,12 +187,13 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 //	double a = cos_a * dir.x*dir.x+cos_a*dir.z*dir.z-sin_a*dir.y*dir.y;
 //	double b = cos_a*dir.x*pos.x +cos_a*dir.z*pos.z-sin_a*dir.y*pos.y;
 //	double c = cos_a*pos.x*pos.x+cos_a*pos.z*pos.z-sin_a*pos.y*pos.y;
-
+//
 	double a = dir.x * dir.x + dir.y * dir.y - k * dir.z * dir.z;
-	double b = 2.0 * (dir.x * pos.x + dir.y * pos.y -
+	double b = 2 * (dir.x * pos.x + dir.y * pos.y -
 			k * dir.z * (pos.z - obj->height));
 	double c =  pos.x * pos.x + pos.y * pos.y -
 			k * (pos.z - obj->height) * (pos.z - obj->height);
+
 	//
 	//	double delta = b*b - a*c;
 	//
@@ -177,28 +207,54 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	t_real t1;
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (NULL);
-	//
-//	////	 t<0 means the intersection is behind the ray origin
-//	////	 which we don't want
-//	if (t0 <= EPSILON)
-//		return (NULL);
+	if (t0 < 0. || t1 > 0. && t1 < t0)
+		swap(&t0, &t1);
+//	if (t0 > 0 && t1 > 0 && t0 < t1)
+//		printf("pos01 t0: %f t1: %f\n", t0, t1);
 //
+//	////	 t<0 means the intersection is behind the ray origin
+////	////	 which we don't want
+	if (t0 <= EPSILON)
+		return (NULL);
 
-	t_vec3 local_norm;
-	if (((pos.z + dir.z * t0) >= obj->pos.z) &&
-		((pos.z + dir.z * t0) <= obj->pos.z + obj->height))
+	t_vec3 pp = (pos + dir * t0);
+//	t_vec3 cp = pos + dir * t0;
+//	float z = dot(cp, VEC(0, 0, 1));
+//	printf("Z: %f t0: %f t1: %f\n", z, t0, t1);
+
+
+	if ((pp.z < EPSILON || pp.z > obj->height))
 	{
-		hit->pos = pos + dir * t0;
-		hit->norm = normalize(
-		   hit->pos - VEC(obj->pos.x, obj->pos.y, hit->pos.z)
-	    );
-		local_norm = hit->norm;
+		swap(&t0, &t1);
+		pp = (pos + dir * t0);
+		if ((pp.z < EPSILON || pp.z > obj->height))
+			return (NULL);
+	}
+
+
+	t_hit cap_hit;
+
+	t_ray r;
+	r.orig = pos;
+	r.dir = dir;
+
+	if(disk_inter(VEC(0, 0, -1), VEC(0, 0, 0), obj->radius, &r, &cap_hit))
+	{
 		hit->obj = obj;
+		hit->pos = cap_hit.pos;
+		hit->norm = VEC(0, 0, -1);
 		hit_to_world_space(hit);
-		hit->norm = local_norm;
 		return (hit);
 	}
-	return (NULL);
+
+	hit->pos = pos + dir * t0;
+	hit->norm = normalize(VEC(hit->pos.x, hit->pos.y, 0));
+	hit->norm /= obj->height / obj->radius;
+	hit->norm.z = obj->height / obj->radius;
+	hit->obj = obj;
+	hit_to_world_space(hit);
+//	hit->pos = ray->orig + ray->dir * t0;
+	return (hit);
 }
 
 
@@ -227,6 +283,29 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	t_vec3 dir;
 
 	ray_to_object_space(*obj, ray, &dir, &pos);
+	t_hit cap_hit;
+
+	t_ray r;
+	r.orig = pos;
+	r.dir = dir;
+
+	if(disk_inter(VEC(0, 0, -1), VEC(0, 0, 0), obj->radius, &r, &cap_hit))
+	{
+		hit->obj = obj;
+		hit->pos = cap_hit.pos;
+		hit->norm = VEC(0, 0, -1);
+		hit_to_world_space(hit);
+		return (hit);
+	}
+	if(disk_inter(VEC(0, 0, 1), VEC(0, 0, obj->height), obj->radius, &r,
+			&cap_hit))
+	{
+		hit->obj = obj;
+		hit->pos = cap_hit.pos;
+		hit->norm = VEC(0, 0, 1);
+		hit_to_world_space(hit);
+		return (hit);
+	}
 	// R(t) = o + td
 	// x² + z² = r²
 	// (ox+tdx)² + (oz+tdz)² = r²
@@ -245,113 +324,19 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	if (t0 <= EPSILON)
 		return (NULL);
 
-
-	// double y = pos.y+t*ray->dir.y;
-	// check if we intersect one of the bases
-//	if (y > height+epsilon || y < -epsilon) {
-//		double dist;
-//		bool b1 = intersect_base (ray, center2, dist);
-//		if(b1) t=dist;
-//		bool b2 = intersect_base (ray, center, dist);
-//		if(b2 && dist>epsilon && t>=dist)
-//		t=dist;
-//		return b1 || b2;
-//	}
-//	if (!(((pos.z + dir.z * t0) >= obj->pos.z) &&
-//		((pos.z + dir.z * t0) <= obj->pos.z + obj->height)))
-//	{
-//		t0 = t1;
-//	}
-
-	if (fabs(t0) <= EPSILON)
-		return (NULL);
-
-	t_vec3 local_norm;
-	if (((pos.z + dir.z * t0) >= obj->pos.z) &&
-		((pos.z + dir.z * t0) <= obj->pos.z + obj->height))
+	if (((pos.z + dir.z * t0) >= 0) &&
+		((pos.z + dir.z * t0) <= obj->height))
 	{
 		hit->pos = pos + dir * t0;
-		hit->norm = normalize(
-		   hit->pos - VEC(obj->pos.x, obj->pos.y, hit->pos.z)
-	    );
-		local_norm = hit->norm;
+		hit->norm = normalize(VEC(hit->pos.x, hit->pos.y, 0));
 		hit->obj = obj;
 		hit_to_world_space(hit);
-//		hit->norm = local_norm;
 		return (hit);
 	}
 	return (NULL);
 }
 static inline t_hit *cube_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 {
-    t_vec3 p0;
-	t_vec3 dir;
-
-	p0 = ray->orig - obj->pos;
-
-	t_mat4 D;
-	t_mat4 INV;
-//	printf( "%f ", deg2rad(r.z));
-	m4_identity(&D);
-
-	m4_set_rotation(&D, obj->rot);
-	m4_set_translate(&D, obj->pos);
-	INV = m4_inv(&D);
-	dir = normalize(m4_mul_vec3(&INV, &ray->dir));
-//	dir = ray->dir;
-	 pv(ray->dir, dir);
-//	m4_identity(&D);
-//
-//	m4_set_translate(&D, obj->pos);
-//	INV = m4_inv(&D);
-//	p0 =  m4_mul_vec3(&INV, &ray->orig);
-	// R(t) = o + td
-	// x² + z² = r²
-	// (ox+tdx)² + (oz+tdz)² = r²
-	// (ox)² + 2oxtdx + (tdx)² + (oz)² + 2oztdz + (tdz)² = r²
-	// t²(dx + dz) + 2t(oxdx + ozdz) + (ox)² + (oz)² - r² = 0
-	double a = dir.x * dir.x + dir.z * dir.z;
-	double b = 2.0 * (dir.x * p0.x + dir.z * p0.z);
-	double c = p0.x * p0.x + p0.z * p0.z - obj->radius * obj->radius;
-//
-//	double delta = b*b - a*c;
-//
-//	//use epsilon because of computation errors between doubles
-//	double epsilon = 0.00000001;
-//	// delta < 0 means no intersections
-//	if (delta < epsilon)
-//		return (NULL);
-
-	t_real t0;
-	t_real t1;
-	if (!solve_quadratic(a, b, c, &t0, &t1))
-		return (NULL);
-//
-////	 t<0 means the intersection is behind the ray origin
-////	 which we don't want
-//	if (t0 <= EPSILON)
-//		return (NULL);
-//
-
-	// double y = p0.y+t*ray->dir.y;
-	// check if we intersect one of the bases
-//	if (y > height+epsilon || y < -epsilon) {
-//		double dist;
-//		bool b1 = intersect_base (ray, center2, dist);
-//		if(b1) t=dist;
-//		bool b2 = intersect_base (ray, center, dist);
-//		if(b2 && dist>epsilon && t>=dist)
-//		t=dist;
-//		return b1 || b2;
-//	}
-
-	hit->pos = p0 + dir * t0;
-	if ((hit->pos.y >= obj->pos.y) && (hit->pos.y <= obj->pos.y + obj->height))
-	{
-		hit->norm = normalize(hit->pos - obj->pos);
-		hit->obj = obj;
-		return (hit);
-	}
 	return (NULL);
 }
 /*
@@ -394,6 +379,7 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
     set = 0;
     while (size--)
     {
+		tmp = (t_hit){0};
         new = NULL;
         if (IS_PLN(&scene[size]))
             new = plane_inter(&scene[size], ray, &tmp);

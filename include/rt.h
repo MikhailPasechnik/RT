@@ -96,6 +96,8 @@ typedef struct			s_renderer
 typedef struct			s_app
 {
 	SDL_Window			*win;
+	SDL_Renderer		*renderer;
+	SDL_Texture			*canvas;
 	int 				quit;
 
 	SDL_Rect			rect;

@@ -4,10 +4,11 @@
 void	nav_move_camera(t_cam *cam, t_vec3 *by)
 {
 	t_mat4 r;
+	t_mat4 rr;
 
 	m4_extract_rotation(&cam->mtx, &r);
-	m4_inv(&r, &r);
-	m4_v3_mul(&r, by, by);
+	m4_inv(&r, &rr);
+	m4_v3_mul(&rr, by, by);
 	printf("=====%f %f %f=====\n", by->x, by->y, by->z );
 	m4_translate(&cam->mtx, by);
 }

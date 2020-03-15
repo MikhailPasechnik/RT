@@ -5,7 +5,7 @@ void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 	if (event->state & SDL_BUTTON_LMASK) // && SDL_GetModState() & KMOD_ALT)
 	{
 		nav_rotate_camera(&app->cam,
-				&VEC(event->yrel * 0, event->xrel * 1, event->xrel * 0),
+				&VEC(event->yrel * 0, event->xrel * 0, event->xrel * 1),
 						  &VEC(0, 0, 0)); // TODO: rotate around selection
 		app->cm_changed = 1;
 		*changed = 1;
@@ -17,6 +17,8 @@ void	on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed)
 	(void)event;
 	SDL_GetWindowSize(app->win, (int *)&app->op.width, (int *)&app->op.height);
 	rt_set_rect(&app->rect, 0, 0, app->op.width, app->op.height);
+	SDL_DestroyTexture(app->canvas);
+	app->canvas = NULL;
 	app->op_changed = 1;
 	*changed = 1;
 }

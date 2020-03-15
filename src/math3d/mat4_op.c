@@ -47,6 +47,9 @@ t_mat4	look_at(t_vec3 from, t_vec3 to)
 	v3_norm(v3_sub(&from, &to, &forward), &forward);
 	v3_cross(&VEC(0, 0, 1), &forward, &right);
 	v3_cross(&forward, &right, &up);
+	v3_norm(&forward, &forward);
+	v3_norm(&right, &right);
+	v3_norm(&up, &up);
 	m4_identity(&m);
 	m.s0 = right.x;
 	m.s1 = right.y;

@@ -37,23 +37,77 @@ static int app_pre_render(t_app *app)
 		!update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG))
 		return (0);
 	app->op_changed = 0;
+	app->canvas = !app->canvas ? SDL_CreateTexture(app->renderer,
+			SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_STREAMING, app->op
+			.width, app->op.height) : app->canvas;
+	if (!app->canvas)
+		return app_error("Failed to initialize Canvas!", 0);
+
 	return (1);
 }
 
+void draw_circle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY,
+		int32_t radius)
+{
+	const int32_t diameter = (radius * 2);
+
+	int32_t x = (radius - 1);
+	int32_t y = 0;
+	int32_t tx = 1;
+	int32_t ty = 1;
+	int32_t error = (tx - diameter);
+
+	while (x >= y)
+	{
+		//  Each of the following renders an octant of the circle
+		SDL_RenderDrawPoint(renderer, centreX + x, centreY - y);
+		SDL_RenderDrawPoint(renderer, centreX + x, centreY + y);
+		SDL_RenderDrawPoint(renderer, centreX - x, centreY - y);
+		SDL_RenderDrawPoint(renderer, centreX - x, centreY + y);
+		SDL_RenderDrawPoint(renderer, centreX + y, centreY - x);
+		SDL_RenderDrawPoint(renderer, centreX + y, centreY + x);
+		SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
+		SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
+
+		if (error <= 0)
+		{
+			++y;
+			error += ty;
+			ty += 2;
+		}
+
+		if (error > 0)
+		{
+			--x;
+			tx += 2;
+			error += (tx - diameter);
+		}
+	}
+}
 static int app_render(t_app *app)
 {
-	SDL_Surface		*surface;
-	SDL_Renderer	*renderer;
+	void		*pixels;
+	int 		pitch;
 
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
-	surface = SDL_GetWindowSurface(app->win);
-	if (!render(&app->ren, &app->ocl, surface->pixels, &app->rect))
+
+	SDL_LockTexture(app->canvas, NULL, &pixels, &pitch);
+	if (!render(&app->ren, &app->ocl, pixels, &app->rect))
 		return (app_error("Failed to render!", 0));
+	SDL_UnlockTexture(app->canvas);
+	SDL_RenderCopy(app->renderer, app->canvas, NULL, &(SDL_Rect){.y=0, .x=0,
+															  .h=app->op.height,
+															  .w=app->op.width});
 //	renderer = SDL_GetRenderer(app->win);
 //	SDL_Rect r =  (SDL_Rect){.h = 10, .w = 10, .x = 0, .y = 0};
 //	SDL_RenderDrawRect(renderer, &r);
-	SDL_UpdateWindowSurface(app->win);
+	SDL_SetRenderDrawColor(app->renderer, 255, 0, 0, 255 );
+	draw_circle(app->renderer, 5, 5, 4);
+
+	// Render the rect to the screen
+	SDL_RenderPresent(app->renderer);
 	return (1);
 }
 
@@ -75,6 +129,9 @@ int				app_start(t_app *app, char **argv, int argc)
 	if (!(app->win = SDL_CreateWindow(
 			RT_WIN_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			app->op.width, app->op.height, RT_WIN_FLAGS)))
+		return (app_error(SDL_GetError(), 0));
+	if (!(app->renderer = SDL_CreateRenderer(app->win, -1,
+			SDL_RENDERER_ACCELERATED)))
 		return (app_error(SDL_GetError(), 0));
 	return (app_render(app));
 }
