@@ -12,6 +12,8 @@ __kernel void k_render(
 	t_ray camera_ray;
 	t_int obj_index;
 	t_hit camera_hit;
+	t_ray shadow_ray;
+	t_ray shadow_hit;
 	t_color color;
 
 	int id = get_global_id(0);
@@ -25,9 +27,34 @@ __kernel void k_render(
 	obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
 
 	if (obj_index != -1)
-		color = camera_hit.obj->mat.diffuse * dot(camera_ray.dir, camera_hit.norm * -1);
-//		color = camera_hit.obj->mat.diffuse;
-//		color = ((camera_hit.norm * -1) + 1) / 2;
+	{
+		color = (VEC(180, 180, 180) / 255.0f) * dot(camera_ray.dir, camera_hit.norm * -1);
+		//		color = camera_hit.obj->mat.diffuse;
+		// color = ((camera_hit.norm * -1) + 1) / 2;
+		int i = 0;
+		while (i < options.light_count)
+		{
+			if (lights[i].id == ID_DIRECT)
+			{
+				shadow_ray.orig = camera_hit.pos + camera_hit.norm * 0.0001f;
+				shadow_ray.dir = -dir_from_rot(lights[i].dir);
+				// TODO: add bias (Shadow-Acne: Avoiding Self-Intersection)
+				//  https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/ligth-and-shadows
+				t_int in_shadow = intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1;
+				if (!in_shadow)
+				{
+					// TODO Lambert Phong
+					// color *= lights[i].intensity * dot(shadow_ray.dir, camera_hit.norm);
+				}
+				else
+				{
+					color *= 0.2f;
+				}
+			}
+			i++;
+		}
+		color = ((camera_hit.norm * -1) + 1) / 2;
+	}
     else
 		color = options.background_color;
 

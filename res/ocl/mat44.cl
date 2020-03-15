@@ -165,8 +165,6 @@ t_mat4			m4_inv(t_mat4 *m)
 		- m->s1 * (m->s4 * c[3] - m->s6 * c[10] + m->s7 * c[11])
 		+ m->s2 * (m->s4 * c[4] - m->s5 * c[10] + m->s7 * c[12])
 		- m->s3 * (m->s4 * c[7] - m->s5 * c[11] + m->s6 * c[12]);
-	if (d == 0)
-		return (NULL);
 	d = 1 / d;
 	inv_apply(m, c, &out, d);
 	return (out);

@@ -141,27 +141,27 @@ t_int solve_quadratic(
 	return (1);
 }
 
-void ray_to_object_space(t_obj obj, t_ray *ray, t_vec3 *dir, t_vec3 *pos)
+void ray_to_object_space(__global t_obj *obj, t_ray *ray, t_vec3 *dir, t_vec3 *pos)
 {
 	t_mat4 inverse_os;
 
 	m4_identity(&inverse_os);
-	m4_set_rotation(&inverse_os, obj.rot);
+	m4_set_rotation(&inverse_os, obj->rot);
 	inverse_os = m4_inv(&inverse_os);
-	*pos = ray->orig - obj.pos;
+	*pos = ray->orig - obj->pos;
 	*pos =  m4_mul_vec3(&inverse_os, pos);
 	*dir = normalize(m4_mul_vec3(&inverse_os, &ray->dir));
 }
 
-void hit_to_world_space(t_hit *hit)
+void hit_to_world_space(__global t_obj *obj, t_hit *hit)
 {
 	t_mat4 object_space;
 
 	m4_identity(&object_space);
-	m4_set_rotation(&object_space, hit->obj->rot);
+	m4_set_rotation(&object_space, obj->rot);
 	hit->norm = m4_mul_vec3(&object_space, &hit->norm);
 	hit->pos =  m4_mul_vec3(&object_space, &hit->pos);
-	hit->pos += hit->obj->pos;
+	hit->pos += obj->pos;
 }
 
 static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
@@ -169,7 +169,7 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	t_vec3 pos;
 	t_vec3 dir;
 
-	ray_to_object_space(*obj, ray, &dir, &pos);
+	ray_to_object_space(obj, ray, &dir, &pos);
 //
 	float k;
 	if (obj->radius < obj->height)
@@ -243,7 +243,7 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 		hit->obj = obj;
 		hit->pos = cap_hit.pos;
 		hit->norm = VEC(0, 0, -1);
-		hit_to_world_space(hit);
+		hit_to_world_space(obj, hit);
 		return (hit);
 	}
 
@@ -252,7 +252,7 @@ static inline t_hit *cone_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	hit->norm /= obj->height / obj->radius;
 	hit->norm.z = obj->height / obj->radius;
 	hit->obj = obj;
-	hit_to_world_space(hit);
+	hit_to_world_space(obj, hit);
 //	hit->pos = ray->orig + ray->dir * t0;
 	return (hit);
 }
@@ -282,7 +282,7 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 	t_vec3 pos;
 	t_vec3 dir;
 
-	ray_to_object_space(*obj, ray, &dir, &pos);
+	ray_to_object_space(obj, ray, &dir, &pos);
 	t_hit cap_hit;
 
 	t_ray r;
@@ -294,7 +294,7 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 		hit->obj = obj;
 		hit->pos = cap_hit.pos;
 		hit->norm = VEC(0, 0, -1);
-		hit_to_world_space(hit);
+		hit_to_world_space(obj, hit);
 		return (hit);
 	}
 	if(disk_inter(VEC(0, 0, 1), VEC(0, 0, obj->height), obj->radius, &r,
@@ -303,7 +303,7 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 		hit->obj = obj;
 		hit->pos = cap_hit.pos;
 		hit->norm = VEC(0, 0, 1);
-		hit_to_world_space(hit);
+		hit_to_world_space(obj, hit);
 		return (hit);
 	}
 	// R(t) = o + td
@@ -330,7 +330,7 @@ static inline t_hit *cylinder_inter(__global t_obj *obj, t_ray *ray, t_hit *hit)
 		hit->pos = pos + dir * t0;
 		hit->norm = normalize(VEC(hit->pos.x, hit->pos.y, 0));
 		hit->obj = obj;
-		hit_to_world_space(hit);
+		hit_to_world_space(obj, hit);
 		return (hit);
 	}
 	return (NULL);
@@ -377,6 +377,7 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
     	return (-1);
 	*hit = (t_hit){0};
     set = 0;
+	index = -1;
     while (size--)
     {
 		tmp = (t_hit){0};

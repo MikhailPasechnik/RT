@@ -2,20 +2,24 @@
   position:     [0, -10, 15]
   rotation:     [180, 0, 0]
   fov:          80
+- type: light
+  color:        [200, 300, 250]
+  position:     [0, 0, 100]
+  direction:    [225, 0, 0]
+  intensity:    1.5
+  dispersion:   1
+- type: plane
+  position:     [0, 0, 0]
+  color:        [100, 150, 100]
+  specular:     30
+  reflective:   10
+  rotation:     [0, 0, 0]
 - type: cylinder
-  position:     [0, 0, 5]
+  position:     [3, 3, 5]
   color:        [150, 34, 150]
   specular:     10
   reflective:   10
-  rotation:     [90, 30, 0]
-  radius:       2
-  height:       2
-- type: cylinder
-  position:     [0, 0, 4]
-  color:        [150, 34, 150]
-  specular:     10
-  reflective:   10
-  rotation:     [45, 0, 45]
+  rotation:     [45, 45, 0]
   radius:       2
   height:       2
 - type: sphere
@@ -24,38 +28,11 @@
   specular:     10
   reflective:   10
   radius:       1
-- type: sphere
-  position:     [-5, 5, 1]
-  color:        [190, 20, 150]
-  specular:     10
-  reflective:   10
-  radius:       1
-- type: sphere
-  position:     [5, -5, 1]
-  color:        [190, 20, 150]
-  specular:     10
-  reflective:   10
-  radius:       1
-- type: sphere
-  position:     [0, 0, 0]
-  color:        [190, 20, 150]
-  specular:     10
-  reflective:   10
-  radius:       9
-  height:       10
 - type: cone
-  position:     [0, 0, 0]
-  color:        [150, 150, 150]
-  specular:     10
-  reflective:   10
-  rotation:     [225, 0, 0]
-  radius:       4
-  height:       4
-- type: cone
-  position:     [0, 0, 2]
+  position:     [-5, -5, 3]
   color:        [150, 34, 150]
   specular:     10
   reflective:   10
-  rotation:     [45, 0, 0]
-  radius:       4
-  height:       4
+  rotation:     [0, 90, 0]
+  radius:       15
+  height:       8
