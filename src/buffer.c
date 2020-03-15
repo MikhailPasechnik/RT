@@ -7,10 +7,10 @@ t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_
 	t_buffer	buffer;
 
 	err = 0;
-	buffer.cpu = !gpu_only ? ft_memalloc(size) : NULL;
-	buffer.gpu = clCreateBuffer(ctx, flags, size, NULL, &err);
+	buffer.host = !gpu_only ? ft_memalloc(size) : NULL;
+	buffer.device = clCreateBuffer(ctx, flags, size, NULL, &err);
 	OCL_ERROR2(err);
-	buffer.valid = err == CL_SUCCESS && (!gpu_only || buffer.cpu != NULL);
+	buffer.valid = err == CL_SUCCESS && (!gpu_only || buffer.host != NULL);
 	buffer.size = size;
 	return (buffer);
 }
@@ -20,8 +20,8 @@ int		free_buffer(t_buffer *buffer)
 {
 	if (buffer)
 	{
-		(buffer)->cpu ? ft_memdel(&buffer->cpu) : 0;
-		(buffer)->gpu ? clReleaseMemObject(buffer->gpu) : 0;
+		(buffer)->host ? ft_memdel(&buffer->host) : 0;
+		(buffer)->device ? clReleaseMemObject(buffer->device) : 0;
 	}
 	ft_bzero(buffer, sizeof(t_buffer));
 	return (1);
@@ -32,15 +32,15 @@ int		push_buffer(cl_command_queue queue, t_buffer *buffer,
 {
 	int err;
 
-	err = clEnqueueWriteBuffer(queue, buffer->gpu, CL_TRUE, offset, size,
-							   buffer->cpu, 0, NULL, NULL);
+	err = clEnqueueWriteBuffer(queue, buffer->device, CL_TRUE, offset, size,
+							   buffer->host, 0, NULL, NULL);
 	return (OCL_ERROR(err, "Failed to write buffer!") ? 0 : 1);
 }
 
 int		pull_buffer(cl_command_queue queue, t_buffer buffer, size_t size)
 {
 	return (OCL_ERROR(clEnqueueReadBuffer(
-			queue, buffer.gpu, CL_TRUE, 0, size, buffer.cpu, 0, NULL, NULL
+			queue, buffer.device, CL_TRUE, 0, size, buffer.host, 0, NULL, NULL
 	), "Failed to pull buffer from GPU!") ? 0 : 1);
 }
 
@@ -61,7 +61,7 @@ int		transfer_objects(t_app *app)
 		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate objects buffer!", 0));
-	obj = buffer.cpu;
+	obj = buffer.host;
 	i = 0;
 	it = app->obj_list;
 	while (it && i < app->op.obj_count)
@@ -78,7 +78,7 @@ int		transfer_objects(t_app *app)
 	free_buffer(&app->ren.obj_buf);
 	app->ren.obj_buf = buffer;
 	return (set_kernel_arg(app->ren.render_kernel, RT_K_OBJ_ARG, &buffer
-	.gpu, sizeof(cl_mem)));
+	.device, sizeof(cl_mem)));
 }
 
 int		transfer_light(t_app *app)
@@ -92,7 +92,7 @@ int		transfer_light(t_app *app)
 		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY, 0);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
-	light = buffer.cpu;
+	light = buffer.host;
 	i = 0;
 	it = app->light_list;
 	while (it && i < app->op.light_count)
@@ -109,7 +109,7 @@ int		transfer_light(t_app *app)
 	free_buffer(&app->ren.light_buf);
 	app->ren.light_buf = buffer;
 	return (set_kernel_arg(app->ren.render_kernel, RT_K_LIGHTS_ARG, &buffer
-			.gpu, sizeof(cl_mem)));
+			.device, sizeof(cl_mem)));
 }
 
 int		update_object(t_app *app, int index,  t_obj *obj)
@@ -118,7 +118,7 @@ int		update_object(t_app *app, int index,  t_obj *obj)
 
 	if (obj)
 	{
-		buff = app->ren.obj_buf.cpu;
+		buff = app->ren.obj_buf.host;
 		buff[index] = *obj;
 	}
 	return (push_buffer(app->ren.queue, &app->ren.obj_buf,
@@ -131,7 +131,7 @@ int		update_light(t_app *app, int index,  t_light *light)
 
 	if (light)
 	{
-		buff = app->ren.light_buf.cpu;
+		buff = app->ren.light_buf.host;
 		buff[index] = *light;
 	}
 	return (push_buffer(app->ren.queue, &app->ren.light_buf,

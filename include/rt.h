@@ -63,8 +63,8 @@ typedef struct	s_urect
 
 typedef struct	s_buffer
 {
-	cl_mem		gpu;
-	void		*cpu;
+	cl_mem		device;
+	void		*host;
 	int			valid;
 	size_t 		size;
 }				t_buffer;
