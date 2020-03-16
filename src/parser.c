@@ -111,7 +111,7 @@ t_real  ptr_atoi(char **str)
             kill("Only two digit after '.' !");
         d = (p == 1) ? 10 : 100;
         (*str) = (d == 100) ? (*str) - 2 : (*str) - 1;
-        f = (w > 0) ? ptr_atoi_int(str, 1) : -(ptr_atoi_int(str, 1));
+        f = (w >= 0) ? ptr_atoi_int(str, 1) : -(ptr_atoi_int(str, 1));
     }
     else
 		f = 0;
