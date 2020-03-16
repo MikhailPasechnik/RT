@@ -24,6 +24,7 @@ SRC_FILES	=			\
 	renderer.c			\
 	generator.c			\
 	buffer.c			\
+	texture_buffer.c    \
 	navigation.c		\
 	parser.c			\
 	utils.c				\
