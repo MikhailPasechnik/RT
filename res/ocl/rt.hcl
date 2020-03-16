@@ -13,8 +13,8 @@
 # define VEC(x, y, z)((t_vec3){x, y, z})
 
 typedef struct	s_hit {
-	t_vec3	pos;
-	t_vec3	norm;
+	t_vec3	p;
+	t_vec3	n;
 	__global t_obj	*obj;
 }				t_hit;
 
