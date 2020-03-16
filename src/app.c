@@ -69,13 +69,12 @@ static int app_render(t_app *app)
 		return (app_error("Failed to setup render!", 0));
 	if (!render(&app->ren, &app->ocl))
 		return (app_error("Failed to render!", 0));
-	SDL_LockTexture(app->ren.color_buf.host, NULL, &pixels, &pitch);
-	pull_tx_buffer(app->ren.queue, &app->ren.color_buf, 0);
-	SDL_UnlockTexture(app->ren.color_buf.host);
-	pull_buffer(app->ren.queue, &app->ren.index_buf, app->ren.index_buf.size, 0);
-	SDL_RenderCopy(app->renderer, app->ren.color_buf.host, NULL, &(SDL_Rect){.y=0, .x=0,
-															  .h=app->op.height,
-															  .w=app->op.width});
+	if (!pull_tx_buffer(app->ren.queue, &app->ren.color_buf, 0))
+		return (app_error("Failed to pull color buffer!", 0));
+	if (!pull_buffer(app->ren.queue, &app->ren.index_buf, app->ren.index_buf.size, 0))
+		return (app_error("Failed to pull index buffer!", 0));
+	SDL_RenderCopy(app->renderer, app->ren.color_buf.host, NULL,
+		&(SDL_Rect){.y=0, .x=0, .h=app->op.height, .w=app->op.width});
 	SDL_RenderPresent(app->renderer);
 	return (1);
 }
