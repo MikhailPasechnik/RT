@@ -46,6 +46,6 @@
   color:        [150, 150, 150]
   specular:     10
   reflective:   10
-  radius:       2
+  radius:       7
   rotation:     [60, 0, 0]
 

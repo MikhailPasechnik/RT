@@ -38,6 +38,8 @@ __kernel void k_render(
 		color = ((camera_hit.n * -1) + 1) / 2;
 		t_uint i = 0;
 		color = VEC(0,0,0);
+		t_vec3 diffuse = VEC(0,0,0);
+		t_real specular = 0;
 		while (i < options.light_count)
 		{
 			if (lights[i].id == ID_DIRECT)
@@ -52,7 +54,10 @@ __kernel void k_render(
 				if (!in_shadow)
 				{
 					// TODO Lambert Phong
-					color += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color * max(0.f, dot(shadow_ray.d, camera_hit.n));
+
+					t_vec3 ref = reflect(dir_from_rot(lights[i].rot), camera_hit.n);
+					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
+					diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
 				}
 				else
 				{
@@ -61,10 +66,13 @@ __kernel void k_render(
 			}
 			else if (lights[i].id == ID_AMB)
 			{
-				color += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
+				// color += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
 			}
 			i++;
 		}
+		t_real kd = 1.5;
+		t_real ks = 0.1;
+		color = diffuse * kd + specular * ks;
 		//color = ((camera_hit.n * -1) + 1) / 2;
 	}
     else
