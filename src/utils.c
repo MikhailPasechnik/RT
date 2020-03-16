@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/02/17 23:01:22 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 00:55:29 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*rt_tab_free(char **tab)
 	return (NULL);
 }
 
-t_color			get_surface_pixel(SDL_Surface *surface, size_t x, size_t y)
+t_color	get_surface_pixel(SDL_Surface *surface, size_t x, size_t y)
 {
 	Uint32		*p;
 	Uint8		r;
@@ -44,5 +44,5 @@ t_color			get_surface_pixel(SDL_Surface *surface, size_t x, size_t y)
 	p = (Uint32 *)surface->pixels + y * surface->pitch + x *
 			surface->format->BitsPerPixel;
 	SDL_GetRGBA(*p, surface->format, &r, &g, &b, &a);
-	return COLOR(r / 255., g / 255., b / 255., a / 255.);
+	return (COLOR(r / 255.0, g / 255.0, b / 255., a / 255.0));
 }

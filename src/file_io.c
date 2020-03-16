@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 17:50:25 by bmahi             #+#    #+#             */
-/*   Updated: 2020/02/16 16:07:56 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 00:29:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int			fio_read_files(const char **file_names, size_t count,
 		!(*size = malloc(sizeof(**size) * count)))
 	{
 		*content ? free(*content) : 0;
-		return 0;
+		return (0);
 	}
 	i = 0;
 	while (i < count)
@@ -72,7 +72,7 @@ int			fio_read_files(const char **file_names, size_t count,
 		{
 			ft_putstr_fd("Failed to read file: ", 2);
 			ft_putendl_fd(file_names[i], 2);
-			while(i--)
+			while (i--)
 				free((*content)[i]);
 			free(*content);
 			free(*size);
@@ -84,7 +84,7 @@ int			fio_read_files(const char **file_names, size_t count,
 }
 
 int			save_image(const char *file_name,
-		unsigned int *data, size_t w, size_t h)
+	unsigned int *data, size_t w, size_t h)
 {
 	int		fd;
 	size_t	y;
@@ -95,7 +95,7 @@ int			save_image(const char *file_name,
 		return (0);
 	ft_sprintf(name, "%s.pgm", file_name);
 	if ((fd = open(name, O_RDWR | O_CREAT, 0666)) == -1)
-		return  (0);
+		return (0);
 	i = 0;
 	ft_fprintf(fd, "P3\n%zu %zu\n255", w, h);
 	while (i < w * h)

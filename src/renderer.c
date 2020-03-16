@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/06/21 12:52:38 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/03/17 00:52:53 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			render(t_renderer *ren, t_ocl *ocl)
 		return (0);
 	size = ren->width * ren->height;
 	err = clEnqueueNDRangeKernel(ren->queue, ren->render_kernel,
-			1, NULL, &size, NULL, 0, NULL, NULL);
+		1, NULL, &size, NULL, 0, NULL, NULL);
 	if (OCL_ERROR(err, "Failed to enqueue kernel!"))
 		return (0);
 	if OCL_ERROR(clFinish(ren->queue), "Failed to finish queue!")

@@ -6,12 +6,11 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/02/22 00:45:08 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 00:17:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rt.h"
-
 
 inline int		app_error(const char *msg, int returns)
 {
@@ -32,14 +31,14 @@ int				app_update_buffers(t_app *app)
 		return (app_error("Failed to allocate color buffer!", 0));
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
 			RT_K_COLOR_ARG, sizeof(cl_mem), &app->ren.color_buf.device)))
-		return(app_error("failed to set kernel index buffer argument", 0));
+		return (app_error("failed to set kernel index buffer argument", 0));
 	app->ren.index_buf = create_buffer(app->ocl.context,
-									   size * sizeof(t_int), CL_MEM_WRITE_ONLY);
+		size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
 		return (app_error("Failed to allocate index buffer!", 0));
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-			RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
-			return(app_error("failed to set kernel index buffer argument", 0));
+		RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
+		return (app_error("failed to set kernel index buffer argument", 0));
 	return (1);
 }
 
@@ -84,8 +83,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	app->cm_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
 	app->op.width = RT_WIN_WIDTH;
-	app->op.background_color = VEC(44/255.,44/255.,44/255.);
-
+	app->op.background_color = VEC(44 / 255.0, 44 / 255.0, 44 / 255.0);
 	if (!(ocl_init(&app->ocl)))
 		return (app_error("Failed to initialise OpenCL", 0));
 	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC, RT_CL_INCLUDE))
