@@ -6,17 +6,17 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 01:21:55 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 01:51:50 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 02:29:31 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OCL_H
-#define OCL_H
-#ifdef __APPLE__
-#include <OpenCL/opencl.h>
-#else
-#include <CL/opencl.h>
-#endif
+# define OCL_H
+# ifdef __APPLE__
+#  include <OpenCL/opencl.h>
+# else
+#  include <CL/opencl.h>
+# endif
 # include "libft.h"
 
 # define OCL_H

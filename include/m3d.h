@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 01:52:14 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 01:52:17 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 02:28:14 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 # include "libft.h"
 # include <math.h>
-#ifdef __APPLE__
-# include <OpenCL/opencl.h>
-#else
-# include <CL/opencl.h>
-#endif
+# ifdef __APPLE__
+#  include <OpenCL/opencl.h>
+# else
+#  include <CL/opencl.h>
+# endif
 # define EPSILON 0.000001
 # define R_ABS fabs
 # define R_ROUND round
 # define R_SQRT sqrt
 # ifndef M_PI
-# define M_PI 3.14159265
+#  define M_PI 3.14159265
 # endif
 # define TO_RAD(a)((a / 2)*(M_PI / 180.0))
 
@@ -36,13 +36,17 @@ typedef cl_int		t_int;
 typedef cl_uint		t_uint;
 typedef cl_float3	t_color;
 # define VEC(x, y, z)((t_vec3){x, y, z})
+
 /*
 ** Helper to access cl_double16 by row and column on pointer var
 */
+
 # define M44(m, r, c)(m->s[r * 4 + c])
+
 /*
 ** Helper to access cl_double16 by row and column on static var
 */
+
 # define M44S(m, r, c)(m.s[r * 4 + c])
 
 /*
