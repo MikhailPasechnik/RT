@@ -109,8 +109,6 @@ void	generate_scene(t_app *app)
 		ft_lstadd(&app->light_list, ft_lstnew(&l, sizeof(t_light)));
 		app->op.light_count++;
 	}
-	app->ol_changed = 1;
-	app->ll_changed = 1;
 	app->op_changed = 1;
 	app->cm_changed = 1;
 }

@@ -25,7 +25,7 @@
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
 # define RT_WIN_WIDTH 500
-# define RT_WIN_HEIGHT 300
+# define RT_WIN_HEIGHT 500
 # define RT_BUF_EXTRA 50
 
 /*
@@ -63,11 +63,21 @@ typedef struct	s_urect
 
 typedef struct	s_buffer
 {
-	cl_mem		gpu;
-	void		*cpu;
+	cl_mem		device;
+	void		*host;
 	int			valid;
 	size_t 		size;
 }				t_buffer;
+
+
+typedef struct	s_tx_buffer
+{
+	cl_mem		device;
+	SDL_Texture	*host;
+	int			valid;
+	size_t 		width;
+	size_t 		height;
+}				t_tx_buffer;
 
 
 typedef struct			s_renderer
@@ -82,12 +92,8 @@ typedef struct			s_renderer
 
 	t_buffer			obj_buf;
 	t_buffer			light_buf;
-	t_buffer			color_buf;
+	t_tx_buffer			color_buf;
 	t_buffer			index_buf;
-
-	cl_mem				out_mem;
-	int					out_w;
-	int					out_h;
 
 	int					width;
 	int					height;
@@ -96,9 +102,8 @@ typedef struct			s_renderer
 typedef struct			s_app
 {
 	SDL_Window			*win;
+	SDL_Renderer		*renderer;
 	int 				quit;
-
-	SDL_Rect			rect;
 
 	t_renderer			ren;
 	t_ocl				ocl;
@@ -111,9 +116,6 @@ typedef struct			s_app
 
 	int                 op_changed;
 	int                 cm_changed;
-	int                 ol_changed;   // If true recreate obj_array and fill it with pointers from ol
-	int                 ll_changed;   // If true recreate light_array and fill it with pointers from ll
-	int                 wh_changed;   // If true width and height changed reinitialize buffers
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
@@ -125,6 +127,7 @@ typedef struct			s_app
 int				app_start(t_app *app, char **argv, int argc);
 void			app_finish(t_app *app);
 int				app_error(const char *msg, int returns);
+int				app_update_buffers(t_app *app);
 void			on_app_event(t_app *app, SDL_Event *event);
 
 /*
@@ -133,10 +136,16 @@ void			on_app_event(t_app *app, SDL_Event *event);
 /*
 ** Transfer scene objects linked lists to CPU|GPU buffer
 */
+t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags);
+int				push_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset);
+int				pull_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset);
+int				free_buffer(t_buffer *buffer);
+t_tx_buffer create_tx_buffer(t_app *app, size_t width, size_t height, unsigned int flags);
+int				push_tx_buffer(cl_command_queue queue, t_tx_buffer *buffer, size_t offset);
+int				pull_tx_buffer(cl_command_queue queue, t_tx_buffer *buffer, size_t offset);
+int				free_tx_buffer(t_tx_buffer *buffer);
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
-t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags, int gpu_only);
-int				update_output_buffers(t_app *app);
 /*
 ** Partial buffer update
 */
@@ -164,7 +173,7 @@ void			on_mouse_focus(SDL_Event *event, t_app *app, int *changed);
 */
 int				new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options);
 void			delete_renderer(t_renderer *ren);
-int				render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect);
+int				render(t_renderer *ren, t_ocl *ocl);
 
 /*
 ** Utils functions

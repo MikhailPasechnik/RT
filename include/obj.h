@@ -117,8 +117,8 @@ typedef struct			s_light
 }						t_light;
 
 typedef struct			s_ray {
-	t_vec3				orig;
-	t_vec3				dir;
+	t_vec3				o;
+	t_vec3				d;
 	t_real				t;
 }						t_ray;
 

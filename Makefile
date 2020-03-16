@@ -24,6 +24,7 @@ SRC_FILES	=			\
 	renderer.c			\
 	generator.c			\
 	buffer.c			\
+	texture_buffer.c    \
 	navigation.c		\
 	parser.c			\
 	utils.c				\
@@ -119,11 +120,13 @@ $(SDL_DIST):
 clean :
 	@/bin/rm -rf $(DIR_OBJ)
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	@$(MAKE) -C $(PRINTF_DIR) clean --no-print-directory
 
 fclean : clean
 	/bin/rm -rf $(SDL_DIST) $(SDL_DIR)/tmp
 	@/bin/rm -f $(NAME) $(addprefix tests/test_,$(FILE_NAMES))
 	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
+	@$(MAKE) -C $(PRINTF_DIR) fclean --no-print-directory
 	@/bin/rm -f $(addprefix tests/,$(TEST_NAMES))
 
 re : fclean all

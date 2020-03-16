@@ -60,39 +60,22 @@ void    delete_renderer(t_renderer *ren)
 
 static int	pre_render(t_renderer *ren, t_ocl *ocl)
 {
-	int			err;
-
-	err = 0;
-	if (!ren->out_mem || ren->width != ren->out_w || ren->height != ren->out_h)
-	{
-		ren->out_w = ren->height;
-		ren->out_h = ren->width;
-		ren->out_mem ? clReleaseMemObject(ren->out_mem) : 0;
-		ren->out_mem = clCreateBuffer(ocl->context, CL_MEM_READ_WRITE,
-				sizeof(t_int) * ren->out_w * ren->out_h, NULL, &err);
-	}
-	err |= clSetKernelArg(ren->render_kernel, RT_K_COLOR_ARG,
-			sizeof(cl_mem), &ren->out_mem);
-	return (OCL_ERROR(err, "Failed to pre render!") ? 0 : 1);
+	return(1);
 }
 
-int			render(t_renderer *ren, t_ocl *ocl, cl_int *result, SDL_Rect *rect)
+int			render(t_renderer *ren, t_ocl *ocl)
 {
 	int		err;
 	size_t	size;
 
 	if (!pre_render(ren, ocl))
 		return (0);
-	size = ren->out_w * ren->out_h;
+	size = ren->width * ren->height;
 	err = clEnqueueNDRangeKernel(ren->queue, ren->render_kernel,
 			1, NULL, &size, NULL, 0, NULL, NULL);
 	if (OCL_ERROR(err, "Failed to enqueue kernel!"))
 		return (0);
 	if OCL_ERROR(clFinish(ren->queue), "Failed to finish queue!")
-		return (0);
-	if (OCL_ERROR(clEnqueueReadBuffer(ren->queue, ren->out_mem, CL_TRUE, 0,
-			sizeof(cl_int) * size, result, 0, NULL, NULL
-			), "Failed to read render output to the surface"))
 		return (0);
 	return (1);
 }

@@ -5,8 +5,8 @@ void	on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed)
 	if (event->state & SDL_BUTTON_LMASK) // && SDL_GetModState() & KMOD_ALT)
 	{
 		nav_rotate_camera(&app->cam,
-				&VEC(event->yrel * 35, event->xrel * 35, 0),
-						  &VEC(app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE)); // TODO: rotate around selection
+				&VEC(event->yrel * 0, event->xrel * 0, event->xrel * 1),
+						  &VEC(0, 0, 0)); // TODO: rotate around selection
 		app->cm_changed = 1;
 		*changed = 1;
 	}
@@ -16,7 +16,6 @@ void	on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed)
 {
 	(void)event;
 	SDL_GetWindowSize(app->win, (int *)&app->op.width, (int *)&app->op.height);
-	rt_set_rect(&app->rect, 0, 0, app->op.width, app->op.height);
 	app->op_changed = 1;
 	*changed = 1;
 }
@@ -37,6 +36,21 @@ void	on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed)
 	}
 	else if (event->keysym.sym == SDLK_F12 && (*changed = 1))
 		generate_scene(app);
+	else if (event->keysym.sym == SDLK_w ||  event->keysym.sym == SDLK_s ||
+	event->keysym.sym == SDLK_d || event->keysym.sym == SDLK_a ||
+	event->keysym.sym == SDLK_q || event->keysym.sym == SDLK_e)
+	{
+		nav_move_camera(&app->cam, &VEC(
+				(event->keysym.sym == SDLK_d || event->keysym.sym == SDLK_a)
+				* (event->keysym.sym == SDLK_d ? 0.3 : -0.3),
+				(event->keysym.sym == SDLK_q || event->keysym.sym == SDLK_e)
+				* (event->keysym.sym == SDLK_q ? 0.3 : -0.3),
+				(event->keysym.sym == SDLK_w || event->keysym.sym == SDLK_s)
+				* (event->keysym.sym == SDLK_w ? 0.3 : -0.3)
+				));
+		app->cm_changed = 1;
+		*changed = 1;
+	}
 }
 
 
