@@ -195,6 +195,7 @@ size_t			rt_tab_len(char **tab);
 void			*rt_tab_free(char **tab);
 void			*rt_set_rect(SDL_Rect *rect, int x, int y, int w, int h);
 void			generate_scene(t_app *app);
+t_color			get_surface_pixel(SDL_Surface *surface, size_t x, size_t y);
 
 
 /*
