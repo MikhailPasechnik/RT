@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_op.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 14:46:28 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/07/06 14:46:28 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/03/17 02:17:05 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_vec3	*v3_norm(t_vec3 *v, t_vec3 *out)
 t_real	v3_mag(t_vec3 *v)
 {
 	return (sqrt(
-			pow(v->x, 2) +
-			pow(v->y, 2) +
-			pow(v->z, 2)));
+		pow(v->x, 2) +
+		pow(v->y, 2) +
+		pow(v->z, 2)));
 }
 
 t_vec3	*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out)
@@ -45,7 +45,7 @@ t_vec3	*v3_cross(t_vec3 *a, t_vec3 *b, t_vec3 *out)
 	return (out);
 }
 
-t_real v3_dot(t_vec3 *a, t_vec3 *b)
+t_real	v3_dot(t_vec3 *a, t_vec3 *b)
 {
 	if (!a || !b)
 		return (0);
