@@ -58,3 +58,8 @@ t_vec3 dir_from_rot(t_vec3 rot)
 	dir.z = cos(radians(rot.x)) * cos(radians(rot.y));
 	return (dir);
 }
+
+t_vec3 reflect(t_vec3 vec, t_vec3 normal)
+{
+	return (vec - 2 * dot(vec, normal) * normal);
+}
