@@ -1,7 +1,7 @@
 #include "rt.h"
 
 
-t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags)
+t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags)
 {
 	int			err;
 	t_buffer	buffer;
@@ -16,7 +16,7 @@ t_buffer create_buffer(cl_context ctx, size_t size, unsigned int flags)
 }
 
 
-int		free_buffer(t_buffer *buffer)
+int				free_buffer(t_buffer *buffer)
 {
 	if (buffer)
 	{
@@ -27,35 +27,37 @@ int		free_buffer(t_buffer *buffer)
 	return (1);
 }
 
-int		push_buffer(cl_command_queue queue, t_buffer *buffer,
+int				push_buffer(cl_command_queue queue, t_buffer *buffer,
 		size_t size, size_t offset)
 {
-	int err;
+	int	err;
 
 	err = clEnqueueWriteBuffer(queue, buffer->device, CL_TRUE, offset, size,
 							   buffer->host, 0, NULL, NULL);
 	return (OCL_ERROR(err, "Failed to push data to OpenCL memory!") ? 0 : 1);
 }
 
-int		pull_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset)
+int				pull_buffer(cl_command_queue queue,
+		t_buffer *buffer, size_t size, size_t offset)
 {
 	return (OCL_ERROR(clEnqueueReadBuffer(
-			queue, buffer->device, CL_TRUE, offset, size, buffer->host, 0, NULL, NULL),
-			"Failed to pull OpenCL memory to host!") ? 0 : 1);
+		queue, buffer->device, CL_TRUE, offset, size, buffer->host,
+		0, NULL, NULL), "Failed to pull OpenCL memory to host!") ? 0 : 1);
 }
 
-int		set_kernel_arg(cl_kernel kernel, int arg_num, void *ptr, size_t size)
+int				set_kernel_arg(cl_kernel kernel,
+		int arg_num, void *ptr, size_t size)
 {
 	return (OCL_ERROR(clSetKernelArg(kernel, arg_num, size, ptr),
 			"Failed to set kernel arg!") ? 0 : 1);
 }
 
-int		transfer_objects(t_app *app)
+int				transfer_objects(t_app *app)
 {
-	int		i;
-	t_list	*it;
-	t_obj	*obj;
-	t_buffer buffer;
+	int			i;
+	t_list		*it;
+	t_obj		*obj;
+	t_buffer	buffer;
 
 	buffer = create_buffer(app->ocl.context,
 		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
@@ -72,8 +74,8 @@ int		transfer_objects(t_app *app)
 	}
 	if (i != app->op.obj_count || it != NULL)
 		return (app_error("Object count not equal to Object list length!", 0));
-	if (!push_buffer(app->ren.queue, &buffer, sizeof(t_obj) * app->op.obj_count, 0)
-		&& free_buffer(&buffer))
+	if (!push_buffer(app->ren.queue, &buffer,
+			sizeof(t_obj) * app->op.obj_count, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push objects buffer!", 0));
 	free_buffer(&app->ren.obj_buf);
 	app->ren.obj_buf = buffer;
@@ -81,15 +83,15 @@ int		transfer_objects(t_app *app)
 	.device, sizeof(cl_mem)));
 }
 
-int		transfer_light(t_app *app)
+int				transfer_light(t_app *app)
 {
-	int		i;
-	t_list	*it;
-	t_light	*light;
-	t_buffer buffer;
+	int			i;
+	t_list		*it;
+	t_light		*light;
+	t_buffer	buffer;
 
-	buffer = create_buffer(app->ocl.context,
-		sizeof(t_light) * (app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
+	buffer = create_buffer(app->ocl.context, sizeof(t_light) *
+	(app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
 	light = buffer.host;
@@ -112,9 +114,9 @@ int		transfer_light(t_app *app)
 			.device, sizeof(cl_mem)));
 }
 
-int		update_object(t_app *app, int index,  t_obj *obj)
+int				update_object(t_app *app, int index,  t_obj *obj)
 {
-	t_obj *buff;
+	t_obj		*buff;
 
 	if (obj)
 	{
@@ -125,9 +127,9 @@ int		update_object(t_app *app, int index,  t_obj *obj)
 			sizeof(t_obj), sizeof(t_obj) * index));
 }
 
-int		update_light(t_app *app, int index,  t_light *light)
+int				update_light(t_app *app, int index,  t_light *light)
 {
-	t_light *buff;
+	t_light		*buff;
 
 	if (light)
 	{
@@ -138,7 +140,7 @@ int		update_light(t_app *app, int index,  t_light *light)
 			sizeof(t_light), sizeof(t_light) * index));
 }
 
-int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
+int				update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
 {
 	int err;
 
@@ -147,7 +149,8 @@ int		update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
 	return (err == CL_SUCCESS);
 }
 
-int		update_options(cl_kernel kernel, t_options *options, int arg_num)
+int				update_options(cl_kernel kernel,
+		t_options *options, int arg_num)
 {
 	int err;
 

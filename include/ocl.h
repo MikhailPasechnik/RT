@@ -10,7 +10,8 @@
 # define CL_TARGET_OPENCL_VERSION 220
 
 cl_device_id	ocl_create_device();
-cl_program		ocl_create_program(cl_context ctx, const char **file_names, size_t count);
+cl_program		ocl_create_program(cl_context ctx,
+		const char **file_names, size_t count);
 
 typedef struct	s_ocl
 {
@@ -21,7 +22,8 @@ typedef struct	s_ocl
 int				ocl_init(t_ocl *cl);
 void			ocl_release(t_ocl *cl);
 char			*ocl_get_build_log(cl_program program, cl_device_id device_id);
-void			ocl_log_program_build(cl_program program, cl_device_id device_id, int fd);
+void			ocl_log_program_build(cl_program program,
+		cl_device_id device_id, int fd);
 const char		*ocl_get_error_string(cl_int error);
 
 int				ocl_put_error(int err, const char *msg,

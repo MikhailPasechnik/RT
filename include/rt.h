@@ -45,8 +45,8 @@
 # define RT_K_COLOR_ARG 4
 # define RT_K_INDEX_ARG 5
 
-typedef t_list  t_obj_list;
-typedef t_list  t_light_list;
+typedef t_list	t_obj_list;
+typedef t_list	t_light_list;
 /*
  * Rectangle
  * 		orig: rectangle start position
@@ -57,8 +57,8 @@ typedef t_list  t_light_list;
 */
 typedef struct	s_urect
 {
-	size_t orig[2];
-	size_t size[2];
+	size_t		orig[2];
+	size_t		size[2];
 }				t_urect;
 
 typedef struct	s_buffer
@@ -75,12 +75,12 @@ typedef struct	s_tx_buffer
 	cl_mem		device;
 	SDL_Texture	*host;
 	int			valid;
-	size_t 		width;
-	size_t 		height;
+	size_t		width;
+	size_t		height;
 }				t_tx_buffer;
 
 
-typedef struct			s_renderer
+typedef struct	s_renderer
 {
 	cl_kernel 			render_kernel;
 
@@ -99,7 +99,7 @@ typedef struct			s_renderer
 	int					height;
 }						t_renderer;
 
-typedef struct			s_app
+typedef struct	s_app
 {
 	SDL_Window			*win;
 	SDL_Renderer		*renderer;
@@ -111,15 +111,15 @@ typedef struct			s_app
 	t_options 			op;
 
 	t_cam				cam;
-	t_obj_list          *obj_list;
-	t_light_list        *light_list;
+	t_obj_list			*obj_list;
+	t_light_list		*light_list;
 
-	int                 op_changed;
-	int                 cm_changed;
+	int					op_changed;
+	int					cm_changed;
 
 	int					lines; // lines of buf
 	char				**scene; // scene for parser
-}						t_app;
+}				t_app;
 
 /*
 ** App functions
@@ -137,12 +137,17 @@ void			on_app_event(t_app *app, SDL_Event *event);
 ** Transfer scene objects linked lists to CPU|GPU buffer
 */
 t_buffer		create_buffer(cl_context ctx, size_t size, unsigned int flags);
-int				push_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset);
-int				pull_buffer(cl_command_queue queue, t_buffer *buffer, size_t size, size_t offset);
+int				push_buffer(cl_command_queue queue,
+		t_buffer *buffer, size_t size, size_t offset);
+int				pull_buffer(cl_command_queue queue,
+		t_buffer *buffer, size_t size, size_t offset);
 int				free_buffer(t_buffer *buffer);
-t_tx_buffer create_tx_buffer(t_app *app, size_t width, size_t height, unsigned int flags);
-int				push_tx_buffer(cl_command_queue queue, t_tx_buffer *buffer, size_t offset);
-int				pull_tx_buffer(cl_command_queue queue, t_tx_buffer *buffer, size_t offset);
+t_tx_buffer		create_tx_buffer(t_app *app, size_t width,
+		size_t height, unsigned int flags);
+int				push_tx_buffer(cl_command_queue queue,
+		t_tx_buffer *buffer, size_t offset);
+int				pull_tx_buffer(cl_command_queue queue,
+		t_tx_buffer *buffer, size_t offset);
 int				free_tx_buffer(t_tx_buffer *buffer);
 int				transfer_objects(t_app *app);
 int				transfer_light(t_app *app);
@@ -156,22 +161,30 @@ int				update_object(t_app *app, int index,  t_obj *obj);
 **  Kernel arguments update
 */
 int				update_camera(cl_kernel kernel, t_cam *cam, int arg_num);
-int				update_options(cl_kernel kernel, t_options *options, int arg_num);
+int				update_options(cl_kernel kernel,
+		t_options *options, int arg_num);
 
 /*
 ** Event functions
 */
-void			on_mouse_move(SDL_MouseMotionEvent *event, t_app *app, int *changed);
-void			on_window_size_change(SDL_WindowEvent *event, t_app *app, int *changed);
-void			on_mouse_wheel(SDL_MouseWheelEvent *event, t_app *app, int *changed);
-void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed);
-void			on_mouse_button(SDL_MouseButtonEvent *event, t_app *app, int *changed);
-void			on_mouse_focus(SDL_Event *event, t_app *app, int *changed);
+void			on_mouse_move(SDL_MouseMotionEvent *event,
+		t_app *app, int *changed);
+void			on_window_size_change(SDL_WindowEvent *event,
+		t_app *app, int *changed);
+void			on_mouse_wheel(SDL_MouseWheelEvent *event,
+		t_app *app, int *changed);
+void			on_key_press(SDL_KeyboardEvent *event,
+		t_app *app, int *changed);
+void			on_mouse_button(SDL_MouseButtonEvent *event,
+		t_app *app, int *changed);
+void			on_mouse_focus(SDL_Event *event,
+		t_app *app, int *changed);
 
 /*
 ** Render functions
 */
-int				new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options);
+int				new_renderer(t_renderer *ren, t_ocl *ocl,
+		char *src, char *options);
 void			delete_renderer(t_renderer *ren);
 int				render(t_renderer *ren, t_ocl *ocl);
 
@@ -201,7 +214,7 @@ t_real			ptr_atoi(char **str);
 int				ptr_atoi_int(char **str, int fraction);
 void			ignore_str(char **ptr);
 int 			is_valid_obj_name(char *str);
-int		        is_valid_light_name(char *str);
+int				is_valid_light_name(char *str);
 void			parse_real(char *str, void *vp);
 void			parse_vec3(char *str, void *vp);
 void			parse_color(char *str, void *vp);

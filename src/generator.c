@@ -5,7 +5,7 @@ static int		rand_interval(int min, int max)
 	return  (rand() % (max - min + 1)) + min;
 }
 
-static void	fake_light(t_light *l, t_int id)
+static void		fake_light(t_light *l, t_int id)
 {
 	l->id = id;
 	l->pos = VEC(
@@ -28,7 +28,7 @@ static void	fake_light(t_light *l, t_int id)
 	l->intensity = rand_interval(0, 100) / 100.0;
 }
 
-static void	fake_obj(t_obj *s, t_int id)
+static void		fake_obj(t_obj *s, t_int id)
 {
 	s->pos = VEC(
 			rand_interval(-10, 10),
@@ -58,19 +58,19 @@ static void	fake_obj(t_obj *s, t_int id)
 	v3_mull_s(&s->mat.diffuse, 1 / 255.0, &s->mat.diffuse);
 }
 
-static void ground_plane(t_obj *o)
+static void		ground_plane(t_obj *o)
 {
 	fake_obj(0, ID_PLN);
 	o->rot = VEC(0, 0, -1);
 	o->rot = VEC(0, 1, 0);
 }
 
-static void del_obj(void *o, size_t _)
+static void		del_obj(void *o, size_t _)
 {
 	ft_memdel(&o);
 }
 
-void	generate_scene(t_app *app)
+void			generate_scene(t_app *app)
 {
 	int		s;
 	t_obj	o;

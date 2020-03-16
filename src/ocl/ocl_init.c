@@ -11,7 +11,8 @@ cl_device_id	ocl_create_device()
 		return (NULL);
 	err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
 	if (err != CL_SUCCESS)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
+		err = clGetDeviceIDs(platform_id,
+				CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
 	if (OCL_ERROR(err, "No suitable device found"))
 		return (NULL);
 	return (device_id);

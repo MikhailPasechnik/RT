@@ -25,9 +25,9 @@ static int	log_build_log(t_renderer *ren, t_ocl *ocl, int fd)
 	return (0);
 }
 
-int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
+int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 {
-	int			err;
+	int		err;
 
 	if (!(ren->src = ft_strsplit_any(src, " \n")))
 		return (0);
@@ -51,7 +51,7 @@ int new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 	return (1);
 }
 
-void    delete_renderer(t_renderer *ren)
+void		delete_renderer(t_renderer *ren)
 {
 	ren->queue ? clReleaseCommandQueue(ren->queue) : 0;
 	ren->program ? clReleaseProgram(ren->program) : 0;
