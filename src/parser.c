@@ -28,6 +28,13 @@ static int key_type(char *s)
 	return (!ft_strncmp(s, "- type: ", 8));
 }
 
+void    parse_id(char *str, void *vp)
+{
+    t_int   *id = vp;
+    ignore_str(&str);
+    *id = ptr_atoi(&str);
+}
+
 void    parse_color(char *str, void *vp)
 {
     t_color *p = vp;
@@ -59,9 +66,9 @@ int		is_valid_obj_name(char *str)
 	    || !ft_strcmp(str, T_SPH)) && str[ft_strlen(str)] == '\0');
 }
 
-int		kill(char *message) // ++
+int		kill(char *message)
 {
-	perror(message);
+    perror(message);
 	exit(1);
 }
 
@@ -87,6 +94,8 @@ int		ptr_atoi_int(char **str, int fraction)
     n = n * 10 + (**str - '0');
     ++(*str);
   }
+  if (n * sign > INT_MAX || n * sign < INT_MIN)
+    kill("Digit so big!");
   return (n * sign);
 }
 
@@ -202,6 +211,8 @@ void	check_obj(t_app *app)
 		lig = lights->content;
 		if (lig->intensity < 0)
 			kill("Intensity must be positive!");
+        if (lig->id < ID_DIRECT || lig->id > ID_AMB)
+            kill("Dispersion must be 1, 2 or 3!");
 		lights = lights->next;
 	}
 	while (objects)
@@ -276,16 +287,17 @@ void	parser_light(char **scn, t_app *app, int n)
 {
 	t_light	ll;
     int     i;
-    t_phelp phelp[4];
+    t_phelp phelp[5];
     int     phelp_len;
 
-    phelp_len = 4;
-    ft_bzero(&phelp, sizeof(t_phelp) * 4);
+    phelp_len = 5;
+    ft_bzero(&phelp, sizeof(t_phelp) * 5);
 
     phelp[0] = PHELP("  position:", &ll.pos, parse_vec3);
-    phelp[1] = PHELP("  direction:", &ll.dir, parse_vec3);
+    phelp[1] = PHELP("  rotation:", &ll.rot, parse_vec3);
     phelp[2] = PHELP("  color:", &ll.color, parse_color);
     phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real);
+    phelp[4] = PHELP("  dispersion:", &ll.id, parse_id);
 
 	while (key_type(scn[n]) && is_valid_light_name(scn[n] + 8))
 	{
@@ -304,12 +316,6 @@ void	parser_light(char **scn, t_app *app, int n)
                 else
                     i++;
             }
-            if (!ft_strcmp(scn[n], "  dispersion:   1"))
-                ll.id = ID_DIRECT;
-            else if (!ft_strcmp(scn[n], "  dispersion:   2"))
-                ll.id = ID_POINT;
-            else if (!ft_strcmp(scn[n], "  dispersion:   3"))
-                ll.id = ID_AMB;
             n++;
         }
         check_obj(app);
@@ -328,7 +334,7 @@ void	parser_cam(t_cam *cam, char **scn)
 		kill("Error in str 'cam_pos'");
 	pos = array_attack(scn[1]);
 	if (ft_strncmp(scn[2], "  rotation:", 11))
-		kill("Error in str 'cam_dir'");
+		kill("Error in str 'cam_rot'");
 	rot = array_attack(scn[2]);
 	if (ft_strncmp(scn[3], "  fov:", 6))
 		kill("Error in str 'cam_fov'");
@@ -378,6 +384,6 @@ void	parser(t_app *app, char *scene)
 	app_init(app);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 4);
-	n = (app->op.light_count) * 6 + 4; // номер строки, с которой начинаются объекты, если источников > 1
+	n = (app->op.light_count) * 6 + 4;
 	parser_obj(app->scene, app, n);
 }

@@ -219,6 +219,7 @@ int				is_valid_light_name(char *str);
 void			parse_real(char *str, void *vp);
 void			parse_vec3(char *str, void *vp);
 void			parse_color(char *str, void *vp);
+void    		parse_id(char *str, void *vp);
 
 /*
 ** Navigation functions

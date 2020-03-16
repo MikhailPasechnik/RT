@@ -43,7 +43,7 @@ __kernel void k_render(
 			if (lights[i].id == ID_DIRECT)
 			{
 				shadow_ray.o = camera_hit.p + camera_hit.n * 0.0001f;
-				shadow_ray.d = -dir_from_rot(lights[i].dir);
+				shadow_ray.d = -dir_from_rot(lights[i].rot);
 
 				// TODO: add bias (Shadow-Acne: Avoiding Self-Intersection)
 				//  https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/ligth-and-shadows

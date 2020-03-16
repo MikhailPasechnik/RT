@@ -13,12 +13,12 @@ static void		fake_light(t_light *l, t_int id)
 			rand_interval(-10, 10),
 			rand_interval(7, 25)
 	);
-	l->dir = VEC(
+	l->rot = VEC(
 			rand_interval(-100, 100),
 			rand_interval(-100, 100),
 			rand_interval(-100, 100)
 	);
-	v3_norm(&l->dir, &l->dir);
+	v3_norm(&l->rot, &l->rot);
 	l->color = VEC(
 			rand_interval(0, 255),
 			rand_interval(0, 255),

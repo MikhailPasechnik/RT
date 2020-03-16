@@ -5,13 +5,19 @@
 - type: light
   color:        [168, 191, 227]
   position:     [0, 0, 100]
-  direction:    [120, 0, 45]
+  rotation:     [120, 0, 45]
   intensity:    0.7
-  dispersion:   1
+  dispersion:   2
 - type: light
   color:        [168, 191, 227]
   position:     [0, 0, 100]
-  direction:    [100, 0, -45]
+  rotation:     [100, 0, -45]
+  intensity:    0.7
+  dispersion:   3
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  rotation:     [100, 0, -45]
   intensity:    0.7
   dispersion:   1
 - type: plane

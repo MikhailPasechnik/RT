@@ -110,7 +110,7 @@ typedef struct			s_obj
 typedef struct			s_light
 {
 	t_vec3				pos;
-	t_vec3				dir;
+	t_vec3				rot;
 	t_color				color;
 	t_real				intensity;
 	t_int				id;
