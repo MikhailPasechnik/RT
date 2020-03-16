@@ -3,69 +3,43 @@
   rotation:     [180, 0, 0]
   fov:          80
 - type: light
-  color:        [200, 300, 250]
+  color:        [168, 191, 227]
   position:     [0, 0, 100]
-  direction:    [182, 4, 42]
-  intensity:    1.5
+  direction:    [120, 0, 45]
+  intensity:    0.7
+  dispersion:   1
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  direction:    [100, 0, -45]
+  intensity:    0.7
   dispersion:   1
 - type: plane
   position:     [0, 0, 0]
   color:        [200, 200, 200]
   specular:     30
-- type: cylinder
-  position:     [0, 0, 5]
-  color:        [15, 34, 150]
+  rotation:     [180, 0, 0]
+- type: cone
+  position:     [0, 0, 0]
+  color:        [150, 150, 150]
   specular:     10
   reflective:   10
-  rotation:     [90, 30, 0]
-  radius:       2
-  height:       2
+  rotation:     [0, 0, 0]
+  radius:       7
+  height:       15
 - type: cylinder
-  position:     [0, 0, 4]
-  color:        [150, 213, 150]
+  position:     [-10, -10, 0]
+  color:        [150, 150, 150]
   specular:     10
   reflective:   10
-  rotation:     [45, 0, 45]
-  radius:       2
-  height:       2
+  rotation:     [0, 0, 0]
+  radius:       7
+  height:       8
 - type: sphere
   position:     [5, 5, 1]
-  color:        [190, 144, 150]
+  color:        [150, 150, 150]
   specular:     10
   reflective:   10
-  radius:       1
-- type: sphere
-  position:     [-5, 5, 1]
-  color:        [211, 20, 150]
-  specular:     10
-  reflective:   10
-  radius:       1
-- type: sphere
-  position:     [5, -5, 1]
-  color:        [111, 20, 150]
-  specular:     10
-  reflective:   10
-  radius:       1
-- type: sphere
-  position:     [0, 0, 0]
-  color:        [190, 111, 150]
-  specular:     10
-  reflective:   10
-  radius:       9
-  height:       10
-- type: cone
-  position:     [0, 0, 0]
-  color:        [150, 222, 150]
-  specular:     10
-  reflective:   10
-  rotation:     [-44, 0, 0]
-  radius:       4
-  height:       4
-- type: cone
-  position:     [0, 0, 2]
-  color:        [150, 34, 10]
-  specular:     10
-  reflective:   10
+  radius:       2
   rotation:     [60, 0, 0]
-  radius:       7
-  height:       4
+
