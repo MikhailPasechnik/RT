@@ -53,7 +53,7 @@ static void hit_to_world_space(__global t_obj *obj, t_hit *hit)
 	hit->p += obj->pos;
 }
 
-static int disk_inter(t_vec3 dir, t_vec3 pos,
+static int disk_trace(t_vec3 dir, t_vec3 pos,
 		t_real radius, t_ray *ray, t_hit *hit)
 {
 	t_vec3 hit_pos;
@@ -77,7 +77,7 @@ static int disk_inter(t_vec3 dir, t_vec3 pos,
 	return (0);
 }
 
-static int sphere_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
+static int sphere_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
     t_real a;
     t_real b;
@@ -122,7 +122,7 @@ static int sphere_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
 **    By multiplying t * p we get intersection point
 **    and intersection normal is simply plain normal.
 */
-static int plane_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
+static int plane_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
     t_real d;
     t_vec3 v;
@@ -144,7 +144,7 @@ static int plane_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
     return (0);
 }
 
-static int cone_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
+static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	t_real k;
 	t_real a;
@@ -158,7 +158,7 @@ static int cone_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	ray_to_object_space(obj, &ray);
 
-	if(disk_inter(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
+	if(disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
@@ -199,7 +199,7 @@ static int cone_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
 }
 
 
-static int cylinder_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
+static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	t_real a;
 	t_real b;
@@ -210,14 +210,14 @@ static int cylinder_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	ray_to_object_space(obj, &ray);
 
-	if (disk_inter(VEC(0, 0, -1), VEC(0, 0, obj->height), obj->radius, &ray, &cap_hit))
+	if (disk_trace(VEC(0, 0, -1), VEC(0, 0, obj->height), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
 		hit_to_world_space(obj, hit);
 		return (1);
 	}
-	else if (disk_inter(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
+	else if (disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
@@ -250,7 +250,7 @@ static int cylinder_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
 	}
 	return (0);
 }
-static int cube_inter(__global t_obj *obj, t_ray ray, t_hit *hit)
+static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	return (0);
 }
@@ -298,15 +298,15 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
 		tmp = (t_hit){0};
 		got_hit = 0;
         if (IS_PLN(&scene[size]))
-            got_hit = plane_inter(&scene[size], *ray, &tmp);
+            got_hit = plane_trace(&scene[size], *ray, &tmp);
         else if (IS_SPH(&scene[size]))
-            got_hit = sphere_inter(&scene[size], *ray, &tmp);
+            got_hit = sphere_trace(&scene[size], *ray, &tmp);
         else if (IS_CYL(&scene[size]))
-            got_hit = cylinder_inter(&scene[size], *ray, &tmp);
+            got_hit = cylinder_trace(&scene[size], *ray, &tmp);
         else if (IS_CON(&scene[size]))
-            got_hit = cone_inter(&scene[size], *ray, &tmp);
+            got_hit = cone_trace(&scene[size], *ray, &tmp);
         else if (IS_CUB(&scene[size]))
-            got_hit = cube_inter(&scene[size], *ray, &tmp);
+            got_hit = cube_trace(&scene[size], *ray, &tmp);
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
     }
