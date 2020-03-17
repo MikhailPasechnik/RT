@@ -82,6 +82,7 @@ int				app_start(t_app *app, char **argv, int argc)
 		return (app_error("Objects transfer failed!", 0));
 	if (!transfer_light(app))
 		return (app_error("Lights transfer failed!", 0));
+	nav_rotate_camera(&app->cam, &VEC(0,0,0), &VEC(0,0,0));
 	return (app_render(app));
 }
 
