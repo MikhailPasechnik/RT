@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 01:19:17 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 13:06:08 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ void					parser_cam(t_cam *cam, char **scn);
 void					parser_light(char **scn, t_app *app, int n);
 void					parser_obj(char **scn, t_app *app, int n);
 void					check_obj(t_app *app);
-void					app_init(t_app *app);
+void					check_light(t_app *app);
 t_vec3					array_attack(char *s);
 t_color					array_color(char *s);
 t_real					ptr_atoi(char **str);
@@ -224,6 +224,7 @@ int						ptr_atoi_int(char **str, int fraction);
 void					ignore_str(char **ptr);
 int						is_valid_obj_name(char *str);
 int						is_valid_light_name(char *str);
+int						key_type(char *s);
 void					parse_real(char *str, void *vp);
 void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);

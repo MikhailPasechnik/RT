@@ -6,7 +6,7 @@
 #    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/03/10 00:07:52 by bmahi            ###   ########.fr        #
+#    Updated: 2020/03/17 12:37:37 by bmahi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,10 @@ SRC_FILES	=			\
 	texture_buffer.c    \
 	navigation.c		\
 	parser.c			\
+	parse_types.c		\
+	array_attack.c		\
+	is_valid.c			\
+	read_scene.c		\
 	update.c			\
 	sync.c				\
 	utils.c				\
