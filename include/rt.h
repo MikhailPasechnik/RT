@@ -51,21 +51,13 @@
 
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;
-/*
- * Rectangle
- * 		orig: rectangle start position
- * 		size: is width and height
- *
- * 	Can be used to specify kernel work area
- *   clEnqueueNDRangeKernel(q, k, 2, &r.orig, &r.size, NULL, 0, NULL, NULL);
-*/
 
 typedef struct			s_phelp
 {
-    char				str[NAME_MAX];
-    int					len;
-    void				*p;
-    void				(*f)(char *, void *);
+	char				str[NAME_MAX];
+	int					len;
+	void				*p;
+	void				(*f)(char *, void *);
 }						t_phelp;
 
 typedef struct			s_urect
@@ -108,8 +100,8 @@ typedef struct			s_renderer
 	t_tx_buffer			depth_buf;
 	t_tx_buffer			normal_buf;
 
-	t_uint					width;
-	t_uint					height;
+	t_uint				width;
+	t_uint				height;
 }						t_renderer;
 
 typedef struct			s_app
@@ -131,8 +123,8 @@ typedef struct			s_app
 	int					op_changed;
 	int					cm_changed;
 
-	int					lines; // lines of buf
-	char				**scene; // scene for parser
+	int					lines;
+	char				**scene;
 }						t_app;
 
 /*
@@ -227,7 +219,7 @@ t_color					array_color(char *s);
 t_real					ptr_atoi(char **str);
 int						ptr_atoi_int(char **str, int fraction);
 void					ignore_str(char **ptr);
-int						is_valid_obj_name(char *str);
+int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);
 void					parse_real(char *str, void *vp);

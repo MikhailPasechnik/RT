@@ -44,7 +44,7 @@ int		main(int argc, char **argv)
 	t_app app;
 
 	ft_bzero(&app, sizeof(t_app));
-	parser(&app, argc > 1 ? argv[1] : "./include/ktgri_01.yml");
+	parser(&app, argc > 1 ? argv[1] : "./scene/simple.yml");
 	!sdl_init() ? exit(1) : 0;
 	if (!app_start(&app, argv + 1, argc - 1))
 		app_finish(&app);
