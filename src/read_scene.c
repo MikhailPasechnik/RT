@@ -42,7 +42,7 @@ char	**read_scene(int fd, int *lines)
 	int		size;
 	int		i;
 
-	**arr_old = NULL;
+	arr_old = NULL;
 	size = 0;
 	while (get_next_line(fd, &gnled) > 0)
 	{
@@ -73,7 +73,6 @@ void	parser(t_app *app, char *scene)
 	if ((fd = open(scene, O_RDONLY)) < 0)
 		kill("Open door!");
 	app->scene = read_scene(fd, &(app->lines));
-	app_init(app);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 4);
 	n = (app->op.light_count) * 6 + 4;

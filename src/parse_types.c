@@ -22,7 +22,7 @@ void	parse_id(char *str, void *vp)
 {
 	t_int	*id;
 
-	*id = vp;
+	id = vp;
 	ignore_str(&str);
 	*id = ptr_atoi(&str);
 }
@@ -31,7 +31,7 @@ void	parse_color(char *str, void *vp)
 {
 	t_color	*p;
 
-	*p = vp;
+	p = vp;
 	*p = array_color(str);
 }
 
@@ -39,7 +39,7 @@ void	parse_vec3(char *str, void *vp)
 {
 	t_vec3	*p;
 
-	*p = vp;
+	p = vp;
 	*p = array_attack(str);
 }
 
@@ -47,7 +47,7 @@ void	parse_real(char *str, void *vp)
 {
 	t_real	*p;
 
-	*p = vp;
+	p = vp;
 	ignore_str(&str);
 	*p = ptr_atoi(&str);
 }

@@ -81,11 +81,11 @@ t_color	array_color(char *s)
 	{
 		ignore_str(&s);
 		if (i == 1)
-			c.r = ptr_atoi(&s) / 255.0;
+			c.x = ptr_atoi(&s) / 255.0;
 		else if (i == 2)
-			c.g = ptr_atoi(&s) / 255.0;
+			c.y = ptr_atoi(&s) / 255.0;
 		else if (i == 3)
-			c.b = ptr_atoi(&s) / 255.0;
+			c.z = ptr_atoi(&s) / 255.0;
 		else
 			kill("Error in array!");
 		ignore_str(&s);

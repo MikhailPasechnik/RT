@@ -12,7 +12,6 @@
 
 #ifndef OBJ_H
 # define OBJ_H
-#include "../include/rt.h"
 
 /*
 ** Check that we are compiling on device and define types without "cl_" prefix.
