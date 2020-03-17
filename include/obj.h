@@ -18,19 +18,9 @@
 ** Check that we are compiling on device and define types without "cl_" prefix.
 ** Else define types with "cl_" prefix.
 */
-# ifdef __OPENCL_DEVICE__
-typedef float		t_real;
-typedef float16		t_mat4;
-typedef float3		t_vec3;
-typedef int			t_int;
-typedef uint		t_uint;
-typedef float3		t_color;
-# else
 # ifdef __APPLE__
-# include <OpenCL/opencl.h>
-# else
-# include <CL/opencl.h>
-# endif
+#  include <OpenCL/opencl.h>
+
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;
 typedef cl_float3		t_vec3;
@@ -86,7 +76,7 @@ typedef struct			s_cam
 	t_real				fov;
 }						t_cam;
 
-typedef struct 			s_mat
+typedef struct			s_mat
 {
 	t_color				diffuse;
 	t_real				specular;
@@ -116,13 +106,15 @@ typedef struct			s_light
 	t_int				id;
 }						t_light;
 
-typedef struct			s_ray {
+typedef struct			s_ray
+{
 	t_vec3				o;
 	t_vec3				d;
 	t_real				t;
 }						t_ray;
 
-typedef struct			s_hit_cpu {
+typedef struct			s_hit_cpu
+{
 	t_vec3				pos;
 	t_vec3				norm;
 	t_uint				obj_index;

@@ -5,6 +5,12 @@
 /*
 ** Include host OpenCL compatible structs
 */
+typedef float		t_real;
+typedef float16		t_mat4;
+typedef float3		t_vec3;
+typedef int			t_int;
+typedef uint		t_uint;
+typedef float3		t_color;
 # include "obj.h"
 # define EPSILON 1e-16
 # ifndef NULL
