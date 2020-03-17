@@ -68,6 +68,8 @@ void	on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed)
 		app->render_buffer = RT_K_NORMA_ARG;
 	else if (event->keysym.sym == SDLK_F3 && (*changed = 1))
 		app->render_buffer = RT_K_DEPTH_ARG;
+	else if (event->keysym.sym == SDLK_F4)
+		screen_shot(app);
 }
 
 void	on_mouse_button(SDL_MouseButtonEvent *event, t_app *app, int *changed)

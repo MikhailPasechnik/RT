@@ -204,6 +204,7 @@ void					*rt_set_rect(SDL_Rect *rect, int x, int y, int w,
 void					generate_scene(t_app *app);
 t_color					get_surface_pixel(SDL_Surface *surface, size_t x,
 	size_t y);
+int						screen_shot(t_app *app);
 
 /*
 ** Kate functions
