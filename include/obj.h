@@ -58,7 +58,6 @@ typedef cl_float3		t_color;
 # define IS_CYL(o) ((o)->id == (ID_CYL))
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
-# define COLOR(r, g, b, a) ((t_color){r, g, b})
 
 /*
 ** OpenCL compatible structs

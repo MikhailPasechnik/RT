@@ -188,7 +188,7 @@ t_vec3	array_attack(char *s)
 		++s;
 		ignore_str(&s);
 	}
-	return (VEC({x, y, z}));
+	return (VEC(x, y, z));
 }
 
 void	app_init(t_app *app)

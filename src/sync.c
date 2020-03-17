@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sync.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
+/*   Updated: 2020/03/17 12:27:04 by bnesoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 int			set_kernel_arg(cl_kernel kernel,
@@ -9,23 +21,20 @@ int			set_kernel_arg(cl_kernel kernel,
 
 int			transfer_objects(t_app *app)
 {
-	int			i;
+	t_uint		i;
 	t_list		*it;
-	t_obj		*obj;
 	t_buffer	buffer;
 
 	buffer = create_buffer(app->ocl.context,
 		sizeof(t_obj) * (app->op.obj_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate objects buffer!", 0));
-	obj = buffer.host;
 	i = 0;
 	it = app->obj_list;
 	while (it && i < app->op.obj_count)
 	{
-		obj[i] = *(t_obj *)it->content;
+		((t_obj	*)buffer.host)[i++] = *(t_obj *)it->content;
 		it = it->next;
-		i++;
 	}
 	if (i != app->op.obj_count || it != NULL)
 		return (app_error("Object count not equal to Object list length!", 0));
@@ -40,23 +49,20 @@ int			transfer_objects(t_app *app)
 
 int			transfer_light(t_app *app)
 {
-	int			i;
+	t_uint		i;
 	t_list		*it;
-	t_light		*light;
 	t_buffer	buffer;
 
 	buffer = create_buffer(app->ocl.context, sizeof(t_light) *
 		(app->op.light_count + RT_BUF_EXTRA), CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate light buffer!", 0));
-	light = buffer.host;
 	i = 0;
 	it = app->light_list;
 	while (it && i < app->op.light_count)
 	{
-		light[i] = *(t_light *)it->content;
+		((t_light *)buffer.host)[i++] = *(t_light *)it->content;
 		it = it->next;
-		i++;
 	}
 	if (i != app->op.light_count || it != NULL)
 		return (app_error("Light count not equal to Light list length!", 0));

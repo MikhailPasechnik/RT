@@ -13,16 +13,6 @@
 #include "m3d.h"
 #include <stdio.h>
 
-void	m4_rotate_relative(t_mat4 *m, t_mat4 *r, t_vec3 *rot)
-{
-	t_mat4	im;
-	t_mat4	ir;
-
-	m4_extract_rotation(m, &ir);
-	m4_inv(&ir, &im);
-	m4_mul(&im, r, r);
-	m4_mul(r, m, m);
-}
 /*
 ** M.s0, M.s1, M.s2, M.s3
 ** M.s4, M.s5, M.s6, M.s7

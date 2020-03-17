@@ -35,7 +35,8 @@ typedef cl_float3	t_vec3;
 typedef cl_int		t_int;
 typedef cl_uint		t_uint;
 typedef cl_float3	t_color;
-# define VEC(x, y, z)((t_vec3){x, y, z})
+# define VEC(x, y, z)((t_vec3){{x, y, z}})
+# define COLOR(r, g, b, a) ((t_color){{r, g, b}})
 
 /*
 ** Helper to access cl_double16 by row and column on pointer var

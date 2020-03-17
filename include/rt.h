@@ -99,8 +99,8 @@ typedef struct			s_renderer
 	t_tx_buffer			depth_buf;
 	t_tx_buffer			normal_buf;
 
-	int					width;
-	int					height;
+	t_uint					width;
+	t_uint					height;
 }						t_renderer;
 
 typedef struct			s_app
@@ -182,10 +182,6 @@ void					on_mouse_wheel(SDL_MouseWheelEvent *event,
 	t_app *app, int *changed);
 void					on_key_press(SDL_KeyboardEvent *event,
 	t_app *app, int *changed);
-void					on_mouse_button(SDL_MouseButtonEvent *event,
-	t_app *app, int *changed);
-void					on_mouse_focus(SDL_Event *event,
-	t_app *app, int *changed);
 
 /*
 ** Render functions
@@ -202,7 +198,6 @@ size_t					rt_tab_len(char **tab);
 void					*rt_tab_free(char **tab);
 void					*rt_set_rect(SDL_Rect *rect, int x, int y, int w,
 	int h);
-void					generate_scene(t_app *app);
 t_color					get_surface_pixel(SDL_Surface *surface, size_t x,
 	size_t y);
 int						screen_shot(t_app *app);

@@ -11,6 +11,7 @@
 # define NULL ((void *)0)
 # endif
 # define VEC(x, y, z)((t_vec3){x, y, z})
+# define COLOR(r, g, b, a) ((t_color){r, g, b})
 
 typedef struct	s_hit {
 	t_vec3	p;

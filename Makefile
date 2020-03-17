@@ -14,15 +14,15 @@ NAME=RTv1
 
 OS			=	$(shell uname -s)
 CC			=	gcc
-CFLAGS		=	#-Wall # -Wextra  -Werror=unused
+CFLAGS		=	-Wall -Wextra  -Werror
 
 SRC_FILES	=			\
 	app.c				\
+	app_utils.c			\
 	events.c			\
 	file_io.c			\
 	main.c				\
 	renderer.c			\
-	generator.c			\
 	buffer.c			\
 	texture_buffer.c    \
 	navigation.c		\
