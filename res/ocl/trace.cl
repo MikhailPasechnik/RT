@@ -192,7 +192,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		return (0);
 
 	hit->p = ray.o + ray.d * t0;
-	hit->n = normalize(VEC(hit->p.x, hit->p.y, obj->height / obj->radius));
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 	return (1);
