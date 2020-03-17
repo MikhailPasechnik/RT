@@ -387,4 +387,6 @@ void	parser(t_app *app, char *scene)
 	parser_light(app->scene, app, 4);
 	n = (app->op.light_count) * 6 + 4;
 	parser_obj(app->scene, app, n);
+	if (!app->op.light_count || !app->op.obj_count)
+		kill("Incomplete scene");
 }
