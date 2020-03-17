@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   update.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/17 12:26:55 by bnesoi            #+#    #+#             */
+/*   Updated: 2020/03/17 12:26:56 by bnesoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
 
 int			update_object(t_app *app, int index, t_obj *obj)
@@ -36,7 +48,7 @@ int			update_camera(cl_kernel kernel, t_cam *cam, int arg_num)
 }
 
 int			update_options(cl_kernel kernel,
-							  t_options *options, int arg_num)
+							t_options *options, int arg_num)
 {
 	int err;
 

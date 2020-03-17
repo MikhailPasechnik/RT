@@ -12,52 +12,6 @@
 
 #include "../include/rt.h"
 
-inline int		app_error(const char *msg, int returns)
-{
-	ft_fprintf(2, "Application error: %s\n", msg);
-	return (returns);
-}
-
-int				app_update_buffers(t_app *app)
-{
-	size_t	size;
-
-	size = app->op.width * app->op.height;
-	app->ren.color_buf.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
-	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
-	app->ren.depth_buf.valid ? free_tx_buffer(&app->ren.depth_buf) : 0;
-	app->ren.normal_buf.valid ? free_tx_buffer(&app->ren.normal_buf) : 0;
-	app->ren.color_buf = create_tx_buffer(app, app->op.width, app->op.height,
-			CL_MEM_WRITE_ONLY);
-	if (!app->ren.color_buf.valid && free_tx_buffer(&app->ren.color_buf))
-		return (app_error("Failed to allocate color buffer!", 0));
-	app->ren.depth_buf = create_tx_buffer(app, app->op.width, app->op.height,
-			CL_MEM_WRITE_ONLY);
-	if (!app->ren.depth_buf.valid && free_tx_buffer(&app->ren.depth_buf))
-		return (app_error("Failed to allocate depth buffer!", 0));
-	app->ren.normal_buf = create_tx_buffer(app, app->op.width, app->op.height,
-			CL_MEM_WRITE_ONLY);
-	if (!app->ren.normal_buf.valid && free_tx_buffer(&app->ren.normal_buf))
-		return (app_error("Failed to allocate normal buffer!", 0));
-	app->ren.index_buf = create_buffer(app->ocl.context,
-			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
-	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
-		return (app_error("Failed to allocate index buffer!", 0));
-	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-			RT_K_COLOR_ARG, sizeof(cl_mem), &app->ren.color_buf.device)))
-		return (app_error("failed to set kernel color buffer argument", 0));
-	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-			RT_K_NORMA_ARG, sizeof(cl_mem), &app->ren.normal_buf.device)))
-		return (app_error("failed to set kernel normal buffer argument", 0));
-	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-			RT_K_DEPTH_ARG, sizeof(cl_mem), &app->ren.depth_buf.device)))
-		return (app_error("failed to set kernel depth buffer argument", 0));
-	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-		RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
-		return (app_error("failed to set kernel index buffer argument", 0));
-	return (1);
-}
-
 static int		app_pre_render(t_app *app)
 {
 	if ((app->ren.width != app->op.width || app->ren.height != app->op.height))
@@ -86,6 +40,8 @@ static int		app_render(t_app *app)
 		current = &app->ren.normal_buf;
 	else if (app->render_buffer == RT_K_DEPTH_ARG)
 		current = &app->ren.depth_buf;
+	else
+		current = &app->ren.color_buf;
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
 	if (!render(&app->ren, &app->ocl))
@@ -103,6 +59,8 @@ static int		app_render(t_app *app)
 
 int				app_start(t_app *app, char **argv, int argc)
 {
+	(void)argv;
+	(void)argc;
 	app->op_changed = 1;
 	app->cm_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
@@ -148,11 +106,5 @@ void			on_app_event(t_app *app, SDL_Event *event)
 		on_mouse_wheel(&event->wheel, app, &changed);
 	else if (event->type == SDL_KEYDOWN)
 		on_key_press(&event->key, app, &changed);
-	else if (event->type == SDL_WINDOWEVENT_ENTER ||
-			event->type == SDL_WINDOWEVENT_LEAVE)
-		on_mouse_focus(event, app, &changed);
-	else if (event->type == SDL_MOUSEBUTTONUP ||
-			event->type == SDL_MOUSEBUTTONDOWN)
-		on_mouse_button(&event->button, app, &changed);
 	changed ? app_render(app) : 0;
 }

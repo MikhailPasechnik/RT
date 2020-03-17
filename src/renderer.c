@@ -38,13 +38,8 @@ int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 			ren->program, 0, NULL, options, NULL, NULL),
 					"Failed to build program"))
 		return (log_build_log(ren, ocl, 2));
-#ifdef __APPLE__
 	ren->queue = clCreateCommandQueue(ocl->context,
 			ocl->device, 0, &err);
-#else
-	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
-			ocl->device, 0, &err);
-#endif
 	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
 		return (0);
@@ -66,7 +61,9 @@ void		delete_renderer(t_renderer *ren)
 
 static int	pre_render(t_renderer *ren, t_ocl *ocl)
 {
-	return(1);
+	(void)ren;
+	(void)ocl;
+	return (1);
 }
 
 int			render(t_renderer *ren, t_ocl *ocl)
@@ -77,11 +74,12 @@ int			render(t_renderer *ren, t_ocl *ocl)
 	if (!pre_render(ren, ocl))
 		return (0);
 	size = ren->width * ren->height;
-	err = clEnqueueNDRangeKernel(ren->queue, ren->render_kernel,
-		1, NULL, &size, NULL, 0, NULL, NULL);
+	err = clEnqueueNDRangeKernel(
+			ren->queue, ren->render_kernel, 1, NULL, &size,
+			NULL, 0, NULL, NULL);
 	if (OCL_ERROR(err, "Failed to enqueue kernel!"))
 		return (0);
-	if OCL_ERROR(clFinish(ren->queue), "Failed to finish queue!")
+	if (OCL_ERROR(clFinish(ren->queue), "Failed to finish queue!"))
 		return (0);
 	return (1);
 }

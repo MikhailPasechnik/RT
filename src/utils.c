@@ -64,8 +64,8 @@ int		screen_shot(t_app *app)
 {
 	t_tx_buffer	*current;
 	void		*pixels;
-	int 		pitch;
-	int 		result;
+	int			pitch;
+	int			result;
 	char		name[150];
 
 	if (app->render_buffer == RT_K_COLOR_ARG)
