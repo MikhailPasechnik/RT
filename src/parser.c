@@ -15,50 +15,48 @@
 
 #define PHELP(str, p, f) ((t_phelp){str, ft_strlen(str), p, f})
 
-void	parser_obj(char **scn, t_app *app, int n)
+static void	init_obj(t_phelp *phelp, t_obj *ol)
+{
+	ft_bzero(phelp, sizeof(t_phelp) * 8);
+	phelp[0] = PHELP("  position:", &ol->pos, parse_vec3);
+	phelp[1] = PHELP("  color:", &ol->mat.diffuse, parse_color);
+	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3);
+	phelp[3] = PHELP("  radius:", &ol->radius, parse_real);
+	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real);
+	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
+	phelp[6] = PHELP("  height:", &ol->height, parse_real);
+	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
+}
+
+static void	phelp_run(int size, t_phelp *phelp, char *scn)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (!ft_strncmp(scn, phelp[i].str, phelp[i].len))
+		{
+			phelp[i].f(scn + phelp[i].len, phelp[i].p);
+			break ;
+		}
+		else
+			i++;
+	}
+}
+
+void		parser_obj(char **scn, t_app *app, int n)
 {
 	t_obj	ol;
-	int		i;
 	t_phelp	phelp[8];
-	int		phelp_len;
 
-	phelp_len = 8;
-	ft_bzero(&phelp, sizeof(t_phelp) * 8);
-	phelp[0] = PHELP("  position:", &ol.pos, parse_vec3);
-	phelp[1] = PHELP("  color:", &ol.mat.diffuse, parse_color);
-	phelp[2] = PHELP("  rotation:", &ol.rot, parse_vec3);
-	phelp[3] = PHELP("  radius:", &ol.radius, parse_real);
-	phelp[4] = PHELP("  specular:", &ol.mat.specular, parse_real);
-	phelp[5] = PHELP("  reflective:", &ol.mat.reflection, parse_real);
-	phelp[6] = PHELP("  height:", &ol.height, parse_real);
-	phelp[7] = PHELP("  infinite:", &ol.infinite, parse_real);
-	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(scn[n] + 8))
+	init_obj(phelp, &ol);
+	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(&ol, scn[n] + 8))
 	{
-		ft_bzero(&ol, sizeof(t_obj));
-		if (!ft_strcmp(scn[n] + 8, T_SPH))
-			ol.id = ID_SPH;
-		else if (!ft_strcmp(scn[n] + 8, T_PLN))
-			ol.id = ID_PLN;
-		else if (!ft_strcmp(scn[n] + 8, T_CYL))
-			ol.id = ID_CYL;
-		else if (!ft_strcmp(scn[n] + 8, T_CON))
-			ol.id = ID_CON;
-		else if (!ft_strcmp(scn[n] + 8, T_CUB))
-			ol.id = ID_CUB;
 		n++;
 		while (scn[n] && scn[n][0] != '-')
 		{
-			i = 0;
-			while (i < phelp_len)
-			{
-				if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-				{
-					phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-					break ;
-				}
-				else
-					i++;
-			}
+			phelp_run(8, phelp, scn[n]);
 			n++;
 		}
 		check_obj(app);
@@ -67,14 +65,11 @@ void	parser_obj(char **scn, t_app *app, int n)
 	}
 }
 
-void	parser_light(char **scn, t_app *app, int n)
+void		parser_light(char **scn, t_app *app, int n)
 {
 	t_light	ll;
-	int		i;
 	t_phelp	phelp[5];
-	int		phelp_len;
 
-	phelp_len = 5;
 	ft_bzero(&phelp, sizeof(t_phelp) * 5);
 	phelp[0] = PHELP("  position:", &ll.pos, parse_vec3);
 	phelp[1] = PHELP("  rotation:", &ll.rot, parse_vec3);
@@ -87,17 +82,7 @@ void	parser_light(char **scn, t_app *app, int n)
 		n++;
 		while (scn[n][0] != '-')
 		{
-			i = 0;
-			while (i < phelp_len)
-			{
-				if (!ft_strncmp(scn[n], phelp[i].str, phelp[i].len))
-				{
-					phelp[i].f(scn[n] + phelp[i].len, phelp[i].p);
-					break ;
-				}
-				else
-					i++;
-			}
+			phelp_run(5, phelp, scn[n]);
 			n++;
 		}
 		check_obj(app);

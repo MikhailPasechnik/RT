@@ -18,11 +18,22 @@ int		is_valid_light_name(char *str)
 	return (!ft_strcmp(str, T_LIGHT) && str[ft_strlen(str)] == '\0');
 }
 
-int		is_valid_obj_name(char *str)
+int		is_valid_obj_name(t_obj *ol, char *str)
 {
-	return ((!ft_strcmp(str, T_CON) || !ft_strcmp(str, T_CUB) \
-		|| !ft_strcmp(str, T_CYL) || !ft_strcmp(str, T_PLN) \
-		|| !ft_strcmp(str, T_SPH)) && str[ft_strlen(str)] == '\0');
+	ft_bzero(ol, sizeof(t_obj));
+	if (!ft_strcmp(str, T_SPH))
+		ol->id = ID_SPH;
+	else if (!ft_strcmp(str, T_PLN))
+		ol->id = ID_PLN;
+	else if (!ft_strcmp(str, T_CYL))
+		ol->id = ID_CYL;
+	else if (!ft_strcmp(str, T_CON))
+		ol->id = ID_CON;
+	else if (!ft_strcmp(str, T_CUB))
+		ol->id = ID_CUB;
+	else
+		kill("!is_valid_obj_name");
+	return (1);
 }
 
 int		kill(char *message)

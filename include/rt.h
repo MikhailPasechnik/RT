@@ -219,7 +219,7 @@ t_color					array_color(char *s);
 t_real					ptr_atoi(char **str);
 int						ptr_atoi_int(char **str, int fraction);
 void					ignore_str(char **ptr);
-int						is_valid_obj_name(char *str);
+int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);
 void					parse_real(char *str, void *vp);
