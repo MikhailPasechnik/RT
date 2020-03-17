@@ -6,7 +6,9 @@ __kernel void k_render(
 	__global t_obj* objects,
 	__global t_light* lights,
 	__global t_int* color_buffer,
-	__global t_int* index_buffer
+	__global t_int* index_buffer,
+	__global t_int* normal_buffer,
+	__global t_int* depth_buffer
 )
 {
 	t_ray camera_ray;
@@ -15,7 +17,11 @@ __kernel void k_render(
 	t_ray shadow_ray;
 	t_hit shadow_hit;
 	t_color color;
+	t_color normal_color;
+	t_color depth_color;
 
+	normal_color = COLOR(0,0,0,1);
+	depth_color = COLOR(0,0,0,1);
 	int id = get_global_id(0);
 	camera_ray = new_camera_ray(&options, &camera,
 			(uint2){id % options.width, id / options.height});
@@ -28,14 +34,14 @@ __kernel void k_render(
 
 	if (obj_index != -1)
 	{
-		color = distance(camera_hit.p, VEC(camera.mtx.sC,
+		depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
 											 camera.mtx.sD,
 											 camera.mtx.sE)) / 50.0f;
 
 //		color = (VEC(180, 180, 180) / 255.0f) * dot(camera_ray.dir, camera_hit.n * -1);
 //		color = camera_hit.obj->mat.diffuse; // * dot(camera_ray.dir, camera_hit.n * -1);
 		//		color = camera_hit.obj->mat.diffuse;
-		color = ((camera_hit.n * -1) + 1) / 2;
+		normal_color = ((camera_hit.n * -1) + 1) / 2;
 		t_uint i = 0;
 		color = VEC(0,0,0);
 		t_vec3 diffuse = VEC(0,0,0);
@@ -79,5 +85,7 @@ __kernel void k_render(
 		color = options.background_color;
 
     index_buffer[id] = obj_index;
+	normal_buffer[id] = pack_color(&normal_color);
+	depth_buffer[id] = pack_color(&depth_color);
 	color_buffer[id] = pack_color(&color);
 }

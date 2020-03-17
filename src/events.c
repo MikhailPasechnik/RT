@@ -62,6 +62,12 @@ void	on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed)
 		app->cm_changed = 1;
 		*changed = 1;
 	}
+	else if (event->keysym.sym == SDLK_F1 && (*changed = 1))
+		app->render_buffer = RT_K_COLOR_ARG;
+	else if (event->keysym.sym == SDLK_F2 && (*changed = 1))
+		app->render_buffer = RT_K_NORMA_ARG;
+	else if (event->keysym.sym == SDLK_F3 && (*changed = 1))
+		app->render_buffer = RT_K_DEPTH_ARG;
 }
 
 void	on_mouse_button(SDL_MouseButtonEvent *event, t_app *app, int *changed)

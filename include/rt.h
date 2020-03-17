@@ -45,6 +45,8 @@
 # define RT_K_LIGHTS_ARG 3
 # define RT_K_COLOR_ARG 4
 # define RT_K_INDEX_ARG 5
+# define RT_K_NORMA_ARG 6
+# define RT_K_DEPTH_ARG 7
 
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;
@@ -93,6 +95,8 @@ typedef struct			s_renderer
 	t_buffer			light_buf;
 	t_tx_buffer			color_buf;
 	t_buffer			index_buf;
+	t_tx_buffer			depth_buf;
+	t_tx_buffer			normal_buf;
 
 	int					width;
 	int					height;
@@ -106,6 +110,7 @@ typedef struct			s_app
 
 	t_renderer			ren;
 	t_ocl				ocl;
+	int					render_buffer;
 
 	t_options			op;
 

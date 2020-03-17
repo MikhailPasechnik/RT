@@ -25,17 +25,33 @@ int				app_update_buffers(t_app *app)
 	size = app->op.width * app->op.height;
 	app->ren.color_buf.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
 	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
+	app->ren.depth_buf.valid ? free_tx_buffer(&app->ren.depth_buf) : 0;
+	app->ren.normal_buf.valid ? free_tx_buffer(&app->ren.normal_buf) : 0;
 	app->ren.color_buf = create_tx_buffer(app, app->op.width, app->op.height,
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf.valid && free_tx_buffer(&app->ren.color_buf))
 		return (app_error("Failed to allocate color buffer!", 0));
-	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
-			RT_K_COLOR_ARG, sizeof(cl_mem), &app->ren.color_buf.device)))
-		return (app_error("failed to set kernel index buffer argument", 0));
+	app->ren.depth_buf = create_tx_buffer(app, app->op.width, app->op.height,
+			CL_MEM_WRITE_ONLY);
+	if (!app->ren.depth_buf.valid && free_tx_buffer(&app->ren.depth_buf))
+		return (app_error("Failed to allocate depth buffer!", 0));
+	app->ren.normal_buf = create_tx_buffer(app, app->op.width, app->op.height,
+			CL_MEM_WRITE_ONLY);
+	if (!app->ren.normal_buf.valid && free_tx_buffer(&app->ren.normal_buf))
+		return (app_error("Failed to allocate normal buffer!", 0));
 	app->ren.index_buf = create_buffer(app->ocl.context,
-		size * sizeof(t_int), CL_MEM_WRITE_ONLY);
+			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
 		return (app_error("Failed to allocate index buffer!", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+			RT_K_COLOR_ARG, sizeof(cl_mem), &app->ren.color_buf.device)))
+		return (app_error("failed to set kernel color buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+			RT_K_NORMA_ARG, sizeof(cl_mem), &app->ren.normal_buf.device)))
+		return (app_error("failed to set kernel normal buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+			RT_K_DEPTH_ARG, sizeof(cl_mem), &app->ren.depth_buf.device)))
+		return (app_error("failed to set kernel depth buffer argument", 0));
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
 		RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
 		return (app_error("failed to set kernel index buffer argument", 0));
@@ -62,16 +78,24 @@ static int		app_pre_render(t_app *app)
 
 static int		app_render(t_app *app)
 {
+	t_tx_buffer	*current;
+
+	if (app->render_buffer == RT_K_COLOR_ARG)
+		current = &app->ren.color_buf;
+	else if (app->render_buffer == RT_K_NORMA_ARG)
+		current = &app->ren.normal_buf;
+	else if (app->render_buffer == RT_K_DEPTH_ARG)
+		current = &app->ren.depth_buf;
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
 	if (!render(&app->ren, &app->ocl))
 		return (app_error("Failed to render!", 0));
-	if (!pull_tx_buffer(app->ren.queue, &app->ren.color_buf, 0))
+	if (!pull_tx_buffer(app->ren.queue, current, 0))
 		return (app_error("Failed to pull color buffer!", 0));
 	if (!pull_buffer(app->ren.queue, &app->ren.index_buf,
 			app->ren.index_buf.size, 0))
 		return (app_error("Failed to pull index buffer!", 0));
-	SDL_RenderCopy(app->renderer, app->ren.color_buf.host, NULL,
+	SDL_RenderCopy(app->renderer, current->host, NULL,
 		&(SDL_Rect){.y=0, .x=0, .h=app->op.height, .w=app->op.width});
 	SDL_RenderPresent(app->renderer);
 	return (1);
@@ -83,6 +107,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	app->cm_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
 	app->op.width = RT_WIN_WIDTH;
+	app->render_buffer = RT_K_COLOR_ARG;
 	app->op.background_color = VEC(44 / 255.0, 44 / 255.0, 44 / 255.0);
 	if (!(ocl_init(&app->ocl)))
 		return (app_error("Failed to initialise OpenCL", 0));
