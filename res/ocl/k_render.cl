@@ -11,36 +11,28 @@ __kernel void k_render(
 	__global t_int* depth_buffer
 )
 {
-	t_ray camera_ray;
-	t_int obj_index;
-	t_hit camera_hit;
-	t_ray shadow_ray;
-	t_hit shadow_hit;
-	t_color color;
-	t_color normal_color;
-	t_color depth_color;
+	t_ray		camera_ray;
+	t_int		obj_index;
+	t_hit		camera_hit;
+	t_ray		shadow_ray;
+	t_hit		shadow_hit;
+	t_color		color;
+	t_color		normal_color;
+	t_color		depth_color;
+	t_vec3		ref;
+	t_vec3		light_dir;
 
 	normal_color = COLOR(0,0,0,1);
 	depth_color = COLOR(0,0,0,1);
 	int id = get_global_id(0);
 	camera_ray = new_camera_ray(&options, &camera,
 			(uint2){id % options.width, id / options.height});
-
-	if (get_global_id(0) == 0)
-	{
-		print_render_args(&options, &camera, objects, lights);
-	}
 	obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
-
 	if (obj_index != -1)
 	{
 		depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
 											 camera.mtx.sD,
 											 camera.mtx.sE)) / 50.0f;
-
-//		color = (VEC(180, 180, 180) / 255.0f) * dot(camera_ray.dir, camera_hit.n * -1);
-//		color = camera_hit.obj->mat.diffuse; // * dot(camera_ray.dir, camera_hit.n * -1);
-		//		color = camera_hit.obj->mat.diffuse;
 		normal_color = ((camera_hit.n * -1) + 1) / 2;
 		t_uint i = 0;
 		color = VEC(0,0,0);
@@ -48,38 +40,27 @@ __kernel void k_render(
 		t_real specular = 0;
 		while (i < options.light_count)
 		{
-			if (lights[i].id == ID_DIRECT)
+			if (lights[i].id == ID_DIRECT || lights[i].id == ID_POINT)
 			{
-				shadow_ray.o = camera_hit.p + camera_hit.n * 0.0001f;
-				shadow_ray.d = -dir_from_rot(lights[i].rot);
-
-				// TODO: add bias (Shadow-Acne: Avoiding Self-Intersection)
-				//  https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/ligth-and-shadows
-				t_int in_shadow = intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1;
-
-				if (!in_shadow)
-				{
-					// TODO Lambert Phong
-
-					t_vec3 ref = reflect(dir_from_rot(lights[i].rot), camera_hit.n);
-					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
-					diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
-				}
+				if (lights[i].id == ID_DIRECT)
+					light_dir = dir_from_rot(lights[i].rot);
 				else
+					light_dir = normalize(camera_hit.p - lights[i].pos);
+				shadow_ray.o = camera_hit.p + camera_hit.n * 0.0001f;
+				shadow_ray.d = -light_dir;
+				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
 				{
-//					color += 1.0f;
+					ref = reflect(light_dir, camera_hit.n);
+					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
+					diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity *
+							lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
 				}
 			}
 			else if (lights[i].id == ID_AMB)
-			{
-				// color += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
-			}
+				diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
 			i++;
 		}
-		t_real kd = 1.5;
-		t_real ks = 0.1;
-		color = diffuse * kd + specular * ks;
-		//color = ((camera_hit.n * -1) + 1) / 2;
+		color = diffuse * 1.5f + specular * 0.1f;
 	}
     else
 		color = options.background_color;
