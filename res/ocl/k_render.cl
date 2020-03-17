@@ -46,7 +46,7 @@ __kernel void k_render(
 					light_dir = dir_from_rot(lights[i].rot);
 				else
 					light_dir = normalize(camera_hit.p - lights[i].pos);
-				shadow_ray.o = camera_hit.p + camera_hit.n * 0.0001f;
+				shadow_ray.o = camera_hit.p + camera_hit.n * 0.001f;
 				shadow_ray.d = -light_dir;
 				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
 				{
