@@ -27,6 +27,8 @@ SRC_FILES	=			\
 	texture_buffer.c    \
 	navigation.c		\
 	parser.c			\
+	update.c			\
+	sync.c				\
 	utils.c				\
 	ocl/ocl_error.c  	\
 	ocl/ocl_init.c  	\

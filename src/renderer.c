@@ -55,6 +55,12 @@ void		delete_renderer(t_renderer *ren)
 {
 	ren->queue ? clReleaseCommandQueue(ren->queue) : 0;
 	ren->program ? clReleaseProgram(ren->program) : 0;
+	free_buffer(&ren->index_buf);
+	free_buffer(&ren->light_buf);
+	free_buffer(&ren->obj_buf);
+	free_tx_buffer(&ren->color_buf);
+	free_tx_buffer(&ren->normal_buf);
+	free_tx_buffer(&ren->depth_buf);
 	rt_tab_free(ren->src);
 }
 
