@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 13:06:08 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 13:15:09 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ typedef t_list	t_light_list;
  * 	Can be used to specify kernel work area
  *   clEnqueueNDRangeKernel(q, k, 2, &r.orig, &r.size, NULL, 0, NULL, NULL);
 */
+
+typedef struct			s_phelp
+{
+    char				str[NAME_MAX];
+    int					len;
+    void				*p;
+    void				(*f)(char *, void *);
+}						t_phelp;
+
 typedef struct			s_urect
 {
 	size_t				orig[2];

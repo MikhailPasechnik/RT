@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 12:24:29 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/03/17 13:15:14 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,6 @@ typedef cl_float3		t_color;
 ** Second, this often avoids any headaches
 ** with different alignments on different devices.
 */
-
-typedef struct	s_phelp
-{
-    char				str[NAME_MAX];
-    int					len;
-    void				*p;
-    void				(*f)(char *, void *);
-}						t_phelp;
 
 typedef struct			s_options
 {
