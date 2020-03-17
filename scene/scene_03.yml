@@ -1,0 +1,58 @@
+- type: camera
+  position:     [0, -10, 15]
+  rotation:     [180, 0, 0]
+  fov:          80
+- type: light
+  color:        [210, 30, 230]
+  position:     [0, 0, 50]
+  rotation:     [120, 0, 45]
+  intensity:    1
+  dispersion:   1
+- type: light
+  color:        [255, 0, 0]
+  position:     [0, 10, 40]
+  rotation:     [90, 0, 45]
+  intensity:    0.5
+  dispersion:   1
+- type: light
+  color:        [0, 220, 250]
+  position:     [0, 10, 40]
+  rotation:     [90, 90, 45]
+  intensity:    0.5
+  dispersion:   1
+- type: plane
+  position:     [0, 0, 0]
+  color:        [190, 170, 200]
+  specular:     30
+  rotation:     [180, 0, 0]
+- type: cone
+  position:     [0, 0, 0]
+  color:        [100, 20, 10]
+  specular:     10
+  reflective:   10
+  rotation:     [0, 0, 0]
+  radius:       9
+  height:       20
+- type: sphere
+  position:     [7, 5, 2]
+  color:        [20, 40, 80]
+  specular:     10
+  reflective:   5
+  radius:       6
+  rotation:     [60, 0, 0]
+- type: sphere
+  position:     [1, -12, 14]
+  color:        [110, 130, 130]
+  specular:     50
+  reflective:   50
+  radius:       4
+  rotation:     [60, 0, 0]
+- type: cylinder
+  position:     [-5, -5, 10]
+  color:        [220, 130, 130]
+  specular:     1
+  reflective:   0
+  rotation:     [70, 80, 50]
+  radius:       4.5
+  height:       10
+  infinite:     0
