@@ -103,8 +103,8 @@ typedef struct			s_obj
 	t_vec3				rot;
 	t_real				radius;
 	t_real				height;
+	t_real				infinite;
 	t_int				id;
-	t_int				symbol;
 }						t_obj;
 
 typedef struct			s_light

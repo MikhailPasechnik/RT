@@ -158,7 +158,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	ray_to_object_space(obj, &ray);
 
-	if(disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
+	if(!obj->infinite && disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
@@ -176,17 +176,20 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	if (t0 < 0. || t1 > 0. && t1 < t0)
 		swap(&t0, &t1);
 
-	z = ray.o.z + ray.d.z * t0;
-	if (z < EPSILON || z > obj->height)
+	if (!obj->infinite)
 	{
-		d = dot(VEC(0,0, -1), ray.d);
-		if (d > EPSILON)
-			if (dot(-ray.o, VEC(0,0,-1)) / d < 0)
-				return (0);
-		swap(&t0, &t1);
 		z = ray.o.z + ray.d.z * t0;
 		if (z < EPSILON || z > obj->height)
-			return (0);
+		{
+			d = dot(VEC(0,0, -1), ray.d);
+			if (d > EPSILON)
+				if (dot(-ray.o, VEC(0,0,-1)) / d < 0)
+					return (0);
+			swap(&t0, &t1);
+			z = ray.o.z + ray.d.z * t0;
+			if (z < EPSILON || z > obj->height)
+				return (0);
+		}
 	}
 	if (t0 <= EPSILON)
 		return (0);
@@ -210,14 +213,14 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	ray_to_object_space(obj, &ray);
 
-	if (disk_trace(VEC(0, 0, -1), VEC(0, 0, obj->height), obj->radius, &ray, &cap_hit))
+	if (!obj->infinite && disk_trace(VEC(0, 0, -1), VEC(0, 0, obj->height), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
 		hit_to_world_space(obj, hit);
 		return (1);
 	}
-	else if (disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
+	else if (!obj->infinite && disk_trace(VEC(0, 0, 1), VEC(0, 0, 0), obj->radius, &ray, &cap_hit))
 	{
 		*hit = cap_hit;
 		hit->obj = obj;
@@ -239,17 +242,16 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	if (t0 <= EPSILON)
 		return (0);
 
-	if (((ray.o.z + ray.d.z * t0) >= 0) &&
-		((ray.o.z + ray.d.z * t0) <= obj->height))
-	{
-		hit->p = ray.o + ray.d * t0;
-		hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
-		hit->obj = obj;
-		hit_to_world_space(obj, hit);
-		return (1);
-	}
-	return (0);
+	if (!obj->infinite && !(((ray.o.z + ray.d.z * t0) >= 0) &&
+		((ray.o.z + ray.d.z * t0) <= obj->height)))
+		return (0);
+	hit->p = ray.o + ray.d * t0;
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
+	hit->obj = obj;
+	hit_to_world_space(obj, hit);
+	return (1);
 }
+
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	return (0);

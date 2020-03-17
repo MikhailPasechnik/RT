@@ -234,11 +234,11 @@ void	parser_obj(char **scn, t_app *app, int n)
 {
     t_obj   ol;
     int     i;
-    t_phelp phelp[7];
+    t_phelp phelp[8];
     int     phelp_len;
 
-    phelp_len = 7;
-    ft_bzero(&phelp, sizeof(t_phelp) * 7);
+    phelp_len = 8;
+    ft_bzero(&phelp, sizeof(t_phelp) * 8);
 
     phelp[0] = PHELP("  position:", &ol.pos, parse_vec3);
     phelp[1] = PHELP("  color:", &ol.mat.diffuse, parse_color);
@@ -247,6 +247,7 @@ void	parser_obj(char **scn, t_app *app, int n)
     phelp[4] = PHELP("  specular:", &ol.mat.specular, parse_real);
     phelp[5] = PHELP("  reflective:", &ol.mat.reflection, parse_real);
     phelp[6] = PHELP("  height:", &ol.height, parse_real);
+    phelp[7] = PHELP("  infinite:", &ol.infinite, parse_real);
 
     while (scn[n] && key_type(scn[n]) && is_valid_obj_name(scn[n] + 8))
     {

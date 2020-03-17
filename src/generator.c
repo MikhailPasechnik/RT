@@ -37,7 +37,7 @@ static void		fake_light(t_light *l, t_int id)
 	l->intensity = rand_interval(0, 100) / 100.0;
 }
 
-static void		fake_obj(t_obj *s, t_int id)
+static void		fake_obj(t_obj *s)
 {
 	s->pos = VEC(
 			rand_interval(-10, 10),
@@ -50,8 +50,9 @@ static void		fake_obj(t_obj *s, t_int id)
 	v3_norm(&s->rot, &s->rot);
 	s->radius = rand_interval(1, 5);
 	s->height = rand_interval(1, 5);
-	s->id = id;
-	s->symbol = rand_interval(49, 100);
+	s->id = rand_interval(1, 5);
+	if (s->id == ID_PLN)
+		s->id = ID_SPH;
 	s->mat.ior = rand_interval(0, 255) / 255.0;
 	s->mat.fresnel = rand_interval(0, 255) / 255.0;
 	s->mat.reflection = rand_interval(0, 255) / 255.0;
@@ -66,7 +67,8 @@ static void		fake_obj(t_obj *s, t_int id)
 
 static void		ground_plane(t_obj *o)
 {
-	fake_obj(0, ID_PLN);
+	fake_obj(0);
+	o->id = ID_PLN;
 	o->rot = VEC(0, 0, -1);
 	o->rot = VEC(0, 1, 0);
 }
@@ -97,23 +99,24 @@ void			generate_scene(t_app *app)
 			.height = app->op.height};
 	ft_lstdel(&app->light_list, del_obj);
 	ft_lstdel(&app->obj_list, del_obj);
-	// ground_plane(&o);
-	// ft_lstadd(&app->obj_list, ft_lstnew(&o, sizeof(t_obj)));
-	// app->op.scene_size++;
 	s = rand_interval(70, 150);
 	while (s--)
 	{
-		fake_obj(&o, ID_SPH);
+		fake_obj(&o);
 		ft_lstadd(&app->obj_list, ft_lstnew(&o, sizeof(t_obj)));
 		app->op.obj_count++;
 	}
 	s = rand_interval(1, 3);
 	while (s--)
 	{
-		fake_light(&l, ID_SPH);
+		fake_light(&l, ID_DIRECT);
 		ft_lstadd(&app->light_list, ft_lstnew(&l, sizeof(t_light)));
 		app->op.light_count++;
 	}
 	app->op_changed = 1;
 	app->cm_changed = 1;
+	if (!transfer_objects(app))
+		(app_error("Objects transfer failed!", 0));
+	if (!transfer_light(app))
+		(app_error("Lights transfer failed!", 0));
 }

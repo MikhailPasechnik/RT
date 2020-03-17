@@ -1,5 +1,7 @@
 #include "rt.hcl"
 
+
+
 __kernel void k_render(
 	t_options options,
 	t_cam camera,

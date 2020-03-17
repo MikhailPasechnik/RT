@@ -35,6 +35,7 @@
   rotation:     [90, 90, 0]
   radius:       7
   height:       8
+  infinite:     0
 - type: sphere
   position:     [5, 5, 1]
   color:        [150, 150, 150]
