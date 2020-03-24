@@ -27,6 +27,16 @@ typedef cl_int			t_int;
 typedef cl_uint			t_uint;
 typedef cl_float3		t_color;
 # endif
+# ifdef __LINUX__
+#  include <CL/opencl.h>
+
+typedef cl_float		t_real;
+typedef cl_float16		t_mat4;
+typedef cl_float3		t_vec3;
+typedef cl_int			t_int;
+typedef cl_uint			t_uint;
+typedef cl_float3		t_color;
+# endif
 
 # define ID_SPH	1
 # define ID_PLN	2

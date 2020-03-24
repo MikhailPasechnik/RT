@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/obj.h"
-#include "../include/rt.h"
+#include "rt.h"
 
 void	ignore_str(char **ptr)
 {

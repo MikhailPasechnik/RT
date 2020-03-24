@@ -24,8 +24,8 @@
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RTv1"
-# define RT_WIN_WIDTH 1000
-# define RT_WIN_HEIGHT 1000
+# define RT_WIN_WIDTH 500
+# define RT_WIN_HEIGHT 500
 # define RT_BUF_EXTRA 50
 
 /*

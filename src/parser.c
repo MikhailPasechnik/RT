@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/obj.h"
-#include "../include/rt.h"
+#include "rt.h"
 
 #define PHELP(str, p, f) ((t_phelp){str, ft_strlen(str), p, f})
 

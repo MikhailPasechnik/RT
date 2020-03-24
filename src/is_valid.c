@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/obj.h"
-#include "../include/rt.h"
+#include "rt.h"
 
 int		is_valid_light_name(char *str)
 {

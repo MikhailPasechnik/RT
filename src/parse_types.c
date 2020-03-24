@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/obj.h"
-#include "../include/rt.h"
+#include "rt.h"
 
 int		key_type(char *s)
 {

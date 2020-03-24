@@ -18,8 +18,6 @@ add_executable(${NAME} ${SRC})
 
 # Tests
 list(FILTER SRC EXCLUDE REGEX "main.c")
-add_executable(cl_sandbox tests/cl_sandbox.c ${SRC})
-add_executable(cl_sandbox2 tests1/cl_sandbox.c ${SRC})
 
 file(GLOB_RECURSE RES_CL res/ocl/* include/obj.h)
 
