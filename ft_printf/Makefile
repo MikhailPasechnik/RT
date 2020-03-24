@@ -40,7 +40,7 @@ OBJ=$(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 SRC=$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 CC=gcc
-CC_FLAGS= -Wall -Wextra -Werror
+CC_FLAGS= -Wall -Wextra #-Werror TODO: FIX!!
 
 all: $(NAME)
 
