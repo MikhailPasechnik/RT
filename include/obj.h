@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 13:15:14 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/04/22 05:11:09 by student          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,12 @@
 ** Check that we are compiling on device and define types without "cl_" prefix.
 ** Else define types with "cl_" prefix.
 */
+# ifdef HOST_DEVICE
 # ifdef __APPLE__
 #  include <OpenCL/opencl.h>
-
-typedef cl_float		t_real;
-typedef cl_float16		t_mat4;
-typedef cl_float3		t_vec3;
-typedef cl_int			t_int;
-typedef cl_uint			t_uint;
-typedef cl_float3		t_color;
-# endif
-# ifdef __LINUX__
+# else
 #  include <CL/opencl.h>
-
+# endif
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;
 typedef cl_float3		t_vec3;

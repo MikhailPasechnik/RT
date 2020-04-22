@@ -6,7 +6,7 @@
 #    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/03/17 12:37:37 by bmahi            ###   ########.fr        #
+#    Updated: 2020/04/22 05:11:42 by student          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=RTv1
 
 OS			=	$(shell uname -s)
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra  -Werror
+CFLAGS		=	-Wall -Wextra  -Werror -D HOST_DEVICE
 
 SRC_FILES	=			\
 	app.c				\
