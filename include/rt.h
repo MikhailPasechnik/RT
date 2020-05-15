@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 13:15:09 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/05/15 18:53:48 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@
 #  define RT_CL_INCLUDE "-I./res/ocl -I./include"
 # endif
 
-# define RT_CL_SRC1 "res/ocl/k_render.cl res/ocl/mat44.cl"
-# define RT_CL_SRC RT_CL_SRC1" res/ocl/trace.cl res/ocl/utils.cl res/ocl/ray.cl"
+# define RT_CL_SRC1 "res/ocl/k_render.cl"
 # define RT_K_RENDER "k_render"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 00:17:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/05/15 18:53:46 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	app->op.background_color = VEC(44 / 255.0, 44 / 255.0, 44 / 255.0);
 	if (!(ocl_init(&app->ocl)))
 		return (app_error("Failed to initialise OpenCL", 0));
-	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC, RT_CL_INCLUDE))
+	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC1, RT_CL_INCLUDE))
 		return (app_error("Failed to create renderer", 0));
 	if (!(app->win = SDL_CreateWindow(
 			RT_WIN_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
