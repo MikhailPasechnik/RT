@@ -6,11 +6,11 @@
 #    By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/06/16 19:16:04 by f0rsunka         ###   ########.fr        #
+#    Updated: 2020/06/16 19:16:41 by f0rsunka         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=  RT
+NAME = RT
 
 OS			=	$(shell uname -s)
 CC			=	gcc
