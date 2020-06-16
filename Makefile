@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
+#    By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/04/22 05:11:42 by student          ###   ########.fr        #
+#    Updated: 2020/06/16 19:16:04 by f0rsunka         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=RTv1
+NAME=  RT
 
 OS			=	$(shell uname -s)
 CC			=	gcc
