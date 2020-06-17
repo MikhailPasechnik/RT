@@ -12,6 +12,9 @@
 
 #include "libft.h"
 # define BUFF_SIZE 30
+# ifndef OPEN_MAX
+  # define OPEN_MAX 64
+# endif
 
 static int	gnl_read_line(int fd, int ret, char **s, char **line)
 {
@@ -43,7 +46,7 @@ static int	gnl_read_line(int fd, int ret, char **s, char **line)
 int	get_next_line(const int fd, char **line)
 {
 	int			ret_value;
-	static char	*s[OPEN_MAX];
+        static char	*s[OPEN_MAX];
 	char		buf[BUFF_SIZE + 1];
 	char		*tmp;
 
