@@ -16,6 +16,8 @@ void		ocl_release(t_ocl *cl)
 {
 	if (cl->context != NULL)
 		clReleaseContext(cl->context);
+	if (cl->device != NULL)
+		clReleaseDevice(cl->device);
 }
 
 char		*ocl_get_build_log(cl_program program, cl_device_id device_id)
