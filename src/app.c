@@ -89,6 +89,7 @@ int				app_start(t_app *app, char **argv, int argc)
 void			app_finish(t_app *app)
 {
 	delete_renderer(&app->ren);
+	SDL_DestroyRenderer(app->renderer);
 	app->win ? SDL_DestroyWindow(app->win) : 0;
 	ocl_release(&app->ocl);
 }
