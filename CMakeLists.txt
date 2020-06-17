@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-set(NAME RTv1)
+set(NAME RT)
 project(${NAME} C)
 find_package(OpenCL REQUIRED)
 
