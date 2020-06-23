@@ -169,3 +169,26 @@ t_mat4			m4_inv(t_mat4 *m)
 	inv_apply(m, c, &out, d);
 	return (out);
 }
+
+t_mat4			m4_transpose(t_mat4 m)
+{
+	t_mat4 t;
+
+	t.s0 = m.s0;
+	t.s1 = m.s4;
+	t.s2 = m.s8;
+	t.s3 = m.sC;
+	t.s4 = m.s1;
+	t.s5 = m.s5;
+	t.s6 = m.s9;
+	t.s7 = m.sD;
+	t.s8 = m.s2;
+	t.s9 = m.s6;
+	t.sA = m.sA;
+	t.sB = m.sE;
+	t.sC = m.s3;
+	t.sD = m.s7;
+	t.sE = m.sB;
+	t.sF = m.sF;
+	return (t);
+}

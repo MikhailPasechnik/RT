@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 00:55:29 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/21 22:07:13 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	screen_shot_name(char name[150])
 	now = time(NULL);
 	time_struct = localtime(&now);
 	strftime(time_str, 99, "%d %m %Y %H:%M:%S", time_struct);
-	ft_sprintf(name, "RTv1 %s", time_str);
+	ft_sprintf(name, "RT %s", time_str);
 }
 
 int		screen_shot(t_app *app)

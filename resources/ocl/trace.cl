@@ -32,14 +32,14 @@ static t_int solve_quadratic(t_real a, t_real b, t_real c,
 
 static void ray_to_object_space(__global t_obj *obj, t_ray *ray)
 {
-	t_mat4 inv_object_space;
+	t_mat4 transpose_obj_space;
 
-	m4_identity(&inv_object_space);
-	m4_set_rotation(&inv_object_space, obj->rot);
-	inv_object_space = m4_inv(&inv_object_space);
+	m4_identity(&transpose_obj_space);
+	m4_set_rotation(&transpose_obj_space, obj->rot);
+	transpose_obj_space = m4_transpose(transpose_obj_space);
 	ray->o -= obj->pos;
-	ray->o = m4_mul_vec3(&inv_object_space, &ray->o);
-	ray->d = m4_mul_vec3(&inv_object_space, &ray->d);
+	ray->o = m4_mul_vec3(&transpose_obj_space, &ray->o);
+	ray->d = m4_mul_vec3(&transpose_obj_space, &ray->d);
 }
 
 static void hit_to_world_space(__global t_obj *obj, t_hit *hit)

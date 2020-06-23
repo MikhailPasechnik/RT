@@ -19,7 +19,7 @@ add_executable(${NAME} ${SRC})
 # Tests
 list(FILTER SRC EXCLUDE REGEX "main.c")
 
-file(GLOB_RECURSE RES_CL res/ocl/* include/obj.h)
+file(GLOB_RECURSE RES_CL resources/ocl/* include/obj.h)
 
 ADD_CUSTOM_TARGET(copy_runtime_dep ALL)
 # we don't want to copy if we're building in the source dir
@@ -27,9 +27,9 @@ if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
     # list of files for which we add a copy rule
     foreach(item IN LISTS RES_CL)
         get_filename_component(barename ${item} NAME)
-        message(STATUS "${item} -> ${CMAKE_CURRENT_BINARY_DIR}/res/ocl/${barename}")
+        message(STATUS "${item} -> ${CMAKE_CURRENT_BINARY_DIR}/resources/ocl/${barename}")
         add_custom_command(TARGET copy_runtime_dep POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy "${item}" "${CMAKE_CURRENT_BINARY_DIR}/res/ocl/${barename}"
+                COMMAND ${CMAKE_COMMAND} -E copy "${item}" "${CMAKE_CURRENT_BINARY_DIR}/resources/ocl/${barename}"
                 DEPENDS "${item}"
                 )
     endforeach()
