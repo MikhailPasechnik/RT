@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 14:55:18 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/06/21 22:06:57 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		main(int argc, char **argv)
 	t_app app;
 
 	if (argc > 2)
-		return (app_error("Too much arguments! RTv1 || RTv1 scenename\n", 1));
+		return (app_error("Too much arguments! RT || RT scenename\n", 1));
 	ft_bzero(&app, sizeof(t_app));
 	parser(&app, argc > 1 ? argv[1] : "./scene/simple.yml");
 	!sdl_init() ? exit(1) : 0;
