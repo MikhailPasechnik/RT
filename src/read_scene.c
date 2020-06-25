@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 12:39:36 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 22:58:04 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	parser(t_app *app, char *scene)
 	if ((fd = open(scene, O_RDONLY)) < 0)
 		kill("Open door!");
 	app->scene = read_scene(fd, &(app->lines));
+	close(fd);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 4);
 	n = (app->op.light_count) * 6 + 4;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/06/22 00:25:15 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/06/25 23:00:27 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,8 @@ void					parse_real(char *str, void *vp);
 void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);
 void					parse_id(char *str, void *vp);
+void					delete_linked_lists(t_app *app);
+//void					printing(t_app *app);
 
 /*
 ** Navigation functions

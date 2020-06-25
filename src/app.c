@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 00:17:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 22:54:15 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void			app_finish(t_app *app)
 {
 	delete_renderer(&app->ren);
 	SDL_DestroyRenderer(app->renderer);
+	delete_linked_lists(app);
 	app->win ? SDL_DestroyWindow(app->win) : 0;
 	ocl_release(&app->ocl);
 }

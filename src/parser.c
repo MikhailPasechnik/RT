@@ -6,13 +6,32 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 13:16:38 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 22:55:07 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
 #define PHELP(str, p, f) ((t_phelp){str, ft_strlen(str), p, f})
+
+void		delete_linked_lists(t_app *app)
+{
+	t_obj	*obj;
+	t_light	*light;
+
+	while (app->light_list)
+	{
+		light = app->light_list->content;
+		free(light);
+		app->light_list = app->light_list->next;
+	}
+	while (app->obj_list)
+	{
+		obj = app->obj_list->content;
+		free(obj);
+		app->obj_list = app->obj_list->next;
+	}
+}
 
 static void	init_obj(t_phelp *phelp, t_obj *ol)
 {
