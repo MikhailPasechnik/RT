@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 12:39:36 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 16:15:05 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,41 @@ char	**read_scene(int fd, int *lines)
 	return (scn);
 }
 
+void	printing(t_app *app)
+{
+	t_obj	*obj;
+	t_light	*light;
+
+	ft_printf("Camera position : [%.2f, %.2f, %.2f]\nCamera fov : [%.2f, %.2f, %.2f]\n",
+	app->cam.mtx, app->cam.fov);
+	while (app->obj_list)
+	{
+		obj = app->obj_list->content;
+		if (obj->id == ID_CON)
+			ft_printf("Cone position : [%.2f, %.2f, %.2f]\n", obj->pos);
+		else if (obj->id == ID_CUB)
+			ft_printf("Cube position : [%.2f, %.2f, %.2f]\n", obj->pos);
+		else if (obj->id == ID_CYL)
+			ft_printf("Cylinder position : [%.2f, %.2f, %.2f]\n", obj->pos);
+		else if (obj->id == ID_PLN)
+			ft_printf("Plane position : [%.2f, %.2f, %.2f]\n", obj->pos);
+		else if (obj->id == ID_SPH)
+			ft_printf("Sphere position : [%.2f, %.2f, %.2f]\n", obj->pos);
+		app->obj_list = app->obj_list->next;
+	}
+	while (app->light_list)
+	{
+		light = app->light_list->content;
+		if (light->id == ID_DIRECT)
+			ft_printf("Direct light position : [%.2f, %.2f, %.2f]\n", light->pos);
+		else if (light->id == ID_POINT)
+			ft_printf("Point light position : [%.2f, %.2f, %.2f]\n", light->pos);
+		else if (light->id == ID_AMB)
+			ft_printf("Ambient light position : [%.2f, %.2f, %.2f]\n", light->pos);
+		app->light_list = app->light_list->next;
+	}
+}
+
 void	parser(t_app *app, char *scene)
 {
 	int	n;
@@ -78,4 +113,6 @@ void	parser(t_app *app, char *scene)
 	parser_obj(app->scene, app, n);
 	if (!app->op.light_count || !app->op.obj_count)
 		kill("Incomplete scene");
+	printing(app);
+	close(fd);
 }

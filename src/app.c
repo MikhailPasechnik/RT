@@ -6,7 +6,7 @@
 /*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/05/15 18:53:46 by ktgri            ###   ########.fr       */
+/*   Updated: 2020/06/24 21:22:48 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int				app_start(t_app *app, char **argv, int argc)
 void			app_finish(t_app *app)
 {
 	delete_renderer(&app->ren);
+	delete_linked_light(app);
+	delete_linked_obj(app);
 	app->win ? SDL_DestroyWindow(app->win) : 0;
 	ocl_release(&app->ocl);
 }

@@ -6,7 +6,7 @@
 /*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/05/15 18:53:48 by ktgri            ###   ########.fr       */
+/*   Updated: 2020/06/25 16:14:49 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,8 @@ void					on_key_press(SDL_KeyboardEvent *event,
 int						new_renderer(t_renderer *ren, t_ocl *ocl,
 		char *src, char *options);
 void					delete_renderer(t_renderer *ren);
+void					delete_linked_light(t_app *app);
+void					delete_linked_obj(t_app *app);
 int						render(t_renderer *ren, t_ocl *ocl);
 
 /*
@@ -225,6 +227,7 @@ void					parse_real(char *str, void *vp);
 void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);
 void					parse_id(char *str, void *vp);
+void					printing(t_app *app);
 
 /*
 ** Navigation functions

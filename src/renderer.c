@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 00:52:53 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 16:14:55 by ktgri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,30 @@ int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 	if (OCL_ERROR(err, "Failed to create queue"))
 		return (0);
 	return (1);
+}
+
+void		delete_linked_light(t_app *app)
+{
+	t_light *light;
+
+	while (app->light_list)
+	{
+		light = app->light_list->content;
+		ft_bzero(light, app->light_list->content_size);
+		app->light_list = app->light_list->next;
+	}
+}
+
+void		delete_linked_obj(t_app *app)
+{
+	t_obj *obj;
+
+	while (app->obj_list)
+	{
+		obj = app->obj_list->content;
+		ft_bzero(obj, app->obj_list->content_size);
+		app->obj_list = app->obj_list->next;
+	}
 }
 
 void		delete_renderer(t_renderer *ren)
