@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   m3d.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 01:52:14 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 02:28:14 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/25 14:37:31 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_mat4				look_at(t_vec3 from, t_vec3 to);
 **		https://www.sanfoundry.com/c-program-find-inverse-matrix/
 */
 t_real				m4_det(t_mat4 *m);
-t_mat4				*m4_inv(t_mat4 *m, t_mat4 *out);
 
 /*
 ** Vec3 ops

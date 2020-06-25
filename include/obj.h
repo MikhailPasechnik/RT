@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/04/22 05:11:09 by student          ###   ########.fr       */
+/*   Updated: 2020/06/23 20:20:45 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef cl_float3		t_color;
 # define ID_CYL 3
 # define ID_CON	4
 # define ID_CUB	5
+# define ID_PAR	6
 # define ID_DIRECT 1
 # define ID_POINT 2
 # define ID_AMB 3
@@ -44,6 +45,7 @@ typedef cl_float3		t_color;
 # define T_CYL "cylinder"
 # define T_CON "cone"
 # define T_CUB "cube"
+# define T_PAR "paraboloid"
 # define T_LIGHT "light"
 # define T_CAM "camera"
 # define IS_SPH(o) ((o)->id == (ID_SPH))
@@ -51,6 +53,7 @@ typedef cl_float3		t_color;
 # define IS_CYL(o) ((o)->id == (ID_CYL))
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
+# define IS_PAR(o) ((o)->id == (ID_PAR))
 
 /*
 ** OpenCL compatible structs

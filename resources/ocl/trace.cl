@@ -252,10 +252,41 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	return (1);
 }
 
+static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
+{
+    t_real a;
+    t_real b;
+    t_real c;
+    t_real t0;
+    t_real t1;
+
+	ray_to_object_space(obj, &ray);
+
+	a = ray.d.x * ray.d.x + ray.d.y * ray.d.y;
+	b = 2.0 * (ray.o.x * ray.d.x + ray.o.y * ray.d.y - 0.5 * ray.d.z);
+	c = ray.o.x * ray.o.x + ray.o.y * ray.o.y - ray.o.z;
+
+	if (!solve_quadratic(a, b, c, &t0, &t1))
+		return (0);
+	
+	if (t0 < 0)
+		return (0);
+	if (t0 <= EPSILON)
+		return (0);
+
+    hit->p = ray.o + ray.d * t0;
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
+    hit->obj = obj;
+	hit_to_world_space(obj, hit);
+    return (1);
+}
+
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	return (0);
 }
+
+
 /*
 ** Check that distance from origin to new hit is smaller than old
 ** and update old with new in that case.
@@ -309,6 +340,8 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
             got_hit = cone_trace(&scene[size], *ray, &tmp);
         else if (IS_CUB(&scene[size]))
             got_hit = cube_trace(&scene[size], *ray, &tmp);
+		else if (IS_PAR(&scene[size]))
+			got_hit = paraboloid_trace(&scene[size], *ray, &tmp);
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
     }
