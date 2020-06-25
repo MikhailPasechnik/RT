@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/25 16:15:05 by ktgri            ###   ########.fr       */
+/*   Updated: 2020/06/25 22:33:57 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**read_scene(int fd, int *lines)
 	}
 	return (scn);
 }
-
+/*
 void	printing(t_app *app)
 {
 	t_obj	*obj;
@@ -96,7 +96,7 @@ void	printing(t_app *app)
 		app->light_list = app->light_list->next;
 	}
 }
-
+*/
 void	parser(t_app *app, char *scene)
 {
 	int	n;
@@ -107,12 +107,12 @@ void	parser(t_app *app, char *scene)
 	if ((fd = open(scene, O_RDONLY)) < 0)
 		kill("Open door!");
 	app->scene = read_scene(fd, &(app->lines));
+	close(fd);
 	parser_cam(&app->cam, app->scene);
 	parser_light(app->scene, app, 4);
 	n = (app->op.light_count) * 6 + 4;
 	parser_obj(app->scene, app, n);
 	if (!app->op.light_count || !app->op.obj_count)
 		kill("Incomplete scene");
-	printing(app);
-	close(fd);
+//	printing(app);
 }
