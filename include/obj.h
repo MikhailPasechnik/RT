@@ -6,7 +6,7 @@
 /*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/23 20:20:45 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/06/26 18:14:58 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef cl_float3		t_color;
 # define ID_CON	4
 # define ID_CUB	5
 # define ID_PAR	6
+# define ID_PCL	7
+# define ID_ELL	8
 # define ID_DIRECT 1
 # define ID_POINT 2
 # define ID_AMB 3
@@ -46,6 +48,8 @@ typedef cl_float3		t_color;
 # define T_CON "cone"
 # define T_CUB "cube"
 # define T_PAR "paraboloid"
+# define T_PCL "parabolic cylinder"
+# define T_ELL "ellipse"
 # define T_LIGHT "light"
 # define T_CAM "camera"
 # define IS_SPH(o) ((o)->id == (ID_SPH))
@@ -54,6 +58,8 @@ typedef cl_float3		t_color;
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
 # define IS_PAR(o) ((o)->id == (ID_PAR))
+# define IS_PCL(o) ((o)->id == (ID_PCL))
+# define IS_ELL(o) ((o)->id == (ID_ELL))
 
 /*
 ** OpenCL compatible structs

@@ -1,0 +1,23 @@
+- type: camera
+  position:     [0, -10, 10]
+  rotation:     [0, 0, 0]
+  fov:          80
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  rotation:     [100, 0, -85]
+  intensity:    1
+  dispersion:   1
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  rotation:     [100, 0, 85]
+  intensity:    1
+  dispersion:   1
+- type: ellipse
+  position:     [0, 0, 0]
+  color:        [110, 130, 130]
+  specular:     50
+  reflective:   50
+  radius:       1
+  rotation:     [0, 90, 0]

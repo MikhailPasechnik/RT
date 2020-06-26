@@ -6,7 +6,7 @@
 /*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/23 20:19:58 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/06/26 18:13:59 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ int		is_valid_obj_name(t_obj *ol, char *str)
 		ol->id = ID_CUB;
 	else if (!ft_strcmp(str, T_PAR))
 		ol->id = ID_PAR;
+	else if (!ft_strcmp(str, T_PCL))
+		ol->id = ID_PCL;
+	else if (!ft_strcmp(str, T_ELL))
+		ol->id = ID_ELL;
 	else
 		kill("!is_valid_obj_name");
 	return (1);

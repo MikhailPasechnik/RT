@@ -6,7 +6,7 @@
 #    By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/06/16 19:16:41 by f0rsunka         ###   ########.fr        #
+#    Updated: 2020/06/26 15:12:39 by f0rsunka         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,6 @@ SRC_FILES	=			\
 	ocl/ocl_utils.c		\
 	math3d/mat4.c  		\
 	math3d/mat4_op.c  	\
-	math3d/mat4_inv.c  	\
 	math3d/mat4_rts.c  	\
 	math3d/mat4_transform.c  \
 	math3d/mat4_utils.c \
