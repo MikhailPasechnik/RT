@@ -6,7 +6,7 @@
 /*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/26 18:14:58 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:12:24 by f0rsunka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ typedef cl_float3		t_color;
 # define ID_PAR	6
 # define ID_PCL	7
 # define ID_ELL	8
+# define ID_HCL	9
+# define ID_HTS	10
+# define ID_HPR	11
 # define ID_DIRECT 1
 # define ID_POINT 2
 # define ID_AMB 3
@@ -50,6 +53,9 @@ typedef cl_float3		t_color;
 # define T_PAR "paraboloid"
 # define T_PCL "parabolic cylinder"
 # define T_ELL "ellipse"
+# define T_HCL "hyperbolic cylinder"
+# define T_HTS "hyperboloid with two sheets"
+# define T_HPR "hyperbolic paraboloid"
 # define T_LIGHT "light"
 # define T_CAM "camera"
 # define IS_SPH(o) ((o)->id == (ID_SPH))
@@ -60,6 +66,9 @@ typedef cl_float3		t_color;
 # define IS_PAR(o) ((o)->id == (ID_PAR))
 # define IS_PCL(o) ((o)->id == (ID_PCL))
 # define IS_ELL(o) ((o)->id == (ID_ELL))
+# define IS_HCL(o) ((o)->id == (ID_HCL))
+# define IS_HTS(o) ((o)->id == (ID_HTS))
+# define IS_HPR(o) ((o)->id == (ID_HPR))
 
 /*
 ** OpenCL compatible structs

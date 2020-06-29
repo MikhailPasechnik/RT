@@ -291,15 +291,15 @@ static int ellipse_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	// PROLATE SPHEROID //
 
-	// a = (ray.d.x * ray.d.x) / 16.0 + (ray.d.y * ray.d.y) / 16.0 + (ray.d.z * ray.d.z) / 4.0;
-	// b = 2 * ((ray.o.x * ray.d.x) / 16.0 + (ray.o.y * ray.d.y) / 16.0 + (ray.o.z * ray.d.z) / 4.0);
-	// c = (ray.o.x * ray.o.x) / 16.0 + (ray.o.y * ray.o.y) / 16.0 + (ray.o.z * ray.o.z) / 4.0 - obj->radius * obj->radius;
+	a = (ray.d.x * ray.d.x) / 16.0 + (ray.d.y * ray.d.y) / 16.0 + (ray.d.z * ray.d.z) / 4.0;
+	b = 2 * ((ray.o.x * ray.d.x) / 16.0 + (ray.o.y * ray.d.y) / 16.0 + (ray.o.z * ray.d.z) / 4.0);
+	c = (ray.o.x * ray.o.x) / 16.0 + (ray.o.y * ray.o.y) / 16.0 + (ray.o.z * ray.o.z) / 4.0 - obj->radius * obj->radius;
 	
 	// OBLATE SPHEROID //
 	
-	a = ((ray.d.x * ray.d.x) / 25.0) + ((ray.d.y * ray.d.y) / 4.0) + ((ray.d.z * ray.d.z) / 4.0);
-	b = 2 * (((ray.o.x * ray.d.x) / 25.0) + ((ray.o.y * ray.d.y) / 4.0) + ((ray.o.z * ray.d.z) / 4.0));
-	c = ((ray.o.x * ray.o.x) / 25.0) + ((ray.o.y * ray.o.y) / 4.0) + ((ray.o.z * ray.o.z) / 4.0) - obj->radius * obj->radius;
+	// a = ((ray.d.x * ray.d.x) / 25.0) + ((ray.d.y * ray.d.y) / 4.0) + ((ray.d.z * ray.d.z) / 4.0);
+	// b = 2 * (((ray.o.x * ray.d.x) / 25.0) + ((ray.o.y * ray.d.y) / 4.0) + ((ray.o.z * ray.d.z) / 4.0));
+	// c = ((ray.o.x * ray.o.x) / 25.0) + ((ray.o.y * ray.o.y) / 4.0) + ((ray.o.z * ray.o.z) / 4.0) - obj->radius * obj->radius;
 
 	// a = ((ray.d.x * ray.d.x) / 4.0) + ((ray.d.y * ray.d.y) / 16.0) + ((ray.d.z * ray.d.z) / 16.0);
 	// b = 2 * (((ray.o.x * ray.d.x) / 4.0) + ((ray.o.y * ray.d.y) / 16.0) + ((ray.o.z * ray.d.z) / 16.0));
@@ -346,6 +346,87 @@ static int parabolic_cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	a = ray.d.x * ray.d.x;
 	b = 2.0 * (ray.o.x * ray.d.x - 5.0 * ray.d.y);
 	c = ray.o.x * ray.o.x - 5.0 * ray.o.y;
+
+	if (!solve_quadratic(a, b, c, &t0, &t1))
+		return (0);
+	
+	if (t0 < 0 || t0 <= EPSILON)
+		return (0);
+
+    hit->p = ray.o + ray.d * t0;
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
+    hit->obj = obj;
+	hit_to_world_space(obj, hit);
+    return (1);
+}
+
+static int hyperbolic_cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
+{
+    t_real a;
+    t_real b;
+    t_real c;
+    t_real t0;
+    t_real t1;
+
+	ray_to_object_space(obj, &ray);
+
+	a = ((ray.d.x * ray.d.x) * 0.25) - ((ray.d.y * ray.d.y) * 0.0625);
+	b = 2.0 * (((ray.d.x * ray.o.x) * 0.25) - ((ray.d.y * ray.o.y) * 0.0625));
+	c = ((ray.o.x * ray.o.x) * 0.25) - ((ray.o.y * ray.o.y) * 0.0625) + 1.0;
+
+	if (!solve_quadratic(a, b, c, &t0, &t1))
+		return (0);
+	
+	if (t0 < 0 || t0 <= EPSILON)
+		return (0);
+
+    hit->p = ray.o + ray.d * t0;
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
+    hit->obj = obj;
+	hit_to_world_space(obj, hit);
+    return (1);
+}
+
+static int hyperbolic_two_sheets_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
+{
+    t_real a;
+    t_real b;
+    t_real c;
+    t_real t0;
+    t_real t1;
+
+	ray_to_object_space(obj, &ray);
+
+	a = - (ray.d.x * ray.d.x) - (ray.d.y * ray.d.y) + ray.d.z * ray.d.z;
+	b = 2.0 * (- (ray.o.x * ray.d.x) - (ray.o.y * ray.d.y) + ray.o.z * ray.d.z);
+	c = - (ray.o.x * ray.o.x) - (ray.o.y * ray.o.y) + ray.o.z * ray.o.z - 1.0;
+
+	if (!solve_quadratic(a, b, c, &t0, &t1))
+		return (0);
+	
+	if (t0 < 0 || t0 <= EPSILON)
+		return (0);
+
+    hit->p = ray.o + ray.d * t0;
+	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
+    hit->obj = obj;
+	hit_to_world_space(obj, hit);
+    return (1);
+}
+
+static int hyperbolic_paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
+{
+    t_real a;
+    t_real b;
+    t_real c;
+    t_real t0;
+    t_real t1;
+
+	ray_to_object_space(obj, &ray);
+
+	a = ((ray.d.x * ray.d.x) * 1.1) - ((ray.d.y * ray.d.y) * 1.0);
+	b = 2.0 * ((ray.d.x * ray.o.x) * 1.1) - 2.0 * ((ray.d.y * ray.o.y) * 1.0) - ray.d.z;
+	c = ((ray.o.x * ray.o.x) * 1.1) - ((ray.o.y * ray.o.y) * 1.0) - ray.o.z;
 
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
@@ -425,6 +506,12 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
 			got_hit = parabolic_cylinder_trace(&scene[size], *ray, &tmp);
 		else if (IS_ELL(&scene[size]))
 			got_hit = ellipse_trace(&scene[size], *ray, &tmp);
+		else if (IS_HCL(&scene[size]))
+			got_hit = hyperbolic_cylinder_trace(&scene[size], *ray, &tmp);
+		else if (IS_HTS(&scene[size]))
+			got_hit = hyperbolic_two_sheets_trace(&scene[size], *ray, &tmp);
+		else if (IS_HPR(&scene[size]))
+			got_hit = hyperbolic_paraboloid_trace(&scene[size], *ray, &tmp);
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
     }

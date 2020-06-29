@@ -1,5 +1,5 @@
 - type: camera
-  position:     [0, -10, 10]
+  position:     [0, -10, 0]
   rotation:     [0, 0, 0]
   fov:          80
 - type: light
@@ -14,10 +14,10 @@
   rotation:     [100, 0, 85]
   intensity:    1
   dispersion:   1
-- type: ellipse
+- type: hyperbolic paraboloid
   position:     [0, 0, 0]
   color:        [110, 130, 130]
   specular:     50
   reflective:   50
   radius:       1
-  rotation:     [0, 90, 0]
+  rotation:     [0, 0, 0]
