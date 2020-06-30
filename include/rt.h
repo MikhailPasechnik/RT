@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/06/26 22:46:57 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/06/30 20:19:53 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
-# define RT_WIN_WIDTH 500
-# define RT_WIN_HEIGHT 500
+# define RT_WIN_WIDTH 800
+# define RT_WIN_HEIGHT 800
 # define RT_BUF_EXTRA 50
 
 /*

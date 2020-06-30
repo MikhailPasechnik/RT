@@ -1,5 +1,8 @@
 #include "rt.hcl"
 
+#define min(x, y) ((x) < (y) ? (x) : (y))
+#define max(x, y) ((x) > (y) ? (x) : (y))
+
 static void swap(t_real *a, t_real *b)
 {
 	t_real tmp;
@@ -281,11 +284,53 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     return (1);
 }
 
+/*
+** b[2] - bounds min and max = height / 2
+** the center of the cube is located at the intersection of the diagonals
+*/
+
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
-	return (0);
-}
+	t_vec3	b[2];
+	t_vec3	inv_dir;
+	t_real	tmin;
+	t_real	tmax;
+	t_real	t1;
+	t_real	t2;
+	t_int	i;
 
+	ray_to_object_space(obj, &ray);
+
+	b[0] = VEC(obj->height / -2, obj->height / -2, obj->height / -2);
+	b[1] = VEC(obj->height / 2, obj->height / 2, obj->height / 2);
+
+	inv_dir = 1 / ray.d;
+
+	t1 = (b[0][0] - ray.o[0]) * inv_dir[0];
+	t2 = (b[1][0] - ray.o[0]) * inv_dir[0];
+
+	tmin = min(t1, t2);
+	tmax = max(t1, t2);
+
+	i = 0;
+	while (++i < 3)
+	{
+		t1 = (b[0][i] - ray.o[i]) * inv_dir[i];
+        t2 = (b[1][i] - ray.o[i]) * inv_dir[i];
+ 
+        tmin = max(tmin, min(t1, t2));
+        tmax = min(tmax, max(t1, t2));
+	}
+	if (tmax < max(tmin, 0.00))
+		return (0);
+
+	hit->p = ray.o + ray.d * tmin;
+	hit->n = normalize(hit->p);
+    hit->obj = obj;
+	hit_to_world_space(obj, hit);
+
+	return (1);
+}
 
 /*
 ** Check that distance from origin to new hit is smaller than old
