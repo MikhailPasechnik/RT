@@ -296,7 +296,6 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t_real	tmax;
 	t_real	t1;
 	t_real	t2;
-	t_int	i;
 
 	ray_to_object_space(obj, &ray);
 
@@ -307,21 +306,24 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	tmax = INFINITY;
 	tmin = -INFINITY;
-	t1 = (b[0][0] - ray.o[0]) * inv_dir[0];
-	t2 = (b[1][0] - ray.o[0]) * inv_dir[0];
+	t1 = (b[0].x - ray.o.x) * inv_dir.x;
+	t2 = (b[1].x - ray.o.x) * inv_dir.x;
 
 	tmin = min(t1, t2);
 	tmax = max(t1, t2);
 
-	i = 0;
-	while (++i < 3)
-	{
-		t1 = (b[0][i] - ray.o[i]) * inv_dir[i];
-        t2 = (b[1][i] - ray.o[i]) * inv_dir[i];
- 
-        tmin = max(tmin, min(t1, t2));
-        tmax = min(tmax, max(t1, t2));
-	}
+	t1 = (b[0].y - ray.o.y) * inv_dir.y;
+	t2 = (b[1].y - ray.o.y) * inv_dir.y;
+
+	tmin = max(tmin, min(t1, t2));
+	tmax = min(tmax, max(t1, t2));
+
+	t1 = (b[0].z - ray.o.z) * inv_dir.z;
+	t2 = (b[1].z - ray.o.z) * inv_dir.z;
+
+	tmin = max(tmin, min(t1, t2));
+	tmax = min(tmax, max(t1, t2));
+
 	if (tmax < max(tmin, 0.00))
 		return (0);
 
