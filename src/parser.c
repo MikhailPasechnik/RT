@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/25 22:55:07 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/06 19:39:20 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 {
 	ft_bzero(phelp, sizeof(t_phelp) * 8);
 	phelp[0] = PHELP("  position:", &ol->pos, parse_vec3);
-	phelp[1] = PHELP("  color:", &ol->mat.diffuse, parse_color);
+	phelp[1] = PHELP("  color:", &ol->mat.diff, parse_color);
 	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3);
 	phelp[3] = PHELP("  radius:", &ol->radius, parse_real);
 	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real);

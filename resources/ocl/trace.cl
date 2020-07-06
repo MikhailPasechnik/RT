@@ -306,6 +306,8 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	inv_dir = 1 / ray.d;
 
+	tmax = INFINITY;
+	tmin = -INFINITY;
 	t1 = (b[0][0] - ray.o[0]) * inv_dir[0];
 	t2 = (b[1][0] - ray.o[0]) * inv_dir[0];
 

@@ -54,12 +54,12 @@ __kernel void k_render(
 				{
 					ref = reflect(light_dir, camera_hit.n);
 					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
-					diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity *
+					diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
 							lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
 				}
 			}
 			else if (lights[i].id == ID_AMB)
-				diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
+				diffuse += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
 			i++;
 		}
 		color = diffuse * 1.5f + specular * 0.1f;

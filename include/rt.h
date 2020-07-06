@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/06/30 20:19:53 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/06 19:53:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,7 @@ void					parse_id(char *str, void *vp);
 void					delete_linked_lists(t_app *app);
 void					printing_light(t_app *app);
 void					printing_obj(t_app *app);
-void					printing_obj_r(t_app *app);
-
+void					print_parametrs(t_obj *obj);
 /*
 ** Navigation functions
 */

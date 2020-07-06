@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_valid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/23 20:19:58 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/07/06 19:58:21 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int		is_valid_obj_name(t_obj *ol, char *str)
 	else if (!ft_strcmp(str, T_PAR))
 		ol->id = ID_PAR;
 	else
-		kill("!is_valid_obj_name");
+		kill("Usage objects : sphere/plane/cylinder/cone/cube/paraboloid");
 	return (1);
 }
 
 int		kill(char *message)
 {
-	perror(message);
-	exit(1);
+	ft_printf("%s\nERRNO - %d: %s\n", message, errno, strerror(errno));
+	exit(EXIT_SUCCESS);
 }
 
 void	check_obj(t_app *app)
@@ -55,9 +55,9 @@ void	check_obj(t_app *app)
 		if (obj->id == 1)
 			obj->rot = VEC(0, 0, 0);
 		if (obj->id != 2 && obj->id != 5 && obj->radius < 0)
-			kill("Raduis so small!");
+			kill("The raduis is too small!");
 		if (obj->mat.specular < 0 || obj->mat.reflection < 0)
-			kill("Parametr must be positive!");
+			kill("The value must be positive!");
 		objects = objects->next;
 	}
 }
@@ -72,9 +72,9 @@ void	check_light(t_app *app)
 	{
 		lig = lights->content;
 		if (lig->intensity < 0)
-			kill("Intensity must be positive!");
+			kill("The intensity of light must be positive!");
 		if (lig->id < ID_DIRECT || lig->id > ID_AMB)
-			kill("Dispersion must be 1, 2 or 3!");
+			kill("The dispersion of light must be 1, 2 or 3!");
 		lights = lights->next;
 	}
 }

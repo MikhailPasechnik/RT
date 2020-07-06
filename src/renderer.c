@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 00:52:53 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/06 19:39:30 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 			ren->program, 0, NULL, options, NULL, NULL),
 					"Failed to build program"))
 		return (log_build_log(ren, ocl, 2));
-	#ifdef CL_VERSION_2_0
+#ifdef CL_VERSION_2_0
 	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
 		ocl->device, 0, &err);
-	#else
+#else
 	ren->queue = clCreateCommandQueue(ocl->context,
 		ocl->device, 0, &err);
-	#endif
+#endif
 	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
 		return (0);

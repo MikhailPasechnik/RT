@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:42:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 12:48:25 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/06 18:19:57 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		ptr_atoi_int(char **str, int fraction)
 		++(*str);
 	}
 	if (n * sign > INT_MAX || n * sign < INT_MIN)
-		kill("Digit so big!");
+		kill("The number is too big");
 	return (n * sign);
 }
 
@@ -74,22 +74,22 @@ t_color	array_color(char *s)
 
 	ignore_str(&s);
 	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
-		kill("Error in array!");
+		kill("RGB array installation error! Valid value : [r, g, b]");
 	i = 0;
 	while (*s && i++ < 3)
 	{
 		ignore_str(&s);
 		if (i == 1)
-			c.x = ptr_atoi(&s) / 255.0;
+			c.v4[0] = ptr_atoi(&s) / 255.0;
 		else if (i == 2)
-			c.y = ptr_atoi(&s) / 255.0;
+			c.v4[1] = ptr_atoi(&s) / 255.0;
 		else if (i == 3)
-			c.z = ptr_atoi(&s) / 255.0;
+			c.v4[2] = ptr_atoi(&s) / 255.0;
 		else
-			kill("Error in array!");
+			kill("RGB array installation error!");
 		ignore_str(&s);
 		if (i < 3 && *s != ',')
-			kill("Error in array coordinate!");
+			kill("RGB array installation error!");
 		++s;
 		ignore_str(&s);
 	}
@@ -103,22 +103,22 @@ t_vec3	array_attack(char *s)
 
 	ignore_str(&s);
 	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
-		kill("Error in array!");
+		kill("XYZ array installation error! Valid value : [x, y, z]");
 	c = 0;
 	while (*s && c++ < 3)
 	{
 		ignore_str(&s);
 		if (c == 1)
-			v.x = ptr_atoi(&s);
+			v.v4[0] = ptr_atoi(&s);
 		else if (c == 2)
-			v.y = ptr_atoi(&s);
+			v.v4[1] = ptr_atoi(&s);
 		else if (c == 3)
-			v.z = ptr_atoi(&s);
+			v.v4[2] = ptr_atoi(&s);
 		else
-			kill("Error in array!");
+			kill("XYZ array installation error!");
 		ignore_str(&s);
 		if (c < 3 && *s != ',')
-			kill("Error in array coordinate!");
+			kill("XYZ array installation error!");
 		++s;
 		ignore_str(&s);
 	}
