@@ -26,7 +26,7 @@ void print_render_args(t_options *options, t_cam* camera,
 		camera->mtx.sD,
 		camera->mtx.sE
     );
-    int i = options->obj_count;
+    t_uint i = options->obj_count;
     while (i < options->obj_count)
     {
         printf("Obj: id: %d radius: %f pos: {%f %f %f}\n",

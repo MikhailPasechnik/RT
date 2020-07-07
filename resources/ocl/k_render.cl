@@ -23,9 +23,12 @@ __kernel void k_render(
 	t_color		depth_color;
 	t_vec3		ref;
 	t_vec3		light_dir;
+	t_real		d;
+	t_real		tmp;
 
 	normal_color = COLOR(0,0,0,1);
 	depth_color = COLOR(0,0,0,1);
+	d = 4 * clamp((1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d)))), 0.0f, 1.0f); // ?
 	int id = get_global_id(0);
 	camera_ray = new_camera_ray(&options, &camera,
 			(uint2){id % options.width, id / options.height});
@@ -53,7 +56,14 @@ __kernel void k_render(
 				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
 				{
 					ref = reflect(light_dir, camera_hit.n);
-					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
+					tmp = dot(ref, -camera_ray.d);
+					if (tmp > 0.0f)
+					{
+						specular = native_powr(tmp, 50) * d;
+						specular = clamp(specular, 0.0f, 1.0f);
+					}
+					specular += lights[i].intensity * specular;
+//					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
 					diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
 							lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
 				}

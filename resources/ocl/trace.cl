@@ -128,7 +128,6 @@ static int sphere_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 static int plane_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
     t_real d;
-    t_vec3 v;
     t_real t;
     t_vec3 n;
 
@@ -176,7 +175,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
-	if (t0 < 0. || t1 > 0. && t1 < t0)
+	if ((t0 < 0. || t1 > 0.) && t1 < t0)
 		swap(&t0, &t1);
 
 	if (!obj->infinite)
