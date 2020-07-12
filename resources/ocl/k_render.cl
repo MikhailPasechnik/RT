@@ -13,22 +13,21 @@ __kernel void k_render(
 	__global t_int* depth_buffer
 )
 {
-	t_ray		camera_ray;
-	t_int		obj_index;
-	t_hit		camera_hit;
-	t_ray		shadow_ray;
-	t_hit		shadow_hit;
-	t_color		color;
-	t_color		normal_color;
-	t_color		depth_color;
-	t_vec3		ref;
-	t_vec3		light_dir;
-	t_real		d;
-	t_real		tmp;
+	t_ray	camera_ray;
+	t_int	obj_index;
+	t_hit	camera_hit;
+	t_ray	shadow_ray;
+	t_hit	shadow_hit;
+	t_color	color;
+	t_color	normal_color;
+	t_color	depth_color;
+	t_vec3	light_dir;
+	t_vec3	ref;
+	t_real	d;
 
+	d = 1 * clamp(1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d))), 0.0f, 1.0f);
 	normal_color = COLOR(0,0,0,1);
 	depth_color = COLOR(0,0,0,1);
-	d = 4 * clamp((1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d)))), 0.0f, 1.0f); // ?
 	int id = get_global_id(0);
 	camera_ray = new_camera_ray(&options, &camera,
 			(uint2){id % options.width, id / options.height});
@@ -39,40 +38,32 @@ __kernel void k_render(
 											 camera.mtx.sD,
 											 camera.mtx.sE)) / 50.0f;
 		normal_color = ((camera_hit.n * -1) + 1) / 2;
-		t_uint i = 0;
+		t_uint	i = -1;
+		t_uint	o = -1;
+		t_vec3	diffuse = VEC(0,0,0);
+		t_vec3	specular = VEC(0,0,0);
 		color = VEC(0,0,0);
-		t_vec3 diffuse = VEC(0,0,0);
-		t_real specular = 0;
-		while (i < options.light_count)
+		while (++i <= options.light_count)
 		{
 			if (lights[i].id == ID_DIRECT || lights[i].id == ID_POINT)
 			{
-				if (lights[i].id == ID_DIRECT)
-					light_dir = dir_from_rot(lights[i].rot);
-				else
-					light_dir = normalize(camera_hit.p - lights[i].pos);
+				light_dir = (lights[i].id == ID_DIRECT) ? dir_from_rot(lights[i].rot)
+					: normalize(camera_hit.p - lights[i].pos);
 				shadow_ray.o = camera_hit.p + camera_hit.n * 0.001f;
 				shadow_ray.d = -light_dir;
+				ref = reflect(light_dir, -camera_hit.n);
 				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
 				{
-					ref = reflect(light_dir, camera_hit.n);
-					tmp = dot(ref, -camera_ray.d);
-					if (tmp > 0.0f)
-					{
-						specular = native_powr(tmp, 50) * d;
-						specular = clamp(specular, 0.0f, 1.0f);
-					}
-					specular += lights[i].intensity * specular;
-//					specular += lights[i].intensity * pow(max(0.f, dot(ref, -camera_ray.d)), 50);
 					diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
-							lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
+						lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
+					specular += lights[i].intensity * lights[i].color * clamp(native_powr(dot(ref, camera_ray.d),
+						60.0f) * d, 0.0f, 1.0f) * objects->mat.specular / 10.0f;
 				}
 			}
 			else if (lights[i].id == ID_AMB)
 				diffuse += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
-			i++;
+			color = diffuse * 1.5f + specular;
 		}
-		color = diffuse * 1.5f + specular * 0.1f;
 	}
     else
 		color = options.background_color;
