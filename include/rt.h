@@ -14,6 +14,7 @@
 # define RT_H
 
 # include <math.h>
+# include <time.h>
 # include "libft.h"
 # include "ft_printf.h"
 # include "ocl.h"

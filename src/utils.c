@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <time.h>
-#include "../include/rt.h"
+#include "rt.h"
 
 size_t	rt_tab_len(char **tab)
 {
