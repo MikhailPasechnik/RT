@@ -73,6 +73,7 @@ typedef struct			s_options
 	t_uint				height;
 	t_uint				obj_count;
 	t_uint				light_count;
+	t_int				selection;
 }						t_options;
 
 typedef struct			s_cam

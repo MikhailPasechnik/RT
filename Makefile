@@ -18,8 +18,10 @@ CFLAGS		=	-Wall -Wextra  -Werror -D HOST_DEVICE
 
 SRC_FILES	=			\
 	app.c				\
+	options.c			\
 	app_utils.c			\
 	events.c			\
+	events_selection.c	\
 	file_io.c			\
 	main.c				\
 	renderer.c			\

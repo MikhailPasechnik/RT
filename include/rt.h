@@ -28,6 +28,7 @@
 # define RT_WIN_WIDTH 800
 # define RT_WIN_HEIGHT 800
 # define RT_BUF_EXTRA 50
+# define RT_CLICK_THRESHOLD 100
 
 /*
 ** Rt OpenCL source setup
@@ -126,6 +127,10 @@ typedef struct			s_app
 
 	int					lines;
 	char				**scene;
+
+	Uint32				ts_mouse_down;
+
+	t_int				selection;
 }						t_app;
 
 /*
@@ -136,6 +141,7 @@ void					app_finish(t_app *app);
 int						app_error(const char *msg, int returns);
 int						app_update_buffers(t_app *app);
 void					on_app_event(t_app *app, SDL_Event *event);
+void					init_options(t_options *op);
 
 /*
 ** GPU and CPU buffer management functions
@@ -183,6 +189,8 @@ void					on_window_size_change(SDL_WindowEvent *event,
 void					on_mouse_wheel(SDL_MouseWheelEvent *event,
 	t_app *app, int *changed);
 void					on_key_press(SDL_KeyboardEvent *event,
+	t_app *app, int *changed);
+void					on_mouse_click(SDL_MouseButtonEvent *event,
 	t_app *app, int *changed);
 
 /*

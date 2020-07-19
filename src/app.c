@@ -63,10 +63,8 @@ int				app_start(t_app *app, char **argv, int argc)
 	(void)argc;
 	app->op_changed = 1;
 	app->cm_changed = 1;
-	app->op.height = RT_WIN_HEIGHT;
-	app->op.width = RT_WIN_WIDTH;
 	app->render_buffer = RT_K_COLOR_ARG;
-	app->op.background_color = VEC(44 / 255.0, 44 / 255.0, 44 / 255.0);
+	init_options(&app->op);
 	if (!(ocl_init(&app->ocl)))
 		return (app_error("Failed to initialise OpenCL", 0));
 	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC, RT_CL_INCLUDE))
@@ -109,5 +107,8 @@ void			on_app_event(t_app *app, SDL_Event *event)
 		on_mouse_wheel(&event->wheel, app, &changed);
 	else if (event->type == SDL_KEYDOWN)
 		on_key_press(&event->key, app, &changed);
+	else if (event->type == SDL_MOUSEBUTTONDOWN ||
+			event->type == SDL_MOUSEBUTTONUP)
+		on_mouse_click(&event->button, app, &changed);
 	changed ? app_render(app) : 0;
 }
