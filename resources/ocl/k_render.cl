@@ -1,5 +1,18 @@
 #include "rt.hcl"
 
+static void		trace(
+						int id,
+						uint count,
+						t_options options,
+						__global t_obj* objects,
+						__global t_light* lights,
+						t_ray camera_ray,
+						t_cam camera,
+						__global t_int* color_buffer,
+						__global t_int* index_buffer,
+						__global t_int* normal_buffer,
+						__global t_int* depth_buffer);
+
 /*
 ** *********************************** **
 ** *********************************** **
@@ -8,57 +21,46 @@
 ** *********************************** **
 */
 
-/** *********************************** **/
-/** **************V1.0***************** **/
-/** *********************************** **/
-
-
-// int rand(int* seed) // 1 <= *seed < m
-// {
-//     int const a = 16807; //ie 7**5
-//     int const m = 2147483647; //ie 2**31-1
-
-//     *seed = (long(*seed * a))%m;
-//     return(*seed);
-// }
-
-// // t_real random_number_kernel(global int* seed_memory)
-// t_real random_number_kernel(void)
-// {
-//     int global_id = get_global_id(1) * get_global_size(0) + get_global_id(0); // Get the global id in 1D.
-
-//     // Since the Park-Miller PRNG generates a SEQUENCE of random numbers
-//     // we have to keep track of the previous random number, because the next
-//     // random number will be generated using the previous one.
-// 	// int seed = seed_memory[global_id];
-//     // static t_real seed = seed_memory[global_id];
-
-//     int random_number = rand(&seed); // Generate the next random number in the sequence.
-
-//     // seed_memory[global_id] = *seed; // Save the seed for the next time this kernel gets enqueued.
-// 	return (random_number);
-// }
-
-
-/** *********************************** **/
-/** **************V2.0***************** **/
-/** *********************************** **/
-
-
-static t_real random_number(t_options options, uint count)
+static float random_number(t_options options, uint count)
 {
-	float2 random;
+	uint2 random;
 
 	int global_id = get_global_id(1) * get_global_size(0) + get_global_id(0);
 	random.x = count % options.width;
 	random.y = count / options.height;
-	t_real seed = random.x + global_id;
-	t_real t = seed ^ (seed << (t_real)11.0);  
-	t_real result = random.y ^ (random.y >> (t_real)19.0) ^ (t ^ (t >> (t_real)8.0));
-	return (result);
+	int seed = random.x + global_id;
+	int t = seed ^ (seed << 11);  
+	int result = random.y ^ (random.y >> 19) ^ (t ^ (t >> 8));
+	return ((float)result / 10000.0 - result / 10000.0);
 }
 
 /** *********************************** **/
+
+static void		trace_random_ray(
+						int id,
+						uint count,
+						t_options options,
+						__global t_obj* objects,
+						__global t_light* lights,
+						t_cam camera,
+						t_hit camera_hit,
+						__global t_int* color_buffer,
+						__global t_int* index_buffer,
+						__global t_int* normal_buffer,
+						__global t_int* depth_buffer)
+{
+	float3 random_dir = (float3){random_number(options, count) - 0.5,
+								 random_number(options, count) - 0.5,
+								 random_number(options, count) - 0.5};
+	t_ray random_ray;
+	random_ray.o = camera_hit.p;
+	random_ray.d = normalize(random_dir);
+	if (count > 0)
+	{
+		trace(id, count, options, objects, lights, random_ray, camera, color_buffer, index_buffer, normal_buffer, depth_buffer);
+		count--;
+	}
+}
 
 static void		trace(
 						int id,
@@ -113,8 +115,8 @@ static void		trace(
 					diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity *
 							lights[i].color * max(0.f, dot(camera_hit.n, shadow_ray.d));
 				}
-				// else
-				// 	trace_random_ray(id, count, oprions, objects, lights, camera, camera_hit, color_buffer, index_buffer, normal_buffer, depth_buffer);
+				else
+					trace_random_ray(id, count, options, objects, lights, camera, camera_hit, color_buffer, index_buffer, normal_buffer, depth_buffer);
 			}
 			else if (lights[i].id == ID_AMB)
 				diffuse += camera_hit.obj->mat.diffuse * lights[i].intensity * lights[i].color;
@@ -130,38 +132,10 @@ static void		trace(
 	depth_buffer[id] = pack_color(&depth_color);
 	color_buffer[id] = pack_color(&color);
 
-	// 	trace_random_ray(id, count, oprions, objects, lights, camera, camera_hit, color_buffer, index_buffer, normal_buffer, depth_buffer);
+	trace_random_ray(id, count, options, objects, lights, camera, camera_hit, color_buffer, index_buffer, normal_buffer, depth_buffer);
 }
 
-static void		trace_random_ray(
-						int id,
-						uint count,
-						t_options options,
-						__global t_obj* objects,
-						__global t_light* lights,
-						t_cam camera,
-						t_hit camera_hit,
-						__global t_int* color_buffer,
-						__global t_int* index_buffer,
-						__global t_int* normal_buffer,
-						__global t_int* depth_buffer)
-{
-	float3 random_dir = (float3){random_number(options, count),
-								 random_number(options, count),
-								 random_number(options, count)};
-	// float3 random_dir = (float3){random_number_kernel(),
-	// 							random_number_kernel(),
-	// 							random_number_kernel()};
-	t_ray random_ray;
-	random_ray.o = camera_hit.p;
-	random_ray.d = normalize(random_dir);
-	if (count > 0)
-	{
-		trace(id, count, options, objects, lights, random_ray, camera, color_buffer, index_buffer, normal_buffer, depth_buffer);
-		count--;
-	}
 
-}
 __kernel void k_render(
 	t_options options,
 	t_cam camera,
