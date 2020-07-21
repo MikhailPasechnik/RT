@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:42:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/06 18:19:57 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/21 23:28:48 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_color	array_color(char *s)
 	t_color		c;
 
 	ignore_str(&s);
-	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
+	if (*s++ != '[' || s[ft_strlen(s) - 1] != ']' || s[ft_strlen(s)] != '\0')
 		kill("RGB array installation error! Valid value : [r, g, b]");
 	i = 0;
 	while (*s && i++ < 3)
@@ -102,7 +102,7 @@ t_vec3	array_attack(char *s)
 	t_vec3	v;
 
 	ignore_str(&s);
-	if (*s++ != '[' && s[ft_strlen(s) - 1] != ']' && s[ft_strlen(s)] != '\0')
+	if (*s++ != '[' || s[ft_strlen(s) - 1] != ']' || s[ft_strlen(s)] != '\0')
 		kill("XYZ array installation error! Valid value : [x, y, z]");
 	c = 0;
 	while (*s && c++ < 3)
