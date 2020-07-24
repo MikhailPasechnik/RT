@@ -25,6 +25,12 @@ typedef struct	s_hit {
 	__global t_obj	*obj;
 }				t_hit;
 
+typedef struct	s_colors {
+	t_color		color;
+	t_color		normal_color;
+	t_color		depth_color;
+}				t_colors;
+
 /*
 ** For each object perform intersection and if intersects set hit
 ** for the first time, later on hit choose which is closest
