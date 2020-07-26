@@ -53,6 +53,8 @@ static void		on_key_press1(SDL_KeyboardEvent *event,
 		app->render_buffer = RT_K_DEPTH_ARG;
 	else if (event->keysym.sym == SDLK_F4)
 		screen_shot(app);
+	else if (event->keysym.sym == SDLK_F5)
+		app->op.trace_changed = 0;
 }
 
 void			on_key_press(SDL_KeyboardEvent *event, t_app *app, int *changed)

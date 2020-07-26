@@ -25,9 +25,8 @@
   infinite:     0
 - type: sphere
   position:     [0, 10, 0]
-  color:        [110, 130, 130]
+  color:        [20, 40, 80]
   specular:     50
   reflective:   50
   radius:       4
   rotation:     [60, 0, 0]
-

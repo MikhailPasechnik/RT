@@ -63,6 +63,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	(void)argc;
 	app->op_changed = 1;
 	app->cm_changed = 1;
+	app->op.trace_changed = 1;
 	app->op.height = RT_WIN_HEIGHT;
 	app->op.width = RT_WIN_WIDTH;
 	app->render_buffer = RT_K_COLOR_ARG;

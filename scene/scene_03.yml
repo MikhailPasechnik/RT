@@ -1,9 +1,9 @@
 - type: camera
-  position:     [0, -10, 15]
+  position:     [0, 20, 15]
   rotation:     [180, 0, 0]
   fov:          80
 - type: light
-  color:        [210, 30, 230]
+  color:        [255, 250, 250]
   position:     [0, 0, 50]
   rotation:     [120, 0, 45]
   intensity:    1

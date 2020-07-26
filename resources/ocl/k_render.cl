@@ -104,6 +104,28 @@ void	fill_buffers(int id,
 	color_buffer[id] = pack_color(&color);
 }
 
+t_colors	add_color(t_colors c, uint micro_bounce, t_colors *add_light)
+{
+	// t_colors	add_light;
+
+	add_light->normal_color += c.normal_color;
+	add_light->depth_color += c.depth_color;
+	add_light->color += c.color;
+
+	// add_light->normal_color.x += add_light->normal_color.x / micro_bounce;
+	// add_light->normal_color.y += add_light->normal_color.y / micro_bounce;
+	// add_light->normal_color.z += add_light->normal_color.z / micro_bounce;
+
+	// add_light->depth_color.x += add_light->depth_color.x / micro_bounce;
+	// add_light->depth_color.y += add_light->depth_color.y / micro_bounce;
+	// add_light->depth_color.z += add_light->depth_color.z / micro_bounce;
+
+	// add_light->color.x += add_light->color.x / micro_bounce;
+	// add_light->color.y += add_light->color.y / micro_bounce;
+	// add_light->color.z += add_light->color.z / micro_bounce;
+	// return (add_light);
+}
+
 __kernel void k_render(
 	t_options options,
 	t_cam camera,
@@ -117,48 +139,80 @@ __kernel void k_render(
 {
 	t_ray		camera_ray;
 	t_hit		camera_hit;
+	float3		orig_pix;
 	t_int		obj_index;
 	t_colors	c;
 	t_colors	major_light;
 	t_colors	add_light;
-	uint		max_bounces = 20;
+	uint		max_bounces = 6;
 	uint		bounce = 0;
+	uint		micro_bounce;
 
 	int id = get_global_id(0);
 	camera_ray = new_camera_ray(&options, &camera,
 			(uint2){id % options.width, id / options.height});
 	while (bounce < max_bounces) //  ||			???(если bounce не первый и отскочил в свет)
 	{
-		if (bounce == 1)
-			camera_ray.o = camera_hit.p;
-		if (bounce != 0)
-			camera_ray.d = random_dir(bounce, options);
-		obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
-		// fill_buffers(id, obj_index, c.normal_color, c.depth_color, c.color, color_buffer, index_buffer, normal_buffer, depth_buffer);
 		if (bounce == 0)
 		{
+			obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
 			major_light.normal_color = c.normal_color;
 			major_light.depth_color = c.depth_color;
 			major_light.color = c.color;
+
+			major_light.normal_color.x += major_light.normal_color.x / bounce;
+			major_light.normal_color.y += major_light.normal_color.y / bounce;
+			major_light.normal_color.z += major_light.normal_color.z / bounce;
+			
+			orig_pix = camera_hit.p;
 		}
-		if (bounce >= 1)
+		camera_ray.o = orig_pix;
+		if (bounce != 0)
 		{
-			add_light.normal_color += c.normal_color;
-			add_light.depth_color += c.depth_color;
-			add_light.color += c.color;
+			// camera_ray.d = random_dir(bounce, options);
+			// obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+			// camera_ray.o = camera_hit.p;
+			// add_color(c, bounce, &add_light);
+			micro_bounce = 0;
+			while (micro_bounce < max_bounces)		
+			{
+				camera_ray.d = random_dir(micro_bounce, options);
+				obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+				camera_ray.o = camera_hit.p;
+				add_color(c, micro_bounce, &add_light);
+				micro_bounce++;
+			}
+				add_light.normal_color.x += add_light.normal_color.x / micro_bounce;
+				add_light.normal_color.y += add_light.normal_color.y / micro_bounce;
+				add_light.normal_color.z += add_light.normal_color.z / micro_bounce;
 
-			add_light.normal_color.x = add_light.normal_color.x / bounce;
-			add_light.normal_color.y = add_light.normal_color.y / bounce;
-			add_light.normal_color.z = add_light.normal_color.z / bounce;
+				add_light.depth_color.x += add_light.depth_color.x / micro_bounce;
+				add_light.depth_color.y += add_light.depth_color.y / micro_bounce;
+				add_light.depth_color.z += add_light.depth_color.z / micro_bounce;
 
-			add_light.depth_color.x = add_light.depth_color.x / bounce;
-			add_light.depth_color.y = add_light.depth_color.y / bounce;
-			add_light.depth_color.z = add_light.depth_color.z / bounce;
-
-			add_light.color.x = add_light.color.x / bounce;
-			add_light.color.y = add_light.color.y / bounce;
-			add_light.color.z = add_light.color.z / bounce;
+				add_light.color.x += add_light.color.x / micro_bounce;
+				add_light.color.y += add_light.color.y / micro_bounce;
+				add_light.color.z += add_light.color.z / micro_bounce;
 		}
+		// fill_buffers(id, obj_index, c.normal_color, c.depth_color, c.color, color_buffer, index_buffer, normal_buffer, depth_buffer);
+		// if (bounce >= 1)
+		// {
+		// 	add_light.normal_color += c.normal_color;
+		// 	add_light.depth_color += c.depth_color;
+		// 	add_light.color += c.color;
+
+		// 	add_light.normal_color.x = add_light.normal_color.x / bounce;
+		// 	add_light.normal_color.y = add_light.normal_color.y / bounce;
+		// 	add_light.normal_color.z = add_light.normal_color.z / bounce;
+
+		// 	add_light.depth_color.x = add_light.depth_color.x / bounce;
+		// 	add_light.depth_color.y = add_light.depth_color.y / bounce;
+		// 	add_light.depth_color.z = add_light.depth_color.z / bounce;
+
+		// 	add_light.color.x = add_light.color.x / bounce;
+		// 	add_light.color.y = add_light.color.y / bounce;
+		// 	add_light.color.z = add_light.color.z / bounce;
+		// }
 		bounce++;
 	}
 	c.normal_color = major_light.normal_color + add_light.normal_color;
