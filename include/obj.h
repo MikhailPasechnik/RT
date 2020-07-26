@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/06 19:39:10 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/26 16:34:02 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct			s_obj
 	t_real				height;
 	t_real				infinite;
 	t_int				id;
+	t_int				i; // for print change
 }						t_obj;
 
 typedef struct			s_light

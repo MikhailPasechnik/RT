@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/23 22:45:28 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/26 21:03:43 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);
 void					parse_id(char *str, void *vp);
 void					delete_linked_lists(t_app *app);
-int						save_prtcl(t_app *app, const char *file_name);
+int						save_prtcl(t_app *app, int changed, t_int i);
 void					printing_light(int fd, t_app *app);
 void					printing_obj(int fd, t_app *app);
 void					print_parametrs(int fd, t_obj *obj);

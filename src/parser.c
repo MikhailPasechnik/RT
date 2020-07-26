@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/06 19:39:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/26 19:50:08 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void		parser_obj(char **scn, t_app *app, int n)
 			phelp_run(8, phelp, scn[n]);
 			n++;
 		}
-		check_obj(app);
 		app->op.obj_count++;
 		ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
+		check_obj(app);
 	}
 }
 
@@ -103,8 +103,8 @@ void		parser_light(char **scn, t_app *app, int n)
 			phelp_run(5, phelp, scn[n]);
 			n++;
 		}
-		check_obj(app);
 		app->op.light_count++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
+		check_obj(app);
 	}
 }

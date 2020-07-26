@@ -2,51 +2,59 @@
 
 Camera :
 	FOV : 60
-	Position : [-20.00, 20.00, 30.00]
+	Position : [-29.09, -8.62, 32.18]
 
 List of lights :
-Point :
+Direct :
 	Color : [190, 0, 250]
-	Position : [40.00, 30.00, 50.00]
-	Rotation : [100.00, 0.00, 50.00]
+	Position : [-60.00, 30.00, 80.00]
+	Rotation : [120.00, 0.00, 10.00]
 	Intensity : 0.70
 Point :
 	Color : [0, 0, 250]
-	Position : [20.00, 50.00, 70.00]
-	Rotation : [170.00, 0.00, 60.00]
+	Position : [20.00, -50.00, 70.00]
+	Rotation : [100.00, 0.00, 70.00]
 	Intensity : 0.50
 Point :
 	Color : [250, 250, 250]
-	Position : [-30.00, 10.00, 150.00]
+	Position : [20.00, 100.00, 150.00]
 	Rotation : [120.00, 0.00, 45.00]
 	Intensity : 0.15
 
 List of objects :
-Sphere :
-	Radius : 3
+Sphere #1:
+	Radius : 5.00
+	Color : [150, 150, 150]
+	Position : [10.00, 12.00, 2.50]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 10.00
+	Specularity : 100.00
+Sphere #2:
+	Radius : 3.00
 	Color : [150, 150, 150]
 	Position : [-4.00, -4.00, 2.00]
-	Rotation : [60.00, 0.00, 0.00]
+	Rotation : [0.00, 0.00, 0.00]
 	Reflection : 10.00
-	Specularity : 2.00
-Cube :
-	Height : 8
-	Color : [140, 40, 100]
-	Position : [7.00, 6.00, 9.00]
+	Specularity : 100.00
+Cube #3:
+	Height : 7.50
+	Color : [140, 60, 50]
+	Position : [7.00, 5.00, 9.00]
 	Rotation : [10.00, 50.00, 0.00]
 	Reflection : 100.00
-	Specularity : 100.00
-Cube :
-	Height : 6
+	Specularity : 0.00
+Cube #4:
+	Height : 6.00
 	Color : [90, 90, 90]
 	Position : [0.00, 0.00, 3.00]
 	Rotation : [0.00, 0.00, 0.00]
 	Reflection : 100.00
-	Specularity : 5.00
-Plane :
+	Specularity : 0.00
+Plane #5:
 	Color : [225, 225, 225]
 	Position : [0.00, 0.00, 0.00]
 	Rotation : [180.00, 0.00, 0.00]
 	Reflection : 100.00
-	Specularity : 1.00
+	Specularity : 0.00
+
 

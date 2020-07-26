@@ -6,13 +6,13 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/23 23:39:07 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/26 21:03:31 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	printing_light(int fd, t_app *app)
+void		printing_light(int fd, t_app *app)
 {
 	t_light			*light;
 	t_light_list	*list;
@@ -39,8 +39,13 @@ void	printing_light(int fd, t_app *app)
 	}
 }
 
-void	print_parametrs(int fd, t_obj *obj)
+void		print_parametrs(int fd, t_obj *obj)
 {
+	if (obj->id == ID_CUB || (!obj->infinite && (obj->id == ID_CON
+		|| obj->id == ID_CYL)))
+		ft_fprintf(fd, "\tHeight : %.2f\n", obj->height);
+	if (obj->id != ID_PLN && obj->id != ID_CUB)
+		ft_fprintf(fd, "\tRadius : %.2f\n", obj->radius);
 	ft_fprintf(fd, "\tColor : [%.0f, %.0f, %.0f]\n"
 		"\tPosition : [%.2f, %.2f, %.2f]\n"
 		"\tRotation : [%.2f, %.2f, %.2f]\n\tReflection : %.2f\n"
@@ -50,7 +55,7 @@ void	print_parametrs(int fd, t_obj *obj)
 		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
 }
 
-void	printing_obj(int fd, t_app *app)
+void		printing_obj(int fd, t_app *app)
 {
 	t_obj		*obj;
 	t_obj_list	*list;
@@ -61,38 +66,59 @@ void	printing_obj(int fd, t_app *app)
 	{
 		obj = list->content;
 		if (obj->id == ID_CUB || obj->id == ID_PLN)
-			obj->id != ID_CUB ? ft_fprintf(fd, "Plane :\n") :
-				ft_fprintf(fd, "Cube :\n\tHeight : %.0f\n", obj->height);
-		else if (!obj->infinite && (obj->id == ID_CON || obj->id == ID_CYL))
-			obj->id == ID_CON ? ft_fprintf(fd, "Cone :\n\tHeight : %.0f\n",
-				obj->height) : ft_fprintf(fd, "Cylinder :\n\tHeight : %.0f\n",
-				obj->height);
+			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
+		else if (obj->id == ID_CON || obj->id == ID_CYL)
+			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
 		else if (obj->id == ID_SPH || obj->id == ID_PAR)
-			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere :\n")
-				: ft_fprintf(fd, "Paraboloid :\n");
-		if (obj->id != ID_PLN && obj->id != ID_CUB)
-			ft_fprintf(fd, "\tRadius : %.0f\n", obj->radius);
+			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
+				: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
 		print_parametrs(fd, obj);
 		list = list->next;
 	}
 }
+/*
+static int	save_changed(int fd, t_app *app)
+{
+	t_obj		*obj;
 
-int		save_prtcl(t_app *app, const char *file_name)
+	ft_fprintf(fd, "\n_____________________________________________\n"
+		"\tThe objects in the scene have changed!! %d", app->selection);
+	obj = app->ren.obj_buf.host;
+	while (list)
+	{
+		obj = list->content;
+		if (obj->id == ID_CUB || obj->id == ID_PLN)
+			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
+		else if (obj->id == ID_CON || obj->id == ID_CYL)
+			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
+		else if (obj->id == ID_SPH || obj->id == ID_PAR)
+			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
+				: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
+		print_parametrs(fd, obj);
+		list = list->next;
+	}
+	return (1);
+}*/
+
+int			save_prtcl(t_app *app, int changed, t_int i)
 {
 	int		fd;
-	char	name[FILENAME_MAX];
 
-	if (ft_strlen(file_name) + 4 > FILENAME_MAX)
-		return (0);
-	ft_sprintf(name, "%s.txt", file_name);
-	if ((fd = open(name, O_RDWR | O_CREAT, 0666)) < 0)
+	if ((fd = open("Scene_RT.txt", O_RDWR | O_CREAT, 0666)) < 0)
 		return (0);
 	ft_fprintf(fd, "\tScene from ./scene/*.yml :\n\n"
 		"Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
 		app->cam.fov, app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE);
 	printing_light(fd, app);
 	printing_obj(fd, app);
-	write(fd, "\n", 1);
+/*	if (changed)
+		save_changed(fd, app);*/
+	if (!i && !changed)
+		write(fd, "\n", 1);
 	close(fd);
 	return (1);
 }
