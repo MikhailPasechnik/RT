@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/26 21:03:43 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/27 17:37:29 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,10 +210,11 @@ void					*rt_set_rect(SDL_Rect *rect, int x, int y, int w,
 	int h);
 t_color					get_surface_pixel(SDL_Surface *surface, size_t x,
 	size_t y);
+void					file_name(char name[150]);
 int						screen_shot(t_app *app);
 
 /*
-** Kate functions
+** Parser functions
 */
 int						kill(char *message);
 void					parser(t_app *app, char *scene);
@@ -236,9 +237,12 @@ void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);
 void					parse_id(char *str, void *vp);
 void					delete_linked_lists(t_app *app);
-int						save_prtcl(t_app *app, int changed, t_int i);
+/*
+** Print RT scene functions
+*/
+int						save_scene(t_app *app, t_obj *obj, t_uint chng);
 void					printing_light(int fd, t_app *app);
-void					printing_obj(int fd, t_app *app);
+void					printing_obj(int fd, t_obj *obj);
 void					print_parametrs(int fd, t_obj *obj);
 /*
 ** Navigation functions

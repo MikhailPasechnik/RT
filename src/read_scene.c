@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/26 20:16:47 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/27 17:41:03 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,4 @@ void	parser(t_app *app, char *scene)
 	parser_obj(app->scene, app, n);
 	if (!app->op.light_count || !app->op.obj_count)
 		kill("Incomplete scene.");
-	save_prtcl(app, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/26 21:03:31 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/27 17:40:58 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,70 +55,46 @@ void		print_parametrs(int fd, t_obj *obj)
 		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
 }
 
-void		printing_obj(int fd, t_app *app)
+void		printing_obj(int fd, t_obj *obj)
 {
-	t_obj		*obj;
-	t_obj_list	*list;
-
-	ft_fprintf(fd, "\nList of objects :\n");
-	list = app->obj_list;
-	while (list)
-	{
-		obj = list->content;
-		if (obj->id == ID_CUB || obj->id == ID_PLN)
-			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
-		else if (obj->id == ID_CON || obj->id == ID_CYL)
-			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
-		else if (obj->id == ID_SPH || obj->id == ID_PAR)
-			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
-				: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
-		print_parametrs(fd, obj);
-		list = list->next;
-	}
+	if (obj->id == ID_CUB || obj->id == ID_PLN)
+		obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
+		: ft_fprintf(fd, "Cube #%d:\n", obj->i);
+	else if (obj->id == ID_CON || obj->id == ID_CYL)
+		obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
+		: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
+	else if (obj->id == ID_SPH || obj->id == ID_PAR)
+		obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
+		: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
+	print_parametrs(fd, obj);
+	close(fd);
 }
-/*
-static int	save_changed(int fd, t_app *app)
-{
-	t_obj		*obj;
 
-	ft_fprintf(fd, "\n_____________________________________________\n"
-		"\tThe objects in the scene have changed!! %d", app->selection);
-	obj = app->ren.obj_buf.host;
-	while (list)
-	{
-		obj = list->content;
-		if (obj->id == ID_CUB || obj->id == ID_PLN)
-			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
-		else if (obj->id == ID_CON || obj->id == ID_CYL)
-			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
-		else if (obj->id == ID_SPH || obj->id == ID_PAR)
-			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
-				: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
-		print_parametrs(fd, obj);
-		list = list->next;
-	}
-	return (1);
-}*/
-
-int			save_prtcl(t_app *app, int changed, t_int i)
+int			save_scene(t_app *app, t_obj *obj, t_uint chng)
 {
 	int		fd;
+	char	name[150];
 
-	if ((fd = open("Scene_RT.txt", O_RDWR | O_CREAT, 0666)) < 0)
-		return (0);
-	ft_fprintf(fd, "\tScene from ./scene/*.yml :\n\n"
-		"Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
-		app->cam.fov, app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE);
-	printing_light(fd, app);
-	printing_obj(fd, app);
-/*	if (changed)
-		save_changed(fd, app);*/
-	if (!i && !changed)
-		write(fd, "\n", 1);
-	close(fd);
+	file_name(name);
+	(ft_strlen(name) + 4 < FILENAME_MAX) ? ft_sprintf(name, "%s.txt", name) : 0;
+	if (!chng)
+	{
+		if ((fd = open(name, O_RDWR | O_CREAT, 0666)) < 0)
+			return (0);
+		ft_fprintf(fd, "\tScene from ./scene/*.yml :\n\n"
+			"Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
+			app->cam.fov, app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE);
+		printing_light(fd, app);
+		ft_fprintf(fd, "\nList of objects :\n");
+		printing_obj(fd, obj);
+	}
+	if ((chng > 0 && chng <= app->op.obj_count) || chng > app->op.obj_count)
+	{
+		if ((fd = open(name, O_WRONLY | O_APPEND | O_CREAT, 0600)) < 0)
+			return (0);
+		chng > app->op.obj_count ? ft_fprintf(fd,
+			"\n\tThe object in the scene have changed!\n") : 0;
+		printing_obj(fd, obj);
+	}
 	return (1);
 }
