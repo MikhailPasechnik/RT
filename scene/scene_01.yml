@@ -3,19 +3,19 @@
   rotation:     [180, 0, 0]
   fov:          80
 - type: light
-  color:        [100, 0, 0]
+  color:        [255, 255, 255]
   position:     [0, 0, 20]
   rotation:     [120, 0, 45]
   intensity:    0.5
   dispersion:   1
 - type: light
-  color:        [250, 250, 150]
+  color:        [255, 255, 255]
   position:     [0, 0, 40]
   rotation:     [120, 0, 45]
   intensity:    0.3
   dispersion:   2
 - type: light
-  color:        [150, 250, 250]
+  color:        [255, 255, 255]
   position:     [0, 0, 60]
   rotation:     [100, 0, -45]
   intensity:    1
