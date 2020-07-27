@@ -1,25 +1,28 @@
 cmake_minimum_required(VERSION 3.2)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 
 set(NAME RT)
 project(${NAME} C)
 find_package(OpenCL REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 add_subdirectory(libft)
 add_subdirectory(ft_printf)
-add_subdirectory(SDL)
 
 file(GLOB SRC src/*.c src/ocl/*.c src/math3d/*.c)
 
-link_directories(libft SDL ft_printf)
-include_directories(libft include ${OpenCL_INCLUDE_DIRS} SDL/include ft_printf/include)
-link_libraries(m ft_printf ft ${OpenCL_LIBRARY} SDL2)
+link_directories(libft ft_printf)
+include_directories(libft include ${OpenCL_INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ft_printf/include)
+link_libraries(m ft_printf ft ${OpenCL_LIBRARY} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
 add_executable(${NAME} ${SRC})
 
 # Tests
 list(FILTER SRC EXCLUDE REGEX "main.c")
 
-file(GLOB_RECURSE RES_CL resources/ocl/* include/obj.h)
+file(GLOB_RECURSE RES_CL resources/ocl/* resources/textures/* include/obj.h)
 
 ADD_CUSTOM_TARGET(copy_runtime_dep ALL)
 # we don't want to copy if we're building in the source dir
