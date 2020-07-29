@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/26 16:34:02 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/29 21:17:39 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct			s_options
 	t_uint				obj_count;
 	t_uint				light_count;
 	t_int				selection;
+	t_int				depth;
 }						t_options;
 
 typedef struct			s_cam

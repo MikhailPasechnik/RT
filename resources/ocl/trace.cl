@@ -296,7 +296,7 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t_real	tmax;
 	t_real	t1;
 	t_real	t2;
-
+	
 	ray_to_object_space(obj, &ray);
 
 	b[0] = VEC(obj->height / -2, obj->height / -2, obj->height / -2);
@@ -328,7 +328,7 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
-	hit->n = normalize(hit->p);
+	hit->n = normalize(hit->p); // work
     hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
@@ -392,6 +392,49 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
 			got_hit = paraboloid_trace(&scene[size], *ray, &tmp);
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
+    }
+    return (index);
+}
+
+t_int	refl_intr(
+	__global t_obj* scene,
+	size_t size,
+	t_ray *ray,
+	t_hit *hit,
+	t_int i)
+{
+    t_hit	tmp;
+    int		got_hit;
+    int		set;
+    int		index;
+
+    if (!scene || !size || !ray || !hit)
+    	return (-1);
+	*hit = (t_hit){0};
+    set = 0;
+	index = -1;
+    while (size--)
+    {
+		tmp = (t_hit){0};
+		got_hit = 0;
+		if (i != size)
+        {
+			if (IS_PLN(&scene[i]))
+            	got_hit = plane_trace(&scene[i], *ray, &tmp);
+        	else if (IS_SPH(&scene[i]))
+        		got_hit = sphere_trace(&scene[i], *ray, &tmp);
+        	else if (IS_CYL(&scene[i]))
+            	got_hit = cylinder_trace(&scene[i], *ray, &tmp);
+        	else if (IS_CON(&scene[i]))
+            	got_hit = cone_trace(&scene[i], *ray, &tmp);
+        	else if (IS_CUB(&scene[i]))
+            	got_hit = cube_trace(&scene[i], *ray, &tmp);
+			else if (IS_PAR(&scene[i]))
+				got_hit = paraboloid_trace(&scene[i], *ray, &tmp);
+        	if (got_hit && update_ray(hit, &tmp, ray, &set))
+				index = size;
+		}
+		i++;
     }
     return (index);
 }
