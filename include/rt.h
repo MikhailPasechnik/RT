@@ -28,7 +28,7 @@
 # define RT_WIN_NAME "RT"
 # define RT_WIN_WIDTH 800
 # define RT_WIN_HEIGHT 800
-# define RT_BUF_EXTRA 50
+# define RT_BUF_EXTRA 0
 # define RT_CLICK_THRESHOLD 100
 
 /*

@@ -1,43 +1,49 @@
-//
-// Created by home on 27.07.2020.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gui.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
+/*   Updated: 2020/07/08 19:43:55 by bmahi            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef GUI_H
-# include "SDL.h"
-# include "SDL_image.h"
-# include "libft.h"
-# include "ft_printf.h"
-# include "math.h"
+# define GUI_H
 
-# define CTR_TEXTURE "resources/textures/xyz_cube.png"
-# define PI   3.14159265358979f
-# define radToDeg(x) ((x)*180.f/PI)
+# include <GL/glew.h>
+# include <SDL.h>
+# include <SDL_opengl.h>
 
-typedef struct	s_gui {
+# define NK_INCLUDE_FIXED_TYPES
+# define NK_INCLUDE_STANDARD_IO
+# define NK_INCLUDE_STANDARD_VARARGS
+# define NK_INCLUDE_DEFAULT_ALLOCATOR
+# define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+# define NK_INCLUDE_FONT_BAKING
+# define NK_INCLUDE_DEFAULT_FONT
+
+# include "nuklear.h"
+# include "nuklear_sdl_gl3.h"
+
+# define GUI_MAX_VERTEX_MEMORY 512 * 1024
+# define GUI_MAX_ELEMENT_MEMORY 128 * 1024
+# define GUI_WIN_WIDTH 400
+# define GUI_WIN_HEIGHT 800
+# define CMP_CLR(r1, g1, b1, r2, g2, b2) (r1 == r2 && g1 == g2 && b1 == b2)
+
+
+typedef struct	s_gui
+{
 	SDL_Window			*win;
-
+	SDL_GLContext		glContext;
+	struct nk_context	*ctx;
 }				t_gui;
 
-typedef struct	s_controller {
-	int					active;
-	int					zone;
-	SDL_Texture			*texture;
-	SDL_Window 			*win;
-	SDL_Rect			at;
-}				t_controller;
+int				gui_setup(t_gui *gui);
 
-int				init_controller(t_controller* controller, SDL_Renderer *renderer, SDL_Window *window);
-void			del_controller(t_controller* controller);
-void			reset_controller(t_controller* controller);
-int				is_controller_active();
-int				get_controller_zone(double angle);
-void			draw_controller(t_controller* controller, SDL_Renderer *renderer);
-
-void			on_controller_event(SDL_Event *event, t_controller *ctr, int *changed);
-void			on_controller_state(SDL_KeyboardEvent *event, t_controller *ctr, int *changed);
-void			on_controller_interact(SDL_MouseMotionEvent *event, t_controller *ctr, int *changed);
-void			on_controller_click(SDL_MouseButtonEvent *event, t_controller *ctr, int *changed);
-
-#define GUI_H
+//#include "../src/gui/gui_setup.c"
 
 #endif //GUI_H
