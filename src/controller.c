@@ -1,4 +1,4 @@
-#include "gui.h"
+#include "controller.h"
 
 void		on_controller_event(SDL_Event *event, t_controller *ctr, int *changed)
 {

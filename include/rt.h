@@ -22,7 +22,7 @@
 # include "SDL.h"
 # include "obj.h"
 # include "file_io.h"
-# include "gui.h"
+# include "controller.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
