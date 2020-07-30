@@ -19,17 +19,26 @@ typedef float3		t_color;
 # define VEC(x, y, z)((t_vec3){x, y, z})
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 
-typedef struct	s_hit {
-	t_vec3	p;
-	t_vec3	n;
+typedef struct		s_hit
+{
+	t_vec3			p;
+	t_vec3			n;
 	__global t_obj	*obj;
-}				t_hit;
+}					t_hit;
 
-typedef struct	s_colors {
-	t_color		color;
-	t_color		normal_color;
-	t_color		depth_color;
-}				t_colors;
+typedef struct		s_colors
+{
+	t_color			color;
+	t_color			normal_color;
+	t_color			depth_color;
+}					t_colors;
+
+typedef struct		s_mat3
+{
+	float3			a;
+	float3			b;
+	float3			c;
+}					t_mat3;
 
 /*
 ** For each object perform intersection and if intersects set hit
@@ -50,4 +59,8 @@ t_vec3			dir_from_rot(t_vec3 rot);
 t_vec3			cam_view_vec3(t_mat4 *m, t_vec3 *v);
 t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
+t_vec3			v3_cross(t_vec3 a, t_vec3 b);
+t_vec3 			v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v);
+float3			random_dir(uint bounce, t_options options, float3 normal);
+
 # endif

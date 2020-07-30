@@ -17,9 +17,9 @@ else
 	echo "${BLUE}Installing now..."
 	if [ $? -eq 0 ]
 		then
-		echo "${BOLD}${GREEN}Library ${LIB1} is installed successfully(*≧ω≦*)${NBOLD}${PURPLE}"
+			echo "${BOLD}${GREEN}Library ${LIB1} is installed successfully(*≧ω≦*)${NBOLD}${PURPLE}"
 		else
-		echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯" >&2
+			echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯" >&2
 	fi	
 fi
 brew list ${LIB2} > /dev/null
@@ -32,9 +32,9 @@ else
 	echo "${BLUE}Installing now..."
 	if [ $? -eq 0 ]
 		then
-		echo "${BOLD}${GREEN}Library ${LIB2} is installed successfully(*≧ω≦*)${NDOLD}${PURPLE}"
+			echo "${BOLD}${GREEN}Library ${LIB2} is installed successfully(*≧ω≦*)${NDOLD}${PURPLE}"
 		else
-		echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯" >&2
+			echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯" >&2
 	fi	
 fi
 brew list ${LIB3} > /dev/null
@@ -42,13 +42,13 @@ if [ $? -eq 0 ]
 then
   echo "${GREEN}Library ${LIB3} is installed (*≧ω≦*)${PURPLE}"
 else
-  brew install ${LIB3} > /dev/null
-  echo "${PURPLE}Library not installed ¯\_(ツ)_/¯" >&2
+	brew install ${LIB3} > /dev/null
+	echo "${PURPLE}Library not installed ¯\_(ツ)_/¯" >&2
 	echo "${BLUE}Installing now..."
 	if [ $? -eq 0 ]
 		then
-		echo "${BOLD}${GREEN}Library ${LIB3} is installed successfully(*≧ω≦*)${PURPLE}${NBOLD}"
+			echo "${BOLD}${GREEN}Library ${LIB3} is installed successfully(*≧ω≦*)${PURPLE}${NBOLD}"
 		else
-		echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯${NORMAL}" >&2
+			echo "${PURPLE}An error has occurred ¯\_(ツ)_/¯${NORMAL}" >&2
 	fi	
 fi
