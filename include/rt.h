@@ -142,6 +142,7 @@ int						app_start(t_app *app, char **argv, int argc);
 void					app_finish(t_app *app);
 int						app_error(const char *msg, int returns);
 int						app_update_buffers(t_app *app);
+int						app_render(t_app *app);
 void					on_app_event(t_app *app, SDL_Event *event);
 void					init_options(t_options *op);
 

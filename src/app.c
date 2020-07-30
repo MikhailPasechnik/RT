@@ -30,7 +30,7 @@ static int		app_pre_render(t_app *app)
 	return (1);
 }
 
-static int		app_render(t_app *app)
+int		app_render(t_app *app)
 {
 	t_tx_buffer	*current;
 
