@@ -64,6 +64,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	(void)argc;
 	app->op_changed = 1;
 	app->cm_changed = 1;
+	app->selection = -1;
 	app->render_buffer = RT_K_COLOR_ARG;
 	init_options(&app->op);
 	if (!(ocl_init(&app->ocl)))
