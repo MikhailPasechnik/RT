@@ -72,3 +72,228 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 	rot_random_dir = rotation_random_dir(normal, random_dir);
 	return (rot_random_dir);
 }
+
+
+
+
+
+t_color trace_path(int id,
+					t_options options,
+					__global t_obj* objects,
+					__global t_light* lights,
+					t_ray camera_ray,
+					t_cam camera,
+					t_hit *camera_hit,
+					t_colors *c)
+{
+	t_ray	new_ray;
+	t_mat	material;
+	t_color	emittance;
+	float	probability;
+	float	cos_theta;
+	t_color	BRDF;
+	t_color	incoming;
+	int		depth;
+	int		max_depth;
+
+	depth = 0;
+	max_depth = 6;
+	obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+	if (obj_index == -1)
+		return (*c);
+	material = camera_hit->obj->mat;
+	emittance = material.emittance;
+	new_ray.o = camera_hit.p;
+	new_ray.d = random_dir(bounce, options, camera_hit.n);
+	probability = 1 / (2 * M_PI);
+	cos_theta = dot_product(new_ray.d, camera_hit.n);
+	BRDF = material.reflection / M_PI;
+	while (depth < max_depth)
+		incoming += trace_path(new_ray, depth + 1);
+	return (emmitance + (BRDF * incoming * cos_theta / probability));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// __kernel void k_render(
+// 	t_options options,
+// 	t_cam camera,
+// 	__global t_obj* objects,
+// 	__global t_light* lights,
+// 	__global t_int* color_buffer,
+// 	__global t_int* index_buffer,
+// 	__global t_int* normal_buffer,
+// 	__global t_int* depth_buffer
+// )
+// {
+// 	t_ray		camera_ray;
+// 	t_hit		camera_hit;
+// 	float3		orig_pix;
+// 	t_int		obj_index;
+// 	t_colors	c;
+// 	t_colors	major_light;
+// 	t_colors	add_light;
+// 	uint		max_bounces = 15;
+// 	uint		count_random_rays = 70;
+// 	uint		bounce = 0;
+// 	uint		i = 0;
+
+// 	int id = get_global_id(0);
+// 	camera_ray = new_camera_ray(&options, &camera,
+// 			(uint2){id % options.width, id / options.height});
+// 	obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+// 	orig_pix = camera_hit.p;
+// 	camera_ray.o = orig_pix;
+// 	major_light.normal_color = c.normal_color;
+// 	major_light.depth_color = c.depth_color;
+// 	major_light.color = c.color;
+// 	while (i < count_random_rays)
+// 	{
+// 		camera_ray.o = orig_pix;
+// 		camera_ray.d = random_dir(bounce, options, camera_hit.n);
+// 		obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+// 		add_light.normal_color += c.normal_color;
+// 		add_light.depth_color += c.depth_color;
+// 		add_light.color += c.color;
+// 		bounce = 0;
+// 		while (bounce < max_bounces) //  ||			???(если bounce не первый и отскочил в свет)
+// 		{
+// 			camera_ray.o = camera_hit.p;
+// 			camera_ray.d = random_dir(bounce, options, camera_hit.n);
+// 			obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+// 			add_light.normal_color += c.normal_color;
+// 			add_light.depth_color += c.depth_color;
+// 			add_light.color += c.color;
+// 			bounce++;
+// 		}
+// 		add_light.normal_color.x = add_light.normal_color.x / max_bounces;
+// 		add_light.normal_color.y = add_light.normal_color.y / max_bounces;
+// 		add_light.normal_color.z = add_light.normal_color.z / max_bounces;
+
+// 		add_light.depth_color.x = add_light.depth_color.x / max_bounces;
+// 		add_light.depth_color.y = add_light.depth_color.y / max_bounces;
+// 		add_light.depth_color.z = add_light.depth_color.z / max_bounces;
+
+// 		add_light.color.x = add_light.color.x / max_bounces;
+// 		add_light.color.y = add_light.color.y / max_bounces;
+// 		add_light.color.z = add_light.color.z / max_bounces;		
+// 		i++;
+// 	}
+
+// 	add_light.normal_color.x = (add_light.normal_color.x / count_random_rays) * 2 * M_PI;
+// 	add_light.normal_color.y = (add_light.normal_color.y / count_random_rays) * 2 * M_PI;
+// 	add_light.normal_color.z = (add_light.normal_color.z / count_random_rays) * 2 * M_PI;
+
+// 	add_light.depth_color.x = (add_light.depth_color.x / count_random_rays) * 2 * M_PI;
+// 	add_light.depth_color.y = (add_light.depth_color.y / count_random_rays) * 2 * M_PI;
+// 	add_light.depth_color.z = (add_light.depth_color.z / count_random_rays) * 2 * M_PI;
+
+// 	add_light.color.x = (add_light.color.x / count_random_rays) * 2 * M_PI;
+// 	add_light.color.y = (add_light.color.y / count_random_rays) * 2 * M_PI;
+// 	add_light.color.z = (add_light.color.z / count_random_rays) * 2 * M_PI;
+
+
+// 	c.normal_color = major_light.normal_color + add_light.normal_color;
+// 	c.depth_color = major_light.depth_color + add_light.depth_color;
+// 	c.color = major_light.color + add_light.color;
+
+// 	fill_buffers(id, obj_index, c.normal_color, c.depth_color, c.color, color_buffer, index_buffer, normal_buffer, depth_buffer);
+// }
+
+// __kernel void k_render(
+// 	t_options options,
+// 	t_cam camera,
+// 	__global t_obj* objects,
+// 	__global t_light* lights,
+// 	__global t_int* color_buffer,
+// 	__global t_int* index_buffer,
+// 	__global t_int* normal_buffer,
+// 	__global t_int* depth_buffer
+// )
+// {
+// 	t_ray		camera_ray;
+// 	t_hit		camera_hit;
+// 	float3		orig_pix;
+// 	t_int		obj_index;
+// 	t_colors	c;
+// 	t_colors	major_light;
+// 	t_colors	add_light;
+// 	uint		max_bounces = 100;
+// 	uint		bounce = 0;
+
+// 	int id = get_global_id(0);
+// 	camera_ray = new_camera_ray(&options, &camera,
+// 			(uint2){id % options.width, id / options.height});
+// 	obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+// 	orig_pix = camera_hit.p;
+// 	camera_ray.o = orig_pix;
+// 	// major_light.normal_color = c.normal_color;
+// 	// major_light.depth_color = c.depth_color;
+// 	// major_light.color = c.color;
+
+// 	add_light.normal_color += c.normal_color;
+// 	add_light.depth_color += c.depth_color;
+// 	add_light.color += c.color;
+// 	bounce = 0;
+// 	while (bounce < max_bounces)
+// 	{
+// 		camera_ray.o = camera_hit.p;
+// 		camera_ray.d = random_dir(bounce, options, camera_hit.n);
+// 		obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &c);
+// 		add_light.normal_color += c.normal_color;
+// 		add_light.depth_color += c.depth_color;
+// 		add_light.color += c.color;
+// 		bounce++;
+// 	}
+
+// 	// add_light.normal_color.x = add_light.normal_color.x / max_bounces;
+// 	// add_light.normal_color.y = add_light.normal_color.y / max_bounces;
+// 	// add_light.normal_color.z = add_light.normal_color.z / max_bounces;
+
+// 	add_light.normal_color.x = ((2 * M_PI) / max_bounces) * add_light.normal_color.x;
+// 	add_light.normal_color.y = ((2 * M_PI) / max_bounces) * add_light.normal_color.y;
+// 	add_light.normal_color.z = ((2 * M_PI) / max_bounces) * add_light.normal_color.z;
+
+
+// 	// add_light.depth_color.x = add_light.depth_color.x / max_bounces;
+// 	// add_light.depth_color.y = add_light.depth_color.y / max_bounces;
+// 	// add_light.depth_color.z = add_light.depth_color.z / max_bounces;
+
+// 	add_light.depth_color.x = ((2 * M_PI) / max_bounces) * add_light.depth_color.x;
+// 	add_light.depth_color.y = ((2 * M_PI) / max_bounces) * add_light.depth_color.y;
+// 	add_light.depth_color.z = ((2 * M_PI) / max_bounces) * add_light.depth_color.z;
+
+
+// 	// add_light.color.x = add_light.color.x / max_bounces;
+// 	// add_light.color.y = add_light.color.y / max_bounces;
+// 	// add_light.color.z = add_light.color.z / max_bounces;
+
+// 	add_light.color.x = ((2 * M_PI) / max_bounces) * add_light.color.x;
+// 	add_light.color.y = ((2 * M_PI) / max_bounces) * add_light.color.y;
+// 	add_light.color.z = ((2 * M_PI) / max_bounces) * add_light.color.z;
+
+
+// 	// c.normal_color = major_light.normal_color + add_light.normal_color;
+// 	// c.depth_color = major_light.depth_color + add_light.depth_color;
+// 	// c.color = major_light.color + add_light.color;
+
+// 	c.normal_color = add_light.normal_color;
+// 	c.depth_color = add_light.depth_color;
+// 	c.color = add_light.color;
+
+// 	fill_buffers(id, obj_index, c.normal_color, c.depth_color, c.color, color_buffer, index_buffer, normal_buffer, depth_buffer);
+// }
+
+
+	// return (emittance + (BRDF * incoming * cos_theta / probability));

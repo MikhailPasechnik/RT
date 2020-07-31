@@ -62,5 +62,46 @@ t_vec3			reflect(t_vec3 vec, t_vec3 normal);
 t_vec3			v3_cross(t_vec3 a, t_vec3 b);
 t_vec3 			v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v);
 float3			random_dir(uint bounce, t_options options, float3 normal);
+float			dot_product(t_vec3 v1, t_vec3 v2);
+float	random_number(t_options options, uint count);
+t_mat3		create_rot_matrix(float3 normal);
+float3		rotation_random_dir(float3 normal, float3 random_dir);
+float3		random_dir(uint bounce, t_options options, float3 normal);
+t_int	trace(	int id,
+				t_options options,
+				__global t_obj* objects,
+				__global t_light* lights,
+				t_ray camera_ray,
+				t_cam camera,
+				t_hit *camera_hit,
+				t_color *c);
+void	fill_buffers(int id,
+					t_int obj_index,
+					t_color normal_color,
+					t_color depth_color,
+					t_color color,
+					__global t_int* color_buffer,
+					__global t_int* index_buffer,
+					__global t_int* normal_buffer,
+					__global t_int* depth_buffer);
+t_color trace_path(int id,
+					t_options options,
+					__global t_obj* objects,
+					__global t_light* lights,
+					t_ray camera_ray,
+					t_cam camera,
+					t_hit *camera_hit,
+					t_color *c,
+					int depth,
+					int *obj_index);
+t_color instead_of_recursion(int id,
+							t_options options,
+							__global t_obj* objects,
+							__global t_light* lights,
+							t_ray camera_ray,
+							t_cam camera,
+							t_hit *camera_hit,
+							t_color *c,
+							int *obj_index);
 
 # endif

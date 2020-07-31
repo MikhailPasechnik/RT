@@ -19,3 +19,11 @@ t_vec3  v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v)
     res.x = rot_matrix.c.x * v.x + rot_matrix.c.y * v.y + rot_matrix.c.z * v.z;
     return (res);
 }
+
+float	dot_product(t_vec3 v1, t_vec3 v2)
+{
+	float dp;
+
+	dp = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	return (dp);
+}
