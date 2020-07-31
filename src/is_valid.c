@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/26 19:50:29 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 21:55:07 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	check_obj(t_app *app)
 			obj->rot = VEC(0, 0, 0);
 		if (obj->radius < 0 && obj->id != 2 && obj->id != 5)
 			kill("The raduis is too small!");
-		if (obj->mat.specular < 0 || obj->mat.reflection < 0)
+		if (obj->mat.specular < 0 || obj->mat.reflection.reflect < 0)
 			kill("The specular and reflection must be positive!");
 		prnt += 1;
 		objects = objects->next;

@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/27 17:40:58 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 21:32:20 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		print_parametrs(int fd, t_obj *obj)
 		"\tSpecularity : %.2f\n", obj->mat.diff.v4[0] * 255,
 		obj->mat.diff.v4[1] * 255, obj->mat.diff.v4[2] * 255, obj->pos.v4[0],
 		obj->pos.v4[1], obj->pos.v4[2], obj->rot.v4[0], obj->rot.v4[1],
-		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
+		obj->rot.v4[2], obj->mat.reflection.reflect, obj->mat.specular);
 }
 
 void		printing_obj(int fd, t_obj *obj)

@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/26 19:50:08 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 21:32:03 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3);
 	phelp[3] = PHELP("  radius:", &ol->radius, parse_real);
 	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real);
-	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
+	phelp[5] = PHELP("  reflective:", &ol->mat.reflection.reflect,
+		parse_real);
 	phelp[6] = PHELP("  height:", &ol->height, parse_real);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
 }
