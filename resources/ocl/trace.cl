@@ -287,54 +287,69 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 ** b[2] - bounds min and max = height / 2
 ** the center of the cube is located at the intersection of the diagonals
 */
-
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
-	t_vec3	b[2];
+	t_real	a;
 	t_vec3	inv_dir;
-	t_real	tmin;
-	t_real	tmax;
+	t_vec3	b[2];
 	t_real	t1;
 	t_real	t2;
-	
+	t_real	tmin;
+	t_real	tmax;
+
 	ray_to_object_space(obj, &ray);
+	a = obj->height / 2;
 
-	b[0] = VEC(obj->height / -2, obj->height / -2, obj->height / -2);
-	b[1] = VEC(obj->height / 2, obj->height / 2, obj->height / 2);
-
-	inv_dir = 1 / ray.d;
+	t_vec3	n[6];
+	n[0] = VEC(0, 0, 1);
+	n[1] = VEC(0, 0, -1);
+	n[2] = VEC(0, 1, 0);
+	n[3] = VEC(0, -1, 0);
+	n[4] = VEC(1, 0, 0);
+	n[5] = VEC(-1, 0, 0);
 
 	tmax = INFINITY;
 	tmin = -INFINITY;
+
+	b[0] = VEC(-a, -a, -a);
+	b[1] = VEC(a, a, a);
+
+	inv_dir = 1 / ray.d;
+
 	t1 = (b[0].x - ray.o.x) * inv_dir.x;
 	t2 = (b[1].x - ray.o.x) * inv_dir.x;
-
 	tmin = min(t1, t2);
 	tmax = max(t1, t2);
-
 	t1 = (b[0].y - ray.o.y) * inv_dir.y;
 	t2 = (b[1].y - ray.o.y) * inv_dir.y;
-
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
-
 	t1 = (b[0].z - ray.o.z) * inv_dir.z;
 	t2 = (b[1].z - ray.o.z) * inv_dir.z;
-
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
-
-	if (tmax < max(tmin, 0.00))
+	if (tmax < max(tmin, 0.00) || tmin < 0)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
-	hit->n = normalize(hit->p); // work
-    hit->obj = obj;
+	hit->n = -ray.d; // не работает с зеркальностью 
+	// hit->n = normalize(hit->p); // сфера
+	// hit->n = -sign(VEC(0,0,ray.d.z)); // только грани по оси Z
+	// hit->n = -sign(ray.d); // кривые переходы освещенности 
+	
+	// Попытка выставить нормали каждой грани по проверке скалярных произведений, только 1! условие
+	// if (!dot(n[2], normalize(VEC(0, 0, hit->p.z))) && !dot(n[4], normalize(VEC(0, 0, hit->p.z))))
+	// 	hit->n = n[0];
+	// else if (!dot(n[2], normalize(VEC(hit->p.x, 0, 0))) && !dot(n[0], normalize(VEC(hit->p.x, 0, 0))))
+	// 	hit->n = n[4];
+	// else if (!dot(n[4], normalize(VEC(0, hit->p.y, 0))) && !dot(n[0], normalize(VEC(0, hit->p.y, 0))))
+	// 	hit->n = n[2];
+
+	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
 	return (1);
 }
-
 /*
 ** Check that distance from origin to new hit is smaller than old
 ** and update old with new in that case.
