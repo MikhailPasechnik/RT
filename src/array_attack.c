@@ -6,16 +6,20 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:42:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/21 23:28:48 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 22:06:33 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	ignore_str(char **ptr)
+void	ignore_str(char **ptr, int c)
 {
-	while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
-		++(*ptr);
+	if (!c)
+		while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
+			++(*ptr);
+	else
+		while (**ptr == ' ')
+			++(*ptr);
 }
 
 int		ptr_atoi_int(char **str, int fraction)
@@ -72,13 +76,13 @@ t_color	array_color(char *s)
 	int			i;
 	t_color		c;
 
-	ignore_str(&s);
+	i = 0;
+	ignore_str(&s, 0);
 	if (*s++ != '[' || s[ft_strlen(s) - 1] != ']' || s[ft_strlen(s)] != '\0')
 		kill("RGB array installation error! Valid value : [r, g, b]");
-	i = 0;
 	while (*s && i++ < 3)
 	{
-		ignore_str(&s);
+		ignore_str(&s, 1);
 		if (i == 1)
 			c.v4[0] = ptr_atoi(&s) / 255.0;
 		else if (i == 2)
@@ -87,11 +91,11 @@ t_color	array_color(char *s)
 			c.v4[2] = ptr_atoi(&s) / 255.0;
 		else
 			kill("RGB array installation error!");
-		ignore_str(&s);
+		ignore_str(&s, 1);
 		if (i < 3 && *s != ',')
 			kill("RGB array installation error!");
 		++s;
-		ignore_str(&s);
+		ignore_str(&s, 1);
 	}
 	return (c);
 }
@@ -101,13 +105,13 @@ t_vec3	array_attack(char *s)
 	int		c;
 	t_vec3	v;
 
-	ignore_str(&s);
+	c = 0;
+	ignore_str(&s, 0);
 	if (*s++ != '[' || s[ft_strlen(s) - 1] != ']' || s[ft_strlen(s)] != '\0')
 		kill("XYZ array installation error! Valid value : [x, y, z]");
-	c = 0;
 	while (*s && c++ < 3)
 	{
-		ignore_str(&s);
+		ignore_str(&s, 1);
 		if (c == 1)
 			v.v4[0] = ptr_atoi(&s);
 		else if (c == 2)
@@ -116,11 +120,11 @@ t_vec3	array_attack(char *s)
 			v.v4[2] = ptr_atoi(&s);
 		else
 			kill("XYZ array installation error!");
-		ignore_str(&s);
+		ignore_str(&s, 1);
 		if (c < 3 && *s != ',')
 			kill("XYZ array installation error!");
 		++s;
-		ignore_str(&s);
+		ignore_str(&s, 1);
 	}
 	return (v);
 }

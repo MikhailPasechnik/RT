@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/27 17:37:29 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 22:03:29 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ t_vec3					array_attack(char *s);
 t_color					array_color(char *s);
 t_real					ptr_atoi(char **str);
 int						ptr_atoi_int(char **str, int fraction);
-void					ignore_str(char **ptr);
+void					ignore_str(char **ptr, int c);
 int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);

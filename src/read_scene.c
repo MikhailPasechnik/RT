@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/27 17:41:03 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 22:05:12 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	parser_cam(t_cam *cam, char **scn)
 		kill("Usage :  fov: 60");
 	m4_set_translate(&cam->mtx, &pos);
 	m4_rotate(&cam->mtx, &rot);
-	ignore_str(&scn[3]);
+	ignore_str(&scn[3], 0);
 	cam->fov = ptr_atoi(&scn[3]);
 }
 
