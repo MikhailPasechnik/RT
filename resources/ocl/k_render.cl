@@ -241,7 +241,7 @@ __kernel void k_render(
 	while (bounce < max_bounces)
 	{
 		camera_ray.o = orig_pix;
-		// add_light += instead_of_recursion(id, options, objects, lights, camera_ray, camera, &camera_hit, &c, obj_index);
+		add_light += instead_of_recursion(id, options, objects, lights, camera_ray, camera, &camera_hit, &c, obj_index);
 		bounce++;
 	}
 	add_light /= max_bounces;
