@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/31 21:32:03 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/01 21:53:00 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 		parse_real);
 	phelp[6] = PHELP("  height:", &ol->height, parse_real);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
+	phelp[8] = PHELP("  emittance:", &ol->mat.emit, parse_color);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)
@@ -67,7 +68,7 @@ static void	phelp_run(int size, t_phelp *phelp, char *scn)
 void		parser_obj(char **scn, t_app *app, int n)
 {
 	t_obj	ol;
-	t_phelp	phelp[8];
+	t_phelp	phelp[9];
 
 	init_obj(phelp, &ol);
 	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(&ol, scn[n] + 8))
