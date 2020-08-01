@@ -1,0 +1,39 @@
+- type: camera
+  position:     [0, -10, 10]
+  rotation:     [0, 0, 0]
+  fov:          80
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  rotation:     [100, 0, -85]
+  intensity:    1
+  dispersion:   1
+- type: light
+  color:        [168, 191, 227]
+  position:     [0, 0, 100]
+  rotation:     [100, 0, 85]
+  intensity:    1
+  dispersion:   1
+- type: paraboloid
+  position:     [0, 0, 0]
+  color:        [110, 130, 130]
+  specular:     50
+  reflective:   50
+  rotation:     [0, 0, 0]
+  radius:       0
+  height:       0
+  infinite:     0
+- type: sphere
+  position:     [0, 10, 0]
+  color:        [20, 40, 80]
+  specular:     50
+  reflective:   50
+  radius:       4
+  rotation:     [60, 0, 0]
+- type: sphere
+  position:     [168, 191, 227]
+  color:        [0, 0, 0]
+  specular:     50
+  reflective:   50
+  radius:       4
+  rotation:     [0, 0, 0]

@@ -20,10 +20,23 @@ t_vec3  v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v)
     return (res);
 }
 
-float	dot_product(t_vec3 v1, t_vec3 v2)
+float	v3_dot_product(t_vec3 v1, t_vec3 v2)
 {
 	float dp;
 
 	dp = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	return (dp);
+}
+
+t_vec3		v3_mult_vec_const(t_vec3 v, float n)
+{
+	return ((t_vec3){v.x * n, v.y * n, v.z * n});
+}
+
+t_vec3		v3_division_vec_on_const(t_vec3 v, float n)
+{
+	v.x = v.x / n;
+	v.y = v.y / n;
+	v.z = v.z / n;
+	return (v);
 }

@@ -63,3 +63,11 @@ t_vec3 reflect(t_vec3 vec, t_vec3 normal)
 {
 	return (vec - 2 * dot(vec, normal) * normal);
 }
+
+int		compare_color(t_color col_1, t_color col_2)
+{
+	if (col_1.x == col_2.x && col_1.y == col_2.y && col_1.z == col_2.z)
+		return (1);
+	else
+		return (0);
+}
