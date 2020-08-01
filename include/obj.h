@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/31 21:43:46 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/01 22:04:00 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct			s_mat
 	t_real				ior;
 	t_real				fresnel;
 	t_real				reflection;
+	t_color				emittance;
 }						t_mat;
 
 typedef struct			s_obj
