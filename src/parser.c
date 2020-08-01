@@ -56,7 +56,7 @@ void		parser_obj(char **scn, t_app *app, int n)
 		n++;
 		while (scn[n] && scn[n][0] != '-')
 		{
-			phelp_run(8, phelp, scn[n]);
+			phelp_run(9, phelp, scn[n]);
 			n++;
 		}
 		check_obj(app);
