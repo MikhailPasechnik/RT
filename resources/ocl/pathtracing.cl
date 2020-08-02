@@ -72,3 +72,75 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 	rot_random_dir = rotation_random_dir(normal, random_dir);
 	return (rot_random_dir);
 }
+
+
+
+
+// t_color trace_one_path(int id,
+// 					t_options options,
+// 					__global t_obj* objects,
+// 					__global t_light* lights,
+// 					t_ray *camera_ray,
+// 					t_cam camera,
+// 					t_hit *camera_hit,
+// 					t_color *color,
+// 					int depth,
+// 					int *obj_index,
+// 					t_pathtrace *b)
+// {
+// 	t_mat	material;
+
+// 	*obj_index = trace(id, options, objects, lights, *camera_ray, camera, camera_hit, color);
+// 	if (*obj_index == -1)
+// 		return (BLACK);
+// 	material = camera_hit->obj->mat;
+// 	b->emittance = material.emittance;
+// 	camera_ray->o = camera_hit->p;
+// 	camera_ray->d = random_dir(depth, options, camera_hit->n);
+// 	b->cos_theta = v3_dot_product(camera_ray->d, camera_hit->n);
+// 	b->BRDF = material.reflection / M_PI;
+// 	return (*color);
+// }
+
+// 	// return (emittance + (BRDF * incoming * cos_theta / probability));
+
+// t_color pathtracing(int id,
+// 					t_options options,
+// 					__global t_obj* objects,
+// 					__global t_light* lights,
+// 					t_ray camera_ray,
+// 					t_cam camera,
+// 					t_hit *camera_hit,
+// 					t_color *c,
+// 					int *obj_index)
+// {
+// 	int			iter;
+// 	int			max_iter;
+// 	int			*true_obj_index;
+// 	t_pathtrace bounce[DEPTH];
+// 	t_color		col;
+
+// 	iter = 0;
+// 	max_iter = 6;
+// 	while (iter < max_iter && !compare_color(col, BLACK))
+// 	{
+// 		col = trace_one_path(id, options, objects, lights, &camera_ray, camera, camera_hit, c, iter, obj_index, &bounce[iter]);
+// 		if (iter == 0)
+// 			true_obj_index = obj_index;
+// 		iter++;
+// 	}
+// 	if (iter == 0)
+// 		bounce[iter].incoming = BLACK;
+// 	if (!compare_color(col, BLACK))
+// 	{
+// 		iter--;
+// 		bounce[iter].incoming = BLACK;
+// 	}
+// 	while (iter > 0)
+// 	{
+// 		bounce[iter - 1].incoming = bounce[iter].emittance + (v3_division_vec_on_const((v3_mult_vec_const(bounce[iter].BRDF * bounce[iter].incoming, (float)bounce[iter].cos_theta)), PROBABILITY));
+// 		iter--;
+// 	}
+// 	obj_index = true_obj_index;
+// 	return (bounce[0].incoming);
+// }

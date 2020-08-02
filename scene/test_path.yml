@@ -17,23 +17,23 @@
 - type: sphere
   position:     [0, 10, 0]
   color:        [20, 40, 80]
-  specular:     50
+  specular:     0
   reflective:   50
   radius:       4
   rotation:     [60, 0, 0]
   emittance:    [0, 0, 0]
 - type: sphere
-  position:     [0, 10, 0]
-  color:        [20, 40, 80]
-  specular:     50
+  position:     [5, 5, 0]
+  color:        [100, 100, 100]
+  specular:     0
   reflective:   50
-  radius:       4
+  radius:       2
   rotation:     [60, 0, 0]
   emittance:    [0, 0, 0]
 - type: sphere
-  position:     [168, 191, 227]
+  position:     [5, 6, 8]
   color:        [255, 255, 255]
-  specular:     50
+  specular:     0
   reflective:   50
   radius:       4
   rotation:     [100, 0, 85]

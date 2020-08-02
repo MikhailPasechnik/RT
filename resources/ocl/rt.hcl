@@ -19,6 +19,7 @@ typedef float3		t_color;
 # define VEC(x, y, z)((t_vec3){x, y, z})
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 
+
 #define DEPTH 6
 #define PROBABILITY (1 / (2 * M_PI))
 #define BLACK (t_color){0, 0, 0}
@@ -102,7 +103,7 @@ t_int			trace(	int id,
 						t_options options,
 						__global t_obj* objects,
 						__global t_light* lights,
-						t_ray camera_ray,
+						t_ray *camera_ray,
 						t_cam camera,
 						t_hit *camera_hit,
 						t_color *c);
@@ -161,15 +162,13 @@ t_color	 		trace_one_path(int id,
 								int depth,
 								int *obj_index,
 								t_pathtrace *b);
-t_color 		pathtracing(int id,
-							t_options options,
-							__global t_obj* objects,
-							__global t_light* lights,
-							t_ray camera_ray,
-							t_cam camera,
-							t_hit *camera_hit,
-							t_color *c,
-							int *obj_index);
+// t_color 		pathtracing(int id,
+// 							t_options options,
+// 							__global t_obj* objects,
+// 							__global t_light* lights,
+// 							t_ray *camera_ray,
+// 							t_cam camera,
+// 							int obj_index);
 
 # endif
 
