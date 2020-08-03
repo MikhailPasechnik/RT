@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/02 20:33:11 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 15:47:02 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
 	phelp[6] = PHELP("  height:", &ol->height, parse_real);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
-	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_color);
+	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)

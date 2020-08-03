@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/03 12:14:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 15:47:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct			s_mat
 	t_real				ior;
 	t_real				fresnel;
 	t_real				reflection;
-	t_color				emittance;
+	t_vec3				emittance;
 }						t_mat;
 
 typedef struct			s_obj
