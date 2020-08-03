@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/01 21:53:00 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/02 20:33:11 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3);
 	phelp[3] = PHELP("  radius:", &ol->radius, parse_real);
 	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real);
-	phelp[5] = PHELP("  reflective:", &ol->mat.reflection.reflect,
-		parse_real);
+	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
 	phelp[6] = PHELP("  height:", &ol->height, parse_real);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
-	phelp[8] = PHELP("  emittance:", &ol->mat.emit, parse_color);
+	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_color);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)
@@ -76,7 +75,7 @@ void		parser_obj(char **scn, t_app *app, int n)
 		n++;
 		while (scn[n] && scn[n][0] != '-')
 		{
-			phelp_run(8, phelp, scn[n]);
+			phelp_run(9, phelp, scn[n]);
 			n++;
 		}
 		app->op.obj_count++;

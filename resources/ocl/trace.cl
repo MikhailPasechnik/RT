@@ -18,7 +18,7 @@ static t_int solve_quadratic(t_real a, t_real b, t_real c,
 	t_real discriminant;
 
 	discriminant = b * b - 4.0 * a * c;
-	if (discriminant <= EPSILON)
+	if (discriminant < EPSILON)
 		return (0);
 	discriminant = sqrt(discriminant);
 	float q;
@@ -193,7 +193,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 				return (0);
 		}
 	}
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
 	hit->p = ray.o + ray.d * t0;
@@ -241,11 +241,11 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
 
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
-	if (!obj->infinite && !(((ray.o.z + ray.d.z * t0) >= 0) &&
-		((ray.o.z + ray.d.z * t0) <= obj->height)))
+	if (!obj->infinite && !(((ray.o.z + ray.d.z * t0) > 0) &&
+		((ray.o.z + ray.d.z * t0) < obj->height)))
 		return (0);
 	hit->p = ray.o + ray.d * t0;
 	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
@@ -273,7 +273,7 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	
 	if (t0 < 0)
 		return (0);
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
     hit->p = ray.o + ray.d * t0;
@@ -287,6 +287,116 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 ** b[2] - bounds min and max = height / 2
 ** the center of the cube is located at the intersection of the diagonals
 */
+static t_vec3 norm_vec(t_vec3 dir, t_vec3 o_pos, t_vec3 h_pos)
+{
+	t_vec3 norm;
+	t_vec3	n[6];
+	n[0] = VEC(0, 0, 1);
+	n[1] = VEC(0, 0, -1);
+	n[2] = VEC(0, 1, 0);
+	n[3] = VEC(0, -1, 0);
+	n[4] = VEC(1, 0, 0);
+	n[5] = VEC(-1, 0, 0);
+
+	t_real sin_z;
+    t_real sin_x;
+    t_real cos_y;
+	t_real sqrt_pi = cos(M_PI / 4);
+
+	sin_z = dir.x;
+	sin_x = -dir.y / sqrt(1 - pow(sin_z, 2));
+	cos_y = dir.z / sqrt(1 - pow(sin_x, 2));
+
+	if (cos_y >= -sqrt_pi && cos_y <= sqrt_pi)
+	{
+		if ((sin_x >= sqrt_pi && sin_x <= 1) &&
+			((sin_z >= 0 && sin_z <= sqrt_pi) ||
+			(sin_z >= -sqrt_pi && sin_z <= 0)))
+			norm = n[0];
+		if (((sin_x >= -1 && sin_x <= -sqrt_pi) ||
+			(sin_x >= sqrt_pi && sin_x <= 1)) &&
+			(sin_z >= -sqrt_pi && sin_z <= sqrt_pi))
+			norm = n[1];
+
+		if ((sin_z >= sqrt_pi && sin_z <= 1) &&
+			((sin_x >= 0 && sin_x <= sqrt_pi) ||
+			(sin_x >= -sqrt_pi && sin_x <= 0)))
+			norm = n[4];
+		if (((sin_z >= -1 && sin_z <= -sqrt_pi) ||
+			(sin_z >= sqrt_pi && sin_z <= 1)) &&
+			(sin_x >= -sqrt_pi && sin_x <= sqrt_pi))
+			norm = n[5];
+	}
+	if ((cos_y >= sqrt_pi && cos_y <= 1) &&
+		(sin_z >= sqrt_pi && sin_z <= 1) &&
+		(sin_x >= sqrt_pi && sin_x <= 1))
+		norm = n[2];
+	if ((cos_y >= -1 && cos_y <= -sqrt_pi) &&
+		((sin_z >= sqrt_pi && sin_z <= 1) ||
+		(sin_z >= -1 && sin_z <= -sqrt_pi)) &&
+		((sin_x >= sqrt_pi && sin_x <= 1) ||
+		(sin_x >= -1 && sin_x <= -sqrt_pi)))
+		norm = n[3];
+	
+/*	t_vec3	v[8];
+	v[0] = VEC(1, 1, 1); // синий
+	v[1] = VEC(-1, -1, 1); // зеленый
+	v[2] = VEC(1, -1, 1); // розовый
+	v[3] = VEC(-1, 1, 1); // красный
+
+	v[4] = VEC(1, 1, -1); // коричневый
+	v[5] = VEC(-1, -1, -1); // желтый
+	v[6] = VEC(1, -1, -1); // голубой
+	v[7] = VEC(-1, 1, -1); // оранжевый
+
+	t_vec3 norm;
+	t_vec3 crdnt;
+	t_vec3 c;
+
+	crdnt = h_pos - ray.o;
+
+	c.x = crdnt.x - o_pos.x;
+	c.y = crdnt.y - o_pos.y;
+	c.z = crdnt.z - o_pos.z;
+
+	if (!c.z && ((c.x > 0 && c.y > 0 && dot(c, v[5]) < 0)
+		|| (c.x < 0 && c.y < 0 && dot(c, v[4]) < 0)
+		|| (c.x > 0 && c.y < 0 && dot(c, v[7]) < 0)
+		|| (c.x < 0 && c.y > 0 && dot(c, v[6]) < 0)))
+		norm = n[0];
+	else if (!c.z && ((c.x > 0 && c.y > 0 && dot(c, v[1]) < 0)
+		|| (c.x < 0 && c.y < 0 && dot(c, v[0]) < 0)
+		|| (c.x > 0 && c.y < 0 && dot(c, v[3]) < 0)
+		|| (c.x < 0 && c.y > 0 && dot(c, v[2]) < 0)))
+		norm = n[1];
+
+	else if (!c.y && ((c.x > 0 && c.z > 0 && dot(c, v[5]) < 0)
+		|| (c.x < 0 && c.z < 0 && dot(c, v[2]) < 0)
+		|| (c.x > 0 && c.z < 0 && dot(c, v[1]) < 0)
+		|| (c.x < 0 && c.z > 0 && dot(c, v[6]) < 0)))
+		norm = n[2];
+	else if (!c.y && ((c.x > 0 && c.z > 0 && dot(c, v[7]) < 0)
+		|| (c.x < 0 && c.z < 0 && dot(c, v[0]) < 0)
+		|| (c.x > 0 && c.z < 0 && dot(c, v[3]) < 0)
+		|| (c.x < 0 && c.z > 0 && dot(c, v[4]) < 0)))
+		norm = n[3];
+
+	else if (!c.x && ((c.y > 0 && c.z > 0 && dot(c, v[5]) < 0)
+		|| (c.y < 0 && c.z < 0 && dot(c, v[3]) < 0)
+		|| (c.y > 0 && c.z < 0 && dot(c, v[1]) < 0)
+		|| (c.y < 0 && c.z > 0 && dot(c, v[7]) < 0)))
+		norm = n[4];
+	else if (!c.x && ((c.y > 0 && c.z > 0 && dot(c, v[6]) < 0)
+		|| (c.y < 0 && c.z < 0 && dot(c, v[0]) < 0)
+		|| (c.y > 0 && c.z < 0 && dot(c, v[2]) < 0)
+		|| (c.y < 0 && c.z > 0 && dot(c, v[4]) < 0)))
+		norm = n[5];
+	else
+	 	norm = -ray.d; // TO DO hit->n = normalize(VEC(hit->p)); n = dir_from_rot(obj->rot);*/
+
+	return (norm);
+}
+
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	t_real	a;
@@ -300,14 +410,6 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	ray_to_object_space(obj, &ray);
 	a = obj->height / 2;
 
-	t_vec3	n[6];
-	n[0] = VEC(0, 0, 1);
-	n[1] = VEC(0, 0, -1);
-	n[2] = VEC(0, 1, 0);
-	n[3] = VEC(0, -1, 0);
-	n[4] = VEC(1, 0, 0);
-	n[5] = VEC(-1, 0, 0);
-
 	tmax = INFINITY;
 	tmin = -INFINITY;
 
@@ -320,36 +422,29 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t2 = (b[1].x - ray.o.x) * inv_dir.x;
 	tmin = min(t1, t2);
 	tmax = max(t1, t2);
+
 	t1 = (b[0].y - ray.o.y) * inv_dir.y;
 	t2 = (b[1].y - ray.o.y) * inv_dir.y;
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
+
 	t1 = (b[0].z - ray.o.z) * inv_dir.z;
 	t2 = (b[1].z - ray.o.z) * inv_dir.z;
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
+
 	if (tmax < max(tmin, 0.00) || tmin < 0)
 		return (0);
-
-	hit->p = ray.o + ray.d * tmin;
-	hit->n = -ray.d; // не работает с зеркальностью 
-	// hit->n = normalize(hit->p); // сфера
-	// hit->n = -sign(VEC(0,0,ray.d.z)); // только грани по оси Z
-	// hit->n = -sign(ray.d); // кривые переходы освещенности 
 	
-	// Попытка выставить нормали каждой грани по проверке скалярных произведений, только 1! условие
-	// if (!dot(n[2], normalize(VEC(0, 0, hit->p.z))) && !dot(n[4], normalize(VEC(0, 0, hit->p.z))))
-	// 	hit->n = n[0];
-	// else if (!dot(n[2], normalize(VEC(hit->p.x, 0, 0))) && !dot(n[0], normalize(VEC(hit->p.x, 0, 0))))
-	// 	hit->n = n[4];
-	// else if (!dot(n[4], normalize(VEC(0, hit->p.y, 0))) && !dot(n[0], normalize(VEC(0, hit->p.y, 0))))
-	// 	hit->n = n[2];
-
+	hit->p = ray.o + ray.d * tmin;
+	// hit->n = -ray.d / ray.d * norm_vec(dir_from_rot(obj->rot), obj->pos, hit->p);
+	hit->n = -ray.d;//s / ray.d * VEC(1,1,1);
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
 	return (1);
 }
+
 /*
 ** Check that distance from origin to new hit is smaller than old
 ** and update old with new in that case.
@@ -407,49 +502,6 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
 			got_hit = paraboloid_trace(&scene[size], *ray, &tmp);
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
-    }
-    return (index);
-}
-
-t_int	refl_intr(
-	__global t_obj* scene,
-	size_t size,
-	t_ray *ray,
-	t_hit *hit,
-	t_int i)
-{
-    t_hit	tmp;
-    int		got_hit;
-    int		set;
-    int		index;
-
-    if (!scene || !size || !ray || !hit)
-    	return (-1);
-	*hit = (t_hit){0};
-    set = 0;
-	index = -1;
-    while (size--)
-    {
-		tmp = (t_hit){0};
-		got_hit = 0;
-		if (i != size)
-        {
-			if (IS_PLN(&scene[i]))
-            	got_hit = plane_trace(&scene[i], *ray, &tmp);
-        	else if (IS_SPH(&scene[i]))
-        		got_hit = sphere_trace(&scene[i], *ray, &tmp);
-        	else if (IS_CYL(&scene[i]))
-            	got_hit = cylinder_trace(&scene[i], *ray, &tmp);
-        	else if (IS_CON(&scene[i]))
-            	got_hit = cone_trace(&scene[i], *ray, &tmp);
-        	else if (IS_CUB(&scene[i]))
-            	got_hit = cube_trace(&scene[i], *ray, &tmp);
-			else if (IS_PAR(&scene[i]))
-				got_hit = paraboloid_trace(&scene[i], *ray, &tmp);
-        	if (got_hit && update_ray(hit, &tmp, ray, &set))
-				index = size;
-		}
-		i++;
     }
     return (index);
 }

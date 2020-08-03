@@ -18,6 +18,7 @@ typedef float3		t_color;
 # endif
 # define VEC(x, y, z)((t_vec3){x, y, z})
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
+# define CUB(vec, a)((t_vec4){{vec, a}})
 
 typedef struct	s_hit {
 	t_vec3	p;
@@ -30,7 +31,6 @@ typedef struct	s_hit {
 ** for the first time, later on hit choose which is closest
 ** and update hit if new one is closest
 */
-t_int			refl_intr(__global t_obj* scene, size_t size, t_ray *ray, t_hit *hit, t_int i);
 t_int			intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit);
 void			print_render_args(t_options *options, t_cam* camera, __global t_obj* scene, __global t_light* lights);
 t_mat4			m4_mul(t_mat4 *m, t_mat4 *n);
@@ -45,4 +45,6 @@ t_vec3			dir_from_rot(t_vec3 rot);
 t_vec3			cam_view_vec3(t_mat4 *m, t_vec3 *v);
 t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
+t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights, int id, t_hit camera_hit, t_ray camera_ray, t_color color);
+t_color			coef_color(t_color color, t_real coef);
 # endif

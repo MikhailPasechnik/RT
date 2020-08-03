@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/31 21:29:58 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 12:14:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef cl_float3		t_color;
 # define IS_CON(o) ((o)->id == (ID_CON))
 # define IS_CUB(o) ((o)->id == (ID_CUB))
 # define IS_PAR(o) ((o)->id == (ID_PAR))
+# define DEPTH 4
 
 /*
 ** OpenCL compatible structs
@@ -68,13 +69,12 @@ typedef cl_float3		t_color;
 typedef struct			s_options
 {
 	t_vec3				background_color;
-//	t_real				reflection_depth;
 	t_uint				width;
 	t_uint				height;
 	t_uint				obj_count;
 	t_uint				light_count;
 	t_int				selection;
-	t_int				depth;
+//	t_reflection		reflection;
 }						t_options;
 
 typedef struct			s_cam
@@ -83,12 +83,6 @@ typedef struct			s_cam
 	t_real				fov;
 }						t_cam;
 
-typedef struct 			s_reflection
-{
-	t_color				color;
-	t_real				reflect;
-}						t_reflection;
-
 typedef struct			s_mat
 {
 	t_color				diff;
@@ -96,7 +90,8 @@ typedef struct			s_mat
 	t_real				refraction;
 	t_real				ior;
 	t_real				fresnel;
-	t_reflection		reflection;
+	t_real				reflection;
+	t_color				emittance;
 }						t_mat;
 
 typedef struct			s_obj

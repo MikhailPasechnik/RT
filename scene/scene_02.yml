@@ -27,6 +27,7 @@
   rotation:     [0, 0, 0]
   radius:       9
   height:       20
+  infinite:     0
 - type: sphere
   position:     [5, 7, 1]
   color:        [120, 10, 10]
@@ -63,4 +64,4 @@
   rotation:     [30, 10, 0]
   radius:       3
   height:       10
-  infinite:     1
+  infinite:     0
