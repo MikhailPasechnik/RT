@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/02 19:29:47 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 20:16:46 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ void		print_parametrs(int fd, t_obj *obj)
 	if (obj->id != ID_PLN && obj->id != ID_CUB)
 		ft_fprintf(fd, "\tRadius : %.2f\n", obj->radius);
 	ft_fprintf(fd, "\tColor : [%.0f, %.0f, %.0f]\n"
+		"\tEmittance : [%.0f, %.0f, %.0f]\n"
 		"\tPosition : [%.2f, %.2f, %.2f]\n"
 		"\tRotation : [%.2f, %.2f, %.2f]\n\tReflection : %.2f\n"
 		"\tSpecularity : %.2f\n", obj->mat.diff.v4[0] * 255,
-		obj->mat.diff.v4[1] * 255, obj->mat.diff.v4[2] * 255, obj->pos.v4[0],
-		obj->pos.v4[1], obj->pos.v4[2], obj->rot.v4[0], obj->rot.v4[1],
+		obj->mat.diff.v4[1] * 255, obj->mat.diff.v4[2] * 255,
+		obj->mat.emittance.v4[0], obj->mat.emittance.v4[1],
+		obj->mat.emittance.v4[2], obj->pos.v4[0], obj->pos.v4[1],
+		obj->pos.v4[2], obj->rot.v4[0], obj->rot.v4[1],
 		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
 }
 
