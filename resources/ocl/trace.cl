@@ -287,115 +287,6 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 ** b[2] - bounds min and max = height / 2
 ** the center of the cube is located at the intersection of the diagonals
 */
-static t_vec3 norm_vec(t_vec3 dir, t_vec3 o_pos, t_vec3 h_pos)
-{
-	t_vec3 norm;
-	t_vec3	n[6];
-	n[0] = VEC(0, 0, 1);
-	n[1] = VEC(0, 0, -1);
-	n[2] = VEC(0, 1, 0);
-	n[3] = VEC(0, -1, 0);
-	n[4] = VEC(1, 0, 0);
-	n[5] = VEC(-1, 0, 0);
-
-	t_real sin_z;
-    t_real sin_x;
-    t_real cos_y;
-	t_real sqrt_pi = cos(M_PI / 4);
-
-	sin_z = dir.x;
-	sin_x = -dir.y / sqrt(1 - pow(sin_z, 2));
-	cos_y = dir.z / sqrt(1 - pow(sin_x, 2));
-
-	if (cos_y >= -sqrt_pi && cos_y <= sqrt_pi)
-	{
-		if ((sin_x >= sqrt_pi && sin_x <= 1) &&
-			((sin_z >= 0 && sin_z <= sqrt_pi) ||
-			(sin_z >= -sqrt_pi && sin_z <= 0)))
-			norm = n[0];
-		if (((sin_x >= -1 && sin_x <= -sqrt_pi) ||
-			(sin_x >= sqrt_pi && sin_x <= 1)) &&
-			(sin_z >= -sqrt_pi && sin_z <= sqrt_pi))
-			norm = n[1];
-
-		if ((sin_z >= sqrt_pi && sin_z <= 1) &&
-			((sin_x >= 0 && sin_x <= sqrt_pi) ||
-			(sin_x >= -sqrt_pi && sin_x <= 0)))
-			norm = n[4];
-		if (((sin_z >= -1 && sin_z <= -sqrt_pi) ||
-			(sin_z >= sqrt_pi && sin_z <= 1)) &&
-			(sin_x >= -sqrt_pi && sin_x <= sqrt_pi))
-			norm = n[5];
-	}
-	if ((cos_y >= sqrt_pi && cos_y <= 1) &&
-		(sin_z >= sqrt_pi && sin_z <= 1) &&
-		(sin_x >= sqrt_pi && sin_x <= 1))
-		norm = n[2];
-	if ((cos_y >= -1 && cos_y <= -sqrt_pi) &&
-		((sin_z >= sqrt_pi && sin_z <= 1) ||
-		(sin_z >= -1 && sin_z <= -sqrt_pi)) &&
-		((sin_x >= sqrt_pi && sin_x <= 1) ||
-		(sin_x >= -1 && sin_x <= -sqrt_pi)))
-		norm = n[3];
-	
-/*	t_vec3	v[8];
-	v[0] = VEC(1, 1, 1); // синий
-	v[1] = VEC(-1, -1, 1); // зеленый
-	v[2] = VEC(1, -1, 1); // розовый
-	v[3] = VEC(-1, 1, 1); // красный
-
-	v[4] = VEC(1, 1, -1); // коричневый
-	v[5] = VEC(-1, -1, -1); // желтый
-	v[6] = VEC(1, -1, -1); // голубой
-	v[7] = VEC(-1, 1, -1); // оранжевый
-
-	t_vec3 norm;
-	t_vec3 crdnt;
-	t_vec3 c;
-
-	crdnt = h_pos - ray.o;
-
-	c.x = crdnt.x - o_pos.x;
-	c.y = crdnt.y - o_pos.y;
-	c.z = crdnt.z - o_pos.z;
-
-	if (!c.z && ((c.x > 0 && c.y > 0 && dot(c, v[5]) < 0)
-		|| (c.x < 0 && c.y < 0 && dot(c, v[4]) < 0)
-		|| (c.x > 0 && c.y < 0 && dot(c, v[7]) < 0)
-		|| (c.x < 0 && c.y > 0 && dot(c, v[6]) < 0)))
-		norm = n[0];
-	else if (!c.z && ((c.x > 0 && c.y > 0 && dot(c, v[1]) < 0)
-		|| (c.x < 0 && c.y < 0 && dot(c, v[0]) < 0)
-		|| (c.x > 0 && c.y < 0 && dot(c, v[3]) < 0)
-		|| (c.x < 0 && c.y > 0 && dot(c, v[2]) < 0)))
-		norm = n[1];
-
-	else if (!c.y && ((c.x > 0 && c.z > 0 && dot(c, v[5]) < 0)
-		|| (c.x < 0 && c.z < 0 && dot(c, v[2]) < 0)
-		|| (c.x > 0 && c.z < 0 && dot(c, v[1]) < 0)
-		|| (c.x < 0 && c.z > 0 && dot(c, v[6]) < 0)))
-		norm = n[2];
-	else if (!c.y && ((c.x > 0 && c.z > 0 && dot(c, v[7]) < 0)
-		|| (c.x < 0 && c.z < 0 && dot(c, v[0]) < 0)
-		|| (c.x > 0 && c.z < 0 && dot(c, v[3]) < 0)
-		|| (c.x < 0 && c.z > 0 && dot(c, v[4]) < 0)))
-		norm = n[3];
-
-	else if (!c.x && ((c.y > 0 && c.z > 0 && dot(c, v[5]) < 0)
-		|| (c.y < 0 && c.z < 0 && dot(c, v[3]) < 0)
-		|| (c.y > 0 && c.z < 0 && dot(c, v[1]) < 0)
-		|| (c.y < 0 && c.z > 0 && dot(c, v[7]) < 0)))
-		norm = n[4];
-	else if (!c.x && ((c.y > 0 && c.z > 0 && dot(c, v[6]) < 0)
-		|| (c.y < 0 && c.z < 0 && dot(c, v[0]) < 0)
-		|| (c.y > 0 && c.z < 0 && dot(c, v[2]) < 0)
-		|| (c.y < 0 && c.z > 0 && dot(c, v[4]) < 0)))
-		norm = n[5];
-	else
-	 	norm = -ray.d; // TO DO hit->n = normalize(VEC(hit->p)); n = dir_from_rot(obj->rot);*/
-
-	return (norm);
-}
 
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
@@ -406,6 +297,14 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t_real	t2;
 	t_real	tmin;
 	t_real	tmax;
+	t_vec3	n[6];
+
+	n[0] = VEC(0, 0, 1);
+	n[1] = VEC(0, 0, -1);
+	n[2] = VEC(0, 1, 0);
+	n[3] = VEC(0, -1, 0);
+	n[4] = VEC(1, 0, 0);
+	n[5] = VEC(-1, 0, 0);
 
 	ray_to_object_space(obj, &ray);
 	a = obj->height / 2;
@@ -435,10 +334,20 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	if (tmax < max(tmin, 0.00) || tmin < 0)
 		return (0);
-	
+
 	hit->p = ray.o + ray.d * tmin;
-	// hit->n = -ray.d / ray.d * norm_vec(dir_from_rot(obj->rot), obj->pos, hit->p);
-	hit->n = -ray.d;//s / ray.d * VEC(1,1,1);
+	if (((hit->p.x - obj->pos.x) == a || (hit->p.x - obj->pos.x) == -a) &&
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
+		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
+		hit->n = (((hit->p.x - obj->pos.x) == a)) ? n[4] : n[5];
+	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a &&
+		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a) &&
+		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a)))
+		hit->n = (((hit->p.y - obj->pos.y) == a)) ? n[2] : n[3];
+	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a &&
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
+		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a)))
+		hit->n = (((hit->p.z - obj->pos.z) == a)) ? n[0] : n[1];
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
