@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:42:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/31 22:06:33 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 20:01:51 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	ignore_str(char **ptr, int c)
 {
 	if (!c)
-		while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' || ft_isalpha(**ptr))
+		while (**ptr == ' ' || **ptr == '\t' || **ptr == ':' ||
+			ft_isalpha(**ptr))
 			++(*ptr);
 	else
 		while (**ptr == ' ')
