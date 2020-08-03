@@ -56,36 +56,22 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		nk_input_end(gui->ctx);
 
 		/* GUI */
-		if (nk_begin(gui->ctx, "Demo", nk_rect(50, 50, 230, 250),
+		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT),
 					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
 					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
 		{
-			enum {EASY, HARD};
-			static int op = EASY;
-			static int property = 20;
-
-			nk_layout_row_static(gui->ctx, 30, 80, 1);
-			if (nk_button_label(gui->ctx, "button"))
-				printf("button pressed!\n");
-			nk_layout_row_dynamic(gui->ctx, 30, 2);
-			if (nk_option_label(gui->ctx, "easy", op == EASY)) op = EASY;
-			if (nk_option_label(gui->ctx, "hard", op == HARD)) op = HARD;
-			nk_layout_row_dynamic(gui->ctx, 22, 1);
-			nk_property_int(gui->ctx, "Compression:", 0, &property, 100, 10, 1);
 			if (app->selection != -1) {
+				t_uint changed = 0;
 				t_obj* o = &((t_obj*)app->ren.obj_buf.host)[app->selection];
-				struct nk_colorf tmp = (struct nk_colorf){o->mat.diff.x, o->mat.diff.y, o->mat.diff.z};
-				nk_layout_row_dynamic(gui->ctx, 20, 1);
-				nk_label(gui->ctx, "background:", NK_TEXT_LEFT);
-				nk_layout_row_dynamic(gui->ctx, 25, 1);
-				if (nk_combo_begin_color(gui->ctx, nk_rgb_cf(tmp), nk_vec2(nk_widget_width(gui->ctx),400))) {
-					nk_layout_row_dynamic(gui->ctx, 120, 1);
-					tmp = nk_color_picker(gui->ctx, tmp, NK_RGB);
-					nk_combo_end(gui->ctx);
-				}
-				if (!CMP_CLR(tmp.r, tmp.g, tmp.b, o->mat.diff.x, o->mat.diff.y, o->mat.diff.z))
+				changed |= gui_vec_pick(&o->pos, "Position:", gui->ctx, 'P');
+				changed |= gui_vec_pick(&o->rot, "Rotation:", gui->ctx, 'R');
+				changed |= gui_single_pick(&o->height, "Height:", gui->ctx);
+				changed |= gui_single_pick(&o->radius, "Radius:", gui->ctx);
+				changed |= gui_color_pick(&o->mat.diff, "Diffuse:", gui->ctx);
+				changed |= gui_gray_pick(&o->mat.specular, "Specular:", gui->ctx);
+				changed |= gui_gray_pick(&o->mat.reflection, "Reflection:", gui->ctx);
+				if (changed)
 				{
-					o->mat.diff = COLOR(tmp.r, tmp.g, tmp.b, tmp.a);
 					push_buffer(app->ren.queue, &app->ren.obj_buf, app->ren.obj_buf.size, 0);
 					app_render(app);
 				}

@@ -16,6 +16,7 @@
 # include <GL/glew.h>
 # include <SDL.h>
 # include <SDL_opengl.h>
+# include "m3d.h"
 
 # define NK_INCLUDE_FIXED_TYPES
 # define NK_INCLUDE_STANDARD_IO
@@ -33,6 +34,7 @@
 # define GUI_WIN_WIDTH 400
 # define GUI_WIN_HEIGHT 800
 # define CMP_CLR(r1, g1, b1, r2, g2, b2) (r1 == r2 && g1 == g2 && b1 == b2)
+# define CMP_VEC(v1, v2) (v1->x == v2->x && v1->y == v2->y && v1->z == v2->z)
 
 
 typedef struct	s_gui
@@ -43,7 +45,11 @@ typedef struct	s_gui
 }				t_gui;
 
 int				gui_setup(t_gui *gui);
+int				gui_destroy(t_gui *gui);
+unsigned int	gui_color_pick(t_color *clr, char* lbl, struct nk_context	*ctx);
+unsigned int	gui_gray_pick(t_real *clr, char* lbl, struct nk_context	*ctx);
+unsigned int	gui_vec_pick(t_vec3 *vec, char* lbl, struct nk_context	*ctx, char prefix);
+unsigned int	gui_single_pick(t_real *v, char* lbl, struct nk_context	*ctx);
 
-//#include "../src/gui/gui_setup.c"
 
 #endif //GUI_H
