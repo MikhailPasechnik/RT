@@ -3,6 +3,42 @@
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
 
+static void get_sphere_uv(vec3 p)
+{
+	float2 uv;
+
+	float phi;
+	float theta;
+	
+	phi = atan2(p.z(), p.x());
+	theta = asin(p.y());
+	uv.x = 1 - (phi + M_PI) / (2 * M_PI);
+	uv.y = (theta + M_PI / 2) / M_PI;
+	return (uv);
+}
+
+static void get_cube_uv(vec3 p)
+{
+	float2 uv;
+
+	if (fabs(p.x == 1))
+	{
+		uv.x = (p.z + 1.0f) / 2.0f;
+		uv.y = (p.y + 1.0f) / 2.0f;
+	}
+	else if (fabs(y) == 1)
+	{
+		uv.x = (p.x + 1.0f) / 2.0f;
+		uv.y = (p.z + 1.0f) / 2.0f;
+	}
+	else
+	{
+		uv.x = (p.x + 1.0f) / 2.0f;
+		uv.y = (p.y + 1.0f) / 2.0f;
+	}
+	return (uv);
+}
+
 static void swap(t_real *a, t_real *b)
 {
 	t_real tmp;
@@ -103,6 +139,7 @@ static int sphere_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     hit->p = ray.o + ray.d * t0;
     hit->n = normalize(hit->p);
     hit->obj = obj;
+	hit->uv = get_sphere_uv(hit->p);
 	hit_to_world_space(obj, hit);
     return (1);
 }
@@ -346,6 +383,7 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	// 	hit->n = n[2];
 
 	hit->obj = obj;
+	hit->uv = get_cube_uv(hit->p);
 	hit_to_world_space(obj, hit);
 
 	return (1);

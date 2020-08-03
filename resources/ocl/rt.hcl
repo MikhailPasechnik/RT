@@ -22,6 +22,7 @@ typedef float3		t_color;
 typedef struct	s_hit {
 	t_vec3	p;
 	t_vec3	n;
+	float2	uv;
 	__global t_obj	*obj;
 }				t_hit;
 

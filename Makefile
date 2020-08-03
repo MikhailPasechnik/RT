@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
+#    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/06/26 22:39:11 by bmahi            ###   ########.fr        #
+#    Updated: 2020/08/03 19:24:41 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ HDR_FILES	=			\
 	obj.h 			    \
 	file_io.h    	    \
 	ocl.h				\
-	math3d.h
+	math3d.h			\
+	stb_image.h
 
 
 DIR_SRC		=	./src
