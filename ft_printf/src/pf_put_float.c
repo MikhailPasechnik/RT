@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pf_put_float.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caellis <caellis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 18:50:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2019/09/05 12:31:10 by caellis          ###   ########.fr       */
+/*   Updated: 2020/08/03 19:59:55 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static uint16_t		get_long_string(t_pf_real r, char *res, int prec, \
 									unsigned int flg)
 {
-	int				i;
-	int				len;
+	int	i;
+	int	len;
 
 	pf_fast_bzero(res, sizeof(char) * PF_LM_MAXLEN);
 	i = r.r_long_int[0];
@@ -44,7 +44,7 @@ static uint16_t		get_long_string(t_pf_real r, char *res, int prec, \
 static void			pf_lm_round(uint16_t l_int[], uint16_t l_frac[], \
 						int prec, uint16_t buff[])
 {
-	int16_t			check;
+	int16_t	check;
 
 	check = l_frac[0] - prec < 0 ? prec + 1 : l_frac[0] - prec;
 	if (l_frac[check] >= 5 && (buff[check + 1] = 1))
@@ -69,7 +69,7 @@ static void			pf_lm_round(uint16_t l_int[], uint16_t l_frac[], \
 
 static uint8_t		get_longarrs(t_pf_real *r, uint16_t tmp[], uint8_t is_den)
 {
-	int64_t			i;
+	int64_t i;
 
 	i = 64;
 	while (i--)
@@ -89,10 +89,11 @@ static uint8_t		get_longarrs(t_pf_real *r, uint16_t tmp[], uint8_t is_den)
 	return (r->r_n_exp == -16382);
 }
 
-static uint16_t		double_toa(t_pf_real *r, char *res, int prec, unsigned int flg)
+static uint16_t		double_toa(t_pf_real *r, char *res, int prec,
+	unsigned int flg)
 {
-	uint16_t		tmp[PF_LM_MAXLEN];
-	uint8_t			is_denorm;
+	uint16_t	tmp[PF_LM_MAXLEN];
+	uint8_t		is_denorm;
 
 	pf_fast_bzero(tmp, sizeof(uint16_t) * PF_LM_MAXLEN);
 	get_longarrs(r, tmp, is_denorm = (r->r_n_exp == -16382));
@@ -104,9 +105,9 @@ static uint16_t		double_toa(t_pf_real *r, char *res, int prec, unsigned int flg)
 
 void				pf_put_float(t_pf_format *f)
 {
-	char			res[PF_LM_MAXLEN];
-	int				len;
-	t_pf_real			real;
+	char		res[PF_LM_MAXLEN];
+	int			len;
+	t_pf_real	real;
 
 	pf_fast_bzero(real.r_long_int, sizeof(uint16_t) * PF_LM_MAXLEN);
 	pf_fast_bzero(real.r_long_frac, sizeof(uint16_t) * PF_LM_MAXLEN);
