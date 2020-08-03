@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktgri <ktgri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 14:41:19 by bmahi             #+#    #+#             */
-/*   Updated: 2020/06/16 15:20:51 by ktgri            ###   ########.fr       */
+/*   Updated: 2020/08/03 19:56:06 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-# define BUFF_SIZE 30
-# ifndef OPEN_MAX
-  # define OPEN_MAX 64
-# endif
+
+#define BUFF_SIZE 30
+#ifndef OPEN_MAX
+# define OPEN_MAX 64
+#endif
 
 static int	gnl_read_line(int fd, int ret, char **s, char **line)
 {
@@ -43,10 +44,10 @@ static int	gnl_read_line(int fd, int ret, char **s, char **line)
 	return (1);
 }
 
-int	get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	int			ret_value;
-        static char	*s[OPEN_MAX];
+	static char	*s[OPEN_MAX];
 	char		buf[BUFF_SIZE + 1];
 	char		*tmp;
 
