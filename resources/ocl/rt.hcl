@@ -61,6 +61,12 @@ typedef struct		s_pathtrace
 	t_color			incoming;
 }					t_pathtrace;
 
+typedef struct		s_data_buffer
+{
+	int				obj_index;
+	t_color			color;
+}					t_data_buffer;
+
 /*
 ** *********************************** **
 ** *********************************** **

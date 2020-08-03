@@ -23,6 +23,7 @@ t_int	trace(	int id,
 				t_hit *camera_hit,
 				t_color *color)
 {
+	// printf("???\n");
 	t_int		obj_index;
 	t_ray		shadow_ray;
 	t_hit		shadow_hit;
@@ -34,6 +35,7 @@ t_int	trace(	int id,
 
 	obj_index = intersect(objects, options.obj_count, camera_ray, camera_hit);
 	*color = camera_hit->obj->mat.diffuse;
+	// printf("%f %f %f\n", color->x, color->y, color->z);
 	// if (obj_index != -1)
 	// {
 		
@@ -71,7 +73,6 @@ t_int	trace(	int id,
 	// }
     // else
 	// 	*color = options.background_color;
-	// printf("obj_index = %d\n", obj_index);
 	return (obj_index);
 }
 
@@ -91,45 +92,54 @@ void	fill_buffers(int id,
 	color_buffer[id] = pack_color(&color);
 }
 
-t_color pathtracing(int id,
-					t_options options,
-					__global t_obj* objects,
-					__global t_light* lights,
-					t_ray *camera_ray,
-					t_cam camera,
-					int *obj_index)
+t_data_buffer pathtracing(	int id,
+							t_options options,
+							__global t_obj* objects,
+							__global t_light* lights,
+							t_ray *camera_ray,
+							t_cam camera)
 {
-	t_hit	camera_hit;
-	t_color color;
-	float3	accumulate_color;
-	float3	mask;
-	float	bounce;
-	float	max_bounce;
-	int		true_obj_index;
+	t_hit			camera_hit;
+	t_color 		color;
+	float3			accumulate_color;
+	float3			mask;
+	float			bounce;
+	float			max_bounce;
+	int				true_obj_index;
+	t_data_buffer	data_buffer;
+	int				obj_index;
 
 	bounce = 0;
 	max_bounce = 500;
 	accumulate_color = fl3_make((float3){0.0f, 0.0f, 0.0f});
 	mask = fl3_make((float3){1.0f, 1.0f, 1.0f});
-	obj_index = 0;
 	while (bounce < max_bounce)
 	{
 		obj_index = trace(id, options, objects, lights, camera_ray, camera, &camera_hit, &color);
-		printf("%d\n", obj_index);
 		if (obj_index == -1)
-			return (fl3_make((float3){0.0f, 0.0f, 0.0f}));
+		{
+			data_buffer.color = fl3_make((float3){0.0f, 0.0f, 0.0f});
+			return (data_buffer);
+		}
+		// printf("%d\n", obj_index);
+		// else
+		// 	printf("%d\n", data_buffer.obj_index);
+		// if (camera_hit.obj->mat.emittance.x == 2.0f)
+		// 	printf("%f %f %f\n", camera_hit.obj->mat.emittance.x,camera_hit.obj->mat.emittance.y, camera_hit.obj->mat.emittance.z);
 		if (bounce == 0)
 			true_obj_index = obj_index;
 		accumulate_color += mask * camera_hit.obj->mat.emittance;
-		camera_ray->o = camera_hit.p * 0.05f;
+		camera_ray->o = camera_hit.p;
 		camera_ray->d = random_dir(bounce, options, camera_hit.n);
-		// printf("%f %f %f\n", camera_hit.n);
 		mask *= color;
 		mask *= v3_dot_product(camera_ray->d, camera_hit.n);
 		mask *= 2.0f;
+		// printf("111\n");
+		bounce++;
 	}
-	obj_index = true_obj_index;
-	return (accumulate_color);
+	data_buffer.obj_index = true_obj_index;
+	data_buffer.color = accumulate_color;
+	return (data_buffer);
 }
 
 __kernel void k_render(
@@ -143,14 +153,15 @@ __kernel void k_render(
 	__global t_int* depth_buffer
 )
 {
-	t_ray		camera_ray;
-	float3		orig_pix;
-	t_int		*obj_index;
-	t_color		radiance;
-	uint		sample;
-	uint		max_samples;
-	t_hit camera_hit;
-	t_color color;
+	t_ray			camera_ray;
+	float3			orig_pix;
+	t_color			radiance;
+	uint			sample;
+	uint			max_samples;
+	t_data_buffer	data_buffer;
+	// t_int		*obj_index;
+	// t_hit		camera_hit;
+	// t_color		color;
 
 	sample = 0;
 	max_samples = 500;
@@ -162,10 +173,14 @@ __kernel void k_render(
 	while (sample < max_samples)
 	{
 		camera_ray.o = orig_pix;
-		radiance = radiance + v3_mult_vec_const(pathtracing(id, options, objects, lights, &camera_ray, camera, obj_index), (1. / max_samples));
+		data_buffer = pathtracing(id, options, objects, lights, &camera_ray, camera);
+		radiance = radiance + v3_mult_vec_const(data_buffer.color, (1. / max_samples));
+		// radiance = radiance + v3_mult_vec_const(pathtracing(id, options, objects, lights, &camera_ray, camera).color, (1. / max_samples));
 		sample++;
+		fill_buffers(id, data_buffer.obj_index, radiance, radiance, radiance, color_buffer, index_buffer, normal_buffer, depth_buffer);
+		// fill_buffers(id, data_buffer.obj_index, data_buffer.color, data_buffer.color, data_buffer.color, color_buffer, index_buffer, normal_buffer, depth_buffer);
 	}
-	fill_buffers(id, *obj_index, radiance, radiance, radiance, color_buffer, index_buffer, normal_buffer, depth_buffer);
+	// fill_buffers(id, data_buffer.obj_index, radiance, radiance, radiance, color_buffer, index_buffer, normal_buffer, depth_buffer);
 	// obj_index = trace(id, options, objects, lights, &camera_ray, camera, &camera_hit, &color);
 	// fill_buffers(id, *obj_index, color, color, color, color_buffer, index_buffer, normal_buffer, depth_buffer);
 }

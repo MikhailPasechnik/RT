@@ -37,4 +37,14 @@
   reflective:   50
   radius:       4
   rotation:     [100, 0, 85]
-  emittance:    [2, 2, 2]
+  emittance:    [200, 200, 200]
+- type: paraboloid
+  position:     [0, 0, 0]
+  color:        [110, 130, 130]
+  specular:     50
+  reflective:   50
+  rotation:     [0, 0, 0]
+  radius:       0
+  height:       0
+  infinite:     0
+  emittance:    [0, 0, 0]
