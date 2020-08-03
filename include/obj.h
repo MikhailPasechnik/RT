@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/03 15:47:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 19:00:44 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 ** Else define types with "cl_" prefix.
 */
 # ifdef HOST_DEVICE
-# ifdef __APPLE__
-#  include <OpenCL/opencl.h>
-# else
-#  include <CL/opencl.h>
-# endif
+#  ifdef __APPLE__
+#   include <OpenCL/opencl.h>
+#  else
+#   include <CL/opencl.h>
+#  endif
+
 typedef cl_float		t_real;
 typedef cl_float16		t_mat4;
 typedef cl_float3		t_vec3;
@@ -74,7 +75,6 @@ typedef struct			s_options
 	t_uint				obj_count;
 	t_uint				light_count;
 	t_int				selection;
-//	t_reflection		reflection;
 }						t_options;
 
 typedef struct			s_cam
@@ -103,7 +103,7 @@ typedef struct			s_obj
 	t_real				height;
 	t_real				infinite;
 	t_int				id;
-	t_int				i; // for print change
+	t_int				i;
 }						t_obj;
 
 typedef struct			s_light

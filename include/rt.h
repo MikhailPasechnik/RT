@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/02 16:49:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 18:45:28 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@
 #  define RT_CL_INCLUDE "-I./resources/ocl -I./include"
 # endif
 
-# define RT_CL_SRC1 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
-# define RT_CL_SRC RT_CL_SRC1" resources/ocl/color.cl resources/ocl/trace.cl resources/ocl/utils.cl resources/ocl/ray.cl"
+# define RT_CL_SRC2 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
+# define RT_CL_SRC1 RT_CL_SRC2" resources/ocl/color.cl resources/ocl/ray.cl"
+# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl"
 # define RT_K_RENDER "k_render"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1
