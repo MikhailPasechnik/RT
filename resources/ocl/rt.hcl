@@ -47,4 +47,11 @@ t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
 t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights, int id, t_hit camera_hit, t_ray camera_ray, t_color color);
 t_color			coef_color(t_color color, t_real coef);
+t_color pathtracing(int id,
+					t_options options,
+					__global t_obj* objects,
+					__global t_light* lights,
+					t_ray camera_ray,
+					t_cam camera);
+
 # endif

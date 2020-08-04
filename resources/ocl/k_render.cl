@@ -71,7 +71,7 @@ __kernel void k_render(
     index_buffer[id] = obj_index;
     normal_buffer[id] = pack_color(&normal_color);
     depth_buffer[id] = pack_color(&depth_color);
-	if (options.gi)
+	// if (options.gi)
 		color += pathtracing(id, options, objects, lights, camera_ray, camera);
     color_buffer[id] = pack_color(&color);
 }

@@ -88,7 +88,6 @@ t_color trace_one_path(t_options options, __global t_obj* objects, t_hit camera_
 	max_bounce = 5;
 	while (bounce < max_bounce)
 	{
-		i = 0;
 		if (bounce != 0)
 		{	
 			camera_ray.o = camera_hit.p;
@@ -97,6 +96,7 @@ t_color trace_one_path(t_options options, __global t_obj* objects, t_hit camera_
 			if (obj_index != -1)
 				break ;
 		}
+		i = 0;
 		while (i < options.light_count)
 		{
 			if (lights[i].id == ID_DIRECT || lights[i].id == ID_POINT)
@@ -126,7 +126,7 @@ t_color pathtracing(int id,
 					__global t_obj* objects,
 					__global t_light* lights,
 					t_ray camera_ray,
-					t_cam camera)()
+					t_cam camera)
 {
 	int		sample;
 	int		max_samples;
