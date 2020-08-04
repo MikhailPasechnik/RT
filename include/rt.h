@@ -22,7 +22,6 @@
 # include "SDL.h"
 # include "obj.h"
 # include "file_io.h"
-# include "controller.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
@@ -133,7 +132,6 @@ typedef struct			s_app
 	Uint32				ts_mouse_down;
 
 	t_int				selection;
-	t_controller		controller;
 }						t_app;
 
 /*

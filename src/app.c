@@ -53,7 +53,6 @@ int		app_render(t_app *app)
 		return (app_error("Failed to pull index buffer!", 0));
 	SDL_RenderCopy(app->renderer, current->host, NULL,
 		&(SDL_Rect){.y=0, .x=0, .h=app->op.height, .w=app->op.width});
-	draw_controller(&app->controller, app->renderer);
 	SDL_RenderPresent(app->renderer);
 	return (1);
 }
@@ -82,8 +81,6 @@ int				app_start(t_app *app, char **argv, int argc)
 		return (app_error("Objects transfer failed!", 0));
 	if (!transfer_light(app))
 		return (app_error("Lights transfer failed!", 0));
-	if (!init_controller(&app->controller, app->renderer, app->win))
-		return (app_error("Controller init failed!", 0));
 	nav_rotate_camera(&app->cam, &VEC(0, 0, 0), &VEC(0, 0, 0));
 	return (app_render(app));
 }
@@ -114,6 +111,5 @@ void			on_app_event(t_app *app, SDL_Event *event)
 	else if (event->type == SDL_MOUSEBUTTONDOWN ||
 			event->type == SDL_MOUSEBUTTONUP)
 		on_mouse_click(&event->button, app, &changed);
-	on_controller_event(event, &app->controller, &changed);
 	changed ? app_render(app) : 0;
 }
