@@ -46,4 +46,9 @@ t_vec3			dir_from_rot(t_vec3 rot);
 t_vec3			cam_view_vec3(t_mat4 *m, t_vec3 *v);
 t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
+static void		get_sphere_uv(vec3 p);
+static void		get_cube_uv(vec3 p);
+static void		get_cylinder_uv(vec3 p, float height, float radius);
+static void		get_cone_uv(vec3 p, float height, float radius, float radius_on_height);
+static void		get_plane_uv(vec3 p, vec3 n);
 # endif

@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/03 19:31:07 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/04 18:34:18 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # endif
 
 # define RT_CL_SRC1 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
-# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl resources/ocl/ray.cl"
+# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl resources/ocl/ray.cl resources/ocl/uv_coordinates.cl"
 # define RT_K_RENDER "k_render"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1
