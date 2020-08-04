@@ -47,6 +47,10 @@ SRC_FILES	=			\
 	math3d/mat4_transform.c  \
 	math3d/mat4_utils.c \
 	math3d/vec3.c  		\
+	gui/gui_color_pick.c  	\
+	gui/gui_setup.c  		\
+	gui/gui_single_pick.c  	\
+	gui/gui_vec_pick.c  	\
 	math3d/vec3_op.c
 
 
@@ -56,6 +60,7 @@ HDR_FILES	=			\
 	obj.h 			    \
 	file_io.h    	    \
 	ocl.h				\
+	gui.h				\
 	math3d.h
 
 
@@ -84,7 +89,7 @@ LIBS		:=	$(LIBFT) $(PRINTF) -lm
 ifeq ($(OS),Linux)
 	LIBS	:= $(LIBS) -lOpenCL
 else
-	LIBS	:= $(LIBS) -framework OpenCL
+	LIBS	:= $(LIBS) -framework OpenCL -framework OpenGL -lGLEW
 endif
 
 all: $(NAME)
