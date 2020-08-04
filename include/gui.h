@@ -48,7 +48,7 @@ int				gui_setup(t_gui *gui);
 int				gui_destroy(t_gui *gui);
 unsigned int	gui_color_pick(t_color *clr, char* lbl, struct nk_context	*ctx);
 unsigned int	gui_gray_pick(t_real *clr, char* lbl, struct nk_context	*ctx);
-unsigned int	gui_vec_pick(t_vec3 *vec, char* lbl, struct nk_context	*ctx, char prefix);
+unsigned int	gui_vec_pick(t_vec3 *vec, char* lbl, struct nk_context	*ctx);
 unsigned int	gui_single_pick(t_real *v, char* lbl, struct nk_context	*ctx);
 
 

@@ -63,8 +63,8 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			if (app->selection != -1) {
 				t_uint changed = 0;
 				t_obj* o = &((t_obj*)app->ren.obj_buf.host)[app->selection];
-				changed |= gui_vec_pick(&o->pos, "Position:", gui->ctx, 'P');
-				changed |= gui_vec_pick(&o->rot, "Rotation:", gui->ctx, 'R');
+				changed |= gui_vec_pick(&o->pos, "Position:", gui->ctx);
+				changed |= gui_vec_pick(&o->rot, "Rotation:", gui->ctx);
 				changed |= gui_single_pick(&o->height, "Height:", gui->ctx);
 				changed |= gui_single_pick(&o->radius, "Radius:", gui->ctx);
 				changed |= gui_color_pick(&o->mat.diff, "Diffuse:", gui->ctx);
@@ -89,11 +89,18 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			while (i < app->op.light_count)
 			{
 				l = &((t_light *)app->ren.light_buf.host)[i];
-				ft_sprintf(name, "Light: %d", i);
+				ft_sprintf(name, "Light%d", i);
 				nk_layout_row_dynamic(gui->ctx, 20, 1);
 				nk_label(gui->ctx, name, NK_TEXT_LEFT);
 				nk_layout_row_dynamic(gui->ctx, 25, 1);
-				change |= gui_color_pick(&l->color, "Color:", gui->ctx);
+				ft_sprintf(name, "Light%d:Color:", i);
+				change |= gui_color_pick(&l->color, name, gui->ctx);
+				ft_sprintf(name, "Light%d:Intensity:", i);
+				change |= gui_single_pick(&l->intensity, name, gui->ctx);
+				ft_sprintf(name, "Light%d:Position:", i);
+				change |= gui_vec_pick(&l->pos, name, gui->ctx);
+				ft_sprintf(name, "Light%d:Rotation:", i);
+				change |= gui_vec_pick(&l->rot, name, gui->ctx);
 				i++;
 			}
 			if (change)
@@ -101,6 +108,16 @@ void	sdl_loop(t_app *app, t_gui *gui)
 				push_buffer(app->ren.queue, &app->ren.light_buf, app->ren.light_buf.size, 0);
 				app_render(app);
 			}
+		}
+		nk_end(gui->ctx);
+		if (nk_begin(gui->ctx, "Scene", nk_rect(GUI_WIN_WIDTH/2, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT/2),
+					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+		{
+			nk_layout_row_static(gui->ctx, 30, 80, 1);
+			if (nk_button_label(gui->ctx, "Save"))
+				ft_printf("Saving Scene\n");
+			nk_layout_row_dynamic(gui->ctx, 30, 2);
 		}
 		nk_end(gui->ctx);
 		SDL_GL_MakeCurrent(gui->win, gui->glContext);
