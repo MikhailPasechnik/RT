@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: f0rsunka <f0rsunka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/06/21 22:07:13 by f0rsunka         ###   ########.fr       */
+/*   Updated: 2020/08/02 16:47:14 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_color	get_surface_pixel(SDL_Surface *surface, size_t x, size_t y)
 	return (COLOR(r / 255.0, g / 255.0, b / 255., a / 255.0));
 }
 
-void	screen_shot_name(char name[150])
+void	file_name(char name[150])
 {
 	time_t		now;
 	struct tm	*time_struct;
@@ -75,7 +75,7 @@ int		screen_shot(t_app *app)
 		current = &app->ren.depth_buf;
 	else
 		return (0);
-	screen_shot_name(name);
+	file_name(name);
 	SDL_LockTexture(current->host, NULL, &pixels, &pitch);
 	result = save_image(name, pixels, app->op.width, app->op.height);
 	SDL_UnlockTexture(current->host);

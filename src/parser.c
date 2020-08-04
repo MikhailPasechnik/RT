@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/06 19:39:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 16:03:17 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	init_obj(t_phelp *phelp, t_obj *ol)
 	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
 	phelp[6] = PHELP("  height:", &ol->height, parse_real);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
+	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)
@@ -66,7 +67,7 @@ static void	phelp_run(int size, t_phelp *phelp, char *scn)
 void		parser_obj(char **scn, t_app *app, int n)
 {
 	t_obj	ol;
-	t_phelp	phelp[8];
+	t_phelp	phelp[9];
 
 	init_obj(phelp, &ol);
 	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(&ol, scn[n] + 8))
@@ -74,12 +75,12 @@ void		parser_obj(char **scn, t_app *app, int n)
 		n++;
 		while (scn[n] && scn[n][0] != '-')
 		{
-			phelp_run(8, phelp, scn[n]);
+			phelp_run(9, phelp, scn[n]);
 			n++;
 		}
-		check_obj(app);
 		app->op.obj_count++;
 		ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
+		check_obj(app);
 	}
 }
 
@@ -103,8 +104,8 @@ void		parser_light(char **scn, t_app *app, int n)
 			phelp_run(5, phelp, scn[n]);
 			n++;
 		}
-		check_obj(app);
 		app->op.light_count++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
+		check_obj(app);
 	}
 }

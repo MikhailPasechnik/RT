@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/06 19:53:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/03 18:45:28 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@
 #  define RT_CL_INCLUDE "-I./resources/ocl -I./include"
 # endif
 
-# define RT_CL_SRC1 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
-# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl resources/ocl/ray.cl"
+# define RT_CL_SRC2 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
+# define RT_CL_SRC1 RT_CL_SRC2" resources/ocl/color.cl resources/ocl/ray.cl"
+# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl"
 # define RT_K_RENDER "k_render"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1
@@ -213,10 +214,11 @@ void					*rt_set_rect(SDL_Rect *rect, int x, int y, int w,
 	int h);
 t_color					get_surface_pixel(SDL_Surface *surface, size_t x,
 	size_t y);
+void					file_name(char name[150]);
 int						screen_shot(t_app *app);
 
 /*
-** Kate functions
+** Parser functions
 */
 int						kill(char *message);
 void					parser(t_app *app, char *scene);
@@ -230,7 +232,7 @@ t_vec3					array_attack(char *s);
 t_color					array_color(char *s);
 t_real					ptr_atoi(char **str);
 int						ptr_atoi_int(char **str, int fraction);
-void					ignore_str(char **ptr);
+void					ignore_str(char **ptr, int c);
 int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);
@@ -239,9 +241,13 @@ void					parse_vec3(char *str, void *vp);
 void					parse_color(char *str, void *vp);
 void					parse_id(char *str, void *vp);
 void					delete_linked_lists(t_app *app);
-void					printing_light(t_app *app);
-void					printing_obj(t_app *app);
-void					print_parametrs(t_obj *obj);
+/*
+** Print RT scene functions
+*/
+int						save_scene(t_app *app, t_obj *obj, t_uint chng);
+void					printing_light(int fd, t_app *app);
+void					printing_obj(int fd, t_obj *obj);
+void					print_parametrs(int fd, t_obj *obj);
 /*
 ** Navigation functions
 */

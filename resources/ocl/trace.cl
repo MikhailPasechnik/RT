@@ -18,7 +18,7 @@ static t_int solve_quadratic(t_real a, t_real b, t_real c,
 	t_real discriminant;
 
 	discriminant = b * b - 4.0 * a * c;
-	if (discriminant <= EPSILON)
+	if (discriminant < EPSILON)
 		return (0);
 	discriminant = sqrt(discriminant);
 	float q;
@@ -193,7 +193,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 				return (0);
 		}
 	}
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
 	hit->p = ray.o + ray.d * t0;
@@ -241,11 +241,11 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
 
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
-	if (!obj->infinite && !(((ray.o.z + ray.d.z * t0) >= 0) &&
-		((ray.o.z + ray.d.z * t0) <= obj->height)))
+	if (!obj->infinite && !(((ray.o.z + ray.d.z * t0) > 0) &&
+		((ray.o.z + ray.d.z * t0) < obj->height)))
 		return (0);
 	hit->p = ray.o + ray.d * t0;
 	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
@@ -273,7 +273,7 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	
 	if (t0 < 0)
 		return (0);
-	if (t0 <= EPSILON)
+	if (t0 < EPSILON)
 		return (0);
 
     hit->p = ray.o + ray.d * t0;
@@ -290,46 +290,65 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
-	t_vec3	b[2];
+	t_real	a;
 	t_vec3	inv_dir;
-	t_real	tmin;
-	t_real	tmax;
+	t_vec3	b[2];
 	t_real	t1;
 	t_real	t2;
+	t_real	tmin;
+	t_real	tmax;
+	t_vec3	n[6];
+
+	n[0] = VEC(0, 0, 1);
+	n[1] = VEC(0, 0, -1);
+	n[2] = VEC(0, 1, 0);
+	n[3] = VEC(0, -1, 0);
+	n[4] = VEC(1, 0, 0);
+	n[5] = VEC(-1, 0, 0);
 
 	ray_to_object_space(obj, &ray);
-
-	b[0] = VEC(obj->height / -2, obj->height / -2, obj->height / -2);
-	b[1] = VEC(obj->height / 2, obj->height / 2, obj->height / 2);
-
-	inv_dir = 1 / ray.d;
+	a = obj->height / 2;
 
 	tmax = INFINITY;
 	tmin = -INFINITY;
+
+	b[0] = VEC(-a, -a, -a);
+	b[1] = VEC(a, a, a);
+
+	inv_dir = 1 / ray.d;
+
 	t1 = (b[0].x - ray.o.x) * inv_dir.x;
 	t2 = (b[1].x - ray.o.x) * inv_dir.x;
-
 	tmin = min(t1, t2);
 	tmax = max(t1, t2);
 
 	t1 = (b[0].y - ray.o.y) * inv_dir.y;
 	t2 = (b[1].y - ray.o.y) * inv_dir.y;
-
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
 
 	t1 = (b[0].z - ray.o.z) * inv_dir.z;
 	t2 = (b[1].z - ray.o.z) * inv_dir.z;
-
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
 
-	if (tmax < max(tmin, 0.00))
+	if (tmax < max(tmin, 0.00) || tmin < 0)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
-	hit->n = normalize(hit->p);
-    hit->obj = obj;
+	if (((hit->p.x - obj->pos.x) == a || (hit->p.x - obj->pos.x) == -a) &&
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
+		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
+		hit->n = (((hit->p.x - obj->pos.x) == a)) ? n[4] : n[5];
+	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a &&
+		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a) &&
+		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a)))
+		hit->n = (((hit->p.y - obj->pos.y) == a)) ? n[2] : n[3];
+	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a &&
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
+		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a)))
+		hit->n = (((hit->p.z - obj->pos.z) == a)) ? n[0] : n[1];
+	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
 	return (1);

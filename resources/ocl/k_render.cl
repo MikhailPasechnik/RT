@@ -1,75 +1,76 @@
 #include "rt.hcl"
 
-
-
 __kernel void k_render(
-	t_options options,
-	t_cam camera,
-	__global t_obj* objects,
-	__global t_light* lights,
-	__global t_int* color_buffer,
-	__global t_int* index_buffer,
-	__global t_int* normal_buffer,
-	__global t_int* depth_buffer
+    t_options options,
+    t_cam camera,
+    __global t_obj* objects,
+    __global t_light* lights,
+    __global t_int* color_buffer,
+    __global t_int* index_buffer,
+    __global t_int* normal_buffer,
+    __global t_int* depth_buffer
 )
 {
-	t_ray	camera_ray;
-	t_int	obj_index;
-	t_hit	camera_hit;
-	t_ray	shadow_ray;
-	t_hit	shadow_hit;
-	t_color	color;
-	t_color	normal_color;
-	t_color	depth_color;
-	t_vec3	light_dir;
-	t_vec3	ref;
-	t_real	d;
+    t_int   obj_index;
 
-	d = 1 * clamp(1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d))), 0.0f, 1.0f);
-	normal_color = COLOR(0,0,0,1);
-	depth_color = COLOR(0,0,0,1);
-	int id = get_global_id(0);
-	camera_ray = new_camera_ray(&options, &camera,
-			(uint2){id % options.width, id / options.height});
-	obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
-	if (obj_index != -1)
-	{
-		depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
-											 camera.mtx.sD,
-											 camera.mtx.sE)) / 50.0f;
-		normal_color = ((camera_hit.n * -1) + 1) / 2;
-		t_uint	i = -1;
-		t_uint	o = -1;
-		t_vec3	diffuse = VEC(0,0,0);
-		t_vec3	specular = VEC(0,0,0);
-		color = VEC(0,0,0);
-		while (++i <= options.light_count)
-		{
-			if (lights[i].id == ID_DIRECT || lights[i].id == ID_POINT)
-			{
-				light_dir = (lights[i].id == ID_DIRECT) ? dir_from_rot(lights[i].rot)
-					: normalize(camera_hit.p - lights[i].pos);
-				shadow_ray.o = camera_hit.p + camera_hit.n * 0.001f;
-				shadow_ray.d = -light_dir;
-				ref = reflect(light_dir, -camera_hit.n);
-				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
-				{
-					diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
-						lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
-					specular += lights[i].intensity * lights[i].color * clamp(native_powr(dot(ref, camera_ray.d),
-						60.0f) * d, 0.0f, 1.0f) * objects->mat.specular / 10.0f;
-				}
-			}
-			else if (lights[i].id == ID_AMB)
-				diffuse += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
-			color = diffuse * 1.5f + specular;
-		}
-	}
+    t_ray   camera_ray;
+    t_hit   camera_hit;
+
+    t_color color;
+    t_color normal_color;
+    t_color depth_color;
+    t_color refl_color;
+
+    t_int   dpth = -1;
+    t_uint  o;
+    t_ray   refl_ray;
+    t_hit   refl_hit;
+    
+    normal_color = COLOR(0,0,0,1);
+    depth_color = COLOR(0,0,0,1);
+    color = COLOR(0,0,0,1);
+    refl_color = COLOR(0,0,0,1);
+
+    int id = get_global_id(0);
+    camera_ray = new_camera_ray(&options, &camera,
+        (uint2){id % options.width, id / options.height});
+    obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
+
+    if (obj_index != -1)
+    {
+        depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
+            camera.mtx.sD, camera.mtx.sE)) / 50.0f;
+        normal_color = ((camera_hit.n * -1) + 1) / 2;
+        color = calc_color(options, objects, lights, id, camera_hit, camera_ray, color);
+    
+        if (camera_hit.obj->mat.reflection != 0) // зеркальность start
+        {
+            refl_ray = camera_ray;
+            refl_hit = camera_hit;
+
+            while (++dpth <= DEPTH)
+            {
+                if ((intersect(objects, options.obj_count, &refl_ray, &refl_hit)) != -1) // &camera_ray - прозрачность
+                {
+                    refl_ray.d = normalize(reflect(-refl_ray.d, refl_hit.n));
+                    refl_ray.o = (refl_ray.d * refl_hit.n < 0) ? refl_hit.p - refl_hit.n * 0.001f :
+                        refl_hit.p + refl_hit.n * 0.001f;
+                    refl_color += coef_color(calc_color(options, objects, lights, id, refl_hit, camera_ray, refl_color),
+                        clamp(0.0f, camera_hit.obj->mat.reflection, 1.0f));
+                    if (!refl_hit.obj->mat.reflection)
+                        break ;
+                 }
+                 else
+                    refl_color = coef_color(options.background_color, clamp(0.0f, camera_hit.obj->mat.reflection, 1.0f));
+            }
+            color += refl_color;
+        }
+    }
     else
-		color = options.background_color;
+        color = options.background_color;
 
     index_buffer[id] = obj_index;
-	normal_buffer[id] = pack_color(&normal_color);
-	depth_buffer[id] = pack_color(&depth_color);
-	color_buffer[id] = pack_color(&color);
+    normal_buffer[id] = pack_color(&normal_color);
+    depth_buffer[id] = pack_color(&depth_color);
+    color_buffer[id] = pack_color(&color);
 }

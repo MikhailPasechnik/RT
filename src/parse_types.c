@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 12:18:12 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/07/31 22:05:11 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	parse_id(char *str, void *vp)
 	t_int	*id;
 
 	id = vp;
-	ignore_str(&str);
+	ignore_str(&str, 0);
 	*id = ptr_atoi(&str);
 }
 
@@ -47,6 +47,6 @@ void	parse_real(char *str, void *vp)
 	t_real	*p;
 
 	p = vp;
-	ignore_str(&str);
+	ignore_str(&str, 0);
 	*p = ptr_atoi(&str);
 }

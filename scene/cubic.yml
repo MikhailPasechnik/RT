@@ -1,0 +1,57 @@
+- type: camera
+  position:     [-20, 20, 20]
+  rotation:     [-60, 10, 40]
+  fov:          60
+- type: light
+  color:        [140, 170, 120]
+  position:     [0, -100, 100]
+  rotation:     [0, -45, 105]
+  intensity:    0.3
+  dispersion:   2
+- type: light
+  color:        [250, 250, 250]
+  position:     [10, 10, 50]
+  rotation:     [0, 0, 175]
+  intensity:    0.3
+  dispersion:   2
+- type: light
+  color:        [0, 0, 250]
+  position:     [80, 50, 120]
+  rotation:     [-45, 0, 100]
+  intensity:    0.2
+  dispersion:   2
+- type: light
+  color:        [190, 0, 250]
+  position:     [-80, 50, 80]
+  rotation:     [-45, -45, 100]
+  intensity:    0.7
+  dispersion:   2
+- type: plane
+  position:     [0, 0, 0]
+  color:        [225, 225, 225]
+  specular:     0
+  reflective:   0
+  rotation:     [180, 0, 0]
+- type: cube
+  position:     [0, 0, 9]
+  color:        [90, 90, 90]
+  specular:     0
+  reflective:   0
+  rotation:     [0, 0, 0]
+  height:       6
+  emittance:    [2.0, 4.5, 0.1]
+- type: cube
+  position:     [9, 0, 6]
+  color:        [90, 90, 90]
+  specular:     0
+  reflective:   0
+  rotation:     [0, 0, 45]
+  height:       2
+- type: cube
+  position:     [17, 15, 19]
+  color:        [140, 60, 50]
+  specular:     0
+  reflective:   0
+  rotation:     [20, 40, 0]
+  height:       7.5
+  emittance:    [2.0, 4.5, 0.1]

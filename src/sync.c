@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sync.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 12:27:04 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/07/27 18:50:42 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int			transfer_objects(t_app *app)
 		return (app_error("Failed to allocate objects buffer!", 0));
 	i = 0;
 	it = app->obj_list;
-	while (it && i < app->op.obj_count)
+	while (it && i++ < app->op.obj_count)
 	{
-		((t_obj	*)buffer.host)[i++] = *(t_obj *)it->content;
+		((t_obj	*)buffer.host)[i - 1] = *(t_obj *)it->content;
+		save_scene(app, &((t_obj *)buffer.host)[i - 1], i - 1);
 		it = it->next;
 	}
 	if (i != app->op.obj_count || it != NULL)

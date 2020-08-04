@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/06 19:58:27 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/01 22:14:39 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,8 @@ void	parser_cam(t_cam *cam, char **scn)
 		kill("Usage :  fov: 60");
 	m4_set_translate(&cam->mtx, &pos);
 	m4_rotate(&cam->mtx, &rot);
-	ignore_str(&scn[3]);
+	ignore_str(&scn[3], 0);
 	cam->fov = ptr_atoi(&scn[3]);
-	ft_printf("Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
-		cam->fov, pos.v4[0], pos.v4[1], pos.v4[2]);
-	ft_printf("\tRotation : [%.2f, %.2f, %.2f]\n", rot.v4[0],
-		rot.v4[1], rot.v4[2]);
 }
 
 char	**read_scene(int fd, int *lines)
@@ -81,8 +77,6 @@ void	parser(t_app *app, char *scene)
 	parser_light(app->scene, app, 4);
 	n = (app->op.light_count) * 6 + 4;
 	parser_obj(app->scene, app, n);
-	printing_light(app);
-	printing_obj(app);
 	if (!app->op.light_count || !app->op.obj_count)
 		kill("Incomplete scene.");
 }
