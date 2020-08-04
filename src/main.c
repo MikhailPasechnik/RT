@@ -56,7 +56,7 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		nk_input_end(gui->ctx);
 
 		/* GUI */
-		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT),
+		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT),
 					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
 					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
 		{
@@ -75,6 +75,31 @@ void	sdl_loop(t_app *app, t_gui *gui)
 					push_buffer(app->ren.queue, &app->ren.obj_buf, app->ren.obj_buf.size, 0);
 					app_render(app);
 				}
+			}
+		}
+		nk_end(gui->ctx);
+		if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH/2, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT),
+					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+		{
+			int i = 0;
+			t_light *l;
+			unsigned int change = 0;
+			char name[20];
+			while (i < app->op.light_count)
+			{
+				l = &((t_light *)app->ren.light_buf.host)[i];
+				ft_sprintf(name, "Light: %d", i);
+				nk_layout_row_dynamic(gui->ctx, 20, 1);
+				nk_label(gui->ctx, name, NK_TEXT_LEFT);
+				nk_layout_row_dynamic(gui->ctx, 25, 1);
+				change |= gui_color_pick(&l->color, "Color:", gui->ctx);
+				i++;
+			}
+			if (change)
+			{
+				push_buffer(app->ren.queue, &app->ren.light_buf, app->ren.light_buf.size, 0);
+				app_render(app);
 			}
 		}
 		nk_end(gui->ctx);

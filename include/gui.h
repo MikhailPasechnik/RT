@@ -31,7 +31,7 @@
 
 # define GUI_MAX_VERTEX_MEMORY 512 * 1024
 # define GUI_MAX_ELEMENT_MEMORY 128 * 1024
-# define GUI_WIN_WIDTH 400
+# define GUI_WIN_WIDTH 700
 # define GUI_WIN_HEIGHT 800
 # define CMP_CLR(r1, g1, b1, r2, g2, b2) (r1 == r2 && g1 == g2 && b1 == b2)
 # define CMP_VEC(v1, v2) (v1->x == v2->x && v1->y == v2->y && v1->z == v2->z)
