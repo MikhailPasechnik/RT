@@ -56,8 +56,11 @@ __kernel void k_render(
                         refl_hit.p + refl_hit.n * 0.001f;
                     refl_color += coef_color(calc_color(options, objects, lights, id, refl_hit, camera_ray, refl_color),
                         clamp(0.0f, camera_hit.obj->mat.reflection, 1.0f));
-                    if (!refl_hit.obj->mat.reflection)
-                        break ;
+                    if (dpth)
+                        refl_color += coef_color(calc_color(options, objects, lights, id, refl_hit, camera_ray, refl_color),
+                            clamp(0.0f, 1 - refl_hit.obj->mat.reflection, 1.0f));
+                    // if (!refl_hit.obj->mat.reflection)
+                    //     break ;
                  }
                  else
                     refl_color = coef_color(options.background_color, clamp(0.0f, camera_hit.obj->mat.reflection, 1.0f));

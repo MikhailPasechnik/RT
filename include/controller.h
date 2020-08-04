@@ -6,14 +6,13 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/08 19:43:55 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/04 19:00:34 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONTROLLER_H
 # define CONTROLLER_H
 # include "SDL.h"
-# include "SDL_image.h"
 # include "libft.h"
 # include "ft_printf.h"
 # include "math.h"
