@@ -22,12 +22,13 @@
 # include "SDL.h"
 # include "obj.h"
 # include "file_io.h"
+# include "controller.h"
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
 # define RT_WIN_WIDTH 800
 # define RT_WIN_HEIGHT 800
-# define RT_BUF_EXTRA 50
+# define RT_BUF_EXTRA 0
 # define RT_CLICK_THRESHOLD 100
 
 /*
@@ -132,6 +133,7 @@ typedef struct			s_app
 	Uint32				ts_mouse_down;
 
 	t_int				selection;
+	t_controller		controller;
 }						t_app;
 
 /*
@@ -141,6 +143,7 @@ int						app_start(t_app *app, char **argv, int argc);
 void					app_finish(t_app *app);
 int						app_error(const char *msg, int returns);
 int						app_update_buffers(t_app *app);
+int						app_render(t_app *app);
 void					on_app_event(t_app *app, SDL_Event *event);
 void					init_options(t_options *op);
 
