@@ -287,7 +287,6 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 ** b[2] - bounds min and max = height / 2
 ** the center of the cube is located at the intersection of the diagonals
 */
-
 static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 {
 	t_real	a;
@@ -332,22 +331,25 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
 
-	if (tmax < max(tmin, 0.00) || tmin < 0)
+	if (tmax < max(tmin, EPSILON))
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
 	if (((hit->p.x - obj->pos.x) == a || (hit->p.x - obj->pos.x) == -a) &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
-		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
-		hit->n = (((hit->p.x - obj->pos.x) == a)) ? n[4] : n[5];
-	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a &&
-		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a) &&
-		((hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a)))
-		hit->n = (((hit->p.y - obj->pos.y) == a)) ? n[2] : n[3];
-	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a) &&
-		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a)))
-		hit->n = (((hit->p.z - obj->pos.z) == a)) ? n[0] : n[1];
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
+		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
+		hit->n = ((hit->p.x - obj->pos.x) == a) ? VEC(hit->p.x, 0.00001, 0.00001)
+		: VEC(-hit->p.x, 0.00001, 0.00001);
+	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a) &&
+		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a &&
+		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
+		hit->n = ((hit->p.y - obj->pos.y) == a) ? VEC(0.0001, hit->p.y, 0.0001)
+		: VEC(0.0001, -hit->p.y, 0.0001);
+	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a) &&
+		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
+		(hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a))
+		hit->n = ((hit->p.z - obj->pos.z) == a) ? VEC(0.0001, 0.0001, hit->p.z)
+		: VEC(0.0001, 0.0001, -hit->p.z);
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
