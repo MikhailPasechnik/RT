@@ -22,7 +22,6 @@ __kernel void k_render(
     t_color refl_color;
 
     t_int   dpth = -1;
-    t_uint  o;
     t_ray   refl_ray;
     t_hit   refl_hit;
     

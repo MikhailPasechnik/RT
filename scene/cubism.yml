@@ -10,8 +10,8 @@
   dispersion:   2
 - type: light
   color:        [0, 0, 250]
-  position:     [20, -50, 70]
-  rotation:     [100, 0, 70]
+  position:     [20, -50, 170]
+  rotation:     [150, 0, 90]
   intensity:    0.1
   dispersion:   2
 - type: light
@@ -33,6 +33,7 @@
   reflective:   0
   radius:       3
   rotation:     [60, 0, 0]
+  emittance:    [150, 150, 150]
 - type: sphere
   position:     [10, 12, 2.5]
   color:        [150, 150, 150]
@@ -47,5 +48,7 @@
   reflective:   1
   radius:       10
   rotation:     [0, 0, 0]
+  emittance:    [150, 150, 150]
+
 
 
