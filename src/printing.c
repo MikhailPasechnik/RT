@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 19:15:36 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 22:06:08 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,96 +15,93 @@
 void		printing_light(int fd, t_app *app)
 {
 	t_light	*light;
-	int		с;
+	int		c;
 
-	с = 0;
-	while (с <= app->op.light_count)
+	c = 0;
+	while (c < app->op.light_count)
 	{
-		light = &((t_light*)app->ren.light_buf.host)[с];
-		if (light->id == ID_DIRECT)
-			ft_fprintf(fd, "Direct #%d:\n", light->i);
-		else if (light->id == ID_POINT)
-			ft_fprintf(fd, "Point #%d:\n", light->i);
-		else if (light->id == ID_AMB)
-			ft_fprintf(fd, "Ambient #%d:\n", light->i);
-		ft_fprintf(fd, "\tColor : [%.0f, %.0f, %.0f]\n"
-			"\tPosition : [%.2f, %.2f, %.2f]\n"
-			"\tRotation : [%.2f, %.2f, %.2f]\n\tIntensity : %.2f\n",
-			light->color.v4[0] * 255, light->color.v4[1] * 255,
-			light->color.v4[2] * 255, light->pos.v4[0], light->pos.v4[1],
+		light = &((t_light*)app->ren.light_buf.host)[c];
+		ft_fprintf(fd, "- type: light\n  position:     [%.2f, %.2f, %.2f]\n"
+			"  rotation:     [%.2f, %.2f, %.2f]\n"
+			"  color:        [%.0f, %.0f, %.0f]\n  intensity:    %.2f\n"
+			"  dispersion:   %d\n", light->pos.v4[0], light->pos.v4[1],
 			light->pos.v4[2], light->rot.v4[0], light->rot.v4[1],
-			light->rot.v4[2], light->intensity);
-			с++;
-	}	
+			light->rot.v4[2], light->color.v4[0] * 255,
+			light->color.v4[1] * 255, light->color.v4[2] * 255,
+			light->intensity, light->id);
+		c++;
+	}
 }
 
 void		print_parametrs(int fd, t_obj *obj)
 {
-	if (obj->id == ID_CUB || (!obj->infinite && (obj->id == ID_CON
-		|| obj->id == ID_CYL)))
-		ft_fprintf(fd, "\tHeight : %.2f\n", obj->height);
-	if (obj->id != ID_PLN && obj->id != ID_CUB)
-		ft_fprintf(fd, "\tRadius : %.2f\n", obj->radius);
-	ft_fprintf(fd, "\tColor : [%.0f, %.0f, %.0f]\n"
-		"\tEmittance : [%.0f, %.0f, %.0f]\n"
-		"\tPosition : [%.2f, %.2f, %.2f]\n"
-		"\tRotation : [%.2f, %.2f, %.2f]\n\tReflection : %.2f\n"
-		"\tSpecularity : %.2f\n", obj->mat.diff.v4[0] * 255,
+	ft_fprintf(fd, "  position:     [%.2f, %.2f, %.2f]\n"
+		"  rotation:     [%.2f, %.2f, %.2f]\n"
+		"  color:        [%.0f, %.0f, %.0f]\n"
+		"  emittance:    [%.0f, %.0f, %.0f]\n"
+		"  reflective:   %.2f\n"
+		"  specular:     %.2f\n", obj->pos.v4[0], obj->pos.v4[1],
+		obj->pos.v4[2], obj->rot.v4[0], obj->rot.v4[1],
+		obj->rot.v4[2], obj->mat.diff.v4[0] * 255,
 		obj->mat.diff.v4[1] * 255, obj->mat.diff.v4[2] * 255,
 		obj->mat.emittance.v4[0], obj->mat.emittance.v4[1],
-		obj->mat.emittance.v4[2], obj->pos.v4[0], obj->pos.v4[1],
-		obj->pos.v4[2], obj->rot.v4[0], obj->rot.v4[1],
-		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
+		obj->mat.emittance.v4[2], obj->mat.reflection, obj->mat.specular);
+	if (obj->id != ID_PLN && obj->id != ID_CUB)
+		ft_fprintf(fd, "  radius:       %.2f\n", obj->radius);
+	if (obj->id == ID_CUB || (!obj->infinite && (obj->id == ID_CON
+		|| obj->id == ID_CYL)))
+		ft_fprintf(fd, "  height:       %.2f\n", obj->height);
+	if (obj->infinite && (obj->id == ID_CON || obj->id == ID_CYL))
+		ft_fprintf(fd, "  infinite:     %.0f\n", obj->infinite);
 }
 
 void		printing_obj(int fd, t_app *app)
 {
 	t_obj	*obj;
-	int		с;
+	int		c;
 
-	с = 0;
-	while (с <= app->op.obj_count)
+	c = 0;
+	while (c < app->op.obj_count)
 	{
-		obj = &((t_obj*)app->ren.obj_buf.host)[с];
-		if (obj->id == ID_CUB || obj->id == ID_PLN)
-			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
-		else if (obj->id == ID_CON || obj->id == ID_CYL)
-			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
-			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
-		else if (obj->id == ID_SPH || obj->id == ID_PAR)
-			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
-			: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
+		obj = &((t_obj*)app->ren.obj_buf.host)[c];
+		ft_fprintf(fd, "- type: ");
+		(obj->id == ID_SPH) ? ft_fprintf(fd, "sphere\n") : 0;
+		(obj->id == ID_PLN) ? ft_fprintf(fd, "plane\n") : 0;
+		(obj->id == ID_CYL) ? ft_fprintf(fd, "cylinder\n") : 0;
+		(obj->id == ID_CON) ? ft_fprintf(fd, "cone\n") : 0;
+		(obj->id == ID_CUB) ? ft_fprintf(fd, "cube\n") : 0;
+		(obj->id == ID_PAR) ? ft_fprintf(fd, "paraboloid\n") : 0;
+		(obj->id == ID_PCL) ? ft_fprintf(fd, "parabolic cylinder\n") : 0;
+		(obj->id == ID_ELL) ? ft_fprintf(fd, "ellipse\n") : 0;
+		(obj->id == ID_HCL) ? ft_fprintf(fd, "hyperbolic cylinder\n") : 0;
+		(obj->id == ID_HTS) ? ft_fprintf(fd, "hyperboloid with two sheets\n")
+			: 0;
+		(obj->id == ID_HPR) ? ft_fprintf(fd, "hyperbolic paraboloid\n") : 0;
 		print_parametrs(fd, obj);
-		с++;
+		c++;
 	}
 	close(fd);
 }
 
-int			save_scene(t_app *app, t_int chng)
+int			save_scene(t_app *app)
 {
 	int		fd;
 	char	name[150];
+	t_mat4	r = app->cam.mtx;
+	t_vec3	t;
+
+	m4_extract_rotation(&r, &t);
 
 	file_name(name);
-	(ft_strlen(name) + 4 < FILENAME_MAX) ? ft_sprintf(name, "%s.txt", name) : 0;
-	if (!chng)
-	{
-		if ((fd = open(name, O_RDWR | O_CREAT, 0666)) < 0)
-			return (0);
-		ft_fprintf(fd, "\tScene from ./scene/*.yml :\n\n"
-			"Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
-			app->cam.fov, app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE);
-	}
-	if (chng)
-	{
-		if ((fd = open(name, O_WRONLY | O_APPEND | O_CREAT, 0600)) < 0)
-			return (0);
-		ft_fprintf(fd, "\n\tYou saved the changes in the scene!\n");
-	}
-	ft_fprintf(fd, "\nList of lights :\n");
+	(ft_strlen(name) + 4 < FILENAME_MAX) ? ft_sprintf(name, "%s.yml", name) : 0;
+	if ((fd = open(name, O_RDWR | O_CREAT, 0666)) < 0)
+		return (0);
+	ft_fprintf(fd, "- type: camera\n  position:     [%.2f, %.2f, %.2f]\n"
+		"  rotation:     [%.2f, %.2f, %.2f]\n  fov:          %.0f\n",
+		app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE,
+		t.v4[0], t.v4[1], t.v4[2],
+		app->cam.fov);
 	printing_light(fd, app);
-	ft_fprintf(fd, "\nList of objects :\n");
 	printing_obj(fd, app);
 	return (1);
 }

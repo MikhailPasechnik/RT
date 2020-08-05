@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 18:36:54 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 20:16:50 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ void					delete_linked_lists(t_app *app);
 /*
 ** Print RT scene functions
 */
-int						save_scene(t_app *app, t_int chng);
+int						save_scene(t_app *app);
 void					printing_light(int fd, t_app *app);
 void					printing_obj(int fd, t_app *app);
 void					print_parametrs(int fd, t_obj *obj);

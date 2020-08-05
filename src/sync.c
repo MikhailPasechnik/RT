@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 19:15:33 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:37:25 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int			transfer_objects(t_app *app)
 	while (it && i++ < app->op.obj_count)
 	{
 		((t_obj	*)buffer.host)[i - 1] = *(t_obj *)it->content;
-		save_scene(app, 0);
 		it = it->next;
 	}
 	if (i != app->op.obj_count || it != NULL)
@@ -63,7 +62,6 @@ int			transfer_light(t_app *app)
 	while (it && i++ < app->op.light_count)
 	{
 		((t_light *)buffer.host)[i - 1] = *(t_light *)it->content;
-		save_scene(app, 0);
 		it = it->next;
 	}
 	if (i != app->op.light_count || it != NULL)

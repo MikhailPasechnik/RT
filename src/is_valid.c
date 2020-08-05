@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 19:15:34 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:37:52 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,11 @@ void	check_obj(t_app *app)
 {
 	t_obj_list		*objects;
 	t_obj			*obj;
-	t_int			prnt;
 
 	objects = app->obj_list;
-	prnt = 1;
 	while (objects)
 	{
 		obj = objects->content;
-		obj->i = prnt;
 		if (obj->id == 1)
 			obj->rot = VEC(0, 0, 0);
 		if (obj->radius < 0 && obj->id != 2 && obj->id != 5)
@@ -62,7 +59,6 @@ void	check_obj(t_app *app)
 		if (obj->mat.specular < 0 || obj->mat.reflection < 0 ||
 			obj->mat.specular > 1 || obj->mat.reflection > 1)
 			kill("The specular or reflection must be in the range 0..1!");
-		prnt += 1;
 		objects = objects->next;
 	}
 }
@@ -71,14 +67,11 @@ void	check_light(t_app *app)
 {
 	t_light_list	*lights;
 	t_light			*lig;
-	t_int			prnt;
 
 	lights = app->light_list;
-	prnt = 1;
 	while (lights)
 	{
 		lig = lights->content;
-		lig->i = prnt;
 		if (lig->intensity < 0)
 			kill("The intensity of light must be positive!");
 		if (lig->id < ID_DIRECT || lig->id > ID_AMB)
