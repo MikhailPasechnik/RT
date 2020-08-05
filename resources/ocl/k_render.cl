@@ -20,11 +20,8 @@ t_color pathtracing(int id,
 	max_samples = 20;
 	while (sample < max_samples)
 	{
-		// camera_ray.d = random_dir(sample, options, camera_hit.n);
-		camera_ray.d = random_dir_v20(sample, options, camera_hit.n);
-		// camera_ray.d = (t_vec3){random_number(options, sample) - 0.5,
-		// 				random_number(options, sample + 1) - 0.5,
-		// 				fabs(random_number(options, sample + 2) - 0.5)};
+		camera_ray.d = random_dir(sample, options, camera_hit.n);
+		// camera_ray.d = random_dir_v20(sample, options, camera_hit.n);
 		obj_index = intersect(objects, options.obj_count, &camera_ray, &ray_hit);
 		if (obj_index == -1)
 			break ;
@@ -108,6 +105,7 @@ __kernel void k_render(
     depth_buffer[id] = pack_color(&depth_color);
 	// if (options.gi)
 	if (obj_index != -1)
-		color += pathtracing(id, options, objects, lights, camera_hit, camera) / 100.0f;
+		color += pathtracing(id, options, objects, lights, camera_hit, camera) / 10.f;
+		// color = clamp(0.0f, pathtracing(id, options, objects, lights, camera_hit, camera), 1.0f);
     color_buffer[id] = pack_color(&color);
 }

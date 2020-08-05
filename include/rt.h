@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 19:35:08 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/05 20:53:57 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
-# define RT_WIN_WIDTH 700
-# define RT_WIN_HEIGHT 500
+# define RT_WIN_WIDTH 800
+# define RT_WIN_HEIGHT 800
 # define RT_BUF_EXTRA 50
 # define RT_CLICK_THRESHOLD 100
 

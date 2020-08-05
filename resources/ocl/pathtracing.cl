@@ -14,38 +14,37 @@ float	random_number(t_options options, uint count)
 	return ((float)result / 10000.0 - result / 10000.0);
 }
 
-/** *********************************** **/
-/** *********************************** **/
 
 t_mat3		create_rot_matrix(float3 normal)
 {
 	float3	transit_vec;
 	float3	x_axis;
-	float3	z_axis;
+	float3	y_axis;
 	t_mat3	rot_matrix;
 
-	transit_vec = (float3){normal.x, normal.y * (-1), normal.z};
+	transit_vec = (float3){normal.x, -1 * normal.y, normal.z};
+	// transit_vec = 
 	transit_vec = normalize(transit_vec);
 	x_axis = v3_cross(normal, transit_vec);
 	x_axis = normalize(x_axis);
-	z_axis = v3_cross(x_axis, normal);
-	z_axis = normalize(z_axis);
+	y_axis = v3_cross(x_axis, normal);
+	y_axis = normalize(y_axis);
 
 	rot_matrix.a.x = x_axis.x;
 	rot_matrix.a.y = x_axis.y;
 	rot_matrix.a.z = x_axis.z;
 
-	rot_matrix.b.x = normal.x;
-	rot_matrix.b.y = normal.y;
-	rot_matrix.b.z = normal.z;
+	rot_matrix.b.x = y_axis.x;
+	rot_matrix.b.y = y_axis.y;
+	rot_matrix.b.z = y_axis.z;
 
-	rot_matrix.c.x = z_axis.x;
-	rot_matrix.c.y = z_axis.y;
-	rot_matrix.c.z = z_axis.z;
+	rot_matrix.c.x = normal.x;
+	rot_matrix.c.y = normal.y;
+	rot_matrix.c.z = normal.z;
 
 	// rot_matrix.a = x_axis;
+	// rot_matrix.c = y_axis;
 	// rot_matrix.b = normal;
-	// rot_matrix.c = z_axis;
 	return (rot_matrix);
 }
 
@@ -65,10 +64,11 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 {
 	float3 random_dir;
 	float3 rot_random_dir;
-	
+
+	// normal *= -1.0f;
 	random_dir = (float3){random_number(options, bounce) - 0.5,
-						  fabs(random_number(options, bounce + 1) - 0.5),
-						  (random_number(options, bounce + 2) - 0.5)};
+						  (random_number(options, bounce + 1) - 0.5),
+						  fabs(random_number(options, bounce + 2) - 0.5)};
 	random_dir = normalize(random_dir);
 	rot_random_dir = rotation_random_dir(normal, random_dir);
 	rot_random_dir = normalize(rot_random_dir);
@@ -76,6 +76,8 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 }
 
 
+/** *********************************** **/
+/** *********************************** **/
 
 float3 sampleWorld(float3 Nt, float3 Nb, float3 hitNormal, float3 sample)
 { 
@@ -124,6 +126,9 @@ float3 random_dir_v20(uint bounce, t_options options, float3 normal)
 	return (sample);
 }
 
+/** *********************************** **/
+/** *********************************** **/
+
 t_color trace_one_path(t_options options, __global t_obj* objects, __global t_light* lights, t_ray camera_ray, t_hit camera_hit)
 {
 	int		bounce;
@@ -144,12 +149,9 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 	{
 		if (bounce != 0)
 		{	
-			camera_ray.o = camera_hit.p;
-			// camera_ray.d = random_dir(bounce, options, camera_hit.n);
-			camera_ray.d = random_dir_v20(bounce, options, camera_hit.n);
-			// camera_ray.d = (t_vec3){random_number(options, bounce) - 0.5,
-			// 			  random_number(options, bounce + 1) - 0.5,
-			// 			  fabs(random_number(options, bounce + 2) - 0.5)};
+			camera_ray.o = -camera_hit.p;
+			camera_ray.d = random_dir(bounce, options, camera_hit.n);
+			// camera_ray.d = random_dir_v20(bounce, options, camera_hit.n);
 			obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
 		}
 		if (obj_index == -1)
