@@ -1,5 +1,34 @@
 #include "rt.hcl"
 
+void	antialiasing()
+{
+	int nx = 200;
+	int ny = 100;
+	int ns = 100;
+
+	camera cam;
+
+	for (int j = ny - 1; j >= 0; j--)
+	{
+		for (int i = 0; i < nx; i++)
+		{
+			vec3 col(0,0,0);
+			for (int s = 0; s < ns; s++)
+			{
+				float u = float(i + drand48())/float(nx); // 0~1
+				float v = float(j + drand48())/float(ny);
+				ray r = cam.get_ray(u,v);
+				col += color(r);
+			}
+			col /= float(ns);
+
+			int ir = int(255.99 * col[0]);
+			int ig = int(255.99 * col[1]);
+			int ib = int(255.99 * col[2]);
+		}
+	}
+}
+
 __kernel void k_render(
     t_options options,
     t_cam camera,
