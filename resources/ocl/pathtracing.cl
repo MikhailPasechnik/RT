@@ -75,6 +75,8 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 	return (rot_random_dir);
 }
 
+
+
 float3 sampleWorld(float3 Nt, float3 Nb, float3 hitNormal, float3 sample)
 { 
 	float3 sample_upgrade;
@@ -92,29 +94,32 @@ float3 uniformSampleHemisphere(const float r1, const float r2)
     float sinTheta = sqrtf(1 - r1 * r1); 
     float phi = 2 * M_PI * r2; 
     float x = sinTheta * cosf(phi); 
-    float y = phi / (2 + M_PI);
+    float y = phi / (2 * M_PI);
 	float z = sinTheta * sinf(phi); 
-    return Vec3f(x, y, z);
+    return (normalize((float3){x, y, z}));
 }
 
 void createCoordinateSystem(const float3 N, float3 *Nt, float3 *Nb) 
 {
+	float3 tmp1 = (float3){N.z, 0, -N.x};
+	float3 tmp2 = (float3){0, -N.z, N.y};
+
     if (fabs(N.x) > fabs(N.y)) 
-        *Nt = Vec3f(N.z, 0, -N.x) / sqrtf(N.x * N.x + N.z * N.z); 
+        *Nt = tmp1 / sqrtf(N.x * N.x + N.z * N.z); 
     else 
-        *Nt = Vec3f(0, -N.z, N.y) / sqrtf(N.y * N.y + N.z * N.z);
+        *Nt = tmp2 / sqrtf(N.y * N.y + N.z * N.z);
     *Nb = v3_cross(N, *Nt);
 }
 
 float3 random_dir_v20(uint bounce, t_options options, float3 normal)
 {
-	t_vec3 *Nt;
-	t_vec3 *Nb;
-	t_vec3 sample;
+	float3 Nt;
+	float3 Nb;
+	float3 sample;
 
-	createCoordinateSystem(normal, Nt, Nb);
+	createCoordinateSystem(normal, &Nt, &Nb);
 	sample = uniformSampleHemisphere(random_number(options, bounce) - 0.5, random_number(options, bounce + 1) - 0.5);
-	sample = sampleWorld(*Nt, *Nb, normal, sample);
+	sample = sampleWorld(Nt, Nb, normal, sample);
 	sample = normalize(sample);
 	return (sample);
 }

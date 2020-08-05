@@ -73,12 +73,12 @@ typedef struct		s_mat3
 	float3			c;
 }					t_mat3;
 
-t_vec3			v3_cross(t_vec3 a, t_vec3 b);
+float3			v3_cross(float3 a, float3 b);
 t_vec3 			v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v);
 float			v3_dot_product(t_vec3 v1, t_vec3 v2);
 t_vec3			v3_mult_vec_const(t_vec3 v, float n);
 t_color			v3_division_vec_on_const(t_color v, float n);
 t_mat3			create_rot_matrix(float3 normal);
-float3 random_dir_v20(uint bounce, t_options options, float3 normal);
+float3 			random_dir_v20(uint bounce, t_options options, float3 normal);
 
 # endif

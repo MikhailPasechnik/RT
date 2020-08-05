@@ -1,8 +1,8 @@
 #include "rt.hcl"
 
-t_vec3	v3_cross(t_vec3 a, t_vec3 b)
+float3	v3_cross(float3 a, float3 b)
 {
-    t_vec3 res;
+    float3 res;
 
 	res.x = a.y * b.z - a.z * b.y;
 	res.y = a.z * b.x - a.x * b.z;
