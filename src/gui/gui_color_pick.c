@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gui_color_pick.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/05 17:10:55 by bmahi             #+#    #+#             */
+/*   Updated: 2020/08/05 17:15:09 by bmahi            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "gui.h"
 #include "m3d.h"
 
-unsigned int	gui_color_pick(t_color *clr, char* lbl, struct nk_context	*ctx)
+unsigned int	gui_color_pick(t_color *clr, char *lbl, struct nk_context *ctx)
 {
 	struct nk_colorf	tmp;
 
@@ -9,7 +21,9 @@ unsigned int	gui_color_pick(t_color *clr, char* lbl, struct nk_context	*ctx)
 	nk_layout_row_dynamic(ctx, 20, 1);
 	nk_label(ctx, lbl, NK_TEXT_LEFT);
 	nk_layout_row_dynamic(ctx, 25, 1);
-	if (nk_combo_begin_color(ctx, nk_rgb_cf(tmp), nk_vec2(nk_widget_width(ctx),400))) {
+	if (nk_combo_begin_color(ctx, nk_rgb_cf(tmp), nk_vec2(nk_widget_width(ctx),
+		400)))
+	{
 		nk_layout_row_dynamic(ctx, 120, 1);
 		tmp = nk_color_picker(ctx, tmp, NK_RGB);
 		nk_combo_end(ctx);
@@ -22,7 +36,7 @@ unsigned int	gui_color_pick(t_color *clr, char* lbl, struct nk_context	*ctx)
 	return (0);
 }
 
-unsigned int	gui_gray_pick(t_real *clr, char* lbl, struct nk_context	*ctx)
+unsigned int	gui_gray_pick(t_real *clr, char *lbl, struct nk_context	*ctx)
 {
 	float	tmp;
 
