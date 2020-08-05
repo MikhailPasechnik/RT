@@ -38,9 +38,9 @@ t_mat3		create_rot_matrix(float3 normal)
 	rot_matrix.b.y = y_axis.y;
 	rot_matrix.b.z = y_axis.z;
 
-	rot_matrix.c.x = normal.x;
-	rot_matrix.c.y = normal.y;
-	rot_matrix.c.z = normal.z;
+	rot_matrix.c.x = -normal.x;
+	rot_matrix.c.y = -normal.y;
+	rot_matrix.c.z = -normal.z;
 
 	// rot_matrix.a = x_axis;
 	// rot_matrix.c = y_axis;
