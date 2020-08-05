@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/23 23:17:36 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 16:42:20 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			nk_layout_row_dynamic(gui->ctx, 30, 2);
 		}
 		nk_end(gui->ctx);
-		SDL_GL_MakeCurrent(gui->win, gui->glContext);
+		SDL_GL_MakeCurrent(gui->win, gui->gl_context);
 		glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT);
 		nk_sdl_render(NK_ANTI_ALIASING_ON, GUI_MAX_VERTEX_MEMORY, GUI_MAX_ELEMENT_MEMORY);
