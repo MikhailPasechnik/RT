@@ -91,11 +91,11 @@ float3 uniformSampleHemisphere(const float r1, const float r2)
 { 
     // cos(theta) = r1 = y
     // cos^2(theta) + sin^2(theta) = 1 -> sin(theta) = srtf(1 - cos^2(theta))
-    float sinTheta = sqrtf(1 - r1 * r1); 
+    float sinTheta = sqrt(1 - r1 * r1); 
     float phi = 2 * M_PI * r2; 
-    float x = sinTheta * cosf(phi); 
+    float x = sinTheta * cos(phi); 
     float y = phi / (2 * M_PI);
-	float z = sinTheta * sinf(phi); 
+	float z = sinTheta * sin(phi); 
     return (normalize((float3){x, y, z}));
 }
 
@@ -105,9 +105,9 @@ void createCoordinateSystem(const float3 N, float3 *Nt, float3 *Nb)
 	float3 tmp2 = (float3){0, -N.z, N.y};
 
     if (fabs(N.x) > fabs(N.y)) 
-        *Nt = tmp1 / sqrtf(N.x * N.x + N.z * N.z); 
+        *Nt = tmp1 / sqrt(N.x * N.x + N.z * N.z); 
     else 
-        *Nt = tmp2 / sqrtf(N.y * N.y + N.z * N.z);
+        *Nt = tmp2 / sqrt(N.y * N.y + N.z * N.z);
     *Nb = v3_cross(N, *Nt);
 }
 
