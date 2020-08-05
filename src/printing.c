@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/03 20:16:46 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:15:36 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 void		printing_light(int fd, t_app *app)
 {
-	t_light			*light;
-	t_light_list	*list;
+	t_light	*light;
+	int		с;
 
-	ft_fprintf(fd, "\nList of lights :\n");
-	list = app->light_list;
-	while (list)
+	с = 0;
+	while (с <= app->op.light_count)
 	{
-		light = list->content;
+		light = &((t_light*)app->ren.light_buf.host)[с];
 		if (light->id == ID_DIRECT)
-			ft_fprintf(fd, "Direct :\n");
+			ft_fprintf(fd, "Direct #%d:\n", light->i);
 		else if (light->id == ID_POINT)
-			ft_fprintf(fd, "Point :\n");
+			ft_fprintf(fd, "Point #%d:\n", light->i);
 		else if (light->id == ID_AMB)
-			ft_fprintf(fd, "Ambient :\n");
+			ft_fprintf(fd, "Ambient #%d:\n", light->i);
 		ft_fprintf(fd, "\tColor : [%.0f, %.0f, %.0f]\n"
 			"\tPosition : [%.2f, %.2f, %.2f]\n"
 			"\tRotation : [%.2f, %.2f, %.2f]\n\tIntensity : %.2f\n",
@@ -35,8 +34,8 @@ void		printing_light(int fd, t_app *app)
 			light->color.v4[2] * 255, light->pos.v4[0], light->pos.v4[1],
 			light->pos.v4[2], light->rot.v4[0], light->rot.v4[1],
 			light->rot.v4[2], light->intensity);
-		list = list->next;
-	}
+			с++;
+	}	
 }
 
 void		print_parametrs(int fd, t_obj *obj)
@@ -58,22 +57,31 @@ void		print_parametrs(int fd, t_obj *obj)
 		obj->rot.v4[2], obj->mat.reflection, obj->mat.specular);
 }
 
-void		printing_obj(int fd, t_obj *obj)
+void		printing_obj(int fd, t_app *app)
 {
-	if (obj->id == ID_CUB || obj->id == ID_PLN)
-		obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
-		: ft_fprintf(fd, "Cube #%d:\n", obj->i);
-	else if (obj->id == ID_CON || obj->id == ID_CYL)
-		obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
-		: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
-	else if (obj->id == ID_SPH || obj->id == ID_PAR)
-		obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
-		: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
-	print_parametrs(fd, obj);
+	t_obj	*obj;
+	int		с;
+
+	с = 0;
+	while (с <= app->op.obj_count)
+	{
+		obj = &((t_obj*)app->ren.obj_buf.host)[с];
+		if (obj->id == ID_CUB || obj->id == ID_PLN)
+			obj->id != ID_CUB ? ft_fprintf(fd, "Plane #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cube #%d:\n", obj->i);
+		else if (obj->id == ID_CON || obj->id == ID_CYL)
+			obj->id == ID_CON ? ft_fprintf(fd, "Cone #%d:\n", obj->i)
+			: ft_fprintf(fd, "Cylinder #%d:\n", obj->i);
+		else if (obj->id == ID_SPH || obj->id == ID_PAR)
+			obj->id == ID_SPH ? ft_fprintf(fd, "Sphere #%d:\n", obj->i)
+			: ft_fprintf(fd, "Paraboloid #%d:\n", obj->i);
+		print_parametrs(fd, obj);
+		с++;
+	}
 	close(fd);
 }
 
-int			save_scene(t_app *app, t_obj *obj, t_uint chng)
+int			save_scene(t_app *app, t_int chng)
 {
 	int		fd;
 	char	name[150];
@@ -87,17 +95,16 @@ int			save_scene(t_app *app, t_obj *obj, t_uint chng)
 		ft_fprintf(fd, "\tScene from ./scene/*.yml :\n\n"
 			"Camera :\n\tFOV : %.0f\n\tPosition : [%.2f, %.2f, %.2f]\n",
 			app->cam.fov, app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE);
-		printing_light(fd, app);
-		ft_fprintf(fd, "\nList of objects :\n");
-		printing_obj(fd, obj);
 	}
-	if ((chng > 0 && chng <= app->op.obj_count) || chng > app->op.obj_count)
+	if (chng)
 	{
 		if ((fd = open(name, O_WRONLY | O_APPEND | O_CREAT, 0600)) < 0)
 			return (0);
-		chng > app->op.obj_count ? ft_fprintf(fd,
-			"\n\tThe object in the scene have changed!\n") : 0;
-		printing_obj(fd, obj);
+		ft_fprintf(fd, "\n\tYou saved the changes in the scene!\n");
 	}
+	ft_fprintf(fd, "\nList of lights :\n");
+	printing_light(fd, app);
+	ft_fprintf(fd, "\nList of objects :\n");
+	printing_obj(fd, app);
 	return (1);
 }

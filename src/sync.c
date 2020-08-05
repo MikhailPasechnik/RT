@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/07/27 18:50:42 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:15:33 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			set_kernel_arg(cl_kernel kernel,
 
 int			transfer_objects(t_app *app)
 {
-	t_uint		i;
+	t_int		i;
 	t_list		*it;
 	t_buffer	buffer;
 
@@ -34,7 +34,7 @@ int			transfer_objects(t_app *app)
 	while (it && i++ < app->op.obj_count)
 	{
 		((t_obj	*)buffer.host)[i - 1] = *(t_obj *)it->content;
-		save_scene(app, &((t_obj *)buffer.host)[i - 1], i - 1);
+		save_scene(app, 0);
 		it = it->next;
 	}
 	if (i != app->op.obj_count || it != NULL)
@@ -60,9 +60,10 @@ int			transfer_light(t_app *app)
 		return (app_error("Failed to allocate light buffer!", 0));
 	i = 0;
 	it = app->light_list;
-	while (it && i < app->op.light_count)
+	while (it && i++ < app->op.light_count)
 	{
-		((t_light *)buffer.host)[i++] = *(t_light *)it->content;
+		((t_light *)buffer.host)[i - 1] = *(t_light *)it->content;
+		save_scene(app, 0);
 		it = it->next;
 	}
 	if (i != app->op.light_count || it != NULL)

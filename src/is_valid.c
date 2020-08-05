@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/04 17:53:21 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:15:34 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,14 @@ void	check_light(t_app *app)
 {
 	t_light_list	*lights;
 	t_light			*lig;
+	t_int			prnt;
 
 	lights = app->light_list;
+	prnt = 1;
 	while (lights)
 	{
 		lig = lights->content;
+		lig->i = prnt;
 		if (lig->intensity < 0)
 			kill("The intensity of light must be positive!");
 		if (lig->id < ID_DIRECT || lig->id > ID_AMB)

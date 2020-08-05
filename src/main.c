@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 17:40:02 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 19:15:23 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			nk_layout_row_static(gui->ctx, 30, 80, 1);
 			if (nk_button_label(gui->ctx, "Save"))
 				save_scene(app, 1);
-				// ft_printf("Saving Scene\n");
+//				ft_printf("Saving Scene\n");
 			nk_layout_row_dynamic(gui->ctx, 30, 2);
 		}
 		nk_end(gui->ctx);

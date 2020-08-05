@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 15:34:22 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/04 17:54:15 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 18:38:22 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct			s_light
 	t_color				color;
 	t_real				intensity;
 	t_int				id;
+	t_int				i;
 }						t_light;
 
 typedef struct			s_ray
