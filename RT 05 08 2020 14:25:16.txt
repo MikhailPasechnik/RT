@@ -1,0 +1,41 @@
+	Scene from ./scene/*.yml :
+
+Camera :
+	FOV : 80
+	Position : [0.00, -10.00, 15.00]
+
+List of lights :
+Direct :
+	Color : [0, 220, 250]
+	Position : [0.00, 10.00, 40.00]
+	Rotation : [90.00, 90.00, 45.00]
+	Intensity : 0.50
+Direct :
+	Color : [255, 0, 0]
+	Position : [0.00, 10.00, 40.00]
+	Rotation : [90.00, 0.00, 45.00]
+	Intensity : 0.50
+Direct :
+	Color : [210, 30, 230]
+	Position : [0.00, 0.00, 50.00]
+	Rotation : [120.00, 0.00, 45.00]
+	Intensity : 1.00
+
+List of objects :
+Cylinder #1:
+	Height : 10.00
+	Radius : 4.50
+	Color : [220, 130, 130]
+	Emittance : [0, 0, 0]
+	Position : [-5.00, -5.00, 10.00]
+	Rotation : [70.00, 80.00, 50.00]
+	Reflection : 0.00
+	Specularity : 0.00
+Sphere #2:
+	Radius : 4.00
+	Color : [110, 130, 130]
+	Emittance : [0, 0, 0]
+	Position : [1.00, -12.00, 14.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.00

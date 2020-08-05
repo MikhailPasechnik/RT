@@ -47,11 +47,38 @@ t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
 t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights, int id, t_hit camera_hit, t_ray camera_ray, t_color color);
 t_color			coef_color(t_color color, t_real coef);
-t_color pathtracing(int id,
+float3			random_dir(uint bounce, t_options options, float3 normal);
+t_color 		pathtracing(int id,
 					t_options options,
 					__global t_obj* objects,
 					__global t_light* lights,
-					t_ray camera_ray,
+					t_hit camera_hit,
 					t_cam camera);
+t_color 		trace_one_path(t_options options, __global t_obj* objects, __global t_light* lights, t_ray camera_ray, t_hit camera_hit);
+float3			random_dir(uint bounce, t_options options, float3 normal);
+float3			rotation_random_dir(float3 normal, float3 random_dir);
+float			random_number(t_options options, uint count);
+/*
+** *********************************** **
+** *********************************** **
+**             3D vector  			   **
+** *********************************** **
+** *********************************** **
+*/
+
+typedef struct		s_mat3
+{
+	float3			a;
+	float3			b;
+	float3			c;
+}					t_mat3;
+
+t_vec3			v3_cross(t_vec3 a, t_vec3 b);
+t_vec3 			v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v);
+float			v3_dot_product(t_vec3 v1, t_vec3 v2);
+t_vec3			v3_mult_vec_const(t_vec3 v, float n);
+t_color			v3_division_vec_on_const(t_color v, float n);
+t_mat3			create_rot_matrix(float3 normal);
+float3 random_dir_v20(uint bounce, t_options options, float3 normal);
 
 # endif

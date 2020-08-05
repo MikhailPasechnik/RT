@@ -3,19 +3,19 @@
   rotation:     [-60, 10, 40]
   fov:          60
 - type: light
-  color:        [250, 250, 250]
+  color:        [255, 255, 255]
   position:     [20, 100, 250]
   rotation:     [120, 0, 45]
   intensity:    0.01
   dispersion:   2
 - type: light
-  color:        [0, 0, 250]
+  color:        [255, 255, 255]
   position:     [20, -50, 170]
   rotation:     [150, 0, 90]
   intensity:    0.1
   dispersion:   2
 - type: light
-  color:        [190, 0, 250]
+  color:        [255, 255, 255]
   position:     [-60, 30, 80]
   rotation:     [120, 0, 10]
   intensity:    0.7
@@ -28,27 +28,25 @@
   rotation:     [180, 0, 0]
 - type: sphere
   position:     [-2, 15, 3]
-  color:        [150, 150, 150]
-  specular:     1
+  color:        [0, 250, 0]
+  specular:     0
   reflective:   0
   radius:       3
   rotation:     [60, 0, 0]
-  emittance:    [150, 150, 150]
 - type: sphere
   position:     [10, 12, 2.5]
-  color:        [150, 150, 150]
+  color:        [255, 0, 0]
   specular:     0
-  reflective:   0.5
+  reflective:   0
   radius:       5
   rotation:     [60, 0, 0]
 - type: sphere
   position:     [0, 0, 10]
   color:        [150, 150, 150]
-  specular:     0.1
-  reflective:   1
+  specular:     0
+  reflective:   0
   radius:       10
   rotation:     [0, 0, 0]
-  emittance:    [150, 150, 150]
 
 
 

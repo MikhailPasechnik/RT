@@ -68,34 +68,87 @@ float3		random_dir(uint bounce, t_options options, float3 normal)
 	
 	random_dir = (float3){random_number(options, bounce) - 0.5,
 						  fabs(random_number(options, bounce + 1) - 0.5),
-						  random_number(options, bounce + 2) - 0.5};
+						  (random_number(options, bounce + 2) - 0.5)};
 	random_dir = normalize(random_dir);
 	rot_random_dir = rotation_random_dir(normal, random_dir);
+	rot_random_dir = normalize(rot_random_dir);
 	return (rot_random_dir);
 }
 
-t_color trace_one_path(t_options options, __global t_obj* objects, t_hit camera_hit)
+float3 sampleWorld(float3 Nt, float3 Nb, float3 hitNormal, float3 sample)
+{ 
+	float3 sample_upgrade;
+
+	sample_upgrade = sample.x * Nb.x + sample.y * hitNormal.x + sample.z * Nt.x;
+	sample_upgrade = sample.x * Nb.y + sample.y * hitNormal.y + sample.z * Nt.y;
+	sample_upgrade = sample.x * Nb.z + sample.y * hitNormal.z + sample.z * Nt.z;
+	return (sample_upgrade);
+}
+
+float3 uniformSampleHemisphere(const float r1, const float r2)
+{ 
+    // cos(theta) = r1 = y
+    // cos^2(theta) + sin^2(theta) = 1 -> sin(theta) = srtf(1 - cos^2(theta))
+    float sinTheta = sqrtf(1 - r1 * r1); 
+    float phi = 2 * M_PI * r2; 
+    float x = sinTheta * cosf(phi); 
+    float y = phi / (2 + M_PI);
+	float z = sinTheta * sinf(phi); 
+    return Vec3f(x, y, z);
+}
+
+void createCoordinateSystem(const float3 N, float3 *Nt, float3 *Nb) 
+{
+    if (fabs(N.x) > fabs(N.y)) 
+        *Nt = Vec3f(N.z, 0, -N.x) / sqrtf(N.x * N.x + N.z * N.z); 
+    else 
+        *Nt = Vec3f(0, -N.z, N.y) / sqrtf(N.y * N.y + N.z * N.z);
+    *Nb = v3_cross(N, *Nt);
+}
+
+float3 random_dir_v20(uint bounce, t_options options, float3 normal)
+{
+	t_vec3 *Nt;
+	t_vec3 *Nb;
+	t_vec3 sample;
+
+	createCoordinateSystem(normal, Nt, Nb);
+	sample = uniformSampleHemisphere(random_number(options, bounce) - 0.5, random_number(options, bounce + 1) - 0.5);
+	sample = sampleWorld(*Nt, *Nb, normal, sample);
+	sample = normalize(sample);
+	return (sample);
+}
+
+t_color trace_one_path(t_options options, __global t_obj* objects, __global t_light* lights, t_ray camera_ray, t_hit camera_hit)
 {
 	int		bounce;
 	int		max_bounce;
 	int		i;
 	t_color main;
 	t_vec3	irradiance;
+	int		obj_index;
+	t_vec3	light_dir;
+	t_ray	shadow_ray;
+	t_hit	shadow_hit;
 
 	irradiance = 0;
 	main = 0;
 	bounce = 0;
-	max_bounce = 5;
+	max_bounce = 15;
 	while (bounce < max_bounce)
 	{
 		if (bounce != 0)
 		{	
 			camera_ray.o = camera_hit.p;
-			camera_ray.d = random_dir(bounce, options, camera_hit.n);
+			// camera_ray.d = random_dir(bounce, options, camera_hit.n);
+			camera_ray.d = random_dir_v20(bounce, options, camera_hit.n);
+			// camera_ray.d = (t_vec3){random_number(options, bounce) - 0.5,
+			// 			  random_number(options, bounce + 1) - 0.5,
+			// 			  fabs(random_number(options, bounce + 2) - 0.5)};
 			obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
-			if (obj_index != -1)
-				break ;
 		}
+		if (obj_index == -1)
+			break ;
 		i = 0;
 		while (i < options.light_count)
 		{
@@ -119,31 +172,4 @@ t_color trace_one_path(t_options options, __global t_obj* objects, t_hit camera_
 	}
 	main = main / bounce;
 	return (main);
-}
-
-t_color pathtracing(int id,
-					t_options options,
-					__global t_obj* objects,
-					__global t_light* lights,
-					t_ray camera_ray,
-					t_cam camera)
-{
-	int		sample;
-	int		max_samples;
-	t_color radiance;
-	t_hit	ray_hit;
-	int		obj_index;
-
-	sample = 0;
-	max_samples = 100;
-	while (sample < max_samples)
-	{
-		if (sample != 0)
-			camera_ray.d = random_dir(sample, options, camera_hit.n);
-		obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
-		radiance += trace_one_path(options, objects, camera_hit);
-		sample++;
-	}
-	color = color / sample;
-	return (color);
 }

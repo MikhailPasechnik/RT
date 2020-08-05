@@ -1,5 +1,40 @@
 #include "rt.hcl"
 
+
+t_color pathtracing(int id,
+					t_options options,
+					__global t_obj* objects,
+					__global t_light* lights,
+					t_hit camera_hit,
+					t_cam camera)
+{
+	int		sample;
+	int		max_samples;
+	t_color radiance;
+	t_ray 	camera_ray;
+	t_hit	ray_hit;
+	int		obj_index;
+
+	camera_ray.o = camera_hit.p;
+	sample = 0;
+	max_samples = 20;
+	while (sample < max_samples)
+	{
+		// camera_ray.d = random_dir(sample, options, camera_hit.n);
+		camera_ray.d = random_dir_v20(sample, options, camera_hit.n);
+		// camera_ray.d = (t_vec3){random_number(options, sample) - 0.5,
+		// 				random_number(options, sample + 1) - 0.5,
+		// 				fabs(random_number(options, sample + 2) - 0.5)};
+		obj_index = intersect(objects, options.obj_count, &camera_ray, &ray_hit);
+		if (obj_index == -1)
+			break ;
+		radiance += trace_one_path(options, objects, lights, camera_ray, ray_hit);
+		sample++;
+	}
+	return (radiance);
+}
+
+
 __kernel void k_render(
     t_options options,
     t_cam camera,
@@ -8,8 +43,8 @@ __kernel void k_render(
     __global t_int* color_buffer,
     __global t_int* index_buffer,
     __global t_int* normal_buffer,
-    __global t_int* depth_buffer
-)
+    __global t_int* depth_buffer)
+	// __global t_int* textures
 {
     t_int   obj_index;
 
@@ -72,6 +107,7 @@ __kernel void k_render(
     normal_buffer[id] = pack_color(&normal_color);
     depth_buffer[id] = pack_color(&depth_color);
 	// if (options.gi)
-		color += pathtracing(id, options, objects, lights, camera_ray, camera);
+	if (obj_index != -1)
+		color += pathtracing(id, options, objects, lights, camera_hit, camera) / 100.0f;
     color_buffer[id] = pack_color(&color);
 }

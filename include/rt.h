@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/03 18:45:28 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 15:50:27 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define RT_WIN_FLAGS SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 # define RT_WIN_NAME "RT"
-# define RT_WIN_WIDTH 800
-# define RT_WIN_HEIGHT 800
+# define RT_WIN_WIDTH 25
+# define RT_WIN_HEIGHT 25
 # define RT_BUF_EXTRA 50
 # define RT_CLICK_THRESHOLD 100
 
@@ -41,7 +41,8 @@
 
 # define RT_CL_SRC2 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
 # define RT_CL_SRC1 RT_CL_SRC2" resources/ocl/color.cl resources/ocl/ray.cl"
-# define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl"
+# define RT_CL_SRC0 RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl"
+# define RT_CL_SRC RT_CL_SRC0" resources/ocl/pathtracing.cl resources/ocl/mat33.cl"
 # define RT_K_RENDER "k_render"
 # define RT_K_OPTIONS_ARG 0
 # define RT_K_CAMERA_ARG 1
@@ -51,6 +52,7 @@
 # define RT_K_INDEX_ARG 5
 # define RT_K_NORMA_ARG 6
 # define RT_K_DEPTH_ARG 7
+// # define RT_K_TX_ARG 8
 
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;

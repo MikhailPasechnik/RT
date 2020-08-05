@@ -1,0 +1,24 @@
+Sphere #3:
+	Radius : 6.00
+	Color : [20, 40, 80]
+	Emittance : [0, 0, 0]
+	Position : [7.00, 5.00, 2.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.00
+Cone #4:
+	Height : 20.00
+	Radius : 9.00
+	Color : [100, 20, 10]
+	Emittance : [0, 0, 0]
+	Position : [0.00, 0.00, 0.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.00
+Plane #5:
+	Color : [190, 170, 200]
+	Emittance : [0, 0, 0]
+	Position : [0.00, 0.00, 0.00]
+	Rotation : [180.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.00
