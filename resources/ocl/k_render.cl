@@ -68,7 +68,7 @@ __kernel void k_render(
                 else
                 {
                     r_col[dpth] = options.background_color;
-                    break ; // ушли в фон (как в случае с предыдущим брейком - нам надо остановиться)
+                    break ;
                 }
             }
             if (c > 0)
