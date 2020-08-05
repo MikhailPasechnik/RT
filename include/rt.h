@@ -19,7 +19,7 @@
 # include "ft_printf.h"
 # include "ocl.h"
 # include "m3d.h"
-# include "SDL.h"
+# include <SDL2/SDL.h>
 # include "obj.h"
 # include "file_io.h"
 

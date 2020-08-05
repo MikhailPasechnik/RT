@@ -10,7 +10,6 @@ static int	gl_setup(t_gui *gui)
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	gui->glContext = SDL_GL_CreateContext(gui->win);
 	glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
-	glewExperimental = 1;
 	if (glewInit() != GLEW_OK) {
 		ft_putstr("Failed to setup GLEW\n");
 		return (0);
