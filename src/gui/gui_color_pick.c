@@ -30,7 +30,7 @@ unsigned int	gui_gray_pick(t_real *clr, char* lbl, struct nk_context	*ctx)
 	nk_layout_row_dynamic(ctx, 20, 1);
 	nk_label(ctx, lbl, NK_TEXT_LEFT);
 	nk_layout_row_dynamic(ctx, 25, 1);
-	tmp = nk_slide_float(ctx, 0, tmp, 100, 0.1f);
+	tmp = nk_slide_float(ctx, 0, tmp, 1, 0.01f);
 	if (tmp != *clr)
 	{
 		*clr = tmp;

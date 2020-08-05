@@ -41,7 +41,7 @@ add_executable(${NAME} ${SRC})
 # Tests
 list(FILTER SRC EXCLUDE REGEX "main.c")
 
-file(GLOB_RECURSE RES_CL resources/ocl/* resources/textures/* include/obj.h)
+file(GLOB_RECURSE RES_CL resources/ocl/* include/obj.h)
 
 ADD_CUSTOM_TARGET(copy_runtime_dep ALL)
 # we don't want to copy if we're building in the source dir
