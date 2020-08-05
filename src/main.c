@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 16:42:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 17:07:09 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@
 #include "gui.h"
 #include "rt.h"
 
-
 int		sdl_init(void)
 {
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 	{
 		ft_putendl_fd("Failed to init SDL! SDL_Error: ", 2);
 		ft_putendl_fd(SDL_GetError(), 2);
@@ -34,8 +33,13 @@ int		sdl_init(void)
 
 void	sdl_loop(t_app *app, t_gui *gui)
 {
-	SDL_Event	event;
-	int			quit;
+	SDL_Event		event;
+	int				quit;
+	t_uint			changed;
+	t_obj			*o;
+	int				i;
+	t_light			*l;
+	unsigned int	change;
 
 	quit = 0;
 	while (!quit)
@@ -47,7 +51,8 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			if (SDL_GetWindowID(app->win) == event.window.windowID)
 			{
 				on_app_event(app, &event);
-			} else if (SDL_GetWindowID(gui->win) == event.window.windowID)
+			}
+			else if (SDL_GetWindowID(gui->win) == event.window.windowID)
 			{
 				nk_sdl_handle_event(&event);
 			}
@@ -55,36 +60,43 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		}
 		nk_input_end(gui->ctx);
 
-		/* GUI */
-		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT),
-					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+/*
+** GUI
+*/
+		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH / 2,
+			GUI_WIN_HEIGHT),
+			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
+			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 		{
-			if (app->selection != -1) {
-				t_uint changed = 0;
-				t_obj* o = &((t_obj*)app->ren.obj_buf.host)[app->selection];
+			if (app->selection != -1)
+			{
+				changed = 0;
+				o = &((t_obj*)app->ren.obj_buf.host)[app->selection];
 				changed |= gui_vec_pick(&o->pos, "Position:", gui->ctx);
 				changed |= gui_vec_pick(&o->rot, "Rotation:", gui->ctx);
 				changed |= gui_single_pick(&o->height, "Height:", gui->ctx);
 				changed |= gui_single_pick(&o->radius, "Radius:", gui->ctx);
 				changed |= gui_color_pick(&o->mat.diff, "Diffuse:", gui->ctx);
-				changed |= gui_gray_pick(&o->mat.specular, "Specular:", gui->ctx);
-				changed |= gui_gray_pick(&o->mat.reflection, "Reflection:", gui->ctx);
+				changed |= gui_gray_pick(&o->mat.specular, "Specular:",
+					gui->ctx);
+				changed |= gui_gray_pick(&o->mat.reflection, "Reflection:",
+					gui->ctx);
 				if (changed)
 				{
-					push_buffer(app->ren.queue, &app->ren.obj_buf, app->ren.obj_buf.size, 0);
+					push_buffer(app->ren.queue, &app->ren.obj_buf,
+						app->ren.obj_buf.size, 0);
 					app_render(app);
 				}
 			}
 		}
 		nk_end(gui->ctx);
-		if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH/2, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT),
-					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+		if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH / 2, 0,
+			GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT),
+			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
+			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 		{
-			int i = 0;
-			t_light *l;
-			unsigned int change = 0;
+			i = 0;
+			change = 0;
 			char name[20];
 			while (i < app->op.light_count)
 			{
@@ -105,14 +117,16 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			}
 			if (change)
 			{
-				push_buffer(app->ren.queue, &app->ren.light_buf, app->ren.light_buf.size, 0);
+				push_buffer(app->ren.queue, &app->ren.light_buf,
+					app->ren.light_buf.size, 0);
 				app_render(app);
 			}
 		}
 		nk_end(gui->ctx);
-		if (nk_begin(gui->ctx, "Scene", nk_rect(GUI_WIN_WIDTH/2, 0, GUI_WIN_WIDTH/2, GUI_WIN_HEIGHT/2),
-					 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-					 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+		if (nk_begin(gui->ctx, "Scene", nk_rect(GUI_WIN_WIDTH / 2, 0,
+			GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT / 2),
+			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
+			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 		{
 			nk_layout_row_static(gui->ctx, 30, 80, 1);
 			if (nk_button_label(gui->ctx, "Save"))
@@ -123,7 +137,8 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		SDL_GL_MakeCurrent(gui->win, gui->gl_context);
 		glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT);
-		nk_sdl_render(NK_ANTI_ALIASING_ON, GUI_MAX_VERTEX_MEMORY, GUI_MAX_ELEMENT_MEMORY);
+		nk_sdl_render(NK_ANTI_ALIASING_ON, GUI_MAX_VERTEX_MEMORY,
+			GUI_MAX_ELEMENT_MEMORY);
 		SDL_GL_SwapWindow(gui->win);
 	}
 }
