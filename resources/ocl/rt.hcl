@@ -20,7 +20,7 @@ typedef float3		t_color;
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 # define CUB(vec, a)((t_vec4){{vec, a}})
 
-# define MAX_BOUNCE 50
+# define MAX_BOUNCE 10
 
 typedef struct	s_hit {
 	t_vec3	p;
@@ -81,7 +81,7 @@ typedef struct		s_gi
 	t_color			mat_color;
 	t_vec3			light_dir;
 	t_vec3			normal;
-	t_color			emmitance;
+	t_vec3			emmitance;
 	t_color			brdf;
 }					t_gi;
 

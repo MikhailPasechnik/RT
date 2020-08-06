@@ -18,7 +18,7 @@ t_color pathtracing(int id,
 	radiance = 0;
 	camera_ray.o = camera_hit.p;
 	sample = 0;
-	max_samples = 50;
+	max_samples = 10;
 	while (sample < max_samples)
 	{
 		camera_ray.d = random_dir(sample, options, camera_hit.n);
@@ -107,6 +107,6 @@ __kernel void k_render(
 	// if (options.gi)
 	if (obj_index != -1)
 		// color += pathtracing(id, options, objects, lights, camera_hit, camera);
-		color = pathtracing(id, options, objects, lights, camera_hit, camera);
+		color += clamp(pathtracing(id, options, objects, lights, camera_hit, camera), 0.0f, 1.0f);
     color_buffer[id] = pack_color(&color);
 }

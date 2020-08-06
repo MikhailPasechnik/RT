@@ -1,4 +1,3 @@
-
 #include "rt.hcl"
 
 float	random_number(t_options options, uint count)
@@ -13,7 +12,6 @@ float	random_number(t_options options, uint count)
 	int result = random.y ^ (random.y >> 19) ^ (t ^ (t >> 8));
 	return ((float)result / 10000.0 - result / 10000.0);
 }
-
 
 t_mat3		create_rot_matrix(float3 normal)
 {
@@ -149,14 +147,13 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 	{
 		if (bounce != 0)
 		{	
-			camera_ray.o = -camera_hit.p;
+			camera_ray.o = camera_hit.p * 0.01f;
 			camera_ray.d = random_dir(bounce, options, camera_hit.n);
 			// camera_ray.d = random_dir_v20(bounce, options, camera_hit.n);
 			obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
 		}
 		if (obj_index == -1)
 			break ;
-			// return ((t_color){0.0, 0.0, 0.0});
 		i = 0;
 		while (i < options.light_count)
 		{
@@ -179,8 +176,8 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 		gi[bounce].mat_color = camera_hit.obj->mat.diff;
 		gi[bounce].light_dir = light_dir;
 		gi[bounce].normal = camera_hit.n;
-		gi[bounce].emmitance = emmitance;
-		gi[bounce].brdf = camera_hit.obj->mat.diff * camera_ray.d * camera_hit.n; //* emmitance;
+		gi[bounce].emmitance = emmitance * 0.3f;
+		gi[bounce].brdf = camera_hit.obj->mat.diff * dot(camera_ray.d, camera_hit.n);
 		// main += emmitance;
 		bounce++;
 	}
@@ -191,7 +188,7 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 		if (j == 0)
 			main += gi[j].mat_color * gi[j].light_dir * gi[j].normal * gi[j].emmitance;
 		else
-			main += gi[j - 1].brdf * (gi[j].mat_color * gi[j].light_dir * gi[j].normal * gi[j].emmitance);
+			main += gi[j - 1].brdf * (gi[j].mat_color * gi[j].light_dir * gi[j].normal) * gi[j].emmitance;
 		j--;
 	}
 	main = main / bounce;

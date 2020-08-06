@@ -23,7 +23,7 @@
   rotation:     [60, 0, 0]
 - type: sphere
   position:     [10, 12, 2.5]
-  color:        [255, 0, 0]
+  color:        [250, 0, 0]
   specular:     0
   reflective:   0
   radius:       5
