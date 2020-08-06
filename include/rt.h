@@ -55,20 +55,6 @@
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;
 
-typedef struct			s_phelp
-{
-	char				str[NAME_MAX];
-	int					len;
-	void				*p;
-	void				(*f)(char *, void *);
-}						t_phelp;
-
-typedef struct			s_urect
-{
-	size_t				orig[2];
-	size_t				size[2];
-}						t_urect;
-
 typedef struct			s_buffer
 {
 	cl_mem				device;
@@ -122,6 +108,9 @@ typedef struct			s_app
 	t_cam				cam;
 	t_obj_list			*obj_list;
 	t_light_list		*light_list;
+	t_list				*texture_list;
+	t_list				*texture_info_list;
+	t_list				*texture_src_list;
 
 	int					op_changed;
 	int					cm_changed;
@@ -133,6 +122,15 @@ typedef struct			s_app
 
 	t_int				selection;
 }						t_app;
+
+typedef struct			s_phelp
+{
+	char				str[NAME_MAX];
+	int					len;
+	void				*p;
+	void				(*f)(char *, void *, t_app *);
+	t_app				*app;
+}						t_phelp;
 
 /*
 ** App functions
@@ -234,10 +232,11 @@ void					ignore_str(char **ptr, int c);
 int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);
-void					parse_real(char *str, void *vp);
-void					parse_vec3(char *str, void *vp);
-void					parse_color(char *str, void *vp);
-void					parse_id(char *str, void *vp);
+void					parse_real(char *str, void *vp, t_app *app);
+void					parse_vec3(char *str, void *vp, t_app *app);
+void					parse_color(char *str, void *vp, t_app *app);
+void					parse_id(char *str, void *vp, t_app *app);
+void					parse_texture(char *str, void *id, t_app *app);
 void					delete_linked_lists(t_app *app);
 /*
 ** Print RT scene functions

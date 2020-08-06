@@ -108,6 +108,7 @@ typedef struct			s_mat
 	t_real				ior;
 	t_real				fresnel;
 	t_real				reflection;
+	t_int				diff_texture_id;
 }						t_mat;
 
 typedef struct			s_obj
@@ -120,6 +121,13 @@ typedef struct			s_obj
 	t_real				infinite;
 	t_int				id;
 }						t_obj;
+
+typedef struct			s_texture_info
+{
+	t_int					channels;
+	t_int					w;
+	t_int					h;
+}						t_texture_info;
 
 typedef struct			s_light
 {

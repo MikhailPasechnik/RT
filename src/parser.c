@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-#define PHELP(str, p, f) ((t_phelp){str, ft_strlen(str), p, f})
+#define PHELP(str, p, f, app) ((t_phelp){str, ft_strlen(str), p, f, app})
 
 void		delete_linked_lists(t_app *app)
 {
@@ -33,18 +33,18 @@ void		delete_linked_lists(t_app *app)
 	}
 }
 
-static void	init_obj(t_phelp *phelp, t_obj *ol)
+static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 {
 	ft_bzero(phelp, sizeof(t_phelp) * 8);
-	phelp[0] = PHELP("  position:", &ol->pos, parse_vec3);
-	phelp[1] = PHELP("  color:", &ol->mat.diff, parse_color);
-	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3);
-	phelp[3] = PHELP("  radius:", &ol->radius, parse_real);
-	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real);
-	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real);
-	phelp[6] = PHELP("  height:", &ol->height, parse_real);
-	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real);
-	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3);
+	phelp[0] = PHELP("  position:", &ol->pos, parse_vec3, app);
+	phelp[1] = PHELP("  color:", &ol->mat.diff, parse_color, app);
+	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3, app);
+	phelp[3] = PHELP("  radius:", &ol->radius, parse_real, app);
+	phelp[4] = PHELP("  specular:", &ol->mat.specular, parse_real, app);
+	phelp[5] = PHELP("  reflective:", &ol->mat.reflection, parse_real, app);
+	phelp[6] = PHELP("  height:", &ol->height, parse_real, app);
+	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real, app);
+	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3, app);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)
@@ -56,7 +56,7 @@ static void	phelp_run(int size, t_phelp *phelp, char *scn)
 	{
 		if (!ft_strncmp(scn, phelp[i].str, phelp[i].len))
 		{
-			phelp[i].f(scn + phelp[i].len, phelp[i].p);
+			phelp[i].f(scn + phelp[i].len, phelp[i].p, phelp[i].app);
 			break ;
 		}
 		else
@@ -69,7 +69,7 @@ void		parser_obj(char **scn, t_app *app, int n)
 	t_obj	ol;
 	t_phelp	phelp[9];
 
-	init_obj(phelp, &ol);
+	init_obj(phelp, &ol, app);
 	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(&ol, scn[n] + 8))
 	{
 		n++;
@@ -90,11 +90,11 @@ void		parser_light(char **scn, t_app *app, int n)
 	t_phelp	phelp[5];
 
 	ft_bzero(&phelp, sizeof(t_phelp) * 5);
-	phelp[0] = PHELP("  position:", &ll.pos, parse_vec3);
-	phelp[1] = PHELP("  rotation:", &ll.rot, parse_vec3);
-	phelp[2] = PHELP("  color:", &ll.color, parse_color);
-	phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real);
-	phelp[4] = PHELP("  dispersion:", &ll.id, parse_id);
+	phelp[0] = PHELP("  position:", &ll.pos, parse_vec3, app);
+	phelp[1] = PHELP("  rotation:", &ll.rot, parse_vec3, app);
+	phelp[2] = PHELP("  color:", &ll.color, parse_color, app);
+	phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real, app);
+	phelp[4] = PHELP("  dispersion:", &ll.id, parse_id, app);
 	while (key_type(scn[n]) && is_valid_light_name(scn[n] + 8))
 	{
 		ft_bzero(&ll, sizeof(t_light));
