@@ -22,8 +22,7 @@ t_mat3		create_rot_matrix(float3 normal)
 	float3	y_axis;
 	t_mat3	rot_matrix;
 
-	transit_vec = (float3){normal.x, -1 * normal.y, normal.z};
-	// transit_vec = 
+	transit_vec = (float3){normal.x, normal.y, -1 * normal.z};
 	transit_vec = normalize(transit_vec);
 	x_axis = v3_cross(normal, transit_vec);
 	x_axis = normalize(x_axis);
@@ -38,9 +37,9 @@ t_mat3		create_rot_matrix(float3 normal)
 	rot_matrix.b.y = y_axis.y;
 	rot_matrix.b.z = y_axis.z;
 
-	rot_matrix.c.x = -normal.x;
-	rot_matrix.c.y = -normal.y;
-	rot_matrix.c.z = -normal.z;
+	rot_matrix.c.x = normal.x;
+	rot_matrix.c.y = normal.y;
+	rot_matrix.c.z = normal.z;
 
 	// rot_matrix.a = x_axis;
 	// rot_matrix.c = y_axis;
@@ -135,16 +134,17 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 	int		max_bounce;
 	int		i;
 	t_color main;
-	t_vec3	irradiance;
+	t_vec3	emmitance;
 	int		obj_index;
 	t_vec3	light_dir;
 	t_ray	shadow_ray;
 	t_hit	shadow_hit;
+	t_gi	gi[MAX_BOUNCE];
 
-	irradiance = 0;
+	emmitance = 0;
 	main = 0;
 	bounce = 0;
-	max_bounce = 15;
+	max_bounce = MAX_BOUNCE;
 	while (bounce < max_bounce)
 	{
 		if (bounce != 0)
@@ -156,6 +156,7 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 		}
 		if (obj_index == -1)
 			break ;
+			// return ((t_color){0.0, 0.0, 0.0});
 		i = 0;
 		while (i < options.light_count)
 		{
@@ -167,15 +168,31 @@ t_color trace_one_path(t_options options, __global t_obj* objects, __global t_li
 				shadow_ray.d = -light_dir;
 				if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
 				{
-					irradiance += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
+					emmitance += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
 				}
 			}
 			else if (lights[i].id == ID_AMB)
-				irradiance += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
+				emmitance += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color * clamp(dot(camera_hit.n, camera_ray.d), 0.0f, 0.1f);
+				// emmitance += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
 			i++;
 		}
-		main += irradiance;
+		gi[bounce].mat_color = camera_hit.obj->mat.diff;
+		gi[bounce].light_dir = light_dir;
+		gi[bounce].normal = camera_hit.n;
+		gi[bounce].emmitance = emmitance;
+		gi[bounce].brdf = camera_hit.obj->mat.diff * camera_ray.d * camera_hit.n; //* emmitance;
+		// main += emmitance;
 		bounce++;
+	}
+
+	int j = bounce;
+	while (j >= 0)
+	{
+		if (j == 0)
+			main += gi[j].mat_color * gi[j].light_dir * gi[j].normal * gi[j].emmitance;
+		else
+			main += gi[j - 1].brdf * (gi[j].mat_color * gi[j].light_dir * gi[j].normal * gi[j].emmitance);
+		j--;
 	}
 	main = main / bounce;
 	return (main);

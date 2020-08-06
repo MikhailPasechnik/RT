@@ -15,9 +15,10 @@ t_color pathtracing(int id,
 	t_hit	ray_hit;
 	int		obj_index;
 
+	radiance = 0;
 	camera_ray.o = camera_hit.p;
 	sample = 0;
-	max_samples = 20;
+	max_samples = 50;
 	while (sample < max_samples)
 	{
 		camera_ray.d = random_dir(sample, options, camera_hit.n);
@@ -105,7 +106,7 @@ __kernel void k_render(
     depth_buffer[id] = pack_color(&depth_color);
 	// if (options.gi)
 	if (obj_index != -1)
-		color += pathtracing(id, options, objects, lights, camera_hit, camera) / 10.f;
-		// color = clamp(0.0f, pathtracing(id, options, objects, lights, camera_hit, camera), 1.0f);
+		// color += pathtracing(id, options, objects, lights, camera_hit, camera);
+		color = pathtracing(id, options, objects, lights, camera_hit, camera);
     color_buffer[id] = pack_color(&color);
 }

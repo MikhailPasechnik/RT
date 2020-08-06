@@ -1,0 +1,7 @@
+Plane #4:
+	Color : [225, 225, 225]
+	Emittance : [0, 0, 0]
+	Position : [0.00, 0.00, 0.00]
+	Rotation : [180.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.00

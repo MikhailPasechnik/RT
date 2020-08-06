@@ -20,6 +20,8 @@ typedef float3		t_color;
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 # define CUB(vec, a)((t_vec4){{vec, a}})
 
+# define MAX_BOUNCE 50
+
 typedef struct	s_hit {
 	t_vec3	p;
 	t_vec3	n;
@@ -58,6 +60,7 @@ t_color 		trace_one_path(t_options options, __global t_obj* objects, __global t_
 float3			random_dir(uint bounce, t_options options, float3 normal);
 float3			rotation_random_dir(float3 normal, float3 random_dir);
 float			random_number(t_options options, uint count);
+
 /*
 ** *********************************** **
 ** *********************************** **
@@ -72,6 +75,15 @@ typedef struct		s_mat3
 	float3			b;
 	float3			c;
 }					t_mat3;
+
+typedef struct		s_gi
+{
+	t_color			mat_color;
+	t_vec3			light_dir;
+	t_vec3			normal;
+	t_color			emmitance;
+	t_color			brdf;
+}					t_gi;
 
 float3			v3_cross(float3 a, float3 b);
 t_vec3 			v3_mult_matrix(t_mat3 rot_matrix, t_vec3 v);

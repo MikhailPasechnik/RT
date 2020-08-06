@@ -1,0 +1,65 @@
+	Scene from ./scene/*.yml :
+
+Camera :
+	FOV : 80
+	Position : [0.00, -10.00, 15.00]
+
+List of lights :
+Direct :
+	Color : [150, 250, 250]
+	Position : [0.00, 0.00, 60.00]
+	Rotation : [100.00, 0.00, -45.00]
+	Intensity : 0.60
+Point :
+	Color : [250, 250, 150]
+	Position : [0.00, 0.00, 40.00]
+	Rotation : [120.00, 0.00, 45.00]
+	Intensity : 0.30
+Direct :
+	Color : [100, 0, 0]
+	Position : [0.00, 0.00, 20.00]
+	Rotation : [120.00, 0.00, 45.00]
+	Intensity : 0.50
+
+List of objects :
+Sphere #1:
+	Radius : 5.00
+	Color : [230, 240, 20]
+	Emittance : [0, 0, 0]
+	Position : [5.00, 5.00, 25.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.00
+	Specularity : 0.20
+Sphere #2:
+	Radius : 7.00
+	Color : [120, 10, 10]
+	Emittance : [0, 0, 0]
+	Position : [5.00, 7.00, 1.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.40
+	Specularity : 0.50
+Cylinder #3:
+	Height : 10.00
+	Radius : 10.00
+	Color : [0, 70, 40]
+	Emittance : [0, 0, 0]
+	Position : [-10.00, -10.00, 0.00]
+	Rotation : [90.00, 90.00, 0.00]
+	Reflection : 0.60
+	Specularity : 0.70
+Cone #4:
+	Height : 20.00
+	Radius : 9.00
+	Color : [100, 40, 150]
+	Emittance : [0, 0, 0]
+	Position : [0.00, 0.00, 0.00]
+	Rotation : [0.00, 0.00, 0.00]
+	Reflection : 0.70
+	Specularity : 0.80
+Plane #5:
+	Color : [200, 200, 200]
+	Emittance : [0, 0, 0]
+	Position : [0.00, 0.00, 0.00]
+	Rotation : [180.00, 0.00, 0.00]
+	Reflection : 0.60
+	Specularity : 0.80
