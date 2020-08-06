@@ -336,12 +336,12 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 
 	hit->p = ray.o + ray.d * tmin;
 
-	if (hit->p.x > hit->p.y && hit->p.x > hit->p.z)
-		hit->n = n[4];
-	else if (hit->p.y > hit->p.z)
-		hit->n = n[2];
-	else
-		hit->n = n[0];
+	if (fabs(hit->p.x) > fabs(hit->p.y) && fabs(hit->p.x) > fabs(hit->p.z))
+  		hit->n = hit->p.x > 0 ? VEC(1, 0, 0) : VEC(-1, 0, 0);
+	if (fabs(hit->p.y) > fabs(hit->p.z) && fabs(hit->p.y) > fabs(hit->p.x))
+  		hit->n = hit->p.y > 0 ? VEC(0, 1, 0) : VEC(0, -1, 0);
+	if (fabs(hit->p.z) > fabs(hit->p.y) && fabs(hit->p.z) > fabs(hit->p.x))
+  		hit->n = hit->p.z > 0 ? VEC(0, 0, 1) : VEC(0, 0, -1);
 	
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
