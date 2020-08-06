@@ -335,21 +335,21 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
-	if (((hit->p.x - obj->pos.x) == a || (hit->p.x - obj->pos.x) == -a) &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
-		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
-		hit->n = ((hit->p.x - obj->pos.x) == a) ? VEC(hit->p.x, 0.00001, 0.00001)
-		: VEC(-hit->p.x, 0.00001, 0.00001);
-	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a) &&
-		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a &&
-		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
-		hit->n = ((hit->p.y - obj->pos.y) == a) ? VEC(0.0001, hit->p.y, 0.0001)
-		: VEC(0.0001, -hit->p.y, 0.0001);
-	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a) &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
-		(hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a))
-		hit->n = ((hit->p.z - obj->pos.z) == a) ? VEC(0.0001, 0.0001, hit->p.z)
-		: VEC(0.0001, 0.0001, -hit->p.z);
+
+	if (hit->p.x > hit->p.y && hit->p.x > hit->p.z)
+		hit->n = n[4];
+	else if (hit->p.y > hit->p.z)
+		hit->n = n[2];
+	else
+		hit->n = n[1];
+
+	// else if ()
+	// if (hit->p.x < hit->p.y && hit->p.x < hit->p.z)
+	// 	hit->n = n[5];
+	// else if (hit->p.y < hit->p.z)
+	// 	hit->n = n[3];
+	// else
+	// 	hit->n = n[1];
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
