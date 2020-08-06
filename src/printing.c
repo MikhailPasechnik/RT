@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 22:06:08 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/06 18:15:41 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,6 @@ int			save_scene(t_app *app)
 {
 	int		fd;
 	char	name[150];
-	t_mat4	r = app->cam.mtx;
-	t_vec3	t;
-
-	m4_extract_rotation(&r, &t);
 
 	file_name(name);
 	(ft_strlen(name) + 4 < FILENAME_MAX) ? ft_sprintf(name, "%s.yml", name) : 0;
@@ -99,8 +95,8 @@ int			save_scene(t_app *app)
 	ft_fprintf(fd, "- type: camera\n  position:     [%.2f, %.2f, %.2f]\n"
 		"  rotation:     [%.2f, %.2f, %.2f]\n  fov:          %.0f\n",
 		app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE,
-		t.v4[0], t.v4[1], t.v4[2],
-		app->cam.fov);
+		app->cam.mtx.s4 * 360 / M_PI, app->cam.mtx.s5 * 360 / M_PI,
+		app->cam.mtx.s6 * 360 / M_PI, app->cam.fov);
 	printing_light(fd, app);
 	printing_obj(fd, app);
 	return (1);
