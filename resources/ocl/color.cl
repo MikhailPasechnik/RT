@@ -2,13 +2,13 @@
 
 t_color coef_color(t_color color, t_real coef)
 {
-    color[0] *= coef;
-	color[1] *= coef;
-	color[2] *= coef;
+    color.x *= coef;
+	color.y *= coef;
+	color.z *= coef;
 
-	color[0] = color[0] > 1 ? 1 : color[0];
-	color[1] = color[1] > 1 ? 1 : color[1];
-	color[2] = color[2] > 1 ? 1 : color[2];
+	color.x = color.x > 1 ? 1 : color.x;
+	color.y = color.y > 1 ? 1 : color.y;
+	color.z = color.z > 1 ? 1 : color.z;
     return (color);
 }
 

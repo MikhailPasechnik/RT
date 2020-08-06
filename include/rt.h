@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/03 18:45:28 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 20:16:50 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "ft_printf.h"
 # include "ocl.h"
 # include "m3d.h"
-# include "SDL.h"
+# include <SDL2/SDL.h>
 # include "obj.h"
 # include "file_io.h"
 
@@ -27,7 +27,7 @@
 # define RT_WIN_NAME "RT"
 # define RT_WIN_WIDTH 800
 # define RT_WIN_HEIGHT 800
-# define RT_BUF_EXTRA 50
+# define RT_BUF_EXTRA 0
 # define RT_CLICK_THRESHOLD 100
 
 /*
@@ -141,6 +141,7 @@ int						app_start(t_app *app, char **argv, int argc);
 void					app_finish(t_app *app);
 int						app_error(const char *msg, int returns);
 int						app_update_buffers(t_app *app);
+int						app_render(t_app *app);
 void					on_app_event(t_app *app, SDL_Event *event);
 void					init_options(t_options *op);
 
@@ -241,9 +242,9 @@ void					delete_linked_lists(t_app *app);
 /*
 ** Print RT scene functions
 */
-int						save_scene(t_app *app, t_obj *obj, t_uint chng);
+int						save_scene(t_app *app);
 void					printing_light(int fd, t_app *app);
-void					printing_obj(int fd, t_obj *obj);
+void					printing_obj(int fd, t_app *app);
 void					print_parametrs(int fd, t_obj *obj);
 /*
 ** Navigation functions

@@ -6,13 +6,13 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/01 01:37:22 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/05 16:49:12 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rt.h"
 
-static int		app_pre_render(t_app *app)
+static int	app_pre_render(t_app *app)
 {
 	if ((app->ren.width != app->op.width || app->ren.height != app->op.height))
 		if (!app_update_buffers(app))
@@ -30,9 +30,9 @@ static int		app_pre_render(t_app *app)
 	return (1);
 }
 
-static int		app_render(t_app *app)
+int			app_render(t_app *app)
 {
-	t_tx_buffer	*current;
+	t_tx_buffer *current;
 
 	if (app->render_buffer == RT_K_COLOR_ARG)
 		current = &app->ren.color_buf;
@@ -57,12 +57,13 @@ static int		app_render(t_app *app)
 	return (1);
 }
 
-int				app_start(t_app *app, char **argv, int argc)
+int			app_start(t_app *app, char **argv, int argc)
 {
 	(void)argv;
 	(void)argc;
 	app->op_changed = 1;
 	app->cm_changed = 1;
+	app->selection = -1;
 	app->render_buffer = RT_K_COLOR_ARG;
 	init_options(&app->op);
 	if (!(ocl_init(&app->ocl)))
@@ -84,7 +85,7 @@ int				app_start(t_app *app, char **argv, int argc)
 	return (app_render(app));
 }
 
-void			app_finish(t_app *app)
+void		app_finish(t_app *app)
 {
 	delete_renderer(&app->ren);
 	SDL_DestroyRenderer(app->renderer);
@@ -93,9 +94,9 @@ void			app_finish(t_app *app)
 	ocl_release(&app->ocl);
 }
 
-void			on_app_event(t_app *app, SDL_Event *event)
+void		on_app_event(t_app *app, SDL_Event *event)
 {
-	int		changed;
+	int changed;
 
 	changed = 0;
 	if (event->type == SDL_WINDOWEVENT &&
