@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:26:55 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 18:45:32 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/06 18:49:47 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int			update_object(t_app *app, int index, t_obj *obj)
 	{
 		buff = app->ren.obj_buf.host;
 		buff[index] = *obj;
-		buff->i = obj->i;
 	}
 	return (push_buffer(app->ren.queue, &app->ren.obj_buf,
 						sizeof(t_obj), sizeof(t_obj) * index));
