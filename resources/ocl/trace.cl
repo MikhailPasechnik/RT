@@ -341,15 +341,8 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	else if (hit->p.y > hit->p.z)
 		hit->n = n[2];
 	else
-		hit->n = n[1];
-
-	// else if ()
-	// if (hit->p.x < hit->p.y && hit->p.x < hit->p.z)
-	// 	hit->n = n[5];
-	// else if (hit->p.y < hit->p.z)
-	// 	hit->n = n[3];
-	// else
-	// 	hit->n = n[1];
+		hit->n = n[0];
+	
 	hit->obj = obj;
 	hit_to_world_space(obj, hit);
 
