@@ -101,13 +101,13 @@ typedef struct			s_cam
 
 typedef struct			s_mat
 {
+	t_vec3				emittance;
 	t_color				diff;
 	t_real				specular;
 	t_real				refraction;
 	t_real				ior;
 	t_real				fresnel;
 	t_real				reflection;
-	t_vec3				emittance;
 }						t_mat;
 
 typedef struct			s_obj
