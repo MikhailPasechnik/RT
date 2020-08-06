@@ -20,6 +20,7 @@ __kernel void k_render(
     t_color normal_color;
     t_color depth_color;
     t_color refl_color;
+	t_color sepia_color;
 
     t_int   dpth = 0;
     t_ray   refl_ray;
@@ -89,5 +90,12 @@ __kernel void k_render(
     index_buffer[id] = obj_index;
     normal_buffer[id] = pack_color(&normal_color);
     depth_buffer[id] = pack_color(&depth_color);
+	// if (options.sepia)
+	// {
+		// sepia_color = color;
+		// color.r = (sepia_color.r * .393) + (sepia_color.g *.769) + (sepia_color.b * .189);
+		// color.g = (sepia_color.r * .349) + (sepia_color.g *.686) + (sepia_color.b * .168);
+		// color.b = (sepia_color.r * .272) + (sepia_color.g *.534) + (sepia_color.b * .131);
+	// }
     color_buffer[id] = pack_color(&color);
 }
