@@ -57,9 +57,10 @@ void		parser_obj(char **scn, t_app *app, int n)
 	t_obj	ol;
 	t_phelp	phelp[RT_P_OBJ_FILED_NUM];
 
-	init_obj(phelp, &ol, app);
-	while (scn[n] && key_type(scn[n]) && is_valid_obj_name(&ol, scn[n] + 8))
+	while (scn[n] && key_type(scn[n]))
 	{
+		init_obj(phelp, &ol, app);
+		is_valid_obj_name(&ol, scn[n] + 8);
 		n++;
 		while (scn[n] && scn[n][0] != '-')
 		{
