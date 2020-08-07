@@ -47,7 +47,8 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		nk_input_begin(gui->ctx);
 		while (SDL_PollEvent(&event))
 		{
-			quit = event.type == SDL_QUIT;
+			quit = event.type == SDL_WINDOWEVENT ?
+					event.window.event == SDL_WINDOWEVENT_CLOSE : 0;
 			if (SDL_GetWindowID(app->win) == event.window.windowID)
 				on_app_event(app, &event);
 			else if (SDL_GetWindowID(gui->win) == event.window.windowID)
