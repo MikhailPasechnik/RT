@@ -19,7 +19,10 @@ t_color calc_color(
     int id,
     t_hit camera_hit,
     t_ray camera_ray,
-    t_color color)
+    t_color color,
+	__global uchar* tx_b,
+	__global t_tx_info* txi_b
+)
 {
     t_ray   shadow_ray;
     t_hit   shadow_hit;
@@ -42,7 +45,7 @@ t_color calc_color(
             shadow_ray.d = -light_dir;
             d = 2 * clamp(1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d))), 0.0f, 1.0f);
             ref = reflect(light_dir, -camera_hit.n);
-            if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
+            if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit, tx_b, txi_b) != -1))
             {
                 specular += coef_color(lights[i].color * 
                     clamp(0.0f, native_powr(dot(ref, camera_ray.d), 30.0f) * d, lights[i].intensity),
@@ -60,7 +63,7 @@ t_color calc_color(
 }
 
 
-t_color			sample_texture(float2 uv, __global uchar* tx_buffer, t_texture_info tx_info)
+t_color			sample_texture(float2 uv, __global uchar* tx_b, t_tx_info tx_info)
 {
 	int				i;
 	int				j;
@@ -70,7 +73,7 @@ t_color			sample_texture(float2 uv, __global uchar* tx_buffer, t_texture_info tx
 
 	i = clamp(0, (int)((  uv.x)*(tx_info.w)), tx_info.w - 1);
 	j = clamp(0, (int)((1-uv.y)*(tx_info.h) - 0.001f), tx_info.h - 1);
-	tx = &tx_buffer[(i + j * tx_info.w) * 4];
+	tx = &tx_b[tx_info.buffer_offset + (i + j * tx_info.w) * 4];
 	return COLOR((float)tx[0] / 255, (float)tx[1] / 255, (float)tx[2] / 255, 0);
 }
 

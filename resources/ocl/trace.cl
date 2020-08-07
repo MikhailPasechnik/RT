@@ -416,13 +416,35 @@ static int update_ray(t_hit *old, t_hit *new, t_ray *ray, int *set)
 	return (0);
 }
 
+static void	sample_textures(t_hit *hit,
+		__global uchar* tx_b, __global t_tx_info* txi_b)
+{
+	if (!length(hit->uv))
+	{
+		hit->diff = hit->obj->mat.diff;
+		hit->specular = hit->obj->mat.specular;
+		hit->reflection = hit->obj->mat.reflection;
+		return ;
+	}
+	hit->diff = hit->obj->mat.diff;
+	hit->specular = hit->obj->mat.specular;
+	hit->reflection = hit->obj->mat.reflection;
+	if (hit->obj->mat.diff_tex_id != -1)
+		hit->diff = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.diff_tex_id]);
+	if (hit->obj->mat.spec_tex_id != -1)
+		hit->specular = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.spec_tex_id]).x;
+	if (hit->obj->mat.refl_tex_id != -1)
+		hit->reflection = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.refl_tex_id]).x;
+}
+
 /*
 ** For each object perform intersection and if intersects set hit
 ** for the first time, later on hit choose which is closest
 ** and update hit if new one is closest.
 ** Returns index of object hit or -1 if none hit
 */
-t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
+t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit,
+			__global uchar* tx_b, __global t_tx_info* txi_b)
 {
     t_hit	tmp;
     int		got_hit;
@@ -453,5 +475,7 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
     }
+    if (index != -1)
+		sample_textures(hit, tx_b, txi_b);
     return (index);
 }

@@ -15,7 +15,7 @@
 
 static t_uint	get_texture_offset(t_list *last)
 {
-	t_texture_info	*prev;
+	t_tx_info	*prev;
 
 	prev = last ? last->content : NULL;
 	if (prev)
@@ -42,7 +42,7 @@ static int		instance_tx(char *str, void *id, t_app *app)
 	return (0);
 }
 
-static int		load_tx(char *path, t_texture_info	*info, t_list *tx, t_app *app)
+static int		load_tx(char *path, t_tx_info	*info, t_list *tx, t_app *app)
 {
 	tx->content = stbi_load(path, &info->w, &info->h, &info->channels, 4);
 	if ((app->parse_error |= (unsigned)(tx->content == NULL)))
@@ -58,7 +58,7 @@ static int		load_tx(char *path, t_texture_info	*info, t_list *tx, t_app *app)
 void			parse_texture(char *str, void *id, t_app *app)
 {
 	t_list			*tx;
-	t_texture_info	info;
+	t_tx_info	info;
 	t_list			*info_l;
 	t_list 			*src;
 

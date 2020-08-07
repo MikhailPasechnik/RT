@@ -111,8 +111,8 @@ typedef struct			s_mat
 	t_real				fresnel;
 	t_real				reflection;
 	t_int				diff_tex_id;
-	t_int				alpha_tex_id;
 	t_int				spec_tex_id;
+	t_int				refl_tex_id;
 }						t_mat;
 
 typedef struct			s_obj
@@ -126,13 +126,13 @@ typedef struct			s_obj
 	t_int				id;
 }						t_obj;
 
-typedef struct			s_texture_info
+typedef struct			s_tx_info
 {
 	t_int				channels;
 	t_int				w;
 	t_int				h;
 	t_int				buffer_offset;
-}						t_texture_info;
+}						t_tx_info;
 
 typedef struct			s_light
 {

@@ -9,8 +9,8 @@ __kernel void k_render(
     __global t_int* index_buffer,
     __global t_int* normal_buffer,
     __global t_int* depth_buffer,
-    __global uchar* tx_buffer,
-    __global t_texture_info* tx_info_buffer
+    __global uchar* tx_b,
+    __global t_tx_info* txi_b
 )
 {
     t_int   obj_index;
@@ -37,14 +37,14 @@ __kernel void k_render(
     int id = get_global_id(0);
     camera_ray = new_camera_ray(&options, &camera,
         (uint2){id % options.width, id / options.height});
-    obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit);
+    obj_index = intersect(objects, options.obj_count, &camera_ray, &camera_hit, tx_b, txi_b);
 
     if (obj_index != -1)
     {
         depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
             camera.mtx.sD, camera.mtx.sE)) / 50.0f;
         normal_color = ((camera_hit.n * -1) + 1) / 2;
-        color = calc_color(options, objects, lights, id, camera_hit, camera_ray, color);
+        color = calc_color(options, objects, lights, id, camera_hit, camera_ray, color, tx_b, txi_b);
         
         r_col[0] = color;
         r_coef[0] = camera_hit.obj->mat.reflection;
@@ -58,12 +58,12 @@ __kernel void k_render(
             while (++dpth <= options.ref_depth)
             {
                 c++;
-                if ((intersect(objects, options.obj_count, &refl_ray, &refl_hit)) != -1) // &camera_ray - прозрачность
+                if ((intersect(objects, options.obj_count, &refl_ray, &refl_hit, tx_b, txi_b)) != -1) // &camera_ray - прозрачность
                 {
                     refl_ray.d = normalize(reflect(-refl_ray.d, refl_hit.n));
                     refl_ray.o = (refl_ray.d * refl_hit.n < 0) ? refl_hit.p - refl_hit.n * 0.001f :
                         refl_hit.p + refl_hit.n * 0.001f;
-                    r_col[dpth] = calc_color(options, objects, lights, id, refl_hit, refl_ray, refl_color);
+                    r_col[dpth] = calc_color(options, objects, lights, id, refl_hit, refl_ray, refl_color, tx_b, txi_b);
                     if (!refl_hit.obj->mat.reflection)
                         break ;
                     r_coef[dpth] = refl_hit.obj->mat.reflection;
@@ -94,7 +94,7 @@ __kernel void k_render(
     // TEXTURE TEST
 //   if (obj_index != -1 && IS_SPH(&objects[obj_index]))
 //	{
-//		t_color ccc = sample_texture(camera_hit.uv, tx_buffer, tx_info_buffer[0]);
+//		t_color ccc = sample_texture(camera_hit.uv, tx_b, txi_b[0]);
 //		normal_buffer[id] = pack_color(&ccc);
 //	}
 

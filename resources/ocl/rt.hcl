@@ -21,9 +21,12 @@ typedef float3		t_color;
 # define CUB(vec, a)((t_vec4){{vec, a}})
 
 typedef struct	s_hit {
-	t_vec3	p;
-	t_vec3	n;
-	float2	uv;
+	t_vec3			p;
+	t_vec3			n;
+	t_color 		diff;
+	t_real			specular;
+	t_real			reflection;
+	float2			uv;
 	__global t_obj	*obj;
 }				t_hit;
 
@@ -32,7 +35,8 @@ typedef struct	s_hit {
 ** for the first time, later on hit choose which is closest
 ** and update hit if new one is closest
 */
-t_int			intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit);
+t_int			intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit,
+				  __global uchar* tx_b, __global t_tx_info* txi_b);
 void			print_render_args(t_options *options, t_cam* camera, __global t_obj* scene, __global t_light* lights);
 t_mat4			m4_mul(t_mat4 *m, t_mat4 *n);
 void			m4_set_rotation(t_mat4 *m, t_vec3 r);
@@ -46,8 +50,10 @@ t_vec3			dir_from_rot(t_vec3 rot);
 t_vec3			cam_view_vec3(t_mat4 *m, t_vec3 *v);
 t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
-t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights, int id, t_hit camera_hit, t_ray camera_ray, t_color color);
+t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights,
+					int id, t_hit camera_hit, t_ray camera_ray, t_color color,
+					__global uchar* tx_b, __global t_tx_info* txi_b);
 t_color			coef_color(t_color color, t_real coef);
-t_color			sample_texture(float2 uv, __global uchar* tx_buffer, t_texture_info tx_info);
+t_color			sample_texture(float2 uv, __global uchar* tx_b, t_tx_info tx_info);
 t_color			sepia_effect(t_color color);
 # endif

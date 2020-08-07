@@ -17,9 +17,9 @@
 static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 {
 	ft_bzero(phelp, sizeof(t_phelp) * 8);
-	ol->mat.alpha_tex_id = -1;
 	ol->mat.diff_tex_id = -1;
 	ol->mat.spec_tex_id = -1;
+	ol->mat.refl_tex_id = -1;
 	phelp[0] = PHELP("  position:", &ol->pos, parse_vec3, app);
 	phelp[1] = PHELP("  color:", &ol->mat.diff, parse_color, app);
 	phelp[2] = PHELP("  rotation:", &ol->rot, parse_vec3, app);
@@ -31,7 +31,7 @@ static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3, app);
 	phelp[9] = PHELP("  diff_texture:", &ol->mat.diff_tex_id, parse_texture, app);
 	phelp[10] = PHELP("  spec_texture:", &ol->mat.spec_tex_id, parse_texture, app);
-	phelp[11] = PHELP("  alpha_texture:", &ol->mat.alpha_tex_id, parse_texture, app);
+	phelp[11] = PHELP("  refl_texture:", &ol->mat.refl_tex_id, parse_texture, app);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)

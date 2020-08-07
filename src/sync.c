@@ -110,7 +110,7 @@ int				transfer_texture_info(t_app *app) {
 	t_list		*it;
 	t_buffer	buffer;
 
-	buffer = create_buffer(app->ocl.context, (sizeof(t_texture_info) *
+	buffer = create_buffer(app->ocl.context, (sizeof(t_tx_info) *
 		app->op.tex_count) + 1, CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate Texture info buffer!", 0));
@@ -118,13 +118,13 @@ int				transfer_texture_info(t_app *app) {
 	it = app->tx_info_list;
 	while (it && i++ < app->op.tex_count)
 	{
-		((t_texture_info *)buffer.host)[i - 1] = *(t_texture_info *)it->content;
+		((t_tx_info *)buffer.host)[i - 1] = *(t_tx_info *)it->content;
 		it = it->next;
 	}
 	if (i != app->op.tex_count || it != NULL)
 		return (app_error("Light count not equal to Light list length!", 0));
 	if (!push_buffer(app->ren.queue, &buffer,
-					 sizeof(t_texture_info) * app->op.tex_count, 0) && free_buffer(&buffer))
+					 sizeof(t_tx_info) * app->op.tex_count, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push Texture info buffer!", 0));
 	free_buffer(&app->ren.texture_info_buf);
 	app->ren.texture_info_buf = buffer;
