@@ -6,7 +6,7 @@
 #    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/08/07 16:26:05 by cvernius         ###   ########.fr        #
+#    Updated: 2020/08/07 16:27:46 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ INCLUDES	=	-I$(LIBFT_DIR) -I$(DIR_INC) -I$(PRINTF_DIR)/include -I./nuklear -I./s
 LIBS		:=	$(LIBFT) $(PRINTF) -lm
 
 ifeq ($(OS),Linux)
-	LIBS	+= $(LIBS) -lOpenCL -lSDL2 -lGL -lGLEW
+	LIBS	:= $(LIBS) -lOpenCL -lSDL2 -lGL -lGLEW
 else
 	LIBS	:= $(LIBS) -framework OpenCL -L ~/.brew/lib -lSDL2 -framework OpenGL -lm -lGLEW
 	INCLUDES += -I ~/.brew/include
