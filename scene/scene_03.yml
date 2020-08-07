@@ -23,34 +23,34 @@
 - type: plane
   position:     [0, 0, 0]
   color:        [190, 170, 200]
-  specular:     30
+  specular:     0.3
   rotation:     [180, 0, 0]
 - type: cone
   position:     [0, 0, 0]
   color:        [100, 20, 10]
-  specular:     10
-  reflective:   10
+  specular:     0.1
+  reflective:   0.1
   rotation:     [0, 0, 0]
   radius:       9
   height:       20
 - type: sphere
   position:     [7, 5, 2]
   color:        [20, 40, 80]
-  specular:     10
-  reflective:   5
+  specular:     0.1
+  reflective:   0.5
   radius:       6
   rotation:     [60, 0, 0]
 - type: sphere
   position:     [1, -12, 14]
   color:        [110, 130, 130]
-  specular:     50
-  reflective:   50
+  specular:     0.5
+  reflective:   0.5
   radius:       4
   rotation:     [60, 0, 0]
 - type: cylinder
   position:     [-5, -5, 10]
   color:        [220, 130, 130]
-  specular:     1
+  specular:     0.1
   reflective:   0
   rotation:     [70, 80, 50]
   radius:       4.5
