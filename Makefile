@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
+#    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/06/26 22:39:11 by bmahi            ###   ########.fr        #
+#    Updated: 2020/08/07 16:27:46 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,12 +90,13 @@ ifeq ($(OS),Linux)
 	LIBS	:= $(LIBS) -lOpenCL -lSDL2 -lGL -lGLEW
 else
 	LIBS	:= $(LIBS) -framework OpenCL -L ~/.brew/lib -lSDL2 -framework OpenGL -lm -lGLEW
-	INCLUDES := -I ~/.brew/include
+	INCLUDES += -I ~/.brew/include
 endif
 
 all: $(NAME)
 
 $(DIR_OBJ):
+	@./libs_install.sh
 	echo DIR_OBJ: "$(DIR_OBJ)"
 	mkdir $(DIR_OBJ)
 	mkdir $(DIR_OBJ)/ocl

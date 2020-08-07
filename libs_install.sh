@@ -11,7 +11,7 @@ LIB_3=glew
 brew list > /dev/null
 if [ $? -eq 0 ]
 then
-	echo "${GREEN}${BREW} already installed (*≧ω≦*)${PURPLE}"
+	echo "${GREEN}${BREW} already installed (*≧ω≦*)${NORMAL}"
 else
 	echo "${PURPLE}${BREW} not installed ¯\_(ツ)_/¯" >&2
 	echo "${BLUE}Installing now..."
@@ -26,7 +26,7 @@ fi
 brew list ${LIB_1} > /dev/null
 if [ $? -eq 0 ]
 then
-	echo "${GREEN}Library ${LIB_1} already installed (*≧ω≦*)${PURPLE}"
+	echo "${GREEN}Library ${LIB_1} already installed (*≧ω≦*)${NORMAL}"
 else
 	echo "${PURPLE}Library ${LIB_1} not installed ¯\_(ツ)_/¯" >&2
 	echo "${BLUE}Installing now..."
@@ -41,7 +41,7 @@ fi
 brew list ${LIB_2} > /dev/null
 if [ $? -eq 0 ]
 then
-	echo "${GREEN}Library ${LIB_2} already installed (*≧ω≦*)${PURPLE}"
+	echo "${GREEN}Library ${LIB_2} already installed (*≧ω≦*)${NORMAL}"
 else
 	echo "${PURPLE}Library ${LIB_2} not installed ¯\_(ツ)_/¯" >&2
 	echo "${BLUE}Installing now..."
@@ -56,7 +56,7 @@ fi
 brew list ${LIB_3} > /dev/null
 if [ $? -eq 0 ]
 then
-  echo "${GREEN}Library ${LIB_3} already installed (*≧ω≦*)${PURPLE}"
+  echo "${GREEN}Library ${LIB_3} already installed (*≧ω≦*)${NORMAL}"
 else
 	echo "${PURPLE}Library ${LIB_3} not installed ¯\_(ツ)_/¯" >&2
 	echo "${BLUE}Installing now..."
