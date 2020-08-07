@@ -403,9 +403,9 @@ static void	sample_textures(t_hit *hit,
 	if (hit->obj->mat.diff_tex_id != -1)
 		hit->diff = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.diff_tex_id]);
 	if (hit->obj->mat.spec_tex_id != -1)
-		hit->specular = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.spec_tex_id]).x;
+		hit->specular *= sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.spec_tex_id]).x;
 	if (hit->obj->mat.refl_tex_id != -1)
-		hit->reflection = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.refl_tex_id]).x;
+		hit->reflection *= sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.refl_tex_id]).x;
 }
 
 /*
