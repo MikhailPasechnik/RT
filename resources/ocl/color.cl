@@ -49,13 +49,13 @@ t_color calc_color(
             {
                 specular += coef_color(lights[i].color * 
                     clamp(0.0f, native_powr(dot(ref, camera_ray.d), 30.0f) * d, lights[i].intensity),
-                    clamp(0.0f, camera_hit.obj->mat.specular, 1.0f));
-                diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
+                    clamp(0.0f, camera_hit.specular, 1.0f));
+                diffuse += camera_hit.diff * lights[i].intensity *
                     lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
             }
         }
         else if (lights[i].id == ID_AMB)
-            diffuse += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
+            diffuse += camera_hit.diff * lights[i].intensity * lights[i].color;
         i++;
         color = diffuse * 1.5f + specular;
     }

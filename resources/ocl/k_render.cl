@@ -47,10 +47,10 @@ __kernel void k_render(
         color = calc_color(options, objects, lights, id, camera_hit, camera_ray, color, tx_b, txi_b);
         
         r_col[0] = color;
-        r_coef[0] = camera_hit.obj->mat.reflection;
+        r_coef[0] = camera_hit.reflection;
         t_int c = 1;
     
-        if (camera_hit.obj->mat.reflection != 0)
+        if (camera_hit.reflection != 0)
         {
             refl_ray = camera_ray;
             refl_hit = camera_hit;
@@ -64,9 +64,9 @@ __kernel void k_render(
                     refl_ray.o = (refl_ray.d * refl_hit.n < 0) ? refl_hit.p - refl_hit.n * 0.001f :
                         refl_hit.p + refl_hit.n * 0.001f;
                     r_col[dpth] = calc_color(options, objects, lights, id, refl_hit, refl_ray, refl_color, tx_b, txi_b);
-                    if (!refl_hit.obj->mat.reflection)
+                    if (!refl_hit.reflection)
                         break ;
-                    r_coef[dpth] = refl_hit.obj->mat.reflection;
+                    r_coef[dpth] = refl_hit.reflection;
                 }
                 else
                 {
@@ -91,12 +91,6 @@ __kernel void k_render(
 
     index_buffer[id] = obj_index;
     normal_buffer[id] = pack_color(&normal_color);
-    // TEXTURE TEST
-//   if (obj_index != -1 && IS_SPH(&objects[obj_index]))
-//	{
-//		t_color ccc = sample_texture(camera_hit.uv, tx_b, txi_b[0]);
-//		normal_buffer[id] = pack_color(&ccc);
-//	}
 
 	color_buffer[id] = pack_color(&color);
     depth_buffer[id] = pack_color(&depth_color);

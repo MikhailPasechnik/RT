@@ -419,13 +419,6 @@ static int update_ray(t_hit *old, t_hit *new, t_ray *ray, int *set)
 static void	sample_textures(t_hit *hit,
 		__global uchar* tx_b, __global t_tx_info* txi_b)
 {
-	if (!length(hit->uv))
-	{
-		hit->diff = hit->obj->mat.diff;
-		hit->specular = hit->obj->mat.specular;
-		hit->reflection = hit->obj->mat.reflection;
-		return ;
-	}
 	hit->diff = hit->obj->mat.diff;
 	hit->specular = hit->obj->mat.specular;
 	hit->reflection = hit->obj->mat.reflection;
