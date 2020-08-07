@@ -8,7 +8,9 @@ __kernel void k_render(
     __global t_int* color_buffer,
     __global t_int* index_buffer,
     __global t_int* normal_buffer,
-    __global t_int* depth_buffer
+    __global t_int* depth_buffer,
+    __global uchar* tx_buffer,
+    __global t_texture_info* tx_info_buffer
 )
 {
     t_int   obj_index;
@@ -29,8 +31,8 @@ __kernel void k_render(
     normal_color = COLOR(0,0,0,1);
     depth_color = COLOR(0,0,0,1);
     color = COLOR(0,0,0,1);
-    t_color r_col[DEPTH + 1];
-    t_real  r_coef[DEPTH + 1];
+    t_color r_col[REF_DEPTH_MAX + 1];
+    t_real  r_coef[REF_DEPTH_MAX + 1];
 
     int id = get_global_id(0);
     camera_ray = new_camera_ray(&options, &camera,
@@ -53,7 +55,7 @@ __kernel void k_render(
             refl_ray = camera_ray;
             refl_hit = camera_hit;
 
-            while (++dpth <= DEPTH)
+            while (++dpth <= options.ref_depth)
             {
                 c++;
                 if ((intersect(objects, options.obj_count, &refl_ray, &refl_hit)) != -1) // &camera_ray - прозрачность
@@ -89,13 +91,16 @@ __kernel void k_render(
 
     index_buffer[id] = obj_index;
     normal_buffer[id] = pack_color(&normal_color);
+    // TEXTURE TEST
+//   if (obj_index != -1 && IS_SPH(&objects[obj_index]))
+//	{
+//		t_color ccc = sample_texture(camera_hit.uv, tx_buffer, tx_info_buffer[0]);
+//		normal_buffer[id] = pack_color(&ccc);
+//	}
+
+	color_buffer[id] = pack_color(&color);
     depth_buffer[id] = pack_color(&depth_color);
-	// if (options.sepia)
-	// {
-		// sepia_color = color;
-		// color.r = (sepia_color.r * .393) + (sepia_color.g *.769) + (sepia_color.b * .189);
-		// color.g = (sepia_color.r * .349) + (sepia_color.g *.686) + (sepia_color.b * .168);
-		// color.b = (sepia_color.r * .272) + (sepia_color.g *.534) + (sepia_color.b * .131);
-	// }
+    if (options.sepia)
+		color = sepia_effect(color);
     color_buffer[id] = pack_color(&color);
 }

@@ -3,6 +3,43 @@
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
 
+float2 get_sphere_uv(t_vec3 p)
+{
+	float2 uv;
+
+	float phi;
+	float theta;
+
+	p = normalize(p);
+	phi = atan2(p.z, p.x);
+	theta = asin(p.y);
+	uv.x = 1 - (phi + M_PI) / (2.0f * M_PI);
+	uv.y = (theta + M_PI / 2.0f) / M_PI;
+	return (uv);
+}
+
+float2 get_cube_uv(t_vec3 p)
+{
+	float2 uv;
+
+	if (fabs(p.x) == 1)
+	{
+		uv.x = (p.z + 1.0f) / 2.0f;
+		uv.y = (p.y + 1.0f) / 2.0f;
+	}
+	else if (fabs(p.y) == 1)
+	{
+		uv.x = (p.x + 1.0f) / 2.0f;
+		uv.y = (p.z + 1.0f) / 2.0f;
+	}
+	else
+	{
+		uv.x = (p.x + 1.0f) / 2.0f;
+		uv.y = (p.y + 1.0f) / 2.0f;
+	}
+	return (uv);
+}
+
 static void swap(t_real *a, t_real *b)
 {
 	t_real tmp;
@@ -103,6 +140,7 @@ static int sphere_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     hit->p = ray.o + ray.d * t0;
     hit->n = normalize(hit->p);
     hit->obj = obj;
+	hit->uv = get_sphere_uv(hit->p);
 	hit_to_world_space(obj, hit);
     return (1);
 }
@@ -351,6 +389,7 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		hit->n = ((hit->p.z - obj->pos.z) == a) ? VEC(0.0001, 0.0001, hit->p.z)
 		: VEC(0.0001, 0.0001, -hit->p.z);
 	hit->obj = obj;
+	hit->uv = get_cube_uv(hit->p);
 	hit_to_world_space(obj, hit);
 
 	return (1);

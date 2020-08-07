@@ -58,6 +58,8 @@ void		delete_renderer(t_renderer *ren)
 	free_buffer(&ren->index_buf);
 	free_buffer(&ren->light_buf);
 	free_buffer(&ren->obj_buf);
+	free_buffer(&ren->texture_buf);
+	free_buffer(&ren->texture_info_buf);
 	free_tx_buffer(&ren->color_buf);
 	free_tx_buffer(&ren->normal_buf);
 	free_tx_buffer(&ren->depth_buf);

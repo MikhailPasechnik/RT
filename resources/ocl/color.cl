@@ -58,3 +58,27 @@ t_color calc_color(
     }
     return (color);
 }
+
+
+t_color			sample_texture(float2 uv, __global uchar* tx_buffer, t_texture_info tx_info)
+{
+	int				i;
+	int				j;
+	int				pix;
+	t_color			color;
+	__global uchar*	tx;
+
+	i = clamp(0, (int)((  uv.x)*(tx_info.w)), tx_info.w - 1);
+	j = clamp(0, (int)((1-uv.y)*(tx_info.h) - 0.001f), tx_info.h - 1);
+	tx = &tx_buffer[(i + j * tx_info.w) * 4];
+	return COLOR((float)tx[0] / 255, (float)tx[1] / 255, (float)tx[2] / 255, 0);
+}
+
+t_color			sepia_effect(t_color color)
+{
+	return COLOR(
+		(color.x * .393) + (color.y *.769) + (color.z * .189),
+		(color.x * .349) + (color.y *.686) + (color.z * .168),
+		(color.x * .272) + (color.y *.534) + (color.z * .131), 0
+	);
+}

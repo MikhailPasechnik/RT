@@ -23,6 +23,7 @@ typedef float3		t_color;
 typedef struct	s_hit {
 	t_vec3	p;
 	t_vec3	n;
+	float2	uv;
 	__global t_obj	*obj;
 }				t_hit;
 
@@ -47,4 +48,6 @@ t_mat4			m4_transpose(t_mat4 m);
 t_vec3			reflect(t_vec3 vec, t_vec3 normal);
 t_color			calc_color(t_options options, __global t_obj* objects, __global t_light* lights, int id, t_hit camera_hit, t_ray camera_ray, t_color color);
 t_color			coef_color(t_color color, t_real coef);
+t_color			sample_texture(float2 uv, __global uchar* tx_buffer, t_texture_info tx_info);
+t_color			sepia_effect(t_color color);
 # endif
