@@ -57,5 +57,6 @@ unsigned int			gui_single_pick(t_real *v, char *lbl,
 void					gui_selection_loop(t_app *app, t_gui *gui);
 void					gui_light_loop(t_app *app, t_gui *gui);
 void					gui_scene_loop(t_app *app, t_gui *gui);
+void					gui_end_loop(t_app *app, t_gui *gui);
 
 #endif

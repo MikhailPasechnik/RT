@@ -1,5 +1,15 @@
 #include "gui.h"
 
+void	gui_end_loop(t_app *app, t_gui *gui)
+{
+	SDL_GL_MakeCurrent(gui->win, gui->gl_context);
+	glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT);
+	nk_sdl_render(NK_ANTI_ALIASING_ON, GUI_MAX_VERTEX_MEMORY,
+				  GUI_MAX_ELEMENT_MEMORY);
+	SDL_GL_SwapWindow(gui->win);
+}
+
 void	gui_scene_loop(t_app *app, t_gui *gui)
 {
 	unsigned int change;

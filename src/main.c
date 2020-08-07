@@ -40,9 +40,6 @@ void	sdl_loop(t_app *app, t_gui *gui)
 {
 	SDL_Event		event;
 	int				quit;
-	int				i;
-	t_light			*l;
-	unsigned int	change;
 
 	quit = 0;
 	while (!quit)
@@ -52,25 +49,16 @@ void	sdl_loop(t_app *app, t_gui *gui)
 		{
 			quit = event.type == SDL_QUIT;
 			if (SDL_GetWindowID(app->win) == event.window.windowID)
-			{
 				on_app_event(app, &event);
-			}
 			else if (SDL_GetWindowID(gui->win) == event.window.windowID)
-			{
 				nk_sdl_handle_event(&event);
-			}
 			quit = quit || app->quit;
 		}
 		nk_input_end(gui->ctx);
 		gui_selection_loop(app, gui);
 		gui_light_loop(app, gui);
 		gui_scene_loop(app, gui);
-		SDL_GL_MakeCurrent(gui->win, gui->gl_context);
-		glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT);
-		nk_sdl_render(NK_ANTI_ALIASING_ON, GUI_MAX_VERTEX_MEMORY,
-			GUI_MAX_ELEMENT_MEMORY);
-		SDL_GL_SwapWindow(gui->win);
+		gui_end_loop(app, gui);
 	}
 }
 
