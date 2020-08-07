@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 22:06:08 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/07 15:43:14 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,26 @@ void		print_parametrs(int fd, t_obj *obj)
 		ft_fprintf(fd, "  infinite:     %.0f\n", obj->infinite);
 }
 
+void		print_tx(int fd, t_app *app, t_obj	*obj)
+{
+	t_list	*lst;
+	t_int	i;
+	
+	lst = app->tx_src_list;
+	i = 0;
+	while(lst && i < (int)app->op.tex_count)
+	{
+		if (obj->mat.diff_tex_id == i)
+			ft_fprintf(fd, "  diff_texture: %s\n", lst->content);
+		else if (obj->mat.refl_tex_id == i)
+			ft_fprintf(fd, "  refl_texture: %s\n", lst->content);
+		else if (obj->mat.spec_tex_id == i)
+			ft_fprintf(fd, "  spec_texture: %s\n", lst->content);
+		i++;
+		lst = lst->next;
+	}
+}
+
 void		printing_obj(int fd, t_app *app)
 {
 	t_obj	*obj;
@@ -78,6 +98,7 @@ void		printing_obj(int fd, t_app *app)
 			: 0;
 		(obj->id == ID_HPR) ? ft_fprintf(fd, "hyperbolic paraboloid\n") : 0;
 		print_parametrs(fd, obj);
+		print_tx(fd, app, obj);
 		c++;
 	}
 	close(fd);
@@ -87,10 +108,6 @@ int			save_scene(t_app *app)
 {
 	int		fd;
 	char	name[150];
-	t_mat4	r = app->cam.mtx;
-	t_vec3	t;
-
-	m4_extract_rotation(&r, &t);
 
 	file_name(name);
 	(ft_strlen(name) + 4 < FILENAME_MAX) ? ft_sprintf(name, "%s.yml", name) : 0;
@@ -99,8 +116,8 @@ int			save_scene(t_app *app)
 	ft_fprintf(fd, "- type: camera\n  position:     [%.2f, %.2f, %.2f]\n"
 		"  rotation:     [%.2f, %.2f, %.2f]\n  fov:          %.0f\n",
 		app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE,
-		t.v4[0], t.v4[1], t.v4[2],
-		app->cam.fov);
+		app->cam.mtx.s4 * 360 / M_PI, app->cam.mtx.s5 * 360 / M_PI,
+		app->cam.mtx.s6 * 360 / M_PI, app->cam.fov);
 	printing_light(fd, app);
 	printing_obj(fd, app);
 	return (1);

@@ -60,3 +60,4 @@
   height:       7
   diff_texture: resources/textures/dirt.jpg
   refl_texture: resources/textures/puddle_texture.png
+  spec_texture: resources/textures/checker.jpg
