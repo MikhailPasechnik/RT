@@ -320,14 +320,6 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t_real	t2;
 	t_real	tmin;
 	t_real	tmax;
-	t_vec3	n[6];
-
-	n[0] = VEC(0, 0, 1);
-	n[1] = VEC(0, 0, -1);
-	n[2] = VEC(0, 1, 0);
-	n[3] = VEC(0, -1, 0);
-	n[4] = VEC(1, 0, 0);
-	n[5] = VEC(-1, 0, 0);
 
 	ray_to_object_space(obj, &ray);
 	a = obj->height / 2;
@@ -355,7 +347,7 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
 
-	if (tmax < max(tmin, EPSILON))
+	if (tmax < max(tmin, EPSILON) || tmin < EPSILON)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
