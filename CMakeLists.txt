@@ -17,7 +17,7 @@ file(GLOB SRC src/*.c src/ocl/*.c src/math3d/*.c src/gui/*.c)
 
 link_directories(libft ft_printf)
 include_directories(
-        libft include nuklear
+        libft include nuklear stb_image
         ${OpenCL_INCLUDE_DIRS}
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}

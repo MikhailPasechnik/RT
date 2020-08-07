@@ -28,6 +28,7 @@
 
 # include "nuklear.h"
 # include "nuklear_sdl_gl3.h"
+# include "rt.h"
 
 # define GUI_MAX_VERTEX_MEMORY 512 * 1024
 # define GUI_MAX_ELEMENT_MEMORY 128 * 1024
@@ -53,5 +54,9 @@ unsigned int			gui_vec_pick(t_vec3 *vec, char *lbl,
 	struct nk_context	*ctx);
 unsigned int			gui_single_pick(t_real *v, char *lbl,
 	struct nk_context	*ctx);
+void					gui_selection_loop(t_app *app, t_gui *gui);
+void					gui_light_loop(t_app *app, t_gui *gui);
+void					gui_scene_loop(t_app *app, t_gui *gui);
+void					gui_end_loop(t_app *app, t_gui *gui);
 
 #endif

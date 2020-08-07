@@ -19,7 +19,10 @@ t_color calc_color(
     int id,
     t_hit camera_hit,
     t_ray camera_ray,
-    t_color color)
+    t_color color,
+	__global uchar* tx_b,
+	__global t_tx_info* txi_b
+)
 {
     t_ray   shadow_ray;
     t_hit   shadow_hit;
@@ -42,19 +45,43 @@ t_color calc_color(
             shadow_ray.d = -light_dir;
             d = 2 * clamp(1.0f / native_sqrt(native_sqrt(dot(camera_ray.d, camera_ray.d))), 0.0f, 1.0f);
             ref = reflect(light_dir, -camera_hit.n);
-            if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit) != -1))
+            if (!(intersect(objects, options.obj_count, &shadow_ray, &shadow_hit, tx_b, txi_b) != -1))
             {
                 specular += coef_color(lights[i].color * 
                     clamp(0.0f, native_powr(dot(ref, camera_ray.d), 30.0f) * d, lights[i].intensity),
-                    clamp(0.0f, camera_hit.obj->mat.specular, 1.0f));
-                diffuse += camera_hit.obj->mat.diff * lights[i].intensity *
+                    clamp(0.0f, camera_hit.specular, 1.0f));
+                diffuse += camera_hit.diff * lights[i].intensity *
                     lights[i].color * clamp(dot(camera_hit.n, shadow_ray.d), 0.0f, 1.0f);
             }
         }
         else if (lights[i].id == ID_AMB)
-            diffuse += camera_hit.obj->mat.diff * lights[i].intensity * lights[i].color;
+            diffuse += camera_hit.diff * lights[i].intensity * lights[i].color;
         i++;
         color = diffuse * 1.5f + specular;
     }
     return (color);
+}
+
+
+t_color			sample_texture(float2 uv, __global uchar* tx_b, t_tx_info tx_info)
+{
+	int				i;
+	int				j;
+	int				pix;
+	t_color			color;
+	__global uchar*	tx;
+
+	i = clamp(0, (int)((  uv.x)*(tx_info.w)), tx_info.w - 1);
+	j = clamp(0, (int)((1-uv.y)*(tx_info.h) - 0.001f), tx_info.h - 1);
+	tx = &tx_b[tx_info.buffer_offset + (i + j * tx_info.w) * 4];
+	return COLOR((float)tx[0] / 255, (float)tx[1] / 255, (float)tx[2] / 255, 0);
+}
+
+t_color			sepia_effect(t_color color)
+{
+	return COLOR(
+		(color.x * .393) + (color.y *.769) + (color.z * .189),
+		(color.x * .349) + (color.y *.686) + (color.z * .168),
+		(color.x * .272) + (color.y *.534) + (color.z * .131), 0
+	);
 }

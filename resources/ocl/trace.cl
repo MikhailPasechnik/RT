@@ -3,6 +3,29 @@
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
 
+float2 get_sphere_uv(t_vec3 p)
+{
+	float2 uv;
+
+	float phi;
+	float theta;
+
+	p = normalize(p);
+	phi = atan2(p.z, p.x);
+	theta = asin(p.y);
+	uv.x = 1 - (phi + M_PI) / (2.0f * M_PI);
+	uv.y = (theta + M_PI / 2.0f) / M_PI;
+	return (uv);
+}
+
+float2 get_cube_uv(t_vec3 p)
+{
+	float2 uv;
+	uv.x = (p.x + 1.0f) / 2.0f;
+	uv.y = (p.y + 1.0f) / 2.0f;
+	return (uv);
+}
+
 static void swap(t_real *a, t_real *b)
 {
 	t_real tmp;
@@ -103,6 +126,7 @@ static int sphere_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     hit->p = ray.o + ray.d * t0;
     hit->n = normalize(hit->p);
     hit->obj = obj;
+	hit->uv = get_sphere_uv(hit->p);
 	hit_to_world_space(obj, hit);
     return (1);
 }
@@ -296,14 +320,6 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	t_real	t2;
 	t_real	tmin;
 	t_real	tmax;
-	t_vec3	n[6];
-
-	n[0] = VEC(0, 0, 1);
-	n[1] = VEC(0, 0, -1);
-	n[2] = VEC(0, 1, 0);
-	n[3] = VEC(0, -1, 0);
-	n[4] = VEC(1, 0, 0);
-	n[5] = VEC(-1, 0, 0);
 
 	ray_to_object_space(obj, &ray);
 	a = obj->height / 2;
@@ -331,28 +347,21 @@ static int cube_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	tmin = max(tmin, min(t1, t2));
 	tmax = min(tmax, max(t1, t2));
 
-	if (tmax < max(tmin, EPSILON))
+	if (tmax < max(tmin, EPSILON) || tmin < EPSILON)
 		return (0);
 
 	hit->p = ray.o + ray.d * tmin;
-	if (((hit->p.x - obj->pos.x) == a || (hit->p.x - obj->pos.x) == -a) &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
-		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
-		hit->n = ((hit->p.x - obj->pos.x) == a) ? VEC(hit->p.x, 0.00001, 0.00001)
-		: VEC(-hit->p.x, 0.00001, 0.00001);
-	if (((hit->p.y - obj->pos.y) == a || (hit->p.y - obj->pos.y) == -a) &&
-		((hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a &&
-		(hit->p.z - obj->pos.z) != a && (hit->p.z - obj->pos.z) != -a))
-		hit->n = ((hit->p.y - obj->pos.y) == a) ? VEC(0.0001, hit->p.y, 0.0001)
-		: VEC(0.0001, -hit->p.y, 0.0001);
-	if (((hit->p.z - obj->pos.z) == a || (hit->p.z - obj->pos.z) == -a) &&
-		((hit->p.y - obj->pos.y) != a && (hit->p.y - obj->pos.y) != -a &&
-		(hit->p.x - obj->pos.x) != a && (hit->p.x - obj->pos.x) != -a))
-		hit->n = ((hit->p.z - obj->pos.z) == a) ? VEC(0.0001, 0.0001, hit->p.z)
-		: VEC(0.0001, 0.0001, -hit->p.z);
-	hit->obj = obj;
-	hit_to_world_space(obj, hit);
 
+	if (fabs(hit->p.x) > fabs(hit->p.y) && fabs(hit->p.x) > fabs(hit->p.z))
+  		hit->n = hit->p.x > 0 ? VEC(1, 0, 0) : VEC(-1, 0, 0);
+	if (fabs(hit->p.y) > fabs(hit->p.z) && fabs(hit->p.y) > fabs(hit->p.x))
+  		hit->n = hit->p.y > 0 ? VEC(0, 1, 0) : VEC(0, -1, 0);
+	if (fabs(hit->p.z) > fabs(hit->p.y) && fabs(hit->p.z) > fabs(hit->p.x))
+  		hit->n = hit->p.z > 0 ? VEC(0, 0, 1) : VEC(0, 0, -1);
+
+	hit->obj = obj;
+	hit->uv = get_cube_uv(hit->p / a);
+	hit_to_world_space(obj, hit);
 	return (1);
 }
 
@@ -377,13 +386,28 @@ static int update_ray(t_hit *old, t_hit *new, t_ray *ray, int *set)
 	return (0);
 }
 
+static void	sample_textures(t_hit *hit,
+		__global uchar* tx_b, __global t_tx_info* txi_b)
+{
+	hit->diff = hit->obj->mat.diff;
+	hit->specular = hit->obj->mat.specular;
+	hit->reflection = hit->obj->mat.reflection;
+	if (hit->obj->mat.diff_tex_id != -1)
+		hit->diff = sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.diff_tex_id]);
+	if (hit->obj->mat.spec_tex_id != -1)
+		hit->specular *= sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.spec_tex_id]).x;
+	if (hit->obj->mat.refl_tex_id != -1)
+		hit->reflection *= sample_texture(hit->uv, tx_b, txi_b[hit->obj->mat.refl_tex_id]).x;
+}
+
 /*
 ** For each object perform intersection and if intersects set hit
 ** for the first time, later on hit choose which is closest
 ** and update hit if new one is closest.
 ** Returns index of object hit or -1 if none hit
 */
-t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
+t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit,
+			__global uchar* tx_b, __global t_tx_info* txi_b)
 {
     t_hit	tmp;
     int		got_hit;
@@ -414,5 +438,7 @@ t_int	intersect(__global t_obj *scene, size_t size, t_ray *ray, t_hit *hit)
         if (got_hit && update_ray(hit, &tmp, ray, &set))
 			index = size;
     }
+    if (index != -1)
+		sample_textures(hit, tx_b, txi_b);
     return (index);
 }

@@ -77,10 +77,12 @@ int			app_start(t_app *app, char **argv, int argc)
 	if (!(app->renderer = SDL_CreateRenderer(app->win, -1,
 			SDL_RENDERER_ACCELERATED)))
 		return (app_error(SDL_GetError(), 0));
-	if (!transfer_objects(app))
-		return (app_error("Objects transfer failed!", 0));
-	if (!transfer_light(app))
-		return (app_error("Lights transfer failed!", 0));
+	if (!transfer_objects(app) || !transfer_light(app))
+		return (app_error("Scene transfer failed!", 0));
+	ft_lstreverse(&app->tx_info_list);
+	ft_lstreverse(&app->tx_src_list);
+	if (!transfer_textures(app) || !transfer_texture_info(app))
+		return (app_error("Texture transfer failed!", 0));
 	nav_rotate_camera(&app->cam, &VEC(0, 0, 0), &VEC(0, 0, 0));
 	return (app_render(app));
 }
@@ -89,7 +91,7 @@ void		app_finish(t_app *app)
 {
 	delete_renderer(&app->ren);
 	SDL_DestroyRenderer(app->renderer);
-	delete_linked_lists(app);
+	app_delete_linked_lists(app);
 	app->win ? SDL_DestroyWindow(app->win) : 0;
 	ocl_release(&app->ocl);
 }

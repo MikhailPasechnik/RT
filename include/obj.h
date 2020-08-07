@@ -70,7 +70,7 @@ typedef cl_float3		t_color;
 # define IS_HCL(o) ((o)->id == (ID_HCL))
 # define IS_HTS(o) ((o)->id == (ID_HTS))
 # define IS_HPR(o) ((o)->id == (ID_HPR))
-# define DEPTH 4
+# define REF_DEPTH_MAX 16
 
 /*
 ** OpenCL compatible structs
@@ -89,8 +89,10 @@ typedef struct			s_options
 	t_uint				height;
 	t_uint				obj_count;
 	t_uint				light_count;
+	t_uint				tex_count;
 	t_int				selection;
 	t_int				sepia;
+	t_int				ref_depth;
 }						t_options;
 
 typedef struct			s_cam
@@ -101,13 +103,16 @@ typedef struct			s_cam
 
 typedef struct			s_mat
 {
+	t_vec3				emittance;
 	t_color				diff;
 	t_real				specular;
 	t_real				refraction;
 	t_real				ior;
 	t_real				fresnel;
 	t_real				reflection;
-	t_vec3				emittance;
+	t_int				diff_tex_id;
+	t_int				spec_tex_id;
+	t_int				refl_tex_id;
 }						t_mat;
 
 typedef struct			s_obj
@@ -120,6 +125,14 @@ typedef struct			s_obj
 	t_real				infinite;
 	t_int				id;
 }						t_obj;
+
+typedef struct			s_tx_info
+{
+	t_int				channels;
+	t_int				w;
+	t_int				h;
+	t_int				buffer_offset;
+}						t_tx_info;
 
 typedef struct			s_light
 {

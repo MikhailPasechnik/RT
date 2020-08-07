@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 20:16:50 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/07 15:43:13 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,12 @@
 # define RT_K_INDEX_ARG 5
 # define RT_K_NORMA_ARG 6
 # define RT_K_DEPTH_ARG 7
+# define RT_K_TEX_ARG 8
+# define RT_K_TEX_I_ARG 9
+# define RT_P_OBJ_FILED_NUM 12
 
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;
-
-typedef struct			s_phelp
-{
-	char				str[NAME_MAX];
-	int					len;
-	void				*p;
-	void				(*f)(char *, void *);
-}						t_phelp;
-
-typedef struct			s_urect
-{
-	size_t				orig[2];
-	size_t				size[2];
-}						t_urect;
 
 typedef struct			s_buffer
 {
@@ -102,6 +91,8 @@ typedef struct			s_renderer
 	t_buffer			index_buf;
 	t_tx_buffer			depth_buf;
 	t_tx_buffer			normal_buf;
+	t_buffer			texture_buf;
+	t_buffer			texture_info_buf;
 
 	t_uint				width;
 	t_uint				height;
@@ -122,17 +113,30 @@ typedef struct			s_app
 	t_cam				cam;
 	t_obj_list			*obj_list;
 	t_light_list		*light_list;
+	t_list				*tx_list;
+	t_list				*tx_info_list;
+	t_list				*tx_src_list;
 
 	int					op_changed;
 	int					cm_changed;
 
 	int					lines;
 	char				**scene;
+	unsigned			parse_error;
 
 	Uint32				ts_mouse_down;
 
 	t_int				selection;
 }						t_app;
+
+typedef struct			s_phelp
+{
+	char				str[NAME_MAX];
+	int					len;
+	void				*p;
+	void				(*f)(char *, void *, t_app *);
+	t_app				*app;
+}						t_phelp;
 
 /*
 ** App functions
@@ -167,6 +171,8 @@ int						pull_tx_buffer(cl_command_queue queue,
 int						free_tx_buffer(t_tx_buffer *buffer);
 int						transfer_objects(t_app *app);
 int						transfer_light(t_app *app);
+int						transfer_textures(t_app *app);
+int						transfer_texture_info(t_app *app);
 /*
 ** Partial buffer update
 */
@@ -208,12 +214,9 @@ int						render(t_renderer *ren, t_ocl *ocl);
 */
 size_t					rt_tab_len(char **tab);
 void					*rt_tab_free(char **tab);
-void					*rt_set_rect(SDL_Rect *rect, int x, int y, int w,
-	int h);
-t_color					get_surface_pixel(SDL_Surface *surface, size_t x,
-	size_t y);
 void					file_name(char name[150]);
 int						screen_shot(t_app *app);
+size_t					list_size(t_list *lst);
 
 /*
 ** Parser functions
@@ -234,11 +237,12 @@ void					ignore_str(char **ptr, int c);
 int						is_valid_obj_name(t_obj *ol, char *str);
 int						is_valid_light_name(char *str);
 int						key_type(char *s);
-void					parse_real(char *str, void *vp);
-void					parse_vec3(char *str, void *vp);
-void					parse_color(char *str, void *vp);
-void					parse_id(char *str, void *vp);
-void					delete_linked_lists(t_app *app);
+void					parse_real(char *str, void *vp, t_app *app);
+void					parse_vec3(char *str, void *vp, t_app *app);
+void					parse_color(char *str, void *vp, t_app *app);
+void					parse_id(char *str, void *vp, t_app *app);
+void					parse_texture(char *str, void *id, t_app *app);
+void					app_delete_linked_lists(t_app *app);
 /*
 ** Print RT scene functions
 */
@@ -246,6 +250,7 @@ int						save_scene(t_app *app);
 void					printing_light(int fd, t_app *app);
 void					printing_obj(int fd, t_app *app);
 void					print_parametrs(int fd, t_obj *obj);
+void					print_tx(int fd, t_app *app, t_obj	*obj);
 /*
 ** Navigation functions
 */

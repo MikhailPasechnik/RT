@@ -33,18 +33,17 @@ void	*rt_tab_free(char **tab)
 	return (NULL);
 }
 
-t_color	get_surface_pixel(SDL_Surface *surface, size_t x, size_t y)
+size_t	list_size(t_list *lst)
 {
-	Uint32		*p;
-	Uint8		r;
-	Uint8		g;
-	Uint8		b;
-	Uint8		a;
+	size_t		size;
 
-	p = (Uint32 *)surface->pixels + y * surface->pitch + x *
-			surface->format->BitsPerPixel;
-	SDL_GetRGBA(*p, surface->format, &r, &g, &b, &a);
-	return (COLOR(r / 255.0, g / 255.0, b / 255., a / 255.0));
+	size = 0;
+	while (lst)
+	{
+		size += lst->content_size;
+		lst = lst->next;
+	}
+	return (size);
 }
 
 void	file_name(char name[150])

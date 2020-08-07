@@ -20,6 +20,7 @@ SRC_FILES	=			\
 	app.c				\
 	options.c			\
 	app_utils.c			\
+	app_cleanup.c		\
 	events.c			\
 	events_selection.c	\
 	file_io.c			\
@@ -30,6 +31,7 @@ SRC_FILES	=			\
 	navigation.c		\
 	parser.c			\
 	parse_types.c		\
+	parse_textures.c	\
 	array_attack.c		\
 	is_valid.c			\
 	read_scene.c		\
@@ -50,6 +52,9 @@ SRC_FILES	=			\
 	gui/gui_color_pick.c  	\
 	gui/gui_setup.c  		\
 	gui/gui_single_pick.c  	\
+	gui/gui_scene_loop.c  	\
+	gui/gui_selection_loop.c  	\
+	gui/gui_light_loop.c  	\
 	gui/gui_vec_pick.c  	\
 	math3d/vec3_op.c
 
@@ -78,13 +83,14 @@ SRC			=	$(addprefix $(DIR_SRC)/, $(SRC_FILES))
 HDR			=	$(addprefix $(DIR_INC)/, $(HDR_FILES))
 OBJ			=	$(addprefix $(DIR_OBJ)/, $(SRC_FILES:.c=.o))
 OBJ_NO_MAIN =   $(shell echo $(OBJ)| sed 's/\.\/obj\/main.o//g')
-INCLUDES	=	-I$(LIBFT_DIR) -I$(DIR_INC) -I$(PRINTF_DIR)/include -I ~/.brew/include -I./nuklear
+INCLUDES	=	-I$(LIBFT_DIR) -I$(DIR_INC) -I$(PRINTF_DIR)/include -I./nuklear -I./stb_image
 LIBS		:=	$(LIBFT) $(PRINTF) -lm
 
 ifeq ($(OS),Linux)
-	LIBS	:= $(LIBS) -lOpenCL
+	LIBS	:= $(LIBS) -lOpenCL -lSDL2 -lGL -lGLEW
 else
 	LIBS	:= $(LIBS) -framework OpenCL -L ~/.brew/lib -lSDL2 -framework OpenGL -lm -lGLEW
+	INCLUDES := -I ~/.brew/include
 endif
 
 all: $(NAME)

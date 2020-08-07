@@ -19,7 +19,6 @@ int		is_valid_light_name(char *str)
 
 int		is_valid_obj_name(t_obj *ol, char *str)
 {
-	ft_bzero(ol, sizeof(t_obj));
 	if (!ft_strcmp(str, T_SPH))
 		ol->id = ID_SPH;
 	else if (!ft_strcmp(str, T_PLN))

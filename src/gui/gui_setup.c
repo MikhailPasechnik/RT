@@ -46,3 +46,11 @@ int			gui_setup(t_gui *gui)
 	nk_sdl_font_stash_end();
 	return (1);
 }
+
+int gui_destroy(t_gui *gui)
+{
+	nk_sdl_shutdown();
+	gui->gl_context ? SDL_GL_DeleteContext(gui->gl_context) : 0;
+	gui->win ? SDL_DestroyWindow(gui->win) : 0;
+	return (1);
+}
