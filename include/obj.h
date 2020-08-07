@@ -111,6 +111,8 @@ typedef struct			s_mat
 	t_real				fresnel;
 	t_real				reflection;
 	t_int				diff_tex_id;
+	t_int				alpha_tex_id;
+	t_int				spec_tex_id;
 }						t_mat;
 
 typedef struct			s_obj

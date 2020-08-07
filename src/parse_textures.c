@@ -24,6 +24,37 @@ static t_uint	get_texture_offset(t_list *last)
 	return (0);
 }
 
+static int		instance_tx(char *str, void *id, t_app *app)
+{
+	int		i;
+	t_list	*it;
+
+	it = app->tx_src_list;
+	i = (int)app->op.tex_count - 1;
+	while (it)
+	{
+		*(t_int *)id = i;
+		if (!ft_strcmp((char *)it->content, str))
+			return (1);
+		i--;
+		it = it->next;
+	}
+	return (0);
+}
+
+static int		load_tx(char *path, t_texture_info	*info, t_list *tx, t_app *app)
+{
+	tx->content = stbi_load(path, &info->w, &info->h, &info->channels, 4);
+	if ((app->parse_error |= (unsigned)(tx->content == NULL)))
+	{
+		free(tx);
+		return (0);
+	}
+	tx->content_size = sizeof(unsigned char) * info->w * info->h * 4;
+	info->buffer_offset = get_texture_offset(app->tx_info_list);
+	return (1);
+}
+
 void			parse_texture(char *str, void *id, t_app *app)
 {
 	t_list			*tx;
@@ -36,17 +67,14 @@ void			parse_texture(char *str, void *id, t_app *app)
 	tx = ft_lstnew(NULL, 0);
 	if ((app->parse_error |= (unsigned)(tx == NULL)))
 		return ;
-	tx->content = stbi_load(str, &info.w, &info.h, &info.channels, 4);
-	if ((app->parse_error |= (unsigned)(tx->content == NULL)))
+	if (instance_tx(str, id, app) || !load_tx(str, &info, tx, app))
 		return ;
-	tx->content_size = sizeof(unsigned char) * info.w * info.h * 4;
-	info.buffer_offset = get_texture_offset(app->tx_info_list);
 	ft_lstadd(&app->tx_list, tx);
 	info_l = ft_lstnew(&info, sizeof(info));
 	if ((app->parse_error |= (unsigned)(info_l == NULL)))
 		return ;
 	ft_lstadd(&app->tx_info_list, info_l);
-	src = ft_lstnew(str, sizeof(char) * ft_strlen(str));
+	src = ft_lstnew(str, sizeof(char) * (ft_strlen(str) + 1));
 	if ((app->parse_error |= (unsigned)(src == NULL)))
 		return ;
 	ft_lstadd(&app->tx_src_list, src);

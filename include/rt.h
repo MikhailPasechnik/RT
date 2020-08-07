@@ -53,7 +53,7 @@
 # define RT_K_DEPTH_ARG 7
 # define RT_K_TEX_ARG 8
 # define RT_K_TEX_I_ARG 9
-# define RT_P_OBJ_FILED_NUM 10
+# define RT_P_OBJ_FILED_NUM 12
 
 typedef t_list	t_obj_list;
 typedef t_list	t_light_list;
