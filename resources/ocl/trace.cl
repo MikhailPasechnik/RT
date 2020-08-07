@@ -21,22 +21,8 @@ float2 get_sphere_uv(t_vec3 p)
 float2 get_cube_uv(t_vec3 p)
 {
 	float2 uv;
-
-	if (fabs(p.x) == 1)
-	{
-		uv.x = (p.z + 1.0f) / 2.0f;
-		uv.y = (p.y + 1.0f) / 2.0f;
-	}
-	else if (fabs(p.y) == 1)
-	{
-		uv.x = (p.x + 1.0f) / 2.0f;
-		uv.y = (p.z + 1.0f) / 2.0f;
-	}
-	else
-	{
-		uv.x = (p.x + 1.0f) / 2.0f;
-		uv.y = (p.y + 1.0f) / 2.0f;
-	}
+	uv.x = (p.x + 1.0f) / 2.0f;
+	uv.y = (p.y + 1.0f) / 2.0f;
 	return (uv);
 }
 
