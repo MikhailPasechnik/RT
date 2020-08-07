@@ -78,5 +78,5 @@ void			parse_texture(char *str, void *id, t_app *app)
 	if ((app->parse_error |= (unsigned)(src == NULL)))
 		return ;
 	ft_lstadd(&app->tx_src_list, src);
-	*(int *)id = ++app->op.tex_count;
+	*(int *)id = app->op.tex_count++;
 }

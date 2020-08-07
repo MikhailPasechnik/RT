@@ -17,6 +17,7 @@
 static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 {
 	ft_bzero(phelp, sizeof(t_phelp) * 8);
+	ft_bzero(ol, sizeof(t_obj));
 	ol->mat.diff_tex_id = -1;
 	ol->mat.spec_tex_id = -1;
 	ol->mat.refl_tex_id = -1;
@@ -67,8 +68,8 @@ void		parser_obj(char **scn, t_app *app, int n)
 		}
 		app->op.obj_count++;
 		ft_lstadd(&app->obj_list, ft_lstnew(&ol, sizeof(t_obj)));
-		check_obj(app);
 	}
+	check_obj(app);
 }
 
 void		parser_light(char **scn, t_app *app, int n)
@@ -93,6 +94,6 @@ void		parser_light(char **scn, t_app *app, int n)
 		}
 		app->op.light_count++;
 		ft_lstadd(&app->light_list, ft_lstnew(&ll, sizeof(t_light)));
-		check_obj(app);
 	}
+	check_light(app);
 }
