@@ -1,0 +1,80 @@
+- type: camera
+  position:     [-5.71, -65.30, 46.35]
+  rotation:     [5.76, 65.91, 93.56]
+  fov:          60
+- type: light
+  position:     [40.00, 30.00, 50.00]
+  rotation:     [-60.00, 120.00, 150.00]
+  color:        [0, 0, 135]
+  intensity:    3.00
+  dispersion:   2
+- type: light
+  position:     [-90.00, 50.00, 80.00]
+  rotation:     [-60.00, -250.00, 60.00]
+  color:        [36, 222, 200]
+  intensity:    2.50
+  dispersion:   1
+- type: light
+  position:     [20.00, -20.00, 80.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [222, 36, 182]
+  intensity:    1.50
+  dispersion:   2
+- type: sphere
+  position:     [-10.75, -16.75, 53.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+  radius:       20.00
+- type: plane
+  position:     [0.00, 0.00, -0.50]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [114, 84, 104]
+  emittance:    [0, 0, 0]
+  reflective:   0.85
+  specular:     0.40
+- type: cube
+  position:     [9.00, -14.50, 5.00]
+  rotation:     [0.00, 0.00, 30.00]
+  color:        [54, 10, 62]
+  emittance:    [0, 0, 0]
+  reflective:   0.19
+  specular:     0.39
+  height:       4.75
+- type: cube
+  position:     [7.75, -18.50, 3.50]
+  rotation:     [23.00, 26.50, 81.00]
+  color:        [4, 1, 4]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.38
+  height:       4.00
+- type: cube
+  position:     [0.00, 0.00, 6.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [90, 90, 90]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     1.00
+  height:       10.00
+  diff_texture: resources/textures/green.jpg
+- type: cube
+  position:     [-25.50, 1.75, 5.25]
+  rotation:     [-5.25, 36.25, 55.75]
+  color:        [90, 90, 90]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+  height:       15.00
+  refl_texture: resources/textures/green.jpg
+- type: cube
+  position:     [0.00, 18.00, 14.75]
+  rotation:     [48.75, 26.00, -11.00]
+  color:        [2, 26, 18]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     1.00
+  height:       10.00
+  spec_texture: resources/textures/green.jpg
