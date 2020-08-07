@@ -15,6 +15,11 @@
 */
 #define NK_IMPLEMENTATION
 #define NK_SDL_GL3_IMPLEMENTATION
+/*
+** We must define STB_IMAGE_IMPLEMENTATION in one .c file for single header lib
+*/
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 #include "gui.h"
 #include "rt.h"
@@ -35,8 +40,6 @@ void	sdl_loop(t_app *app, t_gui *gui)
 {
 	SDL_Event		event;
 	int				quit;
-	t_uint			changed;
-	t_obj			*o;
 	int				i;
 	t_light			*l;
 	unsigned int	change;
@@ -59,82 +62,9 @@ void	sdl_loop(t_app *app, t_gui *gui)
 			quit = quit || app->quit;
 		}
 		nk_input_end(gui->ctx);
-
-/*
-** GUI
-*/
-		if (nk_begin(gui->ctx, "Selection", nk_rect(0, 0, GUI_WIN_WIDTH / 2,
-			GUI_WIN_HEIGHT),
-			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
-		{
-			if (app->selection != -1)
-			{
-				changed = 0;
-				o = &((t_obj*)app->ren.obj_buf.host)[app->selection];
-				changed |= gui_vec_pick(&o->pos, "Position:", gui->ctx);
-				changed |= gui_vec_pick(&o->rot, "Rotation:", gui->ctx);
-				changed |= gui_single_pick(&o->height, "Height:", gui->ctx);
-				changed |= gui_single_pick(&o->radius, "Radius:", gui->ctx);
-				changed |= gui_color_pick(&o->mat.diff, "Diffuse:", gui->ctx);
-				changed |= gui_gray_pick(&o->mat.specular, "Specular:",
-					gui->ctx);
-				changed |= gui_gray_pick(&o->mat.reflection, "Reflection:",
-					gui->ctx);
-				if (changed)
-				{
-					push_buffer(app->ren.queue, &app->ren.obj_buf,
-						app->ren.obj_buf.size, 0);
-					app_render(app);
-				}
-			}
-		}
-		nk_end(gui->ctx);
-		if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH / 2, 0,
-			GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT),
-			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
-		{
-			i = 0;
-			change = 0;
-			char name[20];
-			while (i < app->op.light_count)
-			{
-				l = &((t_light *)app->ren.light_buf.host)[i];
-				ft_sprintf(name, "Light%d", i);
-				nk_layout_row_dynamic(gui->ctx, 20, 1);
-				nk_label(gui->ctx, name, NK_TEXT_LEFT);
-				nk_layout_row_dynamic(gui->ctx, 25, 1);
-				ft_sprintf(name, "Light%d:Color:", i);
-				change |= gui_color_pick(&l->color, name, gui->ctx);
-				ft_sprintf(name, "Light%d:Intensity:", i);
-				change |= gui_single_pick(&l->intensity, name, gui->ctx);
-				ft_sprintf(name, "Light%d:Position:", i);
-				change |= gui_vec_pick(&l->pos, name, gui->ctx);
-				ft_sprintf(name, "Light%d:Rotation:", i);
-				change |= gui_vec_pick(&l->rot, name, gui->ctx);
-				i++;
-			}
-			if (change)
-			{
-				push_buffer(app->ren.queue, &app->ren.light_buf,
-					app->ren.light_buf.size, 0);
-				app_render(app);
-			}
-		}
-		nk_end(gui->ctx);
-		if (nk_begin(gui->ctx, "Scene", nk_rect(GUI_WIN_WIDTH / 2, 0,
-			GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT / 2),
-			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-			NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
-		{
-			nk_layout_row_static(gui->ctx, 30, 80, 1);
-			if (nk_button_label(gui->ctx, "Save"))
-				save_scene(app);
-//				ft_printf("Saving Scene\n");
-			nk_layout_row_dynamic(gui->ctx, 30, 2);
-		}
-		nk_end(gui->ctx);
+		gui_selection_loop(app, gui);
+		gui_light_loop(app, gui);
+		gui_scene_loop(app, gui);
 		SDL_GL_MakeCurrent(gui->win, gui->gl_context);
 		glViewport(0, 0, GUI_WIN_WIDTH, GUI_WIN_HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -160,10 +90,14 @@ int		main(int argc, char **argv)
 	parser(&app, argc > 1 ? argv[1] : "./scene/simple.yml");
 	!sdl_init() ? exit(1) : 0;
 	if (!app_start(&app, argv + 1, argc - 1) || !setup_gui(&app, &gui))
+	{
+		gui_destroy(&gui);
 		app_finish(&app);
+	}
 	else
 	{
 		sdl_loop(&app, &gui);
+		gui_destroy(&gui);
 		app_finish(&app);
 	}
 	SDL_Quit();
