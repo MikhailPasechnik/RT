@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+         #
+#    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/06/26 22:39:11 by bmahi            ###   ########.fr        #
+#    Updated: 2020/08/07 16:12:36 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,7 @@ endif
 all: $(NAME)
 
 $(DIR_OBJ):
+	@./libs_install.sh
 	echo DIR_OBJ: "$(DIR_OBJ)"
 	mkdir $(DIR_OBJ)
 	mkdir $(DIR_OBJ)/ocl
