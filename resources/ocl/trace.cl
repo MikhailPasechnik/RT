@@ -3,6 +3,16 @@
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
 
+t_vec3	v3_cross(t_vec3 a, t_vec3 b)
+{
+	t_vec3 v;
+
+	v.x = a.y * b.z - a.z * b.y;
+	v.y = a.z * b.x - a.x * b.z;
+	v.z = a.x * b.y - a.y * b.x;
+	return (v);
+}
+
 float2 get_sphere_uv(t_vec3 p)
 {
 	float2 uv;
@@ -23,6 +33,44 @@ float2 get_cube_uv(t_vec3 p)
 	float2 uv;
 	uv.x = (p.x + 1.0f) / 2.0f;
 	uv.y = (p.y + 1.0f) / 2.0f;
+	return (uv);
+}
+
+float2 get_cylinder_uv(t_vec3 p, float height, float radius)
+{
+	float2 uv;
+
+	uv.y = p.z / height;
+	uv.x = acos(p.x / radius) / (2 * M_PI);
+	if (p.y < 0)
+		uv.x = 1 - uv.x;
+	return (uv);
+}
+
+// float2 get_cone_uv(t_vec3 p, float height, float radius, float radius_on_height)
+// {
+// 	float2 uv;
+
+// 	uv.y = p.z / height;
+// 	uv.x = (acos(p.x / radius + (radius_on_height - radius) * p.z / height)) / (2 * M_PI);
+// 	if (p.y < 0)
+// 		uv.x = 1 - uv.x;
+// 	return (uv);
+// }
+
+float2 get_plane_uv(t_vec3 p, t_vec3 n)
+{
+	float2 uv;
+	t_vec3 prepare_uv_x;
+	t_vec3 prepare_uv_y;
+
+	if (n.x != 0 && n.y != 0)
+		prepare_uv_x = normalize((t_vec3){n.y, -n.x, 0.0f});
+	else
+		prepare_uv_x = normalize((t_vec3){n.z, n.z, 0.0f});
+	prepare_uv_y = v3_cross(n, prepare_uv_x);
+	uv.x = dot(prepare_uv_x, p);
+	uv.y = dot(prepare_uv_y, p);
 	return (uv);
 }
 
@@ -165,6 +213,7 @@ static int plane_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		hit->p = ray.o + ray.d * t;
 		hit->n = -n;
 		hit->obj = obj;
+		hit->uv = get_plane_uv(hit->p, hit->n);
 		return (1);
 	}
     return (0);
@@ -223,6 +272,7 @@ static int cone_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	hit->p = ray.o + ray.d * t0;
 	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
 	hit->obj = obj;
+	hit->uv = get_cylinder_uv(hit->p, obj->height, obj->radius);
 	hit_to_world_space(obj, hit);
 	return (1);
 }
@@ -274,6 +324,7 @@ static int cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 	hit->p = ray.o + ray.d * t0;
 	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
 	hit->obj = obj;
+	hit->uv = get_cylinder_uv(hit->p, obj->height, obj->radius);
 	hit_to_world_space(obj, hit);
 	return (1);
 }
@@ -303,6 +354,7 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     hit->p = ray.o + ray.d * t0;
 	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
     hit->obj = obj;
+	hit->uv = get_cylinder_uv(hit->p, obj->height, obj->radius);
 	hit_to_world_space(obj, hit);
     return (1);
 }
