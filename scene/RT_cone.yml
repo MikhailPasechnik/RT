@@ -1,0 +1,68 @@
+- type: camera
+  position:     [29.79, -39.54, 35.00]
+  rotation:     [-39.80, 52.83, 93.57]
+  fov:          60
+- type: light
+  position:     [-20.00, 20.00, 80.00]
+  rotation:     [-60.00, -250.00, 180.00]
+  color:        [77, 185, 227]
+  intensity:    1.50
+  dispersion:   1
+- type: light
+  position:     [-20.00, -20.00, 30.00]
+  rotation:     [20.00, -200.50, 190.00]
+  color:        [188, 39, 216]
+  intensity:    1.00
+  dispersion:   2
+- type: light
+  position:     [20.00, 20.00, 30.00]
+  rotation:     [45.00, -190.00, 200.00]
+  color:        [39, 118, 48]
+  intensity:    3.00
+  dispersion:   1
+- type: cone
+  position:     [0.00, 0.00, 2.00]
+  rotation:     [-15.00, 10.00, 0.00]
+  color:        [153, 165, 118]
+  emittance:    [0, 0, 0]
+  reflective:   0.71
+  specular:     1.00
+  radius:       5.00
+  height:       15.00
+- type: cone
+  position:     [-12.25, -10.00, 0.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [153, 165, 118]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       5.00
+  height:       15.00
+  infinite:     1
+  diff_texture: resources/textures/water.jpg
+- type: cone
+  position:     [22.25, -4.00, -4.50]
+  rotation:     [-15.25, -43.75, 0.00]
+  color:        [150, 18, 144]
+  emittance:    [0, 0, 0]
+  reflective:   0.70
+  specular:     0.00
+  radius:       7.00
+  height:       30.00
+  infinite:     1
+  refl_texture: resources/textures/water.jpg
+- type: plane
+  position:     [0.00, 0.00, 0.50]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [56, 33, 48]
+  emittance:    [0, 0, 0]
+  reflective:   0.03
+  specular:     0.41
+- type: sphere
+  position:     [-12.50, 4.75, 20.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 240, 150]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.20
+  radius:       10.00
