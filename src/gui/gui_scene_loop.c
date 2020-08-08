@@ -28,7 +28,7 @@ void	gui_scene_loop(t_app *app, t_gui *gui)
 		change |= nk_slider_int(gui->ctx, 1, &app->op.ref_depth, REF_DEPTH_MAX, 1);
 		change |= gui_color_pick(&app->op.background_color, "Background Color:", gui->ctx);
 		if (change)
-			update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG) && app_render(app);
+			(app->op_changed = 1) && app_render(app);
 	}
 	nk_end(gui->ctx);
 }
