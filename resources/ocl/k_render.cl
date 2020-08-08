@@ -94,12 +94,6 @@ __kernel void k_render(
 
 	color_buffer[id] = pack_color(&color);
     depth_buffer[id] = pack_color(&depth_color);
-	if (obj_index != -1)
-	{
-		t_color ccc = COLOR(camera_hit.uv.x, camera_hit.uv.y, 0, 0);
-		depth_buffer[id] = pack_color(&ccc);
-	}
-
     if (options.sepia)
 		color = sepia_effect(color);
     color_buffer[id] = pack_color(&color);
