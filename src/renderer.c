@@ -45,8 +45,13 @@ int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 	ren->queue = clCreateCommandQueue(ocl->context,
 		ocl->device, 0, &err);
 #endif
-	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
+		return (0);
+	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);
+	if (OCL_ERROR(err, "Failed to create render kernel"))
+		return (0);
+	ren->pproc_kernel = clCreateKernel(ren->program, "k_postprocess", &err);
+	if (OCL_ERROR(err, "Failed to create postprocess kernel"))
 		return (0);
 	return (1);
 }
@@ -84,8 +89,16 @@ int			render(t_renderer *ren, t_ocl *ocl)
 	err = clEnqueueNDRangeKernel(
 			ren->queue, ren->render_kernel, 1, NULL, &size,
 			NULL, 0, NULL, NULL);
-	if (OCL_ERROR(err, "Failed to enqueue kernel!"))
+	if (OCL_ERROR(err, "Failed to enqueue render kernel!"))
 		return (0);
+	if (ren->pproc_enabled)
+	{
+		err = clEnqueueNDRangeKernel(
+				ren->queue, ren->pproc_kernel, 1, NULL, &size,
+				NULL, 0, NULL, NULL);
+		if (OCL_ERROR(err, "Failed to enqueue postprocess kernel!"))
+			return (0);
+	}
 	if (OCL_ERROR(clFinish(ren->queue), "Failed to finish queue!"))
 		return (0);
 	return (1);

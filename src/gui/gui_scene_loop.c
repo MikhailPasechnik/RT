@@ -24,6 +24,7 @@ void	gui_scene_loop(t_app *app, t_gui *gui)
 		if (nk_button_label(gui->ctx, "Save"))
 			save_scene(app);
 		change |= nk_checkbox_label(gui->ctx, "Sepia", &app->op.sepia);
+		change |= nk_checkbox_label(gui->ctx, "Post processing", &app->ren.pproc_enabled);
 		nk_label(gui->ctx, "Reflection Depth:", NK_TEXT_LEFT);
 		change |= nk_slider_int(gui->ctx, 1, &app->op.ref_depth, REF_DEPTH_MAX, 1);
 		change |= gui_color_pick(&app->op.background_color, "Background Color:", gui->ctx);

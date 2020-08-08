@@ -39,7 +39,8 @@
 #  define RT_CL_INCLUDE "-I./resources/ocl -I./include"
 # endif
 
-# define RT_CL_SRC2 "resources/ocl/k_render.cl resources/ocl/mat44.cl"
+# define RT_CL_SRC3 " resources/ocl/k_render.cl resources/ocl/k_postprocess.cl"
+# define RT_CL_SRC2 RT_CL_SRC3" resources/ocl/mat44.cl"
 # define RT_CL_SRC1 RT_CL_SRC2" resources/ocl/color.cl resources/ocl/ray.cl"
 # define RT_CL_SRC RT_CL_SRC1" resources/ocl/trace.cl resources/ocl/utils.cl"
 # define RT_K_RENDER "k_render"
@@ -78,6 +79,7 @@ typedef struct			s_tx_buffer
 typedef struct			s_renderer
 {
 	cl_kernel			render_kernel;
+	cl_kernel			pproc_kernel;
 
 	cl_program			program;
 	cl_command_queue	queue;
@@ -88,6 +90,7 @@ typedef struct			s_renderer
 	t_buffer			obj_buf;
 	t_buffer			light_buf;
 	t_tx_buffer			color_buf;
+	t_tx_buffer			color_buf2;
 	t_buffer			index_buf;
 	t_tx_buffer			depth_buf;
 	t_tx_buffer			normal_buf;
@@ -96,6 +99,7 @@ typedef struct			s_renderer
 
 	t_uint				width;
 	t_uint				height;
+	int					pproc_enabled;
 }						t_renderer;
 
 typedef struct			s_app
