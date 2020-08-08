@@ -1,0 +1,66 @@
+- type: camera
+  position:     [-24.62, 37.20, 31.54]
+  rotation:     [36.51, -55.16, 93.57]
+  fov:          60
+- type: light
+  position:     [20.00, 20.00, 30.00]
+  rotation:     [45.00, -190.00, 200.00]
+  color:        [26, 26, 99]
+  intensity:    3.00
+  dispersion:   1
+- type: light
+  position:     [-20.00, -20.00, 30.00]
+  rotation:     [20.00, -200.50, 190.00]
+  color:        [212, 149, 53]
+  intensity:    1.00
+  dispersion:   2
+- type: light
+  position:     [-20.00, 20.00, 80.00]
+  rotation:     [-60.00, -250.00, 180.00]
+  color:        [36, 222, 200]
+  intensity:    1.50
+  dispersion:   1
+- type: plane
+  position:     [0.00, 0.00, 0.50]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [114, 84, 104]
+  emittance:    [0, 0, 0]
+  reflective:   0.56
+  specular:     0.70
+- type: cylinder
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [153, 165, 118]
+  emittance:    [0, 0, 0]
+  reflective:   0.71
+  specular:     1.00
+  radius:       10.00
+  height:       3.00
+- type: cylinder
+  position:     [0.00, 0.00, 3.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [153, 165, 118]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       5.00
+  height:       3.00
+  diff_texture: resources/textures/wood.jpg
+- type: cylinder
+  position:     [0.00, 0.00, 7.00]
+  rotation:     [-30.00, 10.00, 0.00]
+  color:        [153, 165, 118]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       3.00
+  height:       10.00
+- type: cylinder
+  position:     [-12.00, -12.00, 5.00]
+  rotation:     [30.00, 0.00, 0.00]
+  color:        [220, 130, 130]
+  emittance:    [0, 0, 0]
+  reflective:   0.70
+  specular:     0.10
+  radius:       3.00
+  infinite:     1
