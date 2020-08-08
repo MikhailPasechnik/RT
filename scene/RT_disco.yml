@@ -1,0 +1,78 @@
+- type: camera
+  position:     [-15.70, -30.16, 24.04]
+  rotation:     [30.55, 58.68, 93.56]
+  fov:          60
+- type: light
+  position:     [20.00, -20.00, 80.00]
+  rotation:     [60.00, -180.00, 200.00]
+  color:        [191, 168, 186]
+  intensity:    2.00
+  dispersion:   2
+- type: light
+  position:     [0.00, 0.00, 200.00]
+  rotation:     [0.00, 0.00, 180.00]
+  color:        [220, 231, 45]
+  intensity:    2.00
+  dispersion:   3
+- type: light
+  position:     [-20.00, 20.00, 80.00]
+  rotation:     [-60.00, -250.00, 900.00]
+  color:        [36, 222, 200]
+  intensity:    3.00
+  dispersion:   1
+- type: plane
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [0, 0, 0]
+  emittance:    [0, 0, 0]
+  reflective:   0.62
+  specular:     0.26
+- type: cube
+  position:     [7.00, 7.00, 6.00]
+  rotation:     [50.00, 0.00, 0.00]
+  color:        [75, 12, 12]
+  emittance:    [2, 5, 0]
+  reflective:   0.65
+  specular:     0.00
+  height:       4.00
+- type: cube
+  position:     [-8.00, -8.00, 6.00]
+  rotation:     [30.00, 0.00, 0.00]
+  color:        [10, 24, 73]
+  emittance:    [2, 5, 0]
+  reflective:   0.79
+  specular:     0.00
+  height:       5.00
+- type: cube
+  position:     [-7.00, 7.00, 6.00]
+  rotation:     [0.00, 30.00, 0.00]
+  color:        [17, 66, 10]
+  emittance:    [2, 5, 0]
+  reflective:   0.86
+  specular:     0.00
+  height:       3.00
+- type: cube
+  position:     [7.00, -7.00, 6.00]
+  rotation:     [11.00, 44.50, -4.00]
+  color:        [0, 0, 0]
+  emittance:    [2, 5, 0]
+  reflective:   1.00
+  specular:     0.00
+  height:       5.00
+- type: sphere
+  position:     [0.00, 0.00, 10.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.60
+  specular:     0.50
+  radius:       2.00
+  diff_texture: resources/textures/disco.jpg
+- type: sphere
+  position:     [0.00, 0.00, 1.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [43, 6, 32]
+  emittance:    [0, 0, 0]
+  reflective:   0.81
+  specular:     1.00
+  radius:       7.00
