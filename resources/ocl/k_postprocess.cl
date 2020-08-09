@@ -4,9 +4,9 @@ t_color translate_int_to_color(__global t_int* buffer, int id)
 {
 	t_color col;
 
-	col.r = (buffer[id] & 0x00FF0000) >> 16;
-	col.g = (buffer[id] & 0x0000FF00) >> 8;
-	col.b = (buffer[id] & 0x000000FF);
+	col.x = (buffer[id] & 0x00FF0000) >> 16;
+	col.y = (buffer[id] & 0x0000FF00) >> 8;
+	col.z = (buffer[id] & 0x000000FF);
 	return (col);
 }
 
@@ -70,9 +70,9 @@ t_color white_lines(__global t_int* normal_buffer, __global t_int* depth_buffer,
 
 	amount = interpolate(d_amount, n_amount, 0.5f);
 
-	out.r = interpolate((float)translate_int_to_color(color_buffer, id).r, blur.r, min(amount, 0.75f));
-	out.g = interpolate((float)translate_int_to_color(color_buffer, id).g, blur.g, min(amount, 0.75f));
-	out.b = interpolate((float)translate_int_to_color(color_buffer, id).b, blur.b, min(amount, 0.75f));
+	out.x = interpolate((float)translate_int_to_color(color_buffer, id).x, blur.x, min(amount, 0.75f));
+	out.y = interpolate((float)translate_int_to_color(color_buffer, id).y, blur.y, min(amount, 0.75f));
+	out.z = interpolate((float)translate_int_to_color(color_buffer, id).z, blur.z, min(amount, 0.75f));
 	return (out);
 }
 
@@ -130,9 +130,9 @@ t_color antialising(__global t_int* normal_buffer, __global t_int* depth_buffer,
 
 	amount = interpolate(d_amount, n_amount, 0.5f);
 
-	out.r = interpolate((float)translate_int_to_color(color_buffer, id).r, blur.r, min(amount, 0.75f));
-	out.g = interpolate((float)translate_int_to_color(color_buffer, id).g, blur.g, min(amount, 0.75f));
-	out.b = interpolate((float)translate_int_to_color(color_buffer, id).b, blur.b, min(amount, 0.75f));
+	out.x = interpolate((float)translate_int_to_color(color_buffer, id).x, blur.x, min(amount, 0.75f));
+	out.y = interpolate((float)translate_int_to_color(color_buffer, id).y, blur.y, min(amount, 0.75f));
+	out.z = interpolate((float)translate_int_to_color(color_buffer, id).z, blur.z, min(amount, 0.75f));
 	return (out);
 }
 
@@ -150,7 +150,7 @@ __kernel void k_postprocess(
 
 	// effect 1: contrast !!!
 	// out = translate_int_to_color(color_buffer, id);
-	// out.g = 0;
+	// out.y = 0;
 
 	// effect 2
 	out = antialising(normal_buffer, depth_buffer, color_buffer, options, id);
@@ -158,6 +158,6 @@ __kernel void k_postprocess(
 	// effect 3
 	// out = white_lines(normal_buffer, depth_buffer, color_buffer, options, id);
 
-	out = COLOR((float)out.r / 255, (float)out.g / 255, (float)out.b / 255, 0);
+	out = COLOR((float)out.x / 255, (float)out.y / 255, (float)out.z / 255, 0);
 	output[id] = pack_color(&out);
 }
