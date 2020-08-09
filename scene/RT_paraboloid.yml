@@ -1,0 +1,66 @@
+- type: camera
+  position:     [-60.15, -26.78, 46.54]
+  rotation:     [60.43, 26.91, 93.57]
+  fov:          60
+- type: light
+  position:     [18.00, 20.00, 80.00]
+  rotation:     [-20.25, -216.00, 116.50]
+  color:        [121, 60, 199]
+  intensity:    2.50
+  dispersion:   1
+- type: light
+  position:     [28.75, 19.75, 77.00]
+  rotation:     [-9.24, -216.00, 189.75]
+  color:        [236, 220, 62]
+  intensity:    1.00
+  dispersion:   1
+- type: light
+  position:     [20.00, 20.00, 30.00]
+  rotation:     [45.00, -190.00, 200.00]
+  color:        [85, 85, 159]
+  intensity:    1.00
+  dispersion:   1
+- type: sphere
+  position:     [0.00, 0.00, 21.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [0, 0, 0]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+  radius:       5.50
+- type: paraboloid
+  position:     [8.50, -16.50, 21.00]
+  rotation:     [13.00, 220.75, 0.00]
+  color:        [99, 54, 9]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       5.00
+  height:       10
+- type: paraboloid
+  position:     [0.00, 0.00, 15.00]
+  rotation:     [0.00, 180.00, 0.00]
+  color:        [83, 43, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.95
+  specular:     0.75
+  radius:       8.00
+  height:       10
+- type: paraboloid
+  position:     [0.00, 0.00, 26.99]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [7, 69, 55]
+  emittance:    [0, 0, 0]
+  reflective:   0.36
+  specular:     1.00
+  radius:       5.00
+  height:       10
+- type: plane
+  position:     [0.00, 0.00, 0.50]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [36, 29, 43]
+  emittance:    [0, 0, 0]
+  reflective:   0.46
+  specular:     0.02
+
+

@@ -336,12 +336,13 @@ static int paraboloid_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     t_real c;
     t_real t0;
     t_real t1;
+	t_real k;
 
 	ray_to_object_space(obj, &ray);
-
-	a = ray.d.x * ray.d.x + ray.d.y * ray.d.y;
-	b = 2.0 * (ray.o.x * ray.d.x + ray.o.y * ray.d.y - 0.5 * ray.d.z);
-	c = ray.o.x * ray.o.x + ray.o.y * ray.o.y - ray.o.z;
+	k = obj->height / pow(obj->radius, 2);
+	a = k * (ray.d.x * ray.d.x + ray.d.y * ray.d.y);
+	b = 2.0 * k * (ray.o.x * ray.d.x + ray.o.y * ray.d.y) - ray.d.z;
+	c = k * (ray.o.x * ray.o.x + ray.o.y * ray.o.y) - ray.o.z;
 
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
