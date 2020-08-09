@@ -19,6 +19,8 @@ typedef float3		t_color;
 # define VEC(x, y, z)((t_vec3){x, y, z})
 # define COLOR(r, g, b, a) ((t_color){r, g, b})
 # define CUB(vec, a)((t_vec4){{vec, a}})
+#define min(x, y) ((x) < (y) ? (x) : (y))
+#define max(x, y) ((x) > (y) ? (x) : (y))
 
 typedef struct	s_hit {
 	t_vec3			p;
