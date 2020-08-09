@@ -6,11 +6,15 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 19:37:52 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/09 20:07:26 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+# define TYPES "Usage objects :\nsphere / plane / cylinder / cone / ellipse\n\
+parabolic cylinder / hyperbolic cylinder / paraboloid\n\
+hyperbolic cylinder / hyperboloid with two sheets\n\
+cube or hyperbolic paraboloid\n"
 
 int		is_valid_light_name(char *str)
 {
@@ -31,8 +35,18 @@ int		is_valid_obj_name(t_obj *ol, char *str)
 		ol->id = ID_CUB;
 	else if (!ft_strcmp(str, T_PAR))
 		ol->id = ID_PAR;
+	else if (!ft_strcmp(str, T_PCL))
+		ol->id = ID_PCL;
+	else if (!ft_strcmp(str, T_ELL))
+		ol->id = ID_ELL;
+	else if (!ft_strcmp(str, T_HCL))
+		ol->id = ID_HCL;
+	else if (!ft_strcmp(str, T_HTS))
+		ol->id = ID_HTS;
+	else if (!ft_strcmp(str, T_HPR))
+		ol->id = ID_HPR;
 	else
-		kill("Usage objects : sphere/plane/cylinder/cone/cube/paraboloid");
+		kill(TYPES);
 	return (1);
 }
 
