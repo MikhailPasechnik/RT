@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 15:47:14 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 17:27:25 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 	phelp[6] = PHELP("  height:", &ol->height, parse_real, app);
 	phelp[7] = PHELP("  infinite:", &ol->infinite, parse_real, app);
 	phelp[8] = PHELP("  emittance:", &ol->mat.emittance, parse_vec3, app);
-	phelp[9] = PHELP("  diff_texture:", &ol->mat.diff_tex_id, parse_texture, app);
-	phelp[10] = PHELP("  spec_texture:", &ol->mat.spec_tex_id, parse_texture, app);
-	phelp[11] = PHELP("  refl_texture:", &ol->mat.refl_tex_id, parse_texture, app);
+	phelp[9] = PHELP("  diff_texture:", &ol->mat.diff_tex_id, parse_texture,
+		app);
+	phelp[10] = PHELP("  spec_texture:", &ol->mat.spec_tex_id, parse_texture,
+		app);
+	phelp[11] = PHELP("  refl_texture:", &ol->mat.refl_tex_id, parse_texture,
+		app);
 }
 
 static void	phelp_run(int size, t_phelp *phelp, char *scn)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnesoi <bnesoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:18 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/03/17 12:27:19 by bnesoi           ###   ########.fr       */
+/*   Updated: 2020/08/10 17:32:32 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int				app_update_buffers(t_app *app)
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf2.valid && free_tx_buffer(&app->ren.color_buf2))
 		return (app_error("Failed to allocate color2 buffer!", 0));
-	app->ren.depth_buf = create_buffer(app->ocl.context, size * sizeof(cl_float),
-			CL_MEM_WRITE_ONLY);
+	app->ren.depth_buf = create_buffer(app->ocl.context,
+		size * sizeof(cl_float), CL_MEM_WRITE_ONLY);
 	if (!app->ren.depth_buf.valid && free_buffer(&app->ren.depth_buf))
 		return (app_error("Failed to allocate depth buffer!", 0));
-	app->ren.normal_buf = create_buffer(app->ocl.context, size * sizeof(cl_float3),
-			CL_MEM_WRITE_ONLY);
+	app->ren.normal_buf = create_buffer(app->ocl.context,
+		size * sizeof(cl_float3), CL_MEM_WRITE_ONLY);
 	if (!app->ren.normal_buf.valid && free_tx_buffer(&app->ren.normal_buf))
 		return (app_error("Failed to allocate normal buffer!", 0));
 	app->ren.index_buf = create_buffer(app->ocl.context,

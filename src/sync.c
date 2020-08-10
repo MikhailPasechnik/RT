@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 19:37:25 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 17:37:00 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int				transfer_objects(t_app *app)
 	if (i != app->op.obj_count || it != NULL)
 		return (app_error("Object count not equal to Object list length!", 0));
 	if (!push_buffer(app->ren.queue, &buffer,
-			sizeof(t_obj) * app->op.obj_count, 0) && free_buffer(&buffer))
+		sizeof(t_obj) * app->op.obj_count, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push objects buffer!", 0));
 	free_buffer(&app->ren.obj_buf);
 	app->ren.obj_buf = buffer;
@@ -83,8 +83,8 @@ int				transfer_textures(t_app *app)
 	size_t		size;
 	t_buffer	buffer;
 
-	buffer = create_buffer(
-			app->ocl.context, (size = list_size(app->tx_list)) + 1, CL_MEM_READ_ONLY);
+	buffer = create_buffer(app->ocl.context,
+		(size = list_size(app->tx_list)) + 1, CL_MEM_READ_ONLY);
 	if (!buffer.valid && free_buffer(&buffer))
 		return (app_error("Failed to allocate texture buffer!", 0));
 	i = 0;
@@ -92,20 +92,23 @@ int				transfer_textures(t_app *app)
 	it = app->tx_list;
 	while (it && i++ < app->op.tex_count)
 	{
-		ft_memcpy(&buffer.host[(j -= it->content_size)], it->content, it->content_size);
+		ft_memcpy(&buffer.host[(j -= it->content_size)], it->content,
+			it->content_size);
 		it = it->next;
 	}
 	if (i != app->op.tex_count || it != NULL)
-		return (app_error("Texture count not equal to Texture list length!", 0));
+		return (app_error("Texture count not equal to Texture list length!",
+		0));
 	if (!push_buffer(app->ren.queue, &buffer, size, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push texture buffer!", 0));
 	free_buffer(&app->ren.texture_buf);
 	app->ren.texture_buf = buffer;
 	return (set_kernel_arg(app->ren.render_kernel, RT_K_TEX_ARG,
-						   &buffer.device, sizeof(cl_mem)));
+		&buffer.device, sizeof(cl_mem)));
 }
 
-int				transfer_texture_info(t_app *app) {
+int				transfer_texture_info(t_app *app)
+{
 	t_uint		i;
 	t_list		*it;
 	t_buffer	buffer;
@@ -124,10 +127,10 @@ int				transfer_texture_info(t_app *app) {
 	if (i != app->op.tex_count || it != NULL)
 		return (app_error("Light count not equal to Light list length!", 0));
 	if (!push_buffer(app->ren.queue, &buffer,
-					 sizeof(t_tx_info) * app->op.tex_count, 0) && free_buffer(&buffer))
+		sizeof(t_tx_info) * app->op.tex_count, 0) && free_buffer(&buffer))
 		return (app_error("Failed to push Texture info buffer!", 0));
 	free_buffer(&app->ren.texture_info_buf);
 	app->ren.texture_info_buf = buffer;
 	return (set_kernel_arg(app->ren.render_kernel, RT_K_TEX_I_ARG,
-						   &buffer.device, sizeof(cl_mem)));
+		&buffer.device, sizeof(cl_mem)));
 }
