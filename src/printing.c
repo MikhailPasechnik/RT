@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 10:42:01 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 16:57:07 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ void		print_parametrs(int fd, t_obj *obj)
 		ft_fprintf(fd, "  infinite:     %.0f\n", obj->infinite);
 }
 
-void		print_tx(int fd, t_app *app, t_obj	*obj)
+void		print_tx(int fd, t_app *app, t_obj *obj)
 {
 	t_list	*lst;
 	t_int	i;
-	
+
 	lst = app->tx_src_list;
 	i = 0;
-	while(lst && i < (int)app->op.tex_count)
+	while (lst && i < (int)app->op.tex_count)
 	{
 		if (obj->mat.diff_tex_id == i)
 			ft_fprintf(fd, "  diff_texture: %s\n", lst->content);

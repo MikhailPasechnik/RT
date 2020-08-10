@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/01 22:14:39 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 16:58:20 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 {
 	t_vec3	pos;
 	t_vec3	rot;
-	int 	n;
-	char 	*s;
+	int		n;
+	char	*s;
 
 	n = 0;
 	cam->sky = -1;
@@ -41,10 +41,10 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 	return (n);
 }
 
-char	**read_scene(char* scene_file, int *lines)
+char	**read_scene(char *scene_file, int *lines)
 {
-	char	**split;
-	char 	*src;
+	char **split;
+	char *src;
 
 	src = fio_read_file(scene_file, NULL);
 	split = ft_strsplit(src, '\n');
