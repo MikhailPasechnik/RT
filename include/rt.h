@@ -92,8 +92,8 @@ typedef struct			s_renderer
 	t_tx_buffer			color_buf;
 	t_tx_buffer			color_buf2;
 	t_buffer			index_buf;
-	t_tx_buffer			depth_buf;
-	t_tx_buffer			normal_buf;
+	t_buffer			depth_buf;
+	t_buffer			normal_buf;
 	t_buffer			texture_buf;
 	t_buffer			texture_info_buf;
 

@@ -85,6 +85,9 @@ typedef cl_float3		t_color;
 typedef struct			s_options
 {
 	t_vec3				background_color;
+	t_vec3				edge_color;
+	t_real				dof_focal_point;
+	t_real				dof_strength;
 	t_uint				width;
 	t_uint				height;
 	t_uint				obj_count;
@@ -93,6 +96,9 @@ typedef struct			s_options
 	t_int				selection;
 	t_int				sepia;
 	t_int				ref_depth;
+	t_int				edge_effect;
+	t_int				fxaa;
+	t_int				dof;
 }						t_options;
 
 typedef struct			s_cam

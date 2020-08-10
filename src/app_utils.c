@@ -58,8 +58,8 @@ int				app_update_buffers(t_app *app)
 	app->ren.color_buf.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
 	app->ren.color_buf2.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
 	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
-	app->ren.depth_buf.valid ? free_tx_buffer(&app->ren.depth_buf) : 0;
-	app->ren.normal_buf.valid ? free_tx_buffer(&app->ren.normal_buf) : 0;
+	app->ren.depth_buf.valid ? free_buffer(&app->ren.depth_buf) : 0;
+	app->ren.normal_buf.valid ? free_buffer(&app->ren.normal_buf) : 0;
 	app->ren.color_buf = create_tx_buffer(app, app->op.width, app->op.height,
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf.valid && free_tx_buffer(&app->ren.color_buf))
@@ -68,11 +68,11 @@ int				app_update_buffers(t_app *app)
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf2.valid && free_tx_buffer(&app->ren.color_buf2))
 		return (app_error("Failed to allocate color2 buffer!", 0));
-	app->ren.depth_buf = create_tx_buffer(app, app->op.width, app->op.height,
+	app->ren.depth_buf = create_buffer(app->ocl.context, size * sizeof(cl_float),
 			CL_MEM_WRITE_ONLY);
-	if (!app->ren.depth_buf.valid && free_tx_buffer(&app->ren.depth_buf))
+	if (!app->ren.depth_buf.valid && free_buffer(&app->ren.depth_buf))
 		return (app_error("Failed to allocate depth buffer!", 0));
-	app->ren.normal_buf = create_tx_buffer(app, app->op.width, app->op.height,
+	app->ren.normal_buf = create_buffer(app->ocl.context, size * sizeof(cl_float3),
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.normal_buf.valid && free_tx_buffer(&app->ren.normal_buf))
 		return (app_error("Failed to allocate normal buffer!", 0));

@@ -35,14 +35,7 @@ int			app_render(t_app *app)
 {
 	t_tx_buffer *current;
 
-	if (app->render_buffer == RT_K_COLOR_ARG)
-		current = app->ren.pproc_enabled ? &app->ren.color_buf2 : &app->ren.color_buf;
-	else if (app->render_buffer == RT_K_NORMA_ARG)
-		current = &app->ren.normal_buf;
-	else if (app->render_buffer == RT_K_DEPTH_ARG)
-		current = &app->ren.depth_buf;
-	else
-		current = app->ren.pproc_enabled ? &app->ren.color_buf2 : &app->ren.color_buf;
+	current = app->ren.pproc_enabled ? &app->ren.color_buf2 : &app->ren.color_buf;
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
 	if (!render(&app->ren, &app->ocl))

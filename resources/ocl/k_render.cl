@@ -7,8 +7,8 @@ __kernel void k_render(
     __global t_light* lights,
     __global t_int* color_buffer,
     __global t_int* index_buffer,
-    __global t_int* normal_buffer,
-    __global t_int* depth_buffer,
+    __global float3* normal_buffer,
+    __global float* depth_buffer,
     __global uchar* tx_b,
     __global t_tx_info* txi_b
 )
@@ -19,8 +19,8 @@ __kernel void k_render(
     t_hit   camera_hit;
 
     t_color color;
-    t_color normal_color;
-    t_color depth_color;
+    float3 normal_color;
+    float depth_color;
     t_color refl_color;
 	t_color sepia_color;
 
@@ -28,8 +28,8 @@ __kernel void k_render(
     t_ray   refl_ray;
     t_hit   refl_hit;
     
-    normal_color = COLOR(0,0,0,1);
-    depth_color = COLOR(0,0,0,1);
+    normal_color = (float3){0, 0, 0};
+    depth_color = 99999;
     color = COLOR(0,0,0,1);
     t_color r_col[REF_DEPTH_MAX + 1];
     t_real  r_coef[REF_DEPTH_MAX + 1];
@@ -41,9 +41,8 @@ __kernel void k_render(
 
     if (obj_index != -1)
     {
-        depth_color = distance(camera_hit.p, VEC(camera.mtx.sC,
-            camera.mtx.sD, camera.mtx.sE)) / 50.0f;
-        normal_color = ((camera_hit.n * -1) + 1) / 2;
+        depth_color = length(distance(camera_hit.p, VEC(camera.mtx.sC, camera.mtx.sD, camera.mtx.sE)));
+        normal_color = camera_hit.n;
         color = calc_color(options, objects, lights, id, camera_hit, camera_ray, color, tx_b, txi_b);
         
         r_col[0] = color;
@@ -90,10 +89,10 @@ __kernel void k_render(
         color = options.background_color;
 
     index_buffer[id] = obj_index;
-    normal_buffer[id] = pack_color(&normal_color);
+    normal_buffer[id] = normal_color;
 
 	color_buffer[id] = pack_color(&color);
-    depth_buffer[id] = pack_color(&depth_color);
+    depth_buffer[id] = depth_color;
     if (options.sepia)
 		color = sepia_effect(color);
     color_buffer[id] = pack_color(&color);
