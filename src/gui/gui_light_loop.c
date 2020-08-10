@@ -1,20 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gui_light_loop.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/10 16:16:42 by bmahi             #+#    #+#             */
+/*   Updated: 2020/08/10 16:25:32 by bmahi            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "gui.h"
 
 void	gui_light_loop(t_app *app, t_gui *gui)
 {
-	t_uint			changed;
-	t_light 		*l;
-	int				i;
-
+	t_uint	changed;
+	t_light *l;
+	int		i;
+	char	name[20];
 
 	if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH / 2, 0,
-											 GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT),
-				 NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-				 NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
+		GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT), NK_WINDOW_BORDER |
+		NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE |
+		NK_WINDOW_TITLE))
 	{
 		i = 0;
 		changed = 0;
-		char name[20];
 		while (i < app->op.light_count)
 		{
 			l = &((t_light *)app->ren.light_buf.host)[i];
@@ -35,7 +46,7 @@ void	gui_light_loop(t_app *app, t_gui *gui)
 		if (changed)
 		{
 			push_buffer(app->ren.queue, &app->ren.light_buf,
-						app->ren.light_buf.size, 0);
+				app->ren.light_buf.size, 0);
 			app_render(app);
 		}
 	}

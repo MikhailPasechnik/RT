@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 17:11:02 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/05 17:13:46 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 16:16:22 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			gui_setup(t_gui *gui)
 	return (1);
 }
 
-int gui_destroy(t_gui *gui)
+int			gui_destroy(t_gui *gui)
 {
 	nk_sdl_shutdown();
 	gui->gl_context ? SDL_GL_DeleteContext(gui->gl_context) : 0;
