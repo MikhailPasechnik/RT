@@ -88,6 +88,13 @@ void		app_finish(t_app *app)
 	app_delete_linked_lists(app);
 	app->win ? SDL_DestroyWindow(app->win) : 0;
 	ocl_release(&app->ocl);
+	while (app->lines)
+	{
+		app->lines--;
+		free(app->scene[app->lines]);
+	}
+	app->scene ? free(app->scene) : 0;
+	app->scene = NULL;
 }
 
 void		on_app_event(t_app *app, SDL_Event *event)

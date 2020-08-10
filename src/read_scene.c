@@ -17,6 +17,7 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 	t_vec3	pos;
 	t_vec3	rot;
 	int 	n;
+	char 	*s;
 
 	n = 0;
 	cam->sky = -1;
@@ -30,8 +31,9 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 	rot = array_attack(scn[n++]);
 	if (ft_strncmp(scn[n], "  fov:", 6))
 		kill("Usage :  fov: 60");
-	ignore_str(&scn[n], 0);
-	cam->fov = ptr_atoi(&scn[n++]);
+	s = scn[n++] + 6;
+	ignore_str(&s, 0);
+	cam->fov = ptr_atoi(&s);
 	if (!(ft_strncmp(scn[n], "  sky:", 6)))
 		parse_texture(scn[n++] + 6, &cam->sky, app);
 	m4_set_translate(&cam->mtx, &pos);
@@ -39,46 +41,27 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 	return (n);
 }
 
-char	**read_scene(int fd, int *lines)
+char	**read_scene(char* scene_file, int *lines)
 {
-	char	*gnled;
-	char	**arr_old;
-	char	**scn;
-	int		size;
-	int		i;
+	char	**split;
+	char 	*src;
 
-	arr_old = NULL;
-	size = 0;
-	while (get_next_line(fd, &gnled) > 0)
-	{
-		if (!(scn = (char **)malloc(sizeof(char *) * (size + 2))))
-			kill("Error allocating memory!");
-		i = 0;
-		while (i < size)
-		{
-			scn[i] = arr_old[i];
-			++i;
-		}
-		scn[size++] = gnled++;
-		scn[size] = NULL;
-		free(arr_old);
-		arr_old = scn;
+	src = fio_read_file(scene_file, NULL);
+	split = ft_strsplit(src, '\n');
+	while (split && split[*lines])
 		(*lines)++;
-	}
-	return (scn);
+	src ? free(src) : 0;
+	return (split);
 }
 
 void	parser(t_app *app, char *scene)
 {
 	int	n;
-	int	fd;
 
-	n = 0;
 	app->lines = 0;
-	if ((fd = open(scene, O_RDONLY)) < 0)
-		kill("Can't open file!");
-	app->scene = read_scene(fd, &(app->lines));
-	close(fd);
+	app->scene = read_scene(scene, &(app->lines));
+	if (!app->scene)
+		kill("Scene read failed.");
 	n = parser_cam(&app->cam, app->scene, app);
 	parser_light(app->scene, app, n);
 	n = (app->op.light_count) * 6 + n;

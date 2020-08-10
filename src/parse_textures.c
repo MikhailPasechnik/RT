@@ -64,10 +64,12 @@ void			parse_texture(char *str, void *id, t_app *app)
 
 	while (ft_iswhitespace(*str))
 		str++;
+	if (instance_tx(str, id, app))
+		return ;
 	tx = ft_lstnew(NULL, 0);
 	if ((app->parse_error |= (unsigned)(tx == NULL)))
 		return ;
-	if (instance_tx(str, id, app) || !load_tx(str, &info, tx, app))
+	if (!load_tx(str, &info, tx, app))
 		return ;
 	ft_lstadd(&app->tx_list, tx);
 	info_l = ft_lstnew(&info, sizeof(info));
