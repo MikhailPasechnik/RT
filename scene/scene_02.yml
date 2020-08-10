@@ -1,7 +1,7 @@
 - type: camera
   position:     [0, -10, 15]
   rotation:     [180, 0, 0]
-  fov:          80
+  fov:          60
 - type: light
   color:        [210, 30, 230]
   position:     [0, 0, 20]

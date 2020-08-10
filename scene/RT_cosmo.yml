@@ -1,0 +1,117 @@
+- type: camera
+  position:     [61.20, -79.53, 72.39]
+  rotation:     [-40.89, 53.13, 92.93]
+  fov:          60
+  sky:          resources/textures/stars.jpg
+- type: light
+  position:     [50.00, 50.00, 150.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [240, 240, 242]
+  intensity:    1.00
+  dispersion:   2
+- type: plane
+  position:     [0.00, 0.00, -30.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [14, 13, 54]
+  emittance:    [0, 0, 0]
+  reflective:   0.79
+  specular:     0.00
+- type: sphere
+  position:     [20.00, 20.00, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       6.00
+  diff_texture: resources/textures/venus.jpg
+- type: sphere
+  position:     [-77.00, 96.24, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       10.00
+  diff_texture: resources/textures/uran.jpg
+- type: sphere
+  position:     [-95.75, 71.75, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       10.00
+  diff_texture: resources/textures/neptune.jpg
+- type: sphere
+  position:     [-101.00, 51.25, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.00
+  diff_texture: resources/textures/pluto.jpg
+- type: sphere
+  position:     [1.50, 80.00, 5.00]
+  rotation:     [90.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.37
+  specular:     0.00
+  radius:       20.00
+  diff_texture: resources/textures/jupiter.jpg
+- type: sphere
+  position:     [20.75, 52.50, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       3.40
+  diff_texture: resources/textures/mars.jpg
+- type: sphere
+  position:     [15.00, 10.25, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.40
+  diff_texture: resources/textures/mercu.jpg
+- type: sphere
+  position:     [35.75, 35.75, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.00
+  diff_texture: resources/textures/moon.jpg
+- type: sphere
+  position:     [23.00, 38.00, 5.00]
+  rotation:     [90.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       6.30
+  diff_texture: resources/textures/earth.jpg
+- type: sphere
+  position:     [-41.50, 108.50, 5.00]
+  rotation:     [90.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.44
+  specular:     0.00
+  radius:       18.00
+  diff_texture: resources/textures/saturn.jpg
+- type: sphere
+  position:     [-8.00, -8.00, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.45
+  radius:       20.00
+  diff_texture: resources/textures/sun.jpg

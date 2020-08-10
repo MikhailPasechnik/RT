@@ -1,7 +1,7 @@
 - type: camera
   position:     [0, -10, 15]
   rotation:     [180, 0, 0]
-  fov:          80
+  fov:          60
 - type: light
   color:        [100, 0, 0]
   position:     [0, 0, 20]
@@ -34,6 +34,7 @@
   rotation:     [0, 0, 0]
   radius:       9
   height:       20
+  infinite:     1
 - type: cylinder
   position:     [-10, -10, 0]
   color:        [0, 70, 40]

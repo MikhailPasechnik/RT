@@ -1,0 +1,40 @@
+- type: camera
+  position:     [89.35, -68.75, 72.67]
+  rotation:     [-49.20, 37.86, 96.32]
+  fov:          60
+  sky:          resources/textures/500-free-hdri-skies-com.jpg
+- type: light
+  position:     [120.75, -180.00, 120.00]
+  rotation:     [100.00, 0.00, -115.25]
+  color:        [198, 122, 212]
+  intensity:    1.00
+  dispersion:   2
+- type: light
+  position:     [50.50, 52.25, 100.00]
+  rotation:     [165.24, 53.50, 83.50]
+  color:        [95, 229, 111]
+  intensity:    1.50
+  dispersion:   2
+- type: hyperbolic cylinder
+  position:     [0, 0, 0]
+  color:        [110, 130, 130]
+  specular:     0
+  reflective:   0
+  radius:       1
+  rotation:     [45, 20, 0]
+- type: plane
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [82, 69, 116]
+  emittance:    [0, 0, 0]
+  reflective:   0.60
+  specular:     0.29
+- type: sphere
+  position:     [0.00, 0.00, 9.00]
+  rotation:     [22.25, 66.75, 0.00]
+  color:        [30, 4, 4]
+  emittance:    [0, 0, 0]
+  reflective:   0.93
+  specular:     0.37
+  radius:       17.00
+

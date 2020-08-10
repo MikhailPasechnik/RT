@@ -1,7 +1,7 @@
 - type: camera
-  position:     [0, -10, 15]
-  rotation:     [180, 0, 0]
-  fov:          80
+  position:     [30, 40, 45]
+  rotation:     [0, 0, 0]
+  fov:          60
 - type: light
   color:        [210, 30, 230]
   position:     [0, 0, 50]
@@ -32,7 +32,7 @@
   reflective:   0.1
   rotation:     [0, 0, 0]
   radius:       9
-  height:       20
+  infinite:     1
 - type: sphere
   position:     [7, 5, 2]
   color:        [20, 40, 80]

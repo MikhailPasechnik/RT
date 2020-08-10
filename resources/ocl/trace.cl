@@ -378,8 +378,7 @@ static int ellipse_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
 		return (0);
 
     hit->p = ray.o + ray.d * t0;
-	hit->n = normalize(VEC(hit->p.x, hit->p.y, 0));
-	// hit->n = normalize(hit->p);
+	hit->n = normalize(hit->p);
     hit->obj = obj;
 	hit_to_world_space(obj, hit);
     return (1);
@@ -392,17 +391,17 @@ static int parabolic_cylinder_trace(__global t_obj *obj, t_ray ray, t_hit *hit)
     t_real c;
     t_real t0;
     t_real t1;
+	t_real k;
 
 	ray_to_object_space(obj, &ray);
+	k = 10.0 / pow(obj->radius, 2);
 
-	a = ray.d.x * ray.d.x;
-	b = 2.0 * (ray.o.x * ray.d.x - 5.0 * ray.d.y);
-	c = ray.o.x * ray.o.x - 5.0 * ray.o.y;
+	a = k * ray.d.x * ray.d.x;
+	b = 2.0 * k * (ray.o.x * ray.d.x) - 10.0 * ray.d.y;
+	c =  k * ray.o.x * ray.o.x - 5.0 * ray.o.y;
 
 	if (!solve_quadratic(a, b, c, &t0, &t1))
 		return (0);
-	if ((t0 < 0. || t1 > 0.) && t1 < t0)
-		swap(&t0, &t1);
 	
 	if (t0 < 0 || t0 <= EPSILON)
 		return (0);
