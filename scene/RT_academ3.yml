@@ -1,0 +1,79 @@
+- type: camera
+  position:     [-42.10, -21.92, 30.73]
+  rotation:     [55.24, 28.76, 96.19]
+  fov:          60
+- type: light
+  position:     [50.00, 50.00, 100.00]
+  rotation:     [109.00, -49.50, -45.50]
+  color:        [124, 139, 169]
+  intensity:    1.30
+  dispersion:   1
+- type: light
+  position:     [-60.00, -60.00, 100.00]
+  rotation:     [100.00, 0.00, -85.00]
+  color:        [116, 113, 113]
+  intensity:    2.00
+  dispersion:   2
+- type: sphere
+  position:     [0.00, 0.00, 7.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+  radius:       7.00
+- type: sphere
+  position:     [-15.75, -18.75, 7.75]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [139, 136, 136]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.29
+  radius:       3.00
+- type: plane
+  position:     [0.00, 0.00, -3.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [167, 71, 71]
+  emittance:    [0, 0, 0]
+  reflective:   0.65
+  specular:     0.32
+- type: cube
+  position:     [16.50, -5.50, 9.48]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [10, 84, 22]
+  emittance:    [0, 0, 0]
+  reflective:   0.77
+  specular:     0.00
+  height:       5.00
+- type: cube
+  position:     [-1.50, 14.00, 20.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [214, 134, 34]
+  emittance:    [0, 0, 0]
+  reflective:   0.59
+  specular:     0.00
+  height:       4.00
+- type: cube
+  position:     [7.00, 11.25, 17.49]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [224, 213, 231]
+  emittance:    [0, 0, 0]
+  reflective:   0.99
+  specular:     0.00
+  height:       7.00
+- type: cube
+  position:     [-13.75, 10.25, 3.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [249, 245, 245]
+  emittance:    [0, 0, 0]
+  reflective:   0.92
+  specular:     0.00
+  height:       5.00
+- type: cube
+  position:     [-13.75, -17.25, -1.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [26, 45, 154]
+  emittance:    [0, 0, 0]
+  reflective:   0.84
+  specular:     0.00
+  height:       10.00
