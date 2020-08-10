@@ -26,7 +26,7 @@ t_color dof(__global t_int* color_buffer, int width, int height, int id, int r)
 		j = -r;
 		while (j < r)
 		{
-			blur2 += translate_int_to_color(color_buffer, min((x + i) + (y + j) * width, width * height));
+			blur2 += translate_int_to_color(color_buffer, min((x + i) + (y + j) * width, width * height - 1));
 			n++;
 			j++;
 		}
@@ -81,6 +81,34 @@ __kernel void k_postprocess(
 	else
 		iw = id;
 
+	// LEFT UP CORNER (CANADA)
+	int icanada;
+	if (id - width - 1 < 0)
+		icanada = id;
+	else if ((id - width - 1) % width != 0)
+		icanada = min(id - width - 1, width * height - 1);
+
+	// RIGHT UP CORNER (???)
+	int iperm;
+	if (id - width + 1 < 0)
+		iperm = id;
+	else if ((id - width + 1) % width != 1)
+		iperm = id - width + 1;
+
+	// LEFT DOWN CORNER (EGYPIT)
+	int iegypit;
+	if (id + width - 1 > width * height - 1)
+		iegypit = id;
+	else if ((id + width - 1) % width != 0)
+		iegypit = id + width - 1;
+
+	// RIGHT DOWN CORNER (AUSTRALIA)
+	int iaustralia;
+	if (id + width + 1 > width * height - 1)
+		iaustralia = id;
+	else if ((id + width + 1) % width != 2)
+		iaustralia = id + width + 1; 
+
 	float dc = depth_buffer[id];
 	float dn = depth_buffer[in];
 	float ds = depth_buffer[is];
@@ -90,7 +118,6 @@ __kernel void k_postprocess(
 	float d_vertical   = fabs(dc - ((dn + ds) / 2.0));
 	float d_horizontal = fabs(dc - ((de + dw) / 2.0));
 	float d_amount = (d_vertical + d_horizontal);
-
 
 	float3 nc = normal_buffer[id];
 	float3 nn = normal_buffer[in];
@@ -115,12 +142,13 @@ __kernel void k_postprocess(
 
 	if (options.fxaa && amount)
 	{
-		t_color blur = (translate_int_to_color(color_buffer, id) + translate_int_to_color(color_buffer, id - 1)
-						+ translate_int_to_color(color_buffer, id + 1) + translate_int_to_color(color_buffer, id - options.width)
-						+ translate_int_to_color(color_buffer, id + options.width) + translate_int_to_color(color_buffer, id + options.width + 1)
-						+ translate_int_to_color(color_buffer, id + options.width - 1));
-		blur /= 8.0f;
-		out = mix(out, blur, (t_color){amount, amount, amount} / 3.0f);
+		t_color blur = (translate_int_to_color(color_buffer, id) + translate_int_to_color(color_buffer, ie)
+						+ translate_int_to_color(color_buffer, iw) + translate_int_to_color(color_buffer, in)
+						+ translate_int_to_color(color_buffer, is) + translate_int_to_color(color_buffer, iaustralia)
+						+ translate_int_to_color(color_buffer, iegypit) + translate_int_to_color(color_buffer, iperm)
+						+ translate_int_to_color(color_buffer, icanada));
+		blur /= 9.0f;
+		out = mix(out, blur, (t_color){amount, amount, amount} / 2.0f);
 	}
 	if (options.dof)
 		out = dof(color_buffer, width, height, id, min(20, (int)fabs(dc / options.dof_strength - options.dof_focal_point)));
