@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/03 20:10:54 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 20:26:25 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,11 @@ int			new_renderer(t_renderer *ren, t_ocl *ocl, char *src, char *options)
 			ren->program, 0, NULL, options, NULL, NULL),
 					"Failed to build program"))
 		return (log_build_log(ren, ocl, 2));
-#ifdef CL_VERSION_2_0
-	ren->queue = clCreateCommandQueueWithProperties(ocl->context,
-		ocl->device, 0, &err);
-#else
-	ren->queue = clCreateCommandQueue(ocl->context,
-		ocl->device, 0, &err);
-#endif
+	if (OPENCL_VERSION == 1)
+		ren->queue = clCreateCommandQueueWithProperties(ocl->context,
+			ocl->device, 0, &err);
+	else
+		ren->queue = clCreateCommandQueue(ocl->context, ocl->device, 0, &err);
 	if (OCL_ERROR(err, "Failed to create queue"))
 		return (0);
 	ren->render_kernel = clCreateKernel(ren->program, "k_render", &err);

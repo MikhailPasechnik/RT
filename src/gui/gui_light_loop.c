@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gui_light_loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 16:16:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 16:25:32 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 19:23:56 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	light_loop(t_gui *gui, t_uint *ch, t_light *l, int i)
 	ft_sprintf(name, "Light%d:Rotation:", i);
 	*ch |= gui_vec_pick(&l->rot, name, gui->ctx);
 }
+
 void		gui_light_loop(t_app *app, t_gui *gui)
 {
 	t_uint	changed;

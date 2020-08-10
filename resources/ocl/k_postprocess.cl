@@ -88,7 +88,7 @@ __kernel void k_postprocess(
 	else if ((id - width - 1) % width != 0)
 		icanada = min(id - width - 1, width * height - 1);
 
-	// RIGHT UP CORNER (???)
+	// RIGHT UP CORNER (PERM)
 	int iperm;
 	if (id - width + 1 < 0)
 		iperm = id;

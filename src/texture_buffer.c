@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   texture_buffer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 00:53:33 by bmahi             #+#    #+#             */
-/*   Updated: 2020/03/17 00:54:33 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 20:13:03 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+int			create_texture_buffer(t_buffer *buffer, t_app *app, size_t *size)
+{
+	*buffer = create_buffer(app->ocl.context,
+	(*size = list_size(app->tx_list)) + 1, CL_MEM_READ_ONLY);
+	if (!buffer->valid && free_buffer(&buffer))
+		return (app_error("Failed to allocate texture buffer!", 0));
+}
 
 t_tx_buffer	create_tx_buffer(t_app *app,
 	size_t width, size_t height, unsigned int flags)

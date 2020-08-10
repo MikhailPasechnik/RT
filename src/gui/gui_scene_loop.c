@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   gui_scene_loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 16:18:57 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 16:20:25 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 19:25:06 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gui.h"
 
-void	gui_end_loop(t_app *app, t_gui *gui)
+void			gui_end_loop(t_app *app, t_gui *gui)
 {
 	(void)app;
 	SDL_GL_MakeCurrent(gui->win, gui->gl_context);
@@ -35,16 +35,16 @@ static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
 		{
 			nk_label(gui->ctx, "Dof focal point:", NK_TEXT_LEFT);
 			*change |= nk_slider_float(gui->ctx, 1, &app->op.dof_focal_point,
-									  100, 0.01f);
+										100, 0.01f);
 			nk_label(gui->ctx, "Dof strength:", NK_TEXT_LEFT);
 			*change |= nk_slider_float(gui->ctx, 1, &app->op.dof_strength,
-									  100, 0.01f);
+										100, 0.01f);
 		}
 		*change |= nk_checkbox_label(gui->ctx, "Edge effect",
 									&app->op.edge_effect);
 		if (app->op.edge_effect)
 			*change |= gui_color_pick(&app->op.edge_color, "Edge color:",
-									 gui->ctx);
+										gui->ctx);
 	}
 }
 

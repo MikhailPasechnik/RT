@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sync.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 17:37:00 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 20:14:36 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,7 @@ int				transfer_textures(t_app *app)
 	size_t		size;
 	t_buffer	buffer;
 
-	buffer = create_buffer(app->ocl.context,
-		(size = list_size(app->tx_list)) + 1, CL_MEM_READ_ONLY);
-	if (!buffer.valid && free_buffer(&buffer))
-		return (app_error("Failed to allocate texture buffer!", 0));
+	create_texture_buffer(&buffer, app, &size);
 	i = 0;
 	j = size;
 	it = app->tx_list;
@@ -97,9 +94,9 @@ int				transfer_textures(t_app *app)
 		it = it->next;
 	}
 	if (i != app->op.tex_count || it != NULL)
-		return (app_error("Texture count not equal to Texture list length!",
-		0));
-	if (!push_buffer(app->ren.queue, &buffer, size, 0) && free_buffer(&buffer))
+		return (app_error("Texture count != to Texture list length!", 0));
+	if (!(push_buffer(app->ren.queue, &buffer, size, 0) &&
+		free_buffer(&buffer)))
 		return (app_error("Failed to push texture buffer!", 0));
 	free_buffer(&app->ren.texture_buf);
 	app->ren.texture_buf = buffer;

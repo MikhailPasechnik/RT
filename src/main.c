@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/05 19:36:58 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 19:15:27 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 */
 #define NK_IMPLEMENTATION
 #define NK_SDL_GL3_IMPLEMENTATION
+
 /*
 ** We must define STB_IMAGE_IMPLEMENTATION in one .c file for single header lib
 */
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
 #include "gui.h"
 #include "rt.h"
 

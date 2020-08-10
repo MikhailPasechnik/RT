@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 16:48:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 20:28:13 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@
 #  define RT_CL_INCLUDE "-I resources/ocl -I include"
 # else
 #  define RT_CL_INCLUDE "-I./resources/ocl -I./include"
+# endif
+
+# ifdef CL_VERSION_2_0
+#  define OPENCL_VERSION 1
+# else
+#  define OPENCL_VERSION 2
 # endif
 
 # define RT_CL_SRC3 " resources/ocl/k_render.cl resources/ocl/k_postprocess.cl"
@@ -148,6 +154,7 @@ typedef struct			s_phelp
 int						app_start(t_app *app, char **argv, int argc);
 void					app_finish(t_app *app);
 int						app_error(const char *msg, int returns);
+int						app_set_kernel_buffers(t_app *app);
 int						app_update_buffers(t_app *app);
 int						app_render(t_app *app);
 void					on_app_event(t_app *app, SDL_Event *event);
@@ -176,6 +183,8 @@ int						free_tx_buffer(t_tx_buffer *buffer);
 int						transfer_objects(t_app *app);
 int						transfer_light(t_app *app);
 int						transfer_textures(t_app *app);
+int						create_texture_buffer(t_buffer *buffer, t_app *app,
+																size_t *size);
 int						transfer_texture_info(t_app *app);
 /*
 ** Partial buffer update

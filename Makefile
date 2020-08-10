@@ -6,7 +6,7 @@
 #    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/08/07 16:27:46 by cvernius         ###   ########.fr        #
+#    Updated: 2020/08/10 19:04:02 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ CFLAGS		=	-D HOST_DEVICE #-Wall -Wextra  -Werror
 SRC_FILES	=			\
 	app.c				\
 	options.c			\
+	app_set_kernel_buf.c	\
 	app_utils.c			\
 	app_cleanup.c		\
 	events.c			\
