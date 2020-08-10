@@ -60,15 +60,15 @@ void		delete_renderer(t_renderer *ren)
 {
 	ren->queue ? clReleaseCommandQueue(ren->queue) : 0;
 	ren->program ? clReleaseProgram(ren->program) : 0;
+	ren->src ? rt_tab_free(ren->src) : 0;
 	free_buffer(&ren->index_buf);
 	free_buffer(&ren->light_buf);
 	free_buffer(&ren->obj_buf);
 	free_buffer(&ren->texture_buf);
 	free_buffer(&ren->texture_info_buf);
 	free_tx_buffer(&ren->color_buf);
-	free_tx_buffer(&ren->normal_buf);
-	free_tx_buffer(&ren->depth_buf);
-	rt_tab_free(ren->src);
+	free_buffer(&ren->normal_buf);
+	free_buffer(&ren->depth_buf);
 }
 
 static int	pre_render(t_renderer *ren, t_ocl *ocl)
