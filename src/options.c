@@ -19,4 +19,6 @@ void	init_options(t_options *op)
 	op->selection = -1;
 	op->ref_depth = 4;
 	op->background_color = VEC(44 / 255.0, 44 / 255.0, 44 / 255.0);
+	op->dof_strength = 4;
+	op->dof_focal_point = 4;
 }

@@ -45,13 +45,8 @@ void			on_mouse_wheel(SDL_MouseWheelEvent *event,
 static void		on_key_press1(SDL_KeyboardEvent *event,
 		t_app *app, int *changed)
 {
-	if (event->keysym.sym == SDLK_F1 && (*changed = 1))
-		app->render_buffer = RT_K_COLOR_ARG;
-	else if (event->keysym.sym == SDLK_F2 && (*changed = 1))
-		app->render_buffer = RT_K_NORMA_ARG;
-	else if (event->keysym.sym == SDLK_F3 && (*changed = 1))
-		app->render_buffer = RT_K_DEPTH_ARG;
-	else if (event->keysym.sym == SDLK_F4)
+	(void)changed;
+	if (event->keysym.sym == SDLK_F4)
 		screen_shot(app);
 }
 

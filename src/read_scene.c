@@ -12,25 +12,31 @@
 
 #include "rt.h"
 
-void	parser_cam(t_cam *cam, char **scn)
+int		parser_cam(t_cam *cam, char **scn, t_app *app)
 {
 	t_vec3	pos;
 	t_vec3	rot;
+	int 	n;
 
-	if (!key_type(scn[0]) || ft_strcmp(scn[0] + 8, T_CAM))
+	n = 0;
+	cam->sky = -1;
+	if (!key_type(scn[n]) || ft_strcmp(scn[n++] + 8, T_CAM))
 		kill("Usage :  - type: camera");
-	if (ft_strncmp(scn[1], "  position:", 11))
+	if (ft_strncmp(scn[n], "  position:", 11))
 		kill("Usage :  position: [x, y, z]");
-	pos = array_attack(scn[1]);
-	if (ft_strncmp(scn[2], "  rotation:", 11))
+	pos = array_attack(scn[n++]);
+	if (ft_strncmp(scn[n], "  rotation:", 11))
 		kill("Usage :  rotation: [x, y, z]");
-	rot = array_attack(scn[2]);
-	if (ft_strncmp(scn[3], "  fov:", 6))
+	rot = array_attack(scn[n++]);
+	if (ft_strncmp(scn[n], "  fov:", 6))
 		kill("Usage :  fov: 60");
+	ignore_str(&scn[n], 0);
+	cam->fov = ptr_atoi(&scn[n++]);
+	if (!(ft_strncmp(scn[n], "  sky:", 6)))
+		parse_texture(scn[n++] + 6, &cam->sky, app);
 	m4_set_translate(&cam->mtx, &pos);
 	m4_rotate(&cam->mtx, &rot);
-	ignore_str(&scn[3], 0);
-	cam->fov = ptr_atoi(&scn[3]);
+	return (n);
 }
 
 char	**read_scene(int fd, int *lines)
@@ -73,9 +79,9 @@ void	parser(t_app *app, char *scene)
 		kill("Can't open file!");
 	app->scene = read_scene(fd, &(app->lines));
 	close(fd);
-	parser_cam(&app->cam, app->scene);
-	parser_light(app->scene, app, 4);
-	n = (app->op.light_count) * 6 + 4;
+	n = parser_cam(&app->cam, app->scene, app);
+	parser_light(app->scene, app, n);
+	n = (app->op.light_count) * 6 + n;
 	parser_obj(app->scene, app, n);
 	if (!app->op.light_count || !app->op.obj_count)
 		kill("Incomplete scene.");

@@ -32,6 +32,21 @@ static int		app_set_kernel_buffers(t_app *app)
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
 		RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
 		return (app_error("failed to set kernel index buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		1, sizeof(cl_mem), &app->ren.color_buf.device)))
+		return (app_error("failed to set kernel color buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		2, sizeof(cl_mem), &app->ren.normal_buf.device)))
+		return (app_error("failed to set kernel normal buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		3, sizeof(cl_mem), &app->ren.depth_buf.device)))
+		return (app_error("failed to set kernel depth buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		4, sizeof(cl_mem), &app->ren.index_buf.device)))
+		return (app_error("failed to set kernel index buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		5, sizeof(cl_mem), &app->ren.color_buf2.device)))
+		return (app_error("failed to set kernel color2 buffer argument", 0));
 	return (1);
 }
 
@@ -41,18 +56,23 @@ int				app_update_buffers(t_app *app)
 
 	size = app->op.width * app->op.height;
 	app->ren.color_buf.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
+	app->ren.color_buf2.valid ? free_tx_buffer(&app->ren.color_buf) : 0;
 	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
-	app->ren.depth_buf.valid ? free_tx_buffer(&app->ren.depth_buf) : 0;
-	app->ren.normal_buf.valid ? free_tx_buffer(&app->ren.normal_buf) : 0;
+	app->ren.depth_buf.valid ? free_buffer(&app->ren.depth_buf) : 0;
+	app->ren.normal_buf.valid ? free_buffer(&app->ren.normal_buf) : 0;
 	app->ren.color_buf = create_tx_buffer(app, app->op.width, app->op.height,
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf.valid && free_tx_buffer(&app->ren.color_buf))
 		return (app_error("Failed to allocate color buffer!", 0));
-	app->ren.depth_buf = create_tx_buffer(app, app->op.width, app->op.height,
+	app->ren.color_buf2 = create_tx_buffer(app, app->op.width, app->op.height,
 			CL_MEM_WRITE_ONLY);
-	if (!app->ren.depth_buf.valid && free_tx_buffer(&app->ren.depth_buf))
+	if (!app->ren.color_buf2.valid && free_tx_buffer(&app->ren.color_buf2))
+		return (app_error("Failed to allocate color2 buffer!", 0));
+	app->ren.depth_buf = create_buffer(app->ocl.context, size * sizeof(cl_float),
+			CL_MEM_WRITE_ONLY);
+	if (!app->ren.depth_buf.valid && free_buffer(&app->ren.depth_buf))
 		return (app_error("Failed to allocate depth buffer!", 0));
-	app->ren.normal_buf = create_tx_buffer(app, app->op.width, app->op.height,
+	app->ren.normal_buf = create_buffer(app->ocl.context, size * sizeof(cl_float3),
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.normal_buf.valid && free_tx_buffer(&app->ren.normal_buf))
 		return (app_error("Failed to allocate normal buffer!", 0));

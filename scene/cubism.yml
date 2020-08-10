@@ -2,6 +2,7 @@
   position:     [-20, 20, 30]
   rotation:     [-60, 10, 40]
   fov:          60
+  sky:          resources/textures/500-free-hdri-skies-com.jpg
 - type: light
   color:        [250, 250, 250]
   position:     [20, 100, 250]
