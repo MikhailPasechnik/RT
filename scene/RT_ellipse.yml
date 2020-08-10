@@ -1,0 +1,56 @@
+- type: camera
+  position:     [89.35, -68.75, 72.67]
+  rotation:     [-49.20, 37.86, 96.32]
+  fov:          60
+- type: light
+  position:     [120.75, -180.00, 120.00]
+  rotation:     [100.00, 0.00, -115.25]
+  color:        [198, 122, 212]
+  intensity:    1.00
+  dispersion:   2
+- type: light
+  position:     [50.50, 52.25, 100.00]
+  rotation:     [165.24, 53.50, 83.50]
+  color:        [95, 229, 111]
+  intensity:    1.50
+  dispersion:   2
+- type: ellipse
+  position:     [0.00, -36.00, 20.75]
+  rotation:     [24.75, 151.25, 244.50]
+  color:        [63, 37, 116]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.00
+- type: ellipse
+  position:     [50.00, -20.00, 20.00]
+  rotation:     [38.50, -30.00, -30.00]
+  color:        [184, 77, 41]
+  emittance:    [0, 0, 0]
+  reflective:   0.30
+  specular:     0.18
+  radius:       4.00
+- type: ellipse
+  position:     [0.00, 45.00, 25.00]
+  rotation:     [35.75, 4.00, 27.00]
+  color:        [103, 124, 82]
+  emittance:    [0, 0, 0]
+  reflective:   0.74
+  specular:     0.00
+  radius:       5.00
+- type: plane
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [82, 69, 116]
+  emittance:    [0, 0, 0]
+  reflective:   0.60
+  specular:     0.29
+- type: sphere
+  position:     [0.00, 0.00, 9.00]
+  rotation:     [22.25, 66.75, 0.00]
+  color:        [30, 4, 4]
+  emittance:    [0, 0, 0]
+  reflective:   0.93
+  specular:     0.37
+  radius:       17.00
+
