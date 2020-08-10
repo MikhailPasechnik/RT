@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/07 15:43:14 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 10:42:01 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int			save_scene(t_app *app)
 		app->cam.mtx.sC, app->cam.mtx.sD, app->cam.mtx.sE,
 		app->cam.mtx.s4 * 360 / M_PI, app->cam.mtx.s5 * 360 / M_PI,
 		app->cam.mtx.s6 * 360 / M_PI, app->cam.fov);
+	(app->cam.sky != -1) ? ft_fprintf(fd, "  sky:          %s\n",
+		app->tx_src_list->content) : 0;
 	printing_light(fd, app);
 	printing_obj(fd, app);
 	return (1);
