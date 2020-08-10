@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/07/31 22:05:11 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 15:51:25 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int		load_tx(char *path, t_tx_info	*info, t_list *tx, t_app *app)
 void			parse_texture(char *str, void *id, t_app *app)
 {
 	t_list			*tx;
-	t_tx_info	info;
+	t_tx_info		info;
 	t_list			*info_l;
 	t_list 			*src;
 

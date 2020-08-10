@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/04 17:53:11 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/10 15:47:14 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	init_obj(t_phelp *phelp, t_obj *ol, t_app *app)
 {
-	ft_bzero(phelp, sizeof(t_phelp) * 8);
+	ft_bzero(phelp, sizeof(t_phelp) * RT_P_OBJ_FILED_NUM);
 	ft_bzero(ol, sizeof(t_obj));
 	ol->mat.diff_tex_id = -1;
 	ol->mat.spec_tex_id = -1;
