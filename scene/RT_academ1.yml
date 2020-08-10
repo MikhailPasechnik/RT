@@ -1,0 +1,98 @@
+- type: camera
+  position:     [29.15, 32.38, 27.23]
+  rotation:     [-40.64, -45.14, 97.17]
+  fov:          60
+- type: light
+  position:     [60.00, 60.00, 50.00]
+  rotation:     [109.73, -21.76, 116.24]
+  color:        [95, 125, 171]
+  intensity:    0.80
+  dispersion:   1
+- type: light
+  position:     [50.00, 50.00, 100.00]
+  rotation:     [109.00, -49.50, -45.50]
+  color:        [244, 247, 253]
+  intensity:    0.50
+  dispersion:   1
+- type: light
+  position:     [0.00, 0.00, 100.00]
+  rotation:     [100.00, 0.00, -85.00]
+  color:        [168, 191, 227]
+  intensity:    1.00
+  dispersion:   2
+- type: sphere
+  position:     [4.50, -4.50, 9.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       3.00
+- type: cylinder
+  position:     [-0.25, -5.75, 1.00]
+  rotation:     [0.00, 90.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.50
+  height:       8.00
+- type: cylinder
+  position:     [2.00, -1.50, 16.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.00
+  height:       7.00
+- type: cone
+  position:     [5.00, 4.50, 5.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       3.00
+  height:       10.00
+- type: cone
+  position:     [-4.25, -1.50, 13.00]
+  rotation:     [0.00, 180.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       2.50
+  height:       8.00
+- type: plane
+  position:     [0.00, 0.00, -6.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [140, 142, 150]
+  emittance:    [0, 0, 0]
+  reflective:   0.81
+  specular:     0.00
+- type: cube
+  position:     [-0.50, 1.75, 15.75]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [90, 90, 90]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  height:       7.00
+- type: cube
+  position:     [-3.25, 5.00, 11.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [249, 245, 245]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  height:       5.00
+- type: cube
+  position:     [0.00, 0.00, 5.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [223, 221, 221]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  height:       10.00
+
