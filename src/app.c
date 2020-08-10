@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/07 18:16:15 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/10 17:26:32 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static int	app_pre_render(t_app *app)
 		!update_camera(app->ren.render_kernel, &app->cam, RT_K_CAMERA_ARG))
 		return (0);
 	app->cm_changed = 0;
-	if (app->op_changed &&
-		!(update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG) &&
-		  update_options(app->ren.pproc_kernel, &app->op, RT_K_OPTIONS_ARG)))
+	if (app->op_changed && !(update_options(app->ren.render_kernel, &app->op,
+		RT_K_OPTIONS_ARG) && update_options(app->ren.pproc_kernel, &app->op,
+		RT_K_OPTIONS_ARG)))
 		return (0);
 	app->op_changed = 0;
 	return (1);
@@ -35,7 +35,8 @@ int			app_render(t_app *app)
 {
 	t_tx_buffer *current;
 
-	current = app->ren.pproc_enabled ? &app->ren.color_buf2 : &app->ren.color_buf;
+	current = app->ren.pproc_enabled ? &app->ren.color_buf2 :
+		&app->ren.color_buf;
 	if (!app_pre_render(app))
 		return (app_error("Failed to setup render!", 0));
 	if (!render(&app->ren, &app->ocl))
@@ -64,12 +65,11 @@ int			app_start(t_app *app, char **argv, int argc)
 		return (app_error("Failed to initialise OpenCL", 0));
 	if (!new_renderer(&app->ren, &app->ocl, RT_CL_SRC, RT_CL_INCLUDE))
 		return (app_error("Failed to create renderer", 0));
-	if (!(app->win = SDL_CreateWindow(
-			RT_WIN_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			app->op.width, app->op.height, RT_WIN_FLAGS)))
+	if (!(app->win = SDL_CreateWindow(RT_WIN_NAME, SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED, app->op.width, app->op.height, RT_WIN_FLAGS)))
 		return (app_error(SDL_GetError(), 0));
 	if (!(app->renderer = SDL_CreateRenderer(app->win, -1,
-			SDL_RENDERER_ACCELERATED)))
+		SDL_RENDERER_ACCELERATED)))
 		return (app_error(SDL_GetError(), 0));
 	if (!transfer_objects(app) || !transfer_light(app))
 		return (app_error("Scene transfer failed!", 0));
