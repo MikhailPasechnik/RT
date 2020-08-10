@@ -20,9 +20,8 @@
   specular:     0.5
   reflective:   0.5
   rotation:     [0, 0, 0]
-  radius:       0
-  height:       0
-  infinite:     0
+  radius:       1
+  height:       1
 - type: sphere
   position:     [0, 10, 0]
   color:        [110, 130, 130]

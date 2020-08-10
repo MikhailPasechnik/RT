@@ -1,7 +1,7 @@
 - type: camera
   position:     [0, -10, 17]
   rotation:     [180, 0, 0]
-  fov:          80
+  fov:          60
 - type: light
   color:        [222, 222, 222]
   position:     [20, 0, 20]
@@ -17,13 +17,13 @@
 - type: plane
   position:     [0, 0, 0]
   color:        [200, 200, 200]
-  specular:     30
+  specular:     0.5
   rotation:     [180, 0, 0]
 - type: cone
   position:     [0, 0, 0]
   color:        [150, 150, 150]
-  specular:     10
-  reflective:   10
+  specular:     0.5
+  reflective:   0.3
   rotation:     [0, 0, 45]
   radius:       7
   height:       10
@@ -31,8 +31,8 @@
 - type: cone
   position:     [-7, 0, 0]
   color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
+  specular:     0.5
+  reflective:   0.3
   rotation:     [0, 0, 0]
   radius:       3
   height:       4
@@ -40,8 +40,8 @@
 - type: cylinder
   position:     [0, 10, 0]
   color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
+  specular:     0.5
+  reflective:   0.3
   rotation:     [45, 45, 45]
   radius:       3
   height:       15
@@ -49,8 +49,8 @@
 - type: cylinder
   position:     [0, 10, 0]
   color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
+  specular:     0.5
+  reflective:   0.3
   rotation:     [45, 45, -75]
   radius:       3
   height:       8
@@ -58,8 +58,8 @@
 - type: sphere
   position:     [5, 5, 10]
   color:        [150, 150, 150]
-  specular:     10
-  reflective:   10
-  radius:       7
+  specular:     0.5
+  reflective:   0.3
+  radius:       5
   rotation:     [60, 0, 0]
 
