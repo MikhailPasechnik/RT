@@ -1,74 +1,76 @@
 - type: camera
-  position:     [0, -10, 17]
-  rotation:     [180, 0, 0]
-  fov:          80
+  position:     [5.28, -14.12, 25.62]
+  rotation:     [-34.59, 92.52, 58.10]
+  fov:          60
 - type: light
+  position:     [0.00, 0.00, 100.00]
+  rotation:     [100.00, 0.00, 85.00]
   color:        [168, 191, 227]
-  position:     [0, 0, 100]
-  rotation:     [100, 0, -85]
-  intensity:    1
+  intensity:    1.00
   dispersion:   1
 - type: light
+  position:     [0.00, 0.00, 100.00]
+  rotation:     [100.00, 0.00, -85.00]
   color:        [168, 191, 227]
-  position:     [0, 0, 100]
-  rotation:     [100, 0, 85]
-  intensity:    1
+  intensity:    1.00
   dispersion:   1
-- type: plane
-  position:     [0, 0, 0]
-  color:        [200, 200, 200]
-  specular:     30
-  rotation:     [180, 0, 0]
-- type: cone
-  position:     [0, 0, 0]
-  color:        [150, 150, 150]
-  specular:     10
-  reflective:   10
-  rotation:     [0, 0, 45]
-  radius:       7
-  height:       10
-  infinite:     0
-- type: cone
-  position:     [-7, 0, 3]
-  color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
-  rotation:     [-33, 0, 0]
-  radius:       3
-  height:       4
-  infinite:     0
-- type: cone
-  position:     [7, 0, 3]
-  color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
-  rotation:     [33, 0, 0]
-  radius:       3
-  height:       4
-  infinite:     0
-- type: cylinder
-  position:     [0, 10, 0]
-  color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
-  rotation:     [45, 45, 45]
-  radius:       3
-  height:       15
-  infinite:     0
-- type: cylinder
-  position:     [0, 10, 0]
-  color:        [255, 255, 255]
-  specular:     10
-  reflective:   10
-  rotation:     [45, 45, -75]
-  radius:       3
-  height:       8
-  infinite:     0
 - type: sphere
-  position:     [5, 5, 4]
+  position:     [5.00, 5.00, 4.00]
+  rotation:     [0.00, 0.00, 0.00]
   color:        [150, 150, 150]
-  specular:     10
-  reflective:   10
-  radius:       3
-  rotation:     [60, 0, 0]
-
+  emittance:    [0, 0, 0]
+  reflective:   0.65
+  specular:     1.00
+  radius:       3.00
+- type: cylinder
+  position:     [0.00, 10.00, 0.00]
+  rotation:     [45.00, 45.00, -75.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.59
+  specular:     1.00
+  radius:       3.00
+  height:       8.00
+- type: cylinder
+  position:     [0.00, 10.00, 0.00]
+  rotation:     [45.00, 45.00, 45.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.79
+  specular:     1.00
+  radius:       3.00
+  height:       15.00
+- type: cone
+  position:     [7.00, 0.00, 3.00]
+  rotation:     [33.00, 0.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.77
+  specular:     1.00
+  radius:       3.00
+  height:       4.00
+- type: cone
+  position:     [-7.00, 0.00, 3.00]
+  rotation:     [-33.00, 0.00, 0.00]
+  color:        [255, 255, 255]
+  emittance:    [0, 0, 0]
+  reflective:   0.75
+  specular:     1.00
+  radius:       3.00
+  height:       4.00
+- type: cone
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [0.00, 0.00, 45.00]
+  color:        [150, 150, 150]
+  emittance:    [0, 0, 0]
+  reflective:   0.78
+  specular:     1.00
+  radius:       7.00
+  height:       10.00
+- type: plane
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [200, 200, 200]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00

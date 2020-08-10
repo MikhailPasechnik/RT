@@ -1,5 +1,5 @@
 - type: camera
-  position:     [0, -10, 15]
+  position:     [0, 15, 35]
   rotation:     [180, 0, 0]
   fov:          60
 - type: light

@@ -31,7 +31,8 @@
   specular:     0.1
   reflective:   0.1
   rotation:     [0, 0, 0]
-  radius:       9
+  radius:       3
+  height:       8
   infinite:     1
 - type: sphere
   position:     [7, 5, 2]
