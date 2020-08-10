@@ -1,5 +1,17 @@
 #include "rt.hcl"
 
+t_color sample_sky(t_vec3 vec, __global uchar* tx_b, t_tx_info txi_b)
+{
+	t_mat4 m;
+
+	m4_identity(&m);
+	m4_set_rotation(&m, (t_vec3){90, 0, 0});
+	vec = m4_mul_vec3(&m, &vec);
+	return sample_texture(get_sphere_uv(vec), tx_b, txi_b);
+}
+
+
+
 __kernel void k_render(
     t_options options,
     t_cam camera,
@@ -69,7 +81,7 @@ __kernel void k_render(
                 }
                 else
                 {
-                    r_col[dpth] = options.background_color;
+                    r_col[dpth] = camera.sky != -1 ? sample_sky(refl_ray.d, tx_b, txi_b[camera.sky]) : options.background_color;
                     break ;
                 }
             }
@@ -86,7 +98,7 @@ __kernel void k_render(
         color = r_col[0];
     }
     else
-        color = options.background_color;
+        color = camera.sky != -1 ? sample_sky(camera_ray.d, tx_b, txi_b[camera.sky]) : options.background_color;
 
     index_buffer[id] = obj_index;
     normal_buffer[id] = normal_color;

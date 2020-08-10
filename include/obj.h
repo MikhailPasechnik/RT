@@ -105,6 +105,7 @@ typedef struct			s_cam
 {
 	t_mat4				mtx;
 	t_real				fov;
+	t_int				sky;
 }						t_cam;
 
 typedef struct			s_mat

@@ -228,7 +228,7 @@ size_t					list_size(t_list *lst);
 int						kill(char *message);
 void					parser(t_app *app, char *scene);
 char					**read_scene(int fd, int *lines);
-void					parser_cam(t_cam *cam, char **scn);
+int 					parser_cam(t_cam *cam, char **scn, t_app *app);
 void					parser_light(char **scn, t_app *app, int n);
 void					parser_obj(char **scn, t_app *app, int n);
 void					check_obj(t_app *app);
