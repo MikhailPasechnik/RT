@@ -1,0 +1,63 @@
+- type: camera
+  position:     [80.27, -28.42, 470.07]
+  rotation:     [-106.29, 37.64, 20.43]
+  fov:          60
+  sky:          resources/textures/stars.jpg
+- type: light
+  position:     [438.25, 50.00, 150.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [240, 240, 242]
+  intensity:    1.00
+  dispersion:   2
+- type: plane
+  position:     [0.00, 0.00, -30.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [14, 13, 54]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+- type: sphere
+  position:     [71.76, -68.00, -17.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       27.24
+  diff_texture: resources/textures/flowers.jpg
+- type: sphere
+  position:     [103.25, 4.24, -24.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       31.50
+  diff_texture: resources/textures/flowers.jpg
+- type: sphere
+  position:     [92.50, -34.26, -15.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       30.00
+  diff_texture: resources/textures/flowers.jpg
+- type: sphere
+  position:     [2.00, 120.24, 70.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [20, 6, 47]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
+  radius:       49.00
+  diff_texture: resources/textures/rotaru_1.jpg
+- type: sphere
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [219, 204, 249]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     0.00
+  radius:       62.25
+  refl_texture: resources/textures/moon.jpg
