@@ -6,18 +6,18 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 00:53:33 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 20:13:03 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/10 21:08:18 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int			create_texture_buffer(t_buffer *buffer, t_app *app, size_t *size)
+int			translate_buf(t_app *app, t_buffer buffer)
 {
-	*buffer = create_buffer(app->ocl.context,
-	(*size = list_size(app->tx_list)) + 1, CL_MEM_READ_ONLY);
-	if (!buffer->valid && free_buffer(&buffer))
-		return (app_error("Failed to allocate texture buffer!", 0));
+	free_buffer(&app->ren.texture_buf);
+	app->ren.texture_buf = buffer;
+	return (set_kernel_arg(app->ren.render_kernel, RT_K_TEX_ARG,
+		&buffer.device, sizeof(cl_mem)));
 }
 
 t_tx_buffer	create_tx_buffer(t_app *app,

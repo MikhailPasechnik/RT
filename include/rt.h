@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 20:28:13 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/10 21:08:32 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,7 @@ int						free_tx_buffer(t_tx_buffer *buffer);
 int						transfer_objects(t_app *app);
 int						transfer_light(t_app *app);
 int						transfer_textures(t_app *app);
-int						create_texture_buffer(t_buffer *buffer, t_app *app,
-																size_t *size);
+int						translate_buf(t_app *app, t_buffer buffer);
 int						transfer_texture_info(t_app *app);
 /*
 ** Partial buffer update
