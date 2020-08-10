@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/07 19:59:48 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/10 16:48:20 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ size_t					list_size(t_list *lst);
 int						kill(char *message);
 void					parser(t_app *app, char *scene);
 char					**read_scene(char *scene_name, int *lines);
-int 					parser_cam(t_cam *cam, char **scn, t_app *app);
+int						parser_cam(t_cam *cam, char **scn, t_app *app);
 void					parser_light(char **scn, t_app *app, int n);
 void					parser_obj(char **scn, t_app *app, int n);
 void					check_obj(t_app *app);
