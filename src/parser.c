@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/11 18:24:48 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/11 18:42:07 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ void		parser_light(char **scn, t_app *app, int n)
 	phelp[2] = PHELP("  color:", &ll.color, parse_color, app);
 	phelp[3] = PHELP("  intensity:", &ll.intensity, parse_real, app);
 	phelp[4] = PHELP("  dispersion:", &ll.id, parse_id, app);
-	// if (!key_type(scn[n]) || !is_valid_light_name(scn[n] + 8))
-	// 	kill("Usage : - type: light");
 	while (key_type(scn[n]) && is_valid_light_name(scn[n] + 8))
 	{
 		ft_bzero(&ll, sizeof(t_light));
