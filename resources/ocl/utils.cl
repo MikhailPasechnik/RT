@@ -63,3 +63,48 @@ t_vec3 reflect(t_vec3 vec, t_vec3 normal)
 {
 	return (2 * dot(vec, normal) * normal - vec);
 }
+
+t_color get_direct(t_options options, t_hit hit, t_ray ray, __global t_obj *objects, __global t_light *lights,
+				   __global uchar* tx_b, __global t_tx_info* txi_b)
+{
+	int		i;
+	t_ray	shadow_ray;
+	t_hit	shadow_hit;
+	t_vec3	light_dir;
+	t_color	result;
+
+	i = 0;
+	result = COLOR(0,0,0,0);
+	while (i < options.light_count)
+	{
+		if (lights[i].id == ID_DIRECT || lights[i].id == ID_POINT)
+		{
+			light_dir = (lights[i].id == ID_DIRECT) ? dir_from_rot(lights[i].rot) : normalize(hit.p - lights[i].pos);
+			shadow_ray.o = hit.p + hit.n * 0.001f;
+			shadow_ray.d = -light_dir;
+			if (intersect(objects, options.obj_count, &shadow_ray, &shadow_hit, tx_b, txi_b) == -1)
+				result += lights[i].intensity * lights[i].color * clamp(dot(hit.n, shadow_ray.d), 0.0f, 1.0f);
+		}
+		else if (lights[i].id == ID_AMB)
+			result += hit.diff * lights[i].intensity  * lights[i].color;
+		i++;
+	}
+	return (result);
+}
+
+float	get_random(unsigned int *seed0, unsigned int *seed1)
+{
+	*seed0 = 36969 * ((*seed0) & 65535) + ((*seed0) >> 16);
+	*seed1 = 18000 * ((*seed1) & 65535) + ((*seed1) >> 16);
+
+	unsigned int ires = ((*seed0) << 16) + (*seed1);
+
+	/* use union struct to convert int to float */
+	union {
+		float f;
+		unsigned int ui;
+	} res;
+
+	res.ui = (ires & 0x007fffff) | 0x40000000;
+	return (res.f - 2.0f) / 2.0f;
+}

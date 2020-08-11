@@ -85,3 +85,13 @@ t_color			sepia_effect(t_color color)
 		(color.x * .272) + (color.y *.534) + (color.z * .131), 0
 	);
 }
+
+t_color sample_sky(t_vec3 vec, __global uchar* tx_b, t_tx_info txi_b)
+{
+	t_mat4 m;
+
+	m4_identity(&m);
+	m4_set_rotation(&m, (t_vec3){90, 0, 0});
+	vec = m4_mul_vec3(&m, &vec);
+	return sample_texture(get_sphere_uv(vec), tx_b, txi_b);
+}
