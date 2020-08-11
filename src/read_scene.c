@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 16:58:20 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/11 17:41:56 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		parser_cam(t_cam *cam, char **scn, t_app *app)
 	cam->sky = -1;
 	if (!key_type(scn[n]) || ft_strcmp(scn[n++] + 8, T_CAM))
 		kill("Usage :  - type: camera");
-	if (ft_strncmp(scn[n], "  position:", 11))
+	else if (ft_strncmp(scn[n], "  position:", 11))
 		kill("Usage :  position: [x, y, z]");
 	pos = array_attack(scn[n++]);
 	if (ft_strncmp(scn[n], "  rotation:", 11))

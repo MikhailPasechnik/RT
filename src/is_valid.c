@@ -6,7 +6,7 @@
 /*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:29:50 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 17:16:48 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/11 18:32:10 by bmahi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ cube or hyperbolic paraboloid\n");
 
 int		kill(char *message)
 {
-	ft_printf("%s\nERRNO - %d: %s\n", message, errno, strerror(errno));
+	ft_printf("%s\n%s\n", message, strerror(errno));
 	exit(EXIT_SUCCESS);
 }
 
@@ -54,8 +54,6 @@ void	check_obj(t_app *app)
 	while (objects)
 	{
 		obj = objects->content;
-		if (obj->id == 1)
-			obj->rot = VEC(0, 0, 0);
 		if (obj->radius < 0 && obj->id != 2 && obj->id != 5)
 			kill("The raduis is too small!");
 		if (obj->mat.specular < 0 || obj->mat.reflection < 0 ||
