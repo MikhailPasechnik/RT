@@ -26,6 +26,12 @@ static int		app_set_main_kernel(t_app *app)
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
 		RT_K_INDEX_ARG, sizeof(cl_mem), &app->ren.index_buf.device)))
 		return (app_error("failed to set kernel index buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+		RT_K_SEED_ARG, sizeof(cl_mem), &app->ren.seed_buf.device)))
+		return (app_error("failed to set kernel seed buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+		RT_K_MC_ARG, sizeof(cl_mem), &app->ren.mc_buf.device)))
+		return (app_error("failed to set kernel mc buffer argument", 0));
 	return (1);
 }
 
@@ -51,9 +57,5 @@ static int		app_set_post_proc_kernel(t_app *app)
 
 int				app_set_kernel_buffers(t_app *app)
 {
-	int f;
-
-	f = app_set_main_kernel(app);
-	f = app_set_post_proc_kernel(app);
-	return (f);
+	return (app_set_main_kernel(app) && app_set_post_proc_kernel(app));
 }

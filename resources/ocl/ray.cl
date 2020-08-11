@@ -11,7 +11,7 @@ t_ray   new_camera_ray(t_options *op, t_cam *cam, uint2 pixel)
 
 	width  = op->width;
 	height = op->height;
-	
+
 	scale = tan(cam->fov / 5.0f) * (width / height);
 
 	if (width == height)

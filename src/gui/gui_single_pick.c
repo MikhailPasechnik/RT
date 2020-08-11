@@ -29,3 +29,20 @@ unsigned int	gui_single_pick(t_real *v, char *lbl, struct nk_context	*ctx)
 	}
 	return (0);
 }
+
+unsigned int	gui_isingle_pick(int *v, char *lbl, struct nk_context *ctx)
+{
+	int	tmp;
+
+	tmp = *v;
+	nk_layout_row_dynamic(ctx, 20, 1);
+	nk_label(ctx, "", NK_TEXT_LEFT);
+	nk_layout_row_dynamic(ctx, 25, 1);
+	tmp =  nk_propertyi(ctx, lbl, 0, tmp, 9999, 1, 1);
+	if (tmp != *v)
+	{
+		*v = tmp;
+		return (1);
+	}
+	return (0);
+}

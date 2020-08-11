@@ -99,6 +99,11 @@ typedef struct			s_options
 	t_int				edge_effect;
 	t_int				fxaa;
 	t_int				dof;
+	t_int				mc;
+
+	t_int				target_samples;
+	t_int				current_sample;
+	t_int				sample_step;
 }						t_options;
 
 typedef struct			s_cam

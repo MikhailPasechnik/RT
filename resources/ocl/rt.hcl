@@ -57,4 +57,5 @@ t_color			coef_color(t_color color, t_real coef);
 t_color			sample_texture(float2 uv, __global uchar* tx_b, t_tx_info tx_info);
 t_color			sepia_effect(t_color color);
 float2			get_sphere_uv(t_vec3 p);
+t_color			translate_int_to_color(__global t_int* buffer, int id);
 # endif

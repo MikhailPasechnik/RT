@@ -25,6 +25,8 @@ void			app_free_all_buffers(t_app *app)
 	app->ren.index_buf.valid ? free_buffer(&app->ren.index_buf) : 0;
 	app->ren.depth_buf.valid ? free_buffer(&app->ren.depth_buf) : 0;
 	app->ren.normal_buf.valid ? free_buffer(&app->ren.normal_buf) : 0;
+	app->ren.seed_buf.valid ? free_buffer(&app->ren.seed_buf) : 0;
+	app->ren.mc_buf.valid ? free_buffer(&app->ren.mc_buf) : 0;
 }
 
 int				app_update_buffers(t_app *app)
@@ -53,5 +55,13 @@ int				app_update_buffers(t_app *app)
 			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
 		return (app_error("Failed to allocate index buffer!", 0));
+	app->ren.seed_buf = create_buffer(app->ocl.context,
+			size * sizeof(cl_uint2), CL_MEM_READ_WRITE);
+	if (!app->ren.seed_buf.valid && free_buffer(&app->ren.seed_buf))
+		return (app_error("Failed to allocate seed buffer!", 0));
+	app->ren.mc_buf = create_buffer(app->ocl.context,
+			size * sizeof(cl_float3), CL_MEM_READ_WRITE);
+	if (!app->ren.mc_buf.valid && free_buffer(&app->ren.mc_buf))
+		return (app_error("Failed to allocate seed buffer!", 0));
 	return (app_set_kernel_buffers(app));
 }

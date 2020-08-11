@@ -123,6 +123,8 @@ const char			*ocl_get_error_string(int err)
 	(err == -1003) ? get_error("CL_INVALID_D3D10_RESOURCE_KHR") : 0;
 	(err == -1004) ? get_error("CL_D3D10_RESOURCE_ALREADY_ACQUIRED_KHR") : 0;
 	(err == -1005) ? get_error("CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR") : 0;
+	ft_putnbr(err);
+	ft_putstr(" OpenCL Error\n");
 	return ("Unknown OpenCL err");
 }
 

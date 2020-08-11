@@ -66,14 +66,8 @@ int		screen_shot(t_app *app)
 	int			result;
 	char		name[150];
 
-	if (app->render_buffer == RT_K_COLOR_ARG)
-		current = &app->ren.color_buf;
-	else if (app->render_buffer == RT_K_NORMA_ARG)
-		current = &app->ren.normal_buf;
-	else if (app->render_buffer == RT_K_DEPTH_ARG)
-		current = &app->ren.depth_buf;
-	else
-		return (0);
+	current = app->ren.pproc_enabled ? &app->ren.color_buf2 :
+							&app->ren.color_buf;
 	file_name(name);
 	SDL_LockTexture(current->host, NULL, &pixels, &pitch);
 	result = save_image(name, pixels, app->op.width, app->op.height);

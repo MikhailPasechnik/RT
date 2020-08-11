@@ -25,6 +25,22 @@ void			gui_end_loop(t_app *app, t_gui *gui)
 
 static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
 {
+	!app->op.mc ? gui_isingle_pick(&app->op.target_samples, "#MC Samples:", gui->ctx) : 0;
+	if (nk_button_label(gui->ctx, "Monte Carlo") || app->op.mc)
+	{
+		app->op.mc = 1;
+		app->op.sample_step = 4;
+		(app->op_changed = 1) && app_render(app);
+		app->op.current_sample += app->op.sample_step;
+		ft_printf("Rendering %d / %d\n", app->op.current_sample, app->op.target_samples);
+		nk_prog(gui->ctx, (nk_size)app->op.current_sample, app->op.target_samples, 0);
+		if (nk_button_label(gui->ctx, "Stop!") || app->op.current_sample >= app->op.target_samples)
+		{
+			app->op.current_sample = 0;
+			app->op.mc = 0;
+			update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG);
+		}
+	}
 	*change |= nk_checkbox_label(gui->ctx, "Post processing",
 								&app->ren.pproc_enabled);
 	if (app->ren.pproc_enabled)
@@ -58,18 +74,18 @@ void			gui_scene_loop(t_app *app, t_gui *gui)
 		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
 		NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 	{
-		nk_layout_row_static(gui->ctx, 30, 180, 1);
+		nk_layout_row_dynamic(gui->ctx, 20, 1);
 		if (nk_button_label(gui->ctx, "Save Scene"))
 			save_scene(app);
 		if (nk_button_label(gui->ctx, "Screenshot"))
 			screen_shot(app);
 		change |= nk_checkbox_label(gui->ctx, "Sepia", &app->op.sepia);
-		gui_post_proc_loop(app, gui, &change);
 		nk_label(gui->ctx, "Reflection depth:", NK_TEXT_LEFT);
 		change |= nk_slider_int(gui->ctx, 1, &app->op.ref_depth,
 			REF_DEPTH_MAX, 1);
 		change |= gui_color_pick(&app->op.background_color, "Background color:",
 			gui->ctx);
+		gui_post_proc_loop(app, gui, &change);
 		if (change)
 			(app->op_changed = 1) && app_render(app);
 	}

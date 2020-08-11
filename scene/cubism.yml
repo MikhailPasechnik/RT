@@ -1,64 +1,99 @@
 - type: camera
-  position:     [-20, 20, 30]
-  rotation:     [-60, 10, 40]
+  position:     [-9.95, 33.59, 22.38]
+  rotation:     [17.52, -59.16, 96.57]
   fov:          60
   sky:          resources/textures/500-free-hdri-skies-com.jpg
 - type: light
+  position:     [-60.00, 30.00, 80.00]
+  rotation:     [120.00, 0.00, 10.00]
   color:        [250, 250, 250]
-  position:     [20, 100, 250]
-  rotation:     [120, 0, 45]
-  intensity:    0.01
-  dispersion:   2
+  intensity:    0.1
+  dispersion:   1
 - type: light
-  color:        [0, 0, 250]
-  position:     [20, -50, 170]
-  rotation:     [150, 0, 90]
+  position:     [20.00, -50.00, 170.00]
+  rotation:     [150.00, 0.00, 90.00]
+  color:        [236, 236, 240]
   intensity:    0.1
   dispersion:   2
 - type: light
+  position:     [20.00, 100.00, 250.00]
+  rotation:     [120.00, 0.00, 45.00]
   color:        [250, 250, 250]
-  position:     [-60, 30, 80]
-  rotation:     [120, 0, 10]
-  intensity:    0.7
-  dispersion:   1
-- type: plane
-  position:     [0, 0, 0]
-  color:        [225, 225, 225]
-  specular:     0
-  reflective:   0
-  rotation:     [180, 0, 0]
-- type: sphere
-  position:     [-2, 15, 3]
-  color:        [150, 150, 150]
-  specular:     1
-  reflective:   0
-  radius:       3
-  rotation:     [60, 0, 0]
-  emittance:    [150, 150, 150]
-  diff_texture: resources/textures/carpet.jpg
-- type: sphere
-  position:     [10, 12, 2.5]
-  color:        [150, 150, 150]
-  specular:     0
-  reflective:   0.5
-  radius:       5
-  rotation:     [60, 0, 0]
-  diff_texture: resources/textures/checker.jpg
-- type: sphere
-  position:     [0, 0, 10]
-  color:        [150, 150, 150]
-  specular:     0.1
-  reflective:   1
-  radius:       10
-  rotation:     [0, 0, 0]
-  emittance:    [150, 150, 150]
+  intensity:    0.1
+  dispersion:   2
 - type: cube
-  position:     [-12, 0, 8]
+  position:     [-12.00, 0.00, 8.00]
+  rotation:     [0.00, 0.00, 45.00]
   color:        [90, 90, 90]
-  specular:     1
-  reflective:   1
-  rotation:     [0, 0, 45]
-  height:       7
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     1.00
+  height:       7.00
+  spec_texture: resources/textures/checker.jpg
   diff_texture: resources/textures/dirt.jpg
   refl_texture: resources/textures/puddle_texture.png
-  spec_texture: resources/textures/checker.jpg
+- type: cube
+  position:     [-12.00, 20.25, 3.25]
+  rotation:     [0.00, 0.00, 45.00]
+  color:        [90, 90, 90]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     1.00
+  height:       9.25
+- type: cube
+  position:     [-12.00, -15.50, 8.00]
+  rotation:     [-14.00, 2.00, -0.25]
+  color:        [223, 1, 1]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     1.00
+  height:       32.25
+- type: cube
+  position:     [-28.50, 0.00, 8.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [47, 7, 109]
+  emittance:    [0, 0, 0]
+  reflective:   1.00
+  specular:     1.00
+  height:       29.25
+- type: cube
+  position:     [24.00, 0.50, 10.25]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [138, 253, 4]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     1.00
+  height:       26.00
+- type: sphere
+  position:     [0.00, 0.00, 10.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [150, 150, 150]
+  reflective:   1.00
+  specular:     0.10
+  radius:       10.00
+- type: sphere
+  position:     [10.00, 12.00, 2.50]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [0, 0, 0]
+  reflective:   0.50
+  specular:     0.00
+  radius:       5.00
+  diff_texture: resources/textures/checker.jpg
+- type: sphere
+  position:     [-2.00, 15.00, 3.00]
+  rotation:     [0.00, 0.00, 0.00]
+  color:        [150, 150, 150]
+  emittance:    [150, 150, 150]
+  reflective:   0.00
+  specular:     1.00
+  radius:       3.00
+  diff_texture: resources/textures/carpet.jpg
+- type: plane
+  position:     [0.00, 0.00, 0.00]
+  rotation:     [180.00, 0.00, 0.00]
+  color:        [225, 225, 225]
+  emittance:    [0, 0, 0]
+  reflective:   0.00
+  specular:     0.00
