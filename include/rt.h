@@ -62,6 +62,7 @@
 # define RT_K_TEX_I_ARG 9
 # define RT_K_SEED_ARG 10
 # define RT_K_MC_ARG 11
+# define RT_K_UV_ARG 12
 # define RT_P_OBJ_FILED_NUM 12
 
 typedef t_list	t_obj_list;
@@ -106,6 +107,7 @@ typedef struct			s_renderer
 	t_buffer			texture_info_buf;
 	t_buffer			seed_buf;
 	t_buffer			mc_buf;
+	t_buffer			uv_buf;
 
 	t_uint				width;
 	t_uint				height;

@@ -41,7 +41,8 @@ __kernel void k_postprocess(
 		__global float3* normal_buffer,
 		__global float* depth_buffer,
 		__global t_int* index_buffer,
-		__global t_int* output
+		__global t_int* output,
+		__global float2* uv_buffer
 )
 {
 	int id = get_global_id(0);
@@ -153,5 +154,14 @@ __kernel void k_postprocess(
 	if (options.dof)
 		out = dof(color_buffer, width, height, id, min(20, (int)fabs(dc / options.dof_strength - options.dof_focal_point)));
 
+    if (options.sepia)
+		out = sepia_effect(out);
+
+    if (options.show_depth)
+		out = COLOR(depth_buffer[id], depth_buffer[id], depth_buffer[id], 0) / 100;
+	else if (options.show_normal)
+		out = ((normal_buffer[id] * -1) + 1) / 2;
+	else if (options.show_uv)
+		out = COLOR(uv_buffer[id].x, uv_buffer[id].y, 0, 0);
 	output[id] = pack_color(&out);
 }

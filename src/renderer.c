@@ -65,9 +65,12 @@ void		delete_renderer(t_renderer *ren)
 	free_buffer(&ren->texture_buf);
 	free_buffer(&ren->texture_info_buf);
 	free_tx_buffer(&ren->color_buf);
+	free_tx_buffer(&ren->color_buf2);
 	free_buffer(&ren->normal_buf);
 	free_buffer(&ren->depth_buf);
 	free_buffer(&ren->seed_buf);
+	free_buffer(&ren->mc_buf);
+	free_buffer(&ren->uv_buf);
 }
 
 static int	pre_render(t_renderer *ren, t_ocl *ocl)

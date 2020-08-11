@@ -32,7 +32,6 @@ static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
 		app->op.sample_step = 4;
 		(app->op_changed = 1) && app_render(app);
 		app->op.current_sample += app->op.sample_step;
-		ft_printf("Rendering %d / %d\n", app->op.current_sample, app->op.target_samples);
 		nk_prog(gui->ctx, (nk_size)app->op.current_sample, app->op.target_samples, 0);
 		if (nk_button_label(gui->ctx, "Stop!") || app->op.current_sample >= app->op.target_samples)
 		{
@@ -61,6 +60,10 @@ static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
 		if (app->op.edge_effect)
 			*change |= gui_color_pick(&app->op.edge_color, "Edge color:",
 										gui->ctx);
+		*change |= nk_checkbox_label(gui->ctx, "Sepia", &app->op.sepia);
+		*change |= nk_checkbox_label(gui->ctx, "UV", &app->op.show_uv);
+		*change |= nk_checkbox_label(gui->ctx, "DEPTH", &app->op.show_depth);
+		*change |= nk_checkbox_label(gui->ctx, "NORMAL", &app->op.show_normal);
 	}
 }
 
@@ -79,7 +82,6 @@ void			gui_scene_loop(t_app *app, t_gui *gui)
 			save_scene(app);
 		if (nk_button_label(gui->ctx, "Screenshot"))
 			screen_shot(app);
-		change |= nk_checkbox_label(gui->ctx, "Sepia", &app->op.sepia);
 		nk_label(gui->ctx, "Reflection depth:", NK_TEXT_LEFT);
 		change |= nk_slider_int(gui->ctx, 1, &app->op.ref_depth,
 			REF_DEPTH_MAX, 1);

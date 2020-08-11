@@ -22,7 +22,7 @@ t_color monte_carlo(t_cam camera, t_options options, t_ray ray, __global t_obj *
 		t_vec3 B = normalize(cross(tmp, N));
 		t_vec3 T = cross(N, B);
 
-		result += mask * get_direct(options, hit, ray, objects, lights, tx_b, txi_b);
+		result += mask * get_direct_illumination(options, hit, ray, objects, lights, tx_b, txi_b);
 
 		mask *= hit.diff;
 		ray.d = normalize(B * cos(rand1)*rand2s + T*sin(rand1)*rand2s + N*sqrt(1.0f - rand2));
@@ -46,7 +46,8 @@ __kernel void k_render(
     __global uchar* tx_b,
     __global t_tx_info* txi_b,
     __global uint2* seed_buffer,
-    __global float3* mc_buffer
+    __global float3* mc_buffer,
+	__global float2* uv_buffer
 )
 {
     t_int   obj_index;
@@ -91,6 +92,7 @@ __kernel void k_render(
 		color_buffer[id] = pack_color(&sampled_color);
 		depth_buffer[id] = length(distance(camera_hit.p, VEC(camera.mtx.sC, camera.mtx.sD, camera.mtx.sE)));
 		seed_buffer[id] = (uint2){seed0, seed1};
+		uv_buffer[id] = obj_index != -1 ? camera_hit.uv : (float2){0,0};
     	return ;
 	}
 
@@ -145,12 +147,9 @@ __kernel void k_render(
 
     index_buffer[id] = obj_index;
     normal_buffer[id] = normal_color;
-
 	color_buffer[id] = pack_color(&color);
     depth_buffer[id] = depth_color;
-//    if (options.sepia)
-//		color = sepia_effect(color);
-//    color_buffer[id] = pack_color(&color);
+    uv_buffer[id] = obj_index != -1 ? camera_hit.uv : (float2){0, 0};
 }
 
 

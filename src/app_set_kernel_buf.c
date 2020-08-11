@@ -32,6 +32,9 @@ static int		app_set_main_kernel(t_app *app)
 	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
 		RT_K_MC_ARG, sizeof(cl_mem), &app->ren.mc_buf.device)))
 		return (app_error("failed to set kernel mc buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.render_kernel,
+		RT_K_UV_ARG, sizeof(cl_mem), &app->ren.uv_buf.device)))
+		return (app_error("failed to set kernel uv buffer argument", 0));
 	return (1);
 }
 
@@ -52,6 +55,9 @@ static int		app_set_post_proc_kernel(t_app *app)
 	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
 		5, sizeof(cl_mem), &app->ren.color_buf2.device)))
 		return (app_error("failed to set kernel color2 buffer argument", 0));
+	if (OCL_ERROR2(clSetKernelArg(app->ren.pproc_kernel,
+		6, sizeof(cl_mem), &app->ren.uv_buf.device)))
+		return (app_error("failed to set kernel uv buffer argument", 0));
 	return (1);
 }
 

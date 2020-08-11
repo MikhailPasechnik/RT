@@ -64,7 +64,7 @@ t_vec3 reflect(t_vec3 vec, t_vec3 normal)
 	return (2 * dot(vec, normal) * normal - vec);
 }
 
-t_color get_direct(t_options options, t_hit hit, t_ray ray, __global t_obj *objects, __global t_light *lights,
+t_color get_direct_illumination(t_options options, t_hit hit, t_ray ray, __global t_obj *objects, __global t_light *lights,
 				   __global uchar* tx_b, __global t_tx_info* txi_b)
 {
 	int		i;

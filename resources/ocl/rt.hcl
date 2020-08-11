@@ -59,7 +59,7 @@ t_color			sepia_effect(t_color color);
 float2			get_sphere_uv(t_vec3 p);
 t_color			translate_int_to_color(__global t_int* buffer, int id);
 t_color			sample_sky(t_vec3 vec, __global uchar* tx_b, t_tx_info txi_b);
-t_color			get_direct(t_options options, t_hit hit, t_ray ray, __global t_obj *objects, __global t_light *lights,
+t_color			get_direct_illumination(t_options options, t_hit hit, t_ray ray, __global t_obj *objects, __global t_light *lights,
 				   __global uchar* tx_b, __global t_tx_info* txi_b);
 float			get_random(unsigned int *seed0, unsigned int *seed1);
 # endif

@@ -101,6 +101,10 @@ typedef struct			s_options
 	t_int				dof;
 	t_int				mc;
 
+	t_int				show_depth;
+	t_int				show_normal;
+	t_int				show_uv;
+
 	t_int				target_samples;
 	t_int				current_sample;
 	t_int				sample_step;
