@@ -6,7 +6,7 @@
 #    By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 15:11:22 by bnesoi            #+#    #+#              #
-#    Updated: 2020/08/10 19:04:02 by cvernius         ###   ########.fr        #
+#    Updated: 2020/08/11 18:29:45 by cvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = RT
 
 OS			=	$(shell uname -s)
 CC			=	gcc
-CFLAGS		=	-D HOST_DEVICE #-Wall -Wextra  -Werror 
+CFLAGS		=	-D HOST_DEVICE -Wall -Wextra  -Werror 
 
 SRC_FILES	=			\
 	app.c				\

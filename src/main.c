@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:55:25 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 19:15:27 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:33:08 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	sdl_loop(t_app *app, t_gui *gui)
 
 int		setup_gui(t_app *app, t_gui *gui)
 {
+	(void)app;
 	return (gui_setup(gui));
 }
 

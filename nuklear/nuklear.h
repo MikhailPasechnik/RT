@@ -13879,6 +13879,7 @@ STBTT_DEF float stbtt_ScaleForMappingEmToPixels(const stbtt_fontinfo *info, floa
 
 STBTT_DEF void stbtt_FreeShape(const stbtt_fontinfo *info, stbtt_vertex *v)
 {
+   (void)info;
    STBTT_free(v, info->userdata);
 }
 
@@ -13977,6 +13978,7 @@ typedef struct stbtt__hheap
 
 static void *stbtt__hheap_alloc(stbtt__hheap *hh, size_t size, void *userdata)
 {
+	(void)userdata;
    if (hh->first_free) {
       void *p = hh->first_free;
       hh->first_free = * (void **) p;
@@ -14004,6 +14006,7 @@ static void stbtt__hheap_free(stbtt__hheap *hh, void *p)
 
 static void stbtt__hheap_cleanup(stbtt__hheap *hh, void *userdata)
 {
+	(void)userdata;
    stbtt__hheap_chunk *c = hh->head;
    while (c) {
       stbtt__hheap_chunk *n = c->next;
@@ -14755,6 +14758,7 @@ static void stbtt__tesselate_cubic(stbtt__point *points, int *num_points, float 
 /*  returns number of contours */
 static stbtt__point *stbtt_FlattenCurves(stbtt_vertex *vertices, int num_verts, float objspace_flatness, int **contour_lengths, int *num_contours, void *userdata)
 {
+	(void)userdata;
    stbtt__point *points=0;
    int num_points=0;
 
@@ -14845,6 +14849,7 @@ STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result, float flatness_in_pixels, 
 
 STBTT_DEF void stbtt_FreeBitmap(unsigned char *bitmap, void *userdata)
 {
+	(void)userdata;
    STBTT_free(bitmap, userdata);
 }
 
@@ -15899,6 +15904,7 @@ STBTT_DEF unsigned char * stbtt_GetCodepointSDF(const stbtt_fontinfo *info, floa
 
 STBTT_DEF void stbtt_FreeSDF(unsigned char *bitmap, void *userdata)
 {
+	(void)userdata;
    STBTT_free(bitmap, userdata);
 }
 
@@ -21271,6 +21277,7 @@ nk_layout_row_calculate_usable_space(const struct nk_style *style, enum nk_panel
 
     struct nk_vec2 spacing;
 
+	(void)type;
     spacing = style->window.spacing;
 
     /* calculate the usable panel space */

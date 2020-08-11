@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 16:16:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 19:23:56 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:49:01 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		gui_light_loop(t_app *app, t_gui *gui)
 {
 	t_uint	changed;
 	t_light *l;
-	int		i;
+	t_uint	i;
 
 	if (nk_begin(gui->ctx, "Lights", nk_rect(GUI_WIN_WIDTH / 2, 0,
 		GUI_WIN_WIDTH / 2, GUI_WIN_HEIGHT), NK_WINDOW_BORDER |

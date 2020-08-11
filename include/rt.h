@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:13:17 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 21:08:32 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:51:24 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@
 # endif
 
 # ifdef CL_VERSION_2_0
-#  define OPENCL_VERSION 1
+#  define CLCREATECOMMANDQUEUEWITHC clCreateCommandQueueWithProperties
 # else
-#  define OPENCL_VERSION 2
+#  define CLCREATECOMMANDQUEUEWITHC clCreateCommandQueue
 # endif
 
 # define RT_CL_SRC3 " resources/ocl/k_render.cl resources/ocl/k_postprocess.cl"
@@ -191,6 +191,8 @@ int						transfer_light(t_app *app);
 int						transfer_textures(t_app *app);
 int						translate_buf(t_app *app, t_buffer buffer);
 int						transfer_texture_info(t_app *app);
+int						set_kernel_arg(cl_kernel kernel,
+								int arg_num, void *ptr, size_t size);
 /*
 ** Partial buffer update
 */

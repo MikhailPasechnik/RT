@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 22:36:42 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 16:57:07 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/11 18:45:57 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void		printing_light(int fd, t_app *app)
 {
 	t_light	*light;
-	int		c;
+	t_uint	c;
 
 	c = 0;
 	while (c < app->op.light_count)
@@ -78,7 +78,7 @@ void		print_tx(int fd, t_app *app, t_obj *obj)
 void		printing_obj(int fd, t_app *app)
 {
 	t_obj	*obj;
-	int		c;
+	t_uint	c;
 
 	c = 0;
 	while (c < app->op.obj_count)

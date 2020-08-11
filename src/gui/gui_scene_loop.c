@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/10 16:18:57 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/10 19:25:06 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:50:02 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,31 @@ void			gui_end_loop(t_app *app, t_gui *gui)
 	SDL_GL_SwapWindow(gui->win);
 }
 
-static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
+static void		gui_post_proc_monte_carlo(t_app *app, t_gui *gui,
+														unsigned int *change)
 {
-	!app->op.mc ? gui_isingle_pick(&app->op.target_samples, "#MC Samples:", gui->ctx) : 0;
+	(void)change;
 	if (nk_button_label(gui->ctx, "Monte Carlo") || app->op.mc)
 	{
 		app->op.mc = 1;
 		app->op.sample_step = 4;
 		(app->op_changed = 1) && app_render(app);
 		app->op.current_sample += app->op.sample_step;
-		nk_prog(gui->ctx, (nk_size)app->op.current_sample, app->op.target_samples, 0);
-		if (nk_button_label(gui->ctx, "Stop!") || app->op.current_sample >= app->op.target_samples)
+		nk_prog(gui->ctx, (nk_size)app->op.current_sample,
+													app->op.target_samples, 0);
+		if (nk_button_label(gui->ctx, "Stop!") ||
+							app->op.current_sample >= app->op.target_samples)
 		{
 			app->op.current_sample = 0;
 			app->op.mc = 0;
 			update_options(app->ren.render_kernel, &app->op, RT_K_OPTIONS_ARG);
 		}
 	}
+}
+
+static void		gui_post_proc_effects(t_app *app, t_gui *gui,
+														unsigned int *change)
+{
 	*change |= nk_checkbox_label(gui->ctx, "Post processing",
 								&app->ren.pproc_enabled);
 	if (app->ren.pproc_enabled)
@@ -65,6 +73,15 @@ static void		gui_post_proc_loop(t_app *app, t_gui *gui, unsigned int *change)
 		*change |= nk_checkbox_label(gui->ctx, "DEPTH", &app->op.show_depth);
 		*change |= nk_checkbox_label(gui->ctx, "NORMAL", &app->op.show_normal);
 	}
+}
+
+static void		gui_post_proc_loop(t_app *app, t_gui *gui,
+														unsigned int *change)
+{
+	!app->op.mc ? gui_isingle_pick(&app->op.target_samples,
+									"#MC Samples:", gui->ctx) : 0;
+	gui_post_proc_monte_carlo(app, gui, change);
+	gui_post_proc_effects(app, gui, change);
 }
 
 void			gui_scene_loop(t_app *app, t_gui *gui)

@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:03 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 21:09:01 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:46:33 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int				set_kernel_arg(cl_kernel kernel,
 
 int				transfer_objects(t_app *app)
 {
-	t_int		i;
+	t_uint		i;
 	t_list		*it;
 	t_buffer	buffer;
 

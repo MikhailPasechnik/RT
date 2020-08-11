@@ -6,7 +6,7 @@
 /*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:27:18 by bnesoi            #+#    #+#             */
-/*   Updated: 2020/08/10 18:53:12 by cvernius         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:00:50 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,8 @@ void			app_free_all_buffers(t_app *app)
 	app->ren.uv_buf.valid ? free_buffer(&app->ren.uv_buf) : 0;
 }
 
-static int		app_update_buffers1(size_t size, t_app *app)
+static int		app_create_main_buf(t_app *app, size_t size)
 {
-	app->ren.seed_buf = create_buffer(app->ocl.context,
-									  size * sizeof(cl_uint2), CL_MEM_READ_WRITE);
-	if (!app->ren.seed_buf.valid && free_buffer(&app->ren.seed_buf))
-		return (app_error("Failed to allocate seed buffer!", 0));
-	app->ren.mc_buf = create_buffer(app->ocl.context,
-									size * sizeof(cl_float3), CL_MEM_READ_WRITE);
-	if (!app->ren.mc_buf.valid && free_buffer(&app->ren.mc_buf))
-		return (app_error("Failed to allocate seed buffer!", 0));
-	app->ren.uv_buf = create_buffer(app->ocl.context,
-									size * sizeof(cl_float2), CL_MEM_READ_WRITE);
-	if (!app->ren.uv_buf.valid && free_buffer(&app->ren.uv_buf))
-		return (app_error("Failed to allocate uv buffer!", 0));
-}
-int				app_update_buffers(t_app *app)
-{
-	size_t	size;
-
-	size = app->op.width * app->op.height;
-	app_free_all_buffers(app);
 	app->ren.color_buf = create_tx_buffer(app, app->op.width, app->op.height,
 			CL_MEM_WRITE_ONLY);
 	if (!app->ren.color_buf.valid && free_tx_buffer(&app->ren.color_buf))
@@ -71,5 +52,33 @@ int				app_update_buffers(t_app *app)
 			size * sizeof(t_int), CL_MEM_WRITE_ONLY);
 	if (!app->ren.index_buf.valid && free_buffer(&app->ren.index_buf))
 		return (app_error("Failed to allocate index buffer!", 0));
-	return (app_update_buffers1(size, app) && app_set_kernel_buffers(app));
+	return (1);
+}
+
+static int		app_create_effects_buf(t_app *app, size_t size)
+{
+	app->ren.seed_buf = create_buffer(app->ocl.context,
+								size * sizeof(cl_uint2), CL_MEM_READ_WRITE);
+	if (!app->ren.seed_buf.valid && free_buffer(&app->ren.seed_buf))
+		return (app_error("Failed to allocate seed buffer!", 0));
+	app->ren.mc_buf = create_buffer(app->ocl.context,
+								size * sizeof(cl_float3), CL_MEM_READ_WRITE);
+	if (!app->ren.mc_buf.valid && free_buffer(&app->ren.mc_buf))
+		return (app_error("Failed to allocate seed buffer!", 0));
+	app->ren.uv_buf = create_buffer(app->ocl.context,
+								size * sizeof(cl_float2), CL_MEM_READ_WRITE);
+	if (!app->ren.uv_buf.valid && free_buffer(&app->ren.uv_buf))
+		return (app_error("Failed to allocate uv buffer!", 0));
+	return (1);
+}
+
+int				app_update_buffers(t_app *app)
+{
+	size_t	size;
+
+	size = app->op.width * app->op.height;
+	app_free_all_buffers(app);
+	app_create_main_buf(app, size);
+	app_create_effects_buf(app, size);
+	return (app_set_kernel_buffers(app));
 }
