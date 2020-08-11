@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmahi <bmahi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cvernius <cvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 12:36:37 by bmahi             #+#    #+#             */
-/*   Updated: 2020/08/11 17:41:56 by bmahi            ###   ########.fr       */
+/*   Updated: 2020/08/11 19:16:05 by cvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	parser(t_app *app, char *scene)
 	app->scene = read_scene(scene, &(app->lines));
 	if (!app->scene)
 		kill("Scene read failed.");
+	if (app->scene[0] == NULL)
+		kill("Empty file!");
 	n = parser_cam(&app->cam, app->scene, app);
 	parser_light(app->scene, app, n);
 	n = (app->op.light_count) * 6 + n;
